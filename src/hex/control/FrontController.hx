@@ -11,6 +11,7 @@ import hex.collection.BaseLocator;
  * ...
  * @author Francis Bourre
  */
+@:rtti
 class FrontController extends BaseLocator<String, ICommandMapping> implements IFrontController
 {
     private var _module     : IModule;

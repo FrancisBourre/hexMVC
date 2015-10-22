@@ -1,9 +1,10 @@
-package hex.module;
+package hex.config.stateless;
 
 /**
- * Optional module configuration interface
+ * ...
+ * @author Francis Bourre
  */
-interface IConfig
+interface IStatelessConfig
 {
     /**
      * Configure will be invoked after dependencies have been supplied

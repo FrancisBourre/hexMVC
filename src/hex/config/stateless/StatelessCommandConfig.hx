@@ -1,18 +1,17 @@
-package hex.module.control;
+package hex.config.stateless;
 
+import hex.config.stateless.IStatelessConfig;
 import hex.control.ICommand;
 import hex.control.ICommandMapping;
 import hex.control.IFrontController;
-import hex.event.IEventDispatcher;
-import hex.module.IModule;
-import hex.di.IDependencyInjector;
-import hex.module.IRuntimeConfigurable;
+import hex.error.VirtualMethodException;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class CommandConfig implements IRuntimeConfigurable
+@:rtti
+class StatelessCommandConfig implements IStatelessConfig
 {
 	@inject
 	public var frontController : IFrontController;
@@ -25,9 +24,9 @@ class CommandConfig implements IRuntimeConfigurable
 	/**
      * Configure will be invoked after dependencies have been supplied
      */
-	public function configure( injector : IDependencyInjector, dispatcher : IEventDispatcher<IModuleListener, IEvent>, module : IModule ) : Void 
+	public function configure() : Void 
 	{
-		
+		throw new VirtualMethodException( "'configure' is not implemented" );
 	}
 	
 	/**
@@ -36,8 +35,8 @@ class CommandConfig implements IRuntimeConfigurable
 	 * @param	command 	The command class to be associated to event type
 	 * @return
 	 */
-	public function map( eventType : String, command : ICommand ) : ICommandMapping
+	public function map( eventType : String, commandClass : Class<ICommand> ) : ICommandMapping
 	{
-		return this.frontController.map( eventType, command );
+		return this.frontController.map( eventType, commandClass );
 	}
 }

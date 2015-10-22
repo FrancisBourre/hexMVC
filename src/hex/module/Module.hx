@@ -1,9 +1,12 @@
 package hex.module;
 
+import hex.config.stateful.IStatefulConfig;
+import hex.config.stateless.IStatelessConfig;
 import hex.control.FrontController;
 import hex.control.IFrontController;
 import hex.core.HashCodeFactory;
 import hex.di.IDependencyInjector;
+import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
 import hex.error.IllegalStateException;
@@ -12,7 +15,7 @@ import hex.event.EventDispatcher;
 import hex.event.IEvent;
 import hex.event.IEventDispatcher;
 import hex.inject.Injector;
-import hex.domain.ApplicationDomainDispatcher;
+import hex.log.Stringifier;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 
@@ -231,7 +234,7 @@ class Module implements IModule
 	 */
 	private function _getRuntimeDependencies() : IRuntimeDependencies
 	{
-		throw new VirtualMethodException( this + ".checkDependencies is not implemented" );
+		throw new VirtualMethodException( Stringifier.stringify( this ) + ".checkDependencies is not implemented" );
 	}
 	
 	/**
@@ -248,13 +251,13 @@ class Module implements IModule
 	 * need to be executed before initialisation's end
 	 * @param	configurations
 	 */
-	private function _addConfigurationClasses( configurations : Array<Class<IConfig>> ) : Void
+	private function _addStatelessConfigClasses( configurations : Array<Class<IStatelessConfig>> ) : Void
 	{
 		var i : Int = configurations.length;
 		while ( --i > -1 )
 		{
-			var configurationClass : Class<IConfig> = configurations[ i ];
-			var configClassInstance : IConfig = this._injector.instantiateUnmapped( configurationClass );
+			var configurationClass : Class<IStatelessConfig> = configurations[ i ];
+			var configClassInstance : IStatelessConfig = this._injector.instantiateUnmapped( configurationClass );
 			configClassInstance.configure();
 		}
 	}
@@ -264,15 +267,15 @@ class Module implements IModule
 	 * need to be executed before initialisation's end
 	 * @param	configurations
 	 */
-	private function _addRuntimeConfigurations( configurations : Array<IRuntimeConfigurable> ) : Void
+	private function _addStatefulConfigs( configurations : Array<IStatefulConfig> ) : Void
 	{
 		var i : Int = configurations.length;
 		while ( --i > -1 )
 		{
-			var configuration : IRuntimeConfigurable = configurations[ i ];
+			var configuration : IStatefulConfig = configurations[ i ];
 			if ( configuration != null )
 			{
-				configuration.configure( this._injector, this._ed, this );
+				configuration.configure( this._injector );
 			}
 		}
 	}
