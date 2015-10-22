@@ -1,12 +1,12 @@
 package hex.control;
 
 import hex.control.CommandExecutor;
-import hex.event.IEvent;
 import hex.di.IDependencyInjector;
+import hex.event.IEvent;
 import hex.module.IModule;
+import Reflect;
 import Std;
 import Type;
-import Reflect;
 
 /**
  * ...
@@ -60,10 +60,7 @@ class CommandExecutor
 		// Execute command
         if ( command != null )
         {
-            if ( this._module != null )
-            {
-                command.setOwner( this._module );
-            }
+            command.setOwner( this._module );
 
             var isAsync : Bool = Std.is( command, IAsyncCommand );
             if ( isAsync )
