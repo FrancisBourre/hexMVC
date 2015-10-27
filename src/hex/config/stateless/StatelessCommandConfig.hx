@@ -14,7 +14,7 @@ import hex.error.VirtualMethodException;
 class StatelessCommandConfig implements IStatelessConfig
 {
 	@inject
-	public var frontController : IFrontController;
+	private var frontController : IFrontController;
 
 	public function new() 
 	{

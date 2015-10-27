@@ -8,16 +8,16 @@ class CommandMapping implements ICommandMapping
 {
     private var _commandClass               : Class<ICommand>;
     private var _guards                     : Array<Dynamic>;
-    private var _fireOnce                   : Bool;
     private var _payloads                   : Array<ExecutionPayload>;
-    private var _completeListeners          : Array<AsyncCommandEvent->Void>;
-    private var _cancelListeners            : Array<AsyncCommandEvent->Void>;
-    private var _failListeners              : Array<AsyncCommandEvent->Void>;
+	
+    private var _completeHandlers          : Array<AsyncCommandEvent->Void>;
+    private var _cancelHandlers            : Array<AsyncCommandEvent->Void>;
+    private var _failHandlers              : Array<AsyncCommandEvent->Void>;
 
     public function new( commandClass : Class<ICommand> )
     {
         this._commandClass  = commandClass;
-        this._fireOnce      = false;
+        this.isFiredOnce    = false;
     }
 
     public function getCommandClass() : Class<ICommand>
@@ -25,14 +25,15 @@ class CommandMapping implements ICommandMapping
         return this._commandClass;
     }
 
+	@:isVar public var hasGuard( get, null ) : Bool;
+	function get_hasGuard() : Bool
+	{
+		return this._guards != null;
+	}
+	
     public function getGuards() : Array<Dynamic>
     {
         return this._guards;
-    }
-
-    public function hasGuard() : Bool
-    {
-        return this._guards != null;
     }
 
     public function withGuards( guards : Array<Dynamic> ) : ICommandMapping
@@ -45,26 +46,28 @@ class CommandMapping implements ICommandMapping
         this._guards = this._guards.concat( guards );
         return this;
     }
-
-    public function isFiredOnce() : Bool
-    {
-        return this._fireOnce;
-    }
+	
+	@:isVar public var isFiredOnce( get, null ) : Bool;
+	function get_isFiredOnce() : Bool
+	{
+		return this.isFiredOnce;
+	}
 
     public function once() : ICommandMapping
     {
-        this._fireOnce = true;
+        this.isFiredOnce = true;
         return this;
     }
+	
+	@:isVar public var hasPayload( get, null ) : Bool;
+	function get_hasPayload() : Bool
+	{
+		return this._payloads != null;
+	}
 
     public function getPayloads() : Array<ExecutionPayload>
     {
         return this._payloads;
-    }
-
-    public function hasPayload() : Bool
-    {
-        return this._payloads != null;
     }
 
     public function withPayloads( payloads : Array<ExecutionPayload> ) : ICommandMapping
@@ -78,66 +81,69 @@ class CommandMapping implements ICommandMapping
         return this;
     }
 
-    public function getCompleteListeners() : Array<AsyncCommandEvent->Void>
+    public function getCompleteHandlers() : Array<AsyncCommandEvent->Void>
     {
-        return this._completeListeners;
+        return this._completeHandlers;
     }
 
-    public function hasCompleteListeners() : Bool
-    {
-        return this._completeListeners != null;
-    }
+	@:isVar public var hasCompleteHandler( get, null ) : Bool;
+	function get_hasCompleteHandler() : Bool
+	{
+		return this._completeHandlers != null;
+	}
 
-    public function withCompleteListeners( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
+    public function withCompleteHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
     {
-        if ( this._completeListeners == null )
+        if ( this._completeHandlers == null )
         {
-            this._completeListeners = new Array<AsyncCommandEvent->Void>();
+            this._completeHandlers = new Array<AsyncCommandEvent->Void>();
         }
 
-        this._completeListeners = this._completeListeners.concat( listeners );
+        this._completeHandlers = this._completeHandlers.concat( listeners );
         return this;
     }
 
-    public function getFailListeners() : Array<AsyncCommandEvent->Void>
+    public function getFailHandlers() : Array<AsyncCommandEvent->Void>
     {
-        return this._failListeners;
+        return this._failHandlers;
     }
+	
+	@:isVar public var hasFailHandler( get, null ) : Bool;
+	function get_hasFailHandler() : Bool
+	{
+		return this._failHandlers != null;
+	}
 
-    public function hasFailListeners() : Bool
+    public function withFailHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
     {
-        return this._failListeners != null;
-    }
-
-    public function withFailListeners( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
-    {
-        if ( this._failListeners == null )
+        if ( this._failHandlers == null )
         {
-            this._failListeners = new Array<AsyncCommandEvent->Void>();
+            this._failHandlers = new Array<AsyncCommandEvent->Void>();
         }
 
-        this._failListeners = this._failListeners.concat( listeners );
+        this._failHandlers = this._failHandlers.concat( listeners );
         return this;
     }
 
-    public function getCancelListeners() : Array<AsyncCommandEvent->Void>
+    public function getCancelHandlers() : Array<AsyncCommandEvent->Void>
     {
-        return this._cancelListeners;
+        return this._cancelHandlers;
     }
+	
+	@:isVar public var hasCancelHandler( get, null ) : Bool;
+	function get_hasCancelHandler() : Bool
+	{
+		return this._cancelHandlers != null;
+	}
 
-    public function hasCancelListeners() : Bool
+    public function withCancelHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
     {
-        return this._cancelListeners != null;
-    }
-
-    public function withCancelListeners( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
-    {
-        if ( this._cancelListeners == null )
+        if ( this._cancelHandlers == null )
         {
-            this._cancelListeners = new Array<AsyncCommandEvent->Void>();
+            this._cancelHandlers = new Array<AsyncCommandEvent->Void>();
         }
 
-        this._cancelListeners = this._cancelListeners.concat( listeners );
+        this._cancelHandlers = this._cancelHandlers.concat( listeners );
         return this;
     }
 

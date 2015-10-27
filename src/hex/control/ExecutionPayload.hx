@@ -12,7 +12,7 @@ class ExecutionPayload
     private var _type : Class<Dynamic>;
     private var _name : String;
 
-    public function new( data : Dynamic, type : Class<Dynamic> )
+    public function new( data : Dynamic, type : Class<Dynamic>, name : String = "" )
     {
         if ( data == null )
         {
@@ -21,7 +21,7 @@ class ExecutionPayload
 
         this._data = data;
         this._type = type;
-        this._name = "";
+        this._name = name;
     }
 
     public function getData() : Dynamic

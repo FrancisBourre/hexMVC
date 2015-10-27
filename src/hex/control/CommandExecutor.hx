@@ -30,18 +30,18 @@ class CommandExecutor
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
 		if ( Std.is( e, PayloadEvent ) )
 		{
-			payloads = payloads != null ? payloads.concat( (cast e).getExecutionPayloads() ) : (cast e).getExecutionPayloads();
+			payloads = payloads != null ? payloads.concat( ( cast e ).getExecutionPayloads() ) : ( cast e ).getExecutionPayloads();
 		}
 
 		// Map payloads
         if ( payloads != null )
         {
-            this._mapPayload( payloads );
+            CommandExecutor.mapPayload( payloads, this._injector );
         }
 
 		// Instantiate command
 		var command : ICommand = null;
-        if  ( !mapping.hasGuard() || CommandExecutor.guardsApprove( mapping.getGuards(), this._injector ) )
+        if  ( !mapping.hasGuard || CommandExecutor.guardsApprove( mapping.getGuards(), this._injector ) )
         {
             if ( mappingRemoval != null )
             {
@@ -54,7 +54,7 @@ class CommandExecutor
 		// Unmap payloads
         if ( payloads != null )
         {
-            this._unmapPayload( payloads );
+            CommandExecutor.unmapPayload( payloads, this._injector );
         }
 
 		// Execute command
@@ -67,20 +67,20 @@ class CommandExecutor
             {
                 var asynCommand : IAsyncCommand = cast( command, IAsyncCommand );
                 asynCommand.preExecute();
-                if ( mapping.hasCompleteListeners() )   this._addListenersToAsyncCommand( mapping.getCompleteListeners(), asynCommand.addCompleteHandler );
-                if ( mapping.hasFailListeners() )       this._addListenersToAsyncCommand( mapping.getFailListeners(), asynCommand.addFailHandler );
-                if ( mapping.hasCancelListeners() )     this._addListenersToAsyncCommand( mapping.getCancelListeners(), asynCommand.addCancelHandler );
+                if ( mapping.hasCompleteHandler )   CommandExecutor.addListenersToAsyncCommand( mapping.getCompleteHandlers(), asynCommand.addCompleteHandler );
+                if ( mapping.hasFailHandler )       CommandExecutor.addListenersToAsyncCommand( mapping.getFailHandlers(), asynCommand.addFailHandler );
+                if ( mapping.hasCancelHandler )     CommandExecutor.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
             }
 
             command.execute( e );
         }
     }
 
-    private function _addListenersToAsyncCommand( listeners : Array<AsyncCommandEvent->Void>, addListener : ( AsyncCommandEvent->Void )->Void ) : Void
+    static public function addListenersToAsyncCommand( listeners : Array<AsyncCommandEvent->Void>, methodToAddListener : ( AsyncCommandEvent->Void )->Void ) : Void
     {
         for ( listener in listeners )
         {
-            addListener( listener );
+            methodToAddListener( listener );
         }
     }
 
@@ -96,13 +96,13 @@ class CommandExecutor
         {
             for ( guard in guards )
             {
-                if ( Reflect.hasField( guard, "approve" ) )
-                {
+                if ( Reflect.hasField( guard, "approve" ) ){
                     guard = Reflect.field( guard, "approve" );
                 }
                 else if ( Std.is( guard, Class ) )
                 {
                     guard = injector != null ? injector.instantiateUnmapped( guard ) : Type.createInstance( guard, [] );
+					guard = guard.approve;
                 }
 
                 if ( Reflect.isFunction( guard ) )
@@ -125,29 +125,23 @@ class CommandExecutor
 	 * Map payloads
 	 * @param	payload
 	 */
-    private function _mapPayload( payloads : Array<ExecutionPayload> ) : Void
+    static public function mapPayload( payloads : Array<ExecutionPayload>, injector : IDependencyInjector ) : Void
     {
-        var i : Int = payloads.length;
-
-        while ( --i > -1 )
-        {
-            var payload : ExecutionPayload = payloads[ i ];
-			this._injector.mapToValue( payload.getType(), payload.getData(), payload.getName() );
-        }
+        for ( payload in payloads ) 
+		{
+			injector.mapToValue( payload.getType(), payload.getData(), payload.getName() );
+		}
     }
 
 	/**
 	 * Unmap payloads
 	 * @param	payloads
 	 */
-    private function _unmapPayload( payloads : Array<ExecutionPayload> ) : Void
+    static public function unmapPayload( payloads : Array<ExecutionPayload>, injector : IDependencyInjector ) : Void
     {
-        var i : Int = payloads.length;
-
-        while ( --i > -1 )
-        {
-            var payload : ExecutionPayload = payloads[ i ];
-            this._injector.unmap( payload.getType(), payload.getName()  );
-        }
+        for ( payload in payloads ) 
+		{
+			injector.unmap( payload.getType(), payload.getName() );
+		}
     }
 }

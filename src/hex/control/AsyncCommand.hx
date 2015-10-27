@@ -30,16 +30,14 @@ class AsyncCommand implements IAsyncCommand
 
     public function preExecute() :  Void
     {
-        this.wasUsed() && this._throwExecutionIllegalStateError();
+        this.wasUsed && this._throwExecutionIllegalStateError();
         this._status = AsyncCommand.IS_RUNNING;
         AsyncCommand.detain( this );
     }
 
     public function cancel() : Void
     {
-        this.wasUsed() && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
-        this._status = AsyncCommand.IS_CANCELLED;
-        this.handleCancel();
+        this._handleCancel();
     }
 
     public function addAsyncCommandListener( listener : IAsyncCommandListener ) : Void
@@ -58,7 +56,7 @@ class AsyncCommand implements IAsyncCommand
 
     public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void
     {
-        if ( this.hasCompleted() )
+        if ( this.hasCompleted )
         {
             handler( new AsyncCommandEvent( AsyncCommandEvent.COMPLETE, this ) );
         }
@@ -75,7 +73,7 @@ class AsyncCommand implements IAsyncCommand
 
     public function addFailHandler( handler : AsyncCommandEvent->Void ) : Void
     {
-        if ( this.hasFailed() )
+        if ( this.hasFailed )
         {
             handler( new AsyncCommandEvent( AsyncCommandEvent.FAIL, this ) );
         }
@@ -92,7 +90,7 @@ class AsyncCommand implements IAsyncCommand
 
     public function addCancelHandler( handler : AsyncCommandEvent->Void ) : Void
     {
-        if ( this.isCancelled() )
+        if ( this.isCancelled )
         {
             handler( new AsyncCommandEvent( AsyncCommandEvent.CANCEL, this ) );
         }
@@ -107,48 +105,56 @@ class AsyncCommand implements IAsyncCommand
         this._ed.removeEventListener( AsyncCommandEvent.CANCEL, handler );
     }
 
-    public function handleComplete() : Void
+    private function _handleComplete() : Void
     {
+		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_COMPLETED;
         this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.COMPLETE, this ) );
         this._release();
     }
 
-    public function handleFail() : Void
+    private function _handleFail() : Void
     {
+		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_FAILED;
         this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.FAIL, this ) );
         this._release();
     }
 
-    public function handleCancel() : Void
+    private function _handleCancel() : Void
     {
+		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_CANCELLED;
         this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.CANCEL, this ) );
         this._release();
     }
 
-    public function wasUsed() : Bool
+	public var wasUsed( get, null ) : Bool;
+    public function get_wasUsed() : Bool
     {
         return this._status != AsyncCommand.WAS_NEVER_USED;
     }
 
-    public function isRunning() : Bool
+	public var isRunning( get, null ) : Bool;
+    public function get_isRunning() : Bool
     {
         return this._status == AsyncCommand.IS_RUNNING;
     }
 
-    public function hasCompleted() : Bool
+	public var hasCompleted( get, null ) : Bool;
+    public function get_hasCompleted() : Bool
     {
         return this._status == AsyncCommand.IS_COMPLETED;
     }
 
-    public function hasFailed() : Bool
+	public var hasFailed( get, null ) : Bool;
+    public function get_hasFailed() : Bool
     {
         return this._status == AsyncCommand.IS_FAILED;
     }
 
-    public function isCancelled() : Bool
+	public var isCancelled( get, null ) : Bool;
+    public function get_isCancelled() : Bool
     {
         return this._status == AsyncCommand.IS_CANCELLED;
     }
@@ -188,19 +194,19 @@ class AsyncCommand implements IAsyncCommand
     {
         var msg : String = "";
 
-        if ( this.isRunning() )
+        if ( this.isRunning )
         {
             msg = "execute() failed. This command is already processing.";
         }
-        else if ( this.isCancelled() )
+        else if ( this.isCancelled )
         {
             msg = "execute() failed. This command is cancelled.";
         }
-        else if ( this.hasCompleted() )
+        else if ( this.hasCompleted )
         {
             msg = "execute() failed. This command is completed and can't be executed twice.";
         }
-        else if ( this.hasFailed() )
+        else if ( this.hasFailed )
         {
             msg = "execute() failed. This command has failed and can't be executed twice.";
         }
@@ -213,15 +219,15 @@ class AsyncCommand implements IAsyncCommand
     {
         var msg : String = "";
 
-        if ( isCancelled() )
+        if ( isCancelled )
         {
             msg = "cancel() failed. This command was already cancelled.";
         }
-        else if ( hasCompleted() )
+        else if ( hasCompleted )
         {
             msg = "cancel() failed. This command was already completed.";
         }
-        else if ( hasFailed() )
+        else if ( hasFailed )
         {
             msg = "cancel() failed. This command has already failed.";
         }

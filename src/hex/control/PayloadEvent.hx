@@ -20,4 +20,8 @@ class PayloadEvent extends BasicEvent
 		return this._executionPayloads;
 	}
 	
+	override public function clone() : BasicEvent
+	{
+		return new PayloadEvent( this.type, this.target, this._executionPayloads );
+	}
 }

@@ -25,23 +25,17 @@ interface IAsyncCommand extends ICommand
 
     function removeCancelHandler( handler : AsyncCommandEvent->Void ) : Void;
 
-    function handleComplete() : Void;
-
-    function handleFail() : Void;
-
-    function handleCancel() : Void;
-
 
     /**
      * State system
      */
-    function wasUsed() : Bool;
+	var wasUsed( get, null ) : Bool;
+	
+	var isRunning( get, null ) : Bool;
 
-    function isRunning() : Bool;
+	var hasCompleted( get, null ) : Bool;
 
-    function hasCompleted() : Bool;
+	var hasFailed( get, null ) : Bool;
 
-    function hasFailed() : Bool;
-
-    function isCancelled() : Bool;
+	var isCancelled( get, null ) : Bool;
 }

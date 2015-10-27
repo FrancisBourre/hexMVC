@@ -14,7 +14,7 @@ interface ICommandMapping
     /**
      * Returns true if mapping has guard
      */
-    function hasGuard() : Bool;
+    var hasGuard( get, null ) : Bool;
 
     /**
      * A list of Guards to query before execution
@@ -29,22 +29,22 @@ interface ICommandMapping
     /**
      * Unmaps a Command after a successful execution
      */
-    function isFiredOnce() : Bool;
+	var isFiredOnce( get, null ) : Bool;
 
     /**
      * Unmaps a Command after a successful execution
      */
     function once() : ICommandMapping;
+	
+	/**
+     * A list of payloads to be injected during execution
+     */
+	var hasPayload( get, null ) : Bool;
 
     /**
      * A list of payloads to be injected during execution
      */
     function getPayloads() : Array<ExecutionPayload>;
-
-    /**
-     * Returns true if mapping has payload
-     */
-    function hasPayload() : Bool;
 
     /**
      * A list of payloads to be injected during execution
@@ -54,47 +54,47 @@ interface ICommandMapping
     /**
      * A list of complete callbacks
      */
-    function getCompleteListeners() : Array<AsyncCommandEvent->Void>;
+    function getCompleteHandlers() : Array<AsyncCommandEvent->Void>;
 
     /**
      * Returns true if mapping has complete callbacks
      */
-    function hasCompleteListeners() : Bool;
+	var hasCompleteHandler( get, null ) : Bool;
 
     /**
      * A list of complete callbacks
      */
-    function withCompleteListeners( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
+    function withCompleteHandlers( handlers : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
 
     /**
      * A list of fail callbacks
      */
-    function getFailListeners() : Array<AsyncCommandEvent->Void>;
+    function getFailHandlers() : Array<AsyncCommandEvent->Void>;
 
     /**
      * Returns true if mapping has fail callbacks
      */
-    function hasFailListeners() : Bool;
+	var hasFailHandler( get, null ) : Bool;
 
     /**
      * A list of fail callbacks
      */
-    function withFailListeners( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
+    function withFailHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
 
     /**
      * A list of cancel callbacks
      */
-    function getCancelListeners() : Array<AsyncCommandEvent->Void>;
+    function getCancelHandlers() : Array<AsyncCommandEvent->Void>;
 
     /**
      * Returns true if mapping has cancel callbacks
      */
-    function hasCancelListeners() : Bool;
+	var hasCancelHandler( get, null ) : Bool;
 
     /**
      * A list of cancel callbacks
      */
-    function withCancelListeners( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
+    function withCancelHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
 
     /**
      * A list of mapping results

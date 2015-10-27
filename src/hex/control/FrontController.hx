@@ -51,7 +51,7 @@ class FrontController extends BaseLocator<String, ICommandMapping> implements IF
             var commandExecutor : CommandExecutor   = new CommandExecutor( this._injector, this._module );
 
             var mappingRemoval : Void->ICommandMapping  = null;
-            if ( commandMapping.isFiredOnce() )
+            if ( commandMapping.isFiredOnce )
             {
                 mappingRemoval = this.unmap.bind( e.type );
             }
