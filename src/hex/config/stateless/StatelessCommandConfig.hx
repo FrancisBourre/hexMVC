@@ -1,8 +1,8 @@
 package hex.config.stateless;
 
 import hex.config.stateless.IStatelessConfig;
-import hex.control.ICommand;
-import hex.control.ICommandMapping;
+import hex.control.command.ICommand;
+import hex.control.command.ICommandMapping;
 import hex.control.IFrontController;
 import hex.error.VirtualMethodException;
 

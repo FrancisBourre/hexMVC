@@ -1,4 +1,6 @@
-package hex.control;
+package hex.control.async;
+
+import hex.control.command.ICommand;
 
 interface IAsyncCommand extends ICommand
 {

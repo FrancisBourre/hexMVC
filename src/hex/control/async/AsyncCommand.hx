@@ -1,5 +1,7 @@
-package hex.control;
+package hex.control.async;
 
+import hex.control.async.IAsyncCommand;
+import hex.control.async.IAsyncCommandListener;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.IEvent;

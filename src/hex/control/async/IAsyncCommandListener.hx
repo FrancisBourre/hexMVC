@@ -1,4 +1,4 @@
-package hex.control;
+package hex.control.async;
 
 import hex.event.BasicEvent;
 

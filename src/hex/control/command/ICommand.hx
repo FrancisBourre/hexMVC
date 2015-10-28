@@ -1,4 +1,4 @@
-package hex.control;
+package hex.control.command;
 
 import hex.event.IEvent;
 import hex.module.IModule;

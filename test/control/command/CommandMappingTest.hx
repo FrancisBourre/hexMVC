@@ -1,10 +1,10 @@
-package control;
+package control.command;
 
-import hex.control.AsyncCommandEvent;
-import hex.control.ExecutionPayload;
-import hex.control.ICommand;
+import hex.control.async.AsyncCommandEvent;
+import hex.control.payload.ExecutionPayload;
+import hex.control.command.ICommand;
 import hex.module.IModule;
-import hex.control.CommandMapping;
+import hex.control.command.CommandMapping;
 import hex.event.IEvent;
 import hex.unittest.assertion.Assert;
 

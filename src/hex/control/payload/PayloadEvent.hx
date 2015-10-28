@@ -1,4 +1,6 @@
-package hex.control;
+package hex.control.payload;
+
+import hex.control.payload.ExecutionPayload;
 import hex.event.BasicEvent;
 
 /**

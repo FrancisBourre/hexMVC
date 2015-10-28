@@ -1,5 +1,6 @@
-package hex.control;
+package hex.control.async;
 
+import hex.control.async.IAsyncCommand;
 import hex.event.BasicEvent;
 
 /**

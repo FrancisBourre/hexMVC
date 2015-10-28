@@ -1,8 +1,8 @@
-package control;
+package control.async;
 
-import hex.control.AsyncCommand;
-import hex.control.AsyncCommandEvent;
-import hex.control.IAsyncCommandListener;
+import hex.control.async.AsyncCommand;
+import hex.control.async.AsyncCommandEvent;
+import hex.control.async.IAsyncCommandListener;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.BasicEvent;

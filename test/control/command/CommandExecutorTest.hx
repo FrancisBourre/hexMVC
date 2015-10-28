@@ -1,15 +1,16 @@
-package control;
-import hex.control.AsyncCommandEvent;
-import hex.control.CommandMapping;
-import hex.control.ICommandMapping;
-import hex.control.PayloadEvent;
+package control.command;
+
+import hex.control.async.AsyncCommandEvent;
+import hex.control.command.CommandMapping;
+import hex.control.command.ICommandMapping;
+import hex.control.payload.PayloadEvent;
 import hex.module.IModule;
 import hex.module.Module;
 
-import hex.control.CommandExecutor;
-import hex.control.ExecutionPayload;
-import hex.control.IAsyncCommand;
-import hex.control.IAsyncCommandListener;
+import hex.control.command.CommandExecutor;
+import hex.control.payload.ExecutionPayload;
+import hex.control.async.IAsyncCommand;
+import hex.control.async.IAsyncCommandListener;
 import hex.control.IGuard;
 import hex.di.IDependencyInjector;
 import hex.event.BasicEvent;

@@ -1,4 +1,8 @@
-package hex.control;
+package hex.control.command;
+
+import hex.control.async.AsyncCommandEvent;
+import hex.control.command.ICommand;
+import hex.control.payload.ExecutionPayload;
 
 /**
  * ...

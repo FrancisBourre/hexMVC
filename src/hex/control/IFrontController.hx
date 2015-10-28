@@ -1,4 +1,6 @@
 package hex.control;
+import hex.control.command.ICommand;
+import hex.control.command.ICommandMapping;
 
 /**
  * ...

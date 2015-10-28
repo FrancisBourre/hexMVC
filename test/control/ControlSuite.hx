@@ -1,5 +1,11 @@
 package control;
 
+import control.async.AsyncSuite;
+import control.command.CommandSuite;
+import control.payload.ExecutionPayloadTest;
+import control.payload.PayloadEventTest;
+import control.payload.PayloadSuite;
+
 /**
  * ...
  * @author Francis Bourre
@@ -7,5 +13,5 @@ package control;
 class ControlSuite
 {
 	@suite("Control suite")
-    public var list : Array<Class<Dynamic>> = [AsyncCommandEventTest, AsyncCommandTest, CommandExecutorTest, CommandMappingTest, ExecutionPayloadTest, FrontControllerTest, PayloadEventTest];
+    public var list : Array<Class<Dynamic>> = [AsyncSuite, CommandSuite, FrontControllerTest, PayloadSuite ];
 }

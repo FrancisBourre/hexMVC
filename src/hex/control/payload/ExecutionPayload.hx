@@ -1,4 +1,4 @@
-package hex.control;
+package hex.control.payload;
 
 import hex.error.NullPointerException;
 

@@ -1,7 +1,7 @@
-package control;
+package control.async;
 
-import hex.control.AsyncCommand;
-import hex.control.AsyncCommandEvent;
+import hex.control.async.AsyncCommand;
+import hex.control.async.AsyncCommandEvent;
 import hex.unittest.assertion.Assert;
 
 /**

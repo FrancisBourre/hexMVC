@@ -1,8 +1,8 @@
 package control;
 
 import hex.control.FrontController;
-import hex.control.ICommand;
-import hex.control.ICommandMapping;
+import hex.control.command.ICommand;
+import hex.control.command.ICommandMapping;
 import hex.di.IDependencyInjector;
 import hex.event.BasicEvent;
 import hex.event.EventDispatcher;

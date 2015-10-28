@@ -1,5 +1,9 @@
 package hex.control;
 
+import hex.control.command.CommandExecutor;
+import hex.control.command.CommandMapping;
+import hex.control.command.ICommand;
+import hex.control.command.ICommandMapping;
 import hex.di.IDependencyInjector;
 import hex.module.IModule;
 import hex.event.IEvent;

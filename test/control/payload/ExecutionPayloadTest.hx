@@ -1,6 +1,6 @@
-package control;
+package control.payload;
 
-import hex.control.ExecutionPayload;
+import hex.control.payload.ExecutionPayload;
 import hex.unittest.assertion.Assert;
 
 /**
