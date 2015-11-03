@@ -1,11 +1,11 @@
-package control.command;
+package control.macro;
 
 import hex.control.async.AsyncCommandEvent;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
-import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommandMapping;
+import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadEvent;
 import hex.di.IDependencyInjector;
@@ -15,14 +15,13 @@ import hex.module.IModule;
 import hex.module.Module;
 import hex.unittest.assertion.Assert;
 
-
 /**
  * ...
  * @author Francis Bourre
  */
-class CommandExecutorTest
+class MacroExecutorTest
 {
-	private var _commandExecutor   	: CommandExecutor;
+	private var _macroExecutor 		: MacroExecutor;
     private var _injector     		: MockDependencyInjectorForMapping;
     private var _module     		: IModule;
 
@@ -31,16 +30,28 @@ class CommandExecutorTest
     {
 		this._injector 			= new MockDependencyInjectorForMapping();
 		this._module 			= new Module();
-        this._commandExecutor 	= new CommandExecutor( this._injector, _module );
+        this._macroExecutor 	= new MacroExecutor();
+		
+		this._macroExecutor.injector = this._injector;
+		this._macroExecutor.initialize( this._module );
     }
 
     @tearDown
     public function tearDown() : Void
     {
-        this._injector 			= null;
+		this._injector 			= null;
 		this._module 			= null;
-        this._commandExecutor 	= null;
+        this._macroExecutor 	= null;
     }
+	
+	@test( "Test subCommandIndex" )
+    public function textSubCommandIndex() : Void
+    {
+		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		this._macroExecutor.add( MockAsyncCommand );
+		this._macroExecutor.executeNextCommand();
+		Assert.assertEquals( 1, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 1" );
+	}
 	
 	@test( "Test command execution" )
     public function textExcuteCommand() : Void
@@ -68,9 +79,8 @@ class CommandExecutorTest
 		var anotherMockPayload 			: ExecutionPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
 		var payloads 					: Array<ExecutionPayload> 	= [ stringPayload, anotherMockPayload ];
 		
-		var mockForTriggeringUnmap : MockForTriggeringUnmap = new MockForTriggeringUnmap( commandMapping );
 		var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
-		this._commandExecutor.executeCommand( commandMapping, event, mockForTriggeringUnmap.unmap );
+		this._macroExecutor.executeCommand( commandMapping, event );
 		
 		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
 		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
@@ -86,7 +96,6 @@ class CommandExecutorTest
 		
 		Assert.assertEquals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
 		Assert.assertEquals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
-		Assert.assertEquals( 1, mockForTriggeringUnmap.unmapCallCount, "unmap handler should be called once" );
 		
 		Assert.assertDeepEquals( 	[ [mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
 									this._injector.mappedPayloads,
@@ -95,23 +104,6 @@ class CommandExecutorTest
 		Assert.assertDeepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
 									this._injector.unmappedPayloads,
 									"'CommandExecutor.unmapPayload' should unmap right values" );
-	}
-}
-
-private class MockForTriggeringUnmap
-{
-	public var commandMapping : ICommandMapping;
-	public var unmapCallCount : Int = 0;
-	
-	public function new( commandMapping : ICommandMapping )
-	{
-		this.commandMapping = commandMapping;
-	}
-	
-	public function unmap() : ICommandMapping
-	{
-		this.unmapCallCount++;
-		return this.commandMapping;
 	}
 }
 

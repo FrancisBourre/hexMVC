@@ -7,6 +7,6 @@ package control.payload;
 class PayloadSuite
 {
 	@suite("Payload suite")
-    public var list : Array<Class<Dynamic>> = [ ExecutionPayloadTest, PayloadEventTest ];
+    public var list : Array<Class<Dynamic>> = [ ExecutionPayloadTest, PayloadEventTest, PayloadUtilTest ];
 	
 }

@@ -7,6 +7,6 @@ package control.async;
 class AsyncSuite
 {
 	@suite("Async suite")
-    public var list : Array<Class<Dynamic>> = [AsyncCommandEventTest, AsyncCommandTest];
+    public var list : Array<Class<Dynamic>> = [AsyncCommandEventTest, AsyncCommandTest, AsyncCommandUtilTest ];
 	
 }

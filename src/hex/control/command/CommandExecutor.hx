@@ -1,10 +1,13 @@
 package hex.control.command;
 
 import hex.control.async.AsyncCommandEvent;
+import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.command.ICommand;
+import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadEvent;
+import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
 import hex.event.IEvent;
 import hex.module.IModule;
@@ -28,7 +31,7 @@ class CommandExecutor
         //MetaDataProvider.getInstance().registerInjector( this._injector );
     }
 
-    public function executeCommand( e : IEvent, mapping : ICommandMapping, ?mappingRemoval : Void->ICommandMapping ) : Void
+    public function executeCommand( mapping : ICommandMapping, ?e : IEvent, ?mappingRemoval : Void->ICommandMapping ) : Void
     {
 		// Build payloads collection
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
@@ -40,12 +43,12 @@ class CommandExecutor
 		// Map payloads
         if ( payloads != null )
         {
-            CommandExecutor.mapPayload( payloads, this._injector );
+            PayloadUtil.mapPayload( payloads, this._injector );
         }
 
 		// Instantiate command
 		var command : ICommand = null;
-        if  ( !mapping.hasGuard || CommandExecutor.guardsApprove( mapping.getGuards(), this._injector ) )
+        if  ( !mapping.hasGuard || GuardUtil.guardsApprove( mapping.getGuards(), this._injector ) )
         {
             if ( mappingRemoval != null )
             {
@@ -58,7 +61,7 @@ class CommandExecutor
 		// Unmap payloads
         if ( payloads != null )
         {
-            CommandExecutor.unmapPayload( payloads, this._injector );
+            PayloadUtil.unmapPayload( payloads, this._injector );
         }
 
 		// Execute command
@@ -71,81 +74,12 @@ class CommandExecutor
             {
                 var asynCommand : IAsyncCommand = cast( command, IAsyncCommand );
                 asynCommand.preExecute();
-                if ( mapping.hasCompleteHandler )   CommandExecutor.addListenersToAsyncCommand( mapping.getCompleteHandlers(), asynCommand.addCompleteHandler );
-                if ( mapping.hasFailHandler )       CommandExecutor.addListenersToAsyncCommand( mapping.getFailHandlers(), asynCommand.addFailHandler );
-                if ( mapping.hasCancelHandler )     CommandExecutor.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
+                if ( mapping.hasCompleteHandler )   AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCompleteHandlers(), asynCommand.addCompleteHandler );
+                if ( mapping.hasFailHandler )       AsyncCommandUtil.addListenersToAsyncCommand( mapping.getFailHandlers(), asynCommand.addFailHandler );
+                if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
             }
 
             command.execute( e );
         }
-    }
-
-    static public function addListenersToAsyncCommand( listeners : Array<AsyncCommandEvent->Void>, methodToAddListener : ( AsyncCommandEvent->Void )->Void ) : Void
-    {
-        for ( listener in listeners )
-        {
-            methodToAddListener( listener );
-        }
-    }
-
-	/**
-	 * Approve guards
-	 * @param	guards
-	 * @param	injector
-	 * @return
-	 */
-    static public function guardsApprove( ?guards : Array<Dynamic>, ?injector : IDependencyInjector ) : Bool
-    {
-        if ( guards != null )
-        {
-            for ( guard in guards )
-            {
-                if ( Reflect.hasField( guard, "approve" ) ){
-                    guard = Reflect.field( guard, "approve" );
-                }
-                else if ( Std.is( guard, Class ) )
-                {
-                    guard = injector != null ? injector.instantiateUnmapped( guard ) : Type.createInstance( guard, [] );
-					guard = guard.approve;
-                }
-
-                if ( Reflect.isFunction( guard ) )
-                {
-                    var scope : Dynamic = Reflect.field( guard, "scope" );
-                    var b : Bool = Reflect.callMethod( scope, guard, [] );
-
-                    if ( !b )
-                    {
-                        return false;
-                    }
-                }
-            }
-        }
-
-        return true;
-    }
-
-	/**
-	 * Map payloads
-	 * @param	payload
-	 */
-    static public function mapPayload( payloads : Array<ExecutionPayload>, injector : IDependencyInjector ) : Void
-    {
-        for ( payload in payloads ) 
-		{
-			injector.mapToValue( payload.getType(), payload.getData(), payload.getName() );
-		}
-    }
-
-	/**
-	 * Unmap payloads
-	 * @param	payloads
-	 */
-    static public function unmapPayload( payloads : Array<ExecutionPayload>, injector : IDependencyInjector ) : Void
-    {
-        for ( payload in payloads ) 
-		{
-			injector.unmap( payload.getType(), payload.getName() );
-		}
     }
 }

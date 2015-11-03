@@ -198,20 +198,24 @@ class AsyncCommand implements IAsyncCommand
 
         if ( this.isRunning )
         {
-            msg = "execute() failed. This command is already processing.";
+            msg = "'execute' call failed. This command is already processing.";
         }
         else if ( this.isCancelled )
         {
-            msg = "execute() failed. This command is cancelled.";
+            msg = "'execute' call failed. This command is cancelled.";
         }
         else if ( this.hasCompleted )
         {
-            msg = "execute() failed. This command is completed and can't be executed twice.";
+            msg = "'execute' call failed. This command is completed and can't be executed twice.";
         }
         else if ( this.hasFailed )
         {
-            msg = "execute() failed. This command has failed and can't be executed twice.";
+            msg = "'execute' call failed. This command has failed and can't be executed twice.";
         }
+		else if ( !this.wasUsed )
+		{
+			msg = "'execute' call failed. 'preExecute' should be called before.";
+		}
 
         this._release();
         throw new IllegalStateException( msg );
@@ -223,15 +227,15 @@ class AsyncCommand implements IAsyncCommand
 
         if ( isCancelled )
         {
-            msg = "cancel() failed. This command was already cancelled.";
+            msg = "'cancel' call failed. This command was already cancelled.";
         }
         else if ( hasCompleted )
         {
-            msg = "cancel() failed. This command was already completed.";
+            msg = "'cancel' call failed. This command was already completed.";
         }
         else if ( hasFailed )
         {
-            msg = "cancel() failed. This command has already failed.";
+            msg = "'cancel' call failed. This command has already failed.";
         }
 
         this._release();

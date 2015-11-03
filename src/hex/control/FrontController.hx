@@ -61,7 +61,7 @@ class FrontController extends BaseLocator<String, ICommandMapping> implements IF
             }
 
 			e.target = this._dispatcher;
-            commandExecutor.executeCommand( e, commandMapping, mappingRemoval );
+            commandExecutor.executeCommand( commandMapping, e, mappingRemoval );
         }
     }
 }
