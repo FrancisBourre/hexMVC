@@ -1,7 +1,7 @@
 package control.guard;
 
 import hex.control.guard.GuardUtil;
-import hex.control.IGuard;
+import hex.control.guard.IGuard;
 import hex.di.IDependencyInjector;
 import hex.unittest.assertion.Assert;
 
