@@ -44,6 +44,7 @@ class MacroExecutor implements IMacroExecutor
         this._module    				= module;
 		this._runningAsyncCommandList 	= [];
 		this._commandIndex				= 0;
+		this._commandCalledCount 		= 0;
 		
 		//this._injector 					= this._injector.createChild();
 		//MetaDataProvider.getInstance().registerInjector( this._injector );
@@ -70,6 +71,12 @@ class MacroExecutor implements IMacroExecutor
         {
             command = this.injector.getOrCreateNewInstance( mapping.getCommandClass() );
         }
+		else
+		{
+			this._commandCalledCount++;
+			this._asyncCommandListener.onAsyncCommandFail( null );
+			return null;
+		}
 
 		// Unmap payloads
         if ( payloads != null )
@@ -85,14 +92,21 @@ class MacroExecutor implements IMacroExecutor
             var isAsync : Bool = Std.is( command, IAsyncCommand );
             if ( isAsync )
             {
-                var asynCommand : IAsyncCommand = cast( command, IAsyncCommand );
-                asynCommand.preExecute();
-                if ( mapping.hasCompleteHandler )   AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCompleteHandlers(), asynCommand.addCompleteHandler );
-                if ( mapping.hasFailHandler )       AsyncCommandUtil.addListenersToAsyncCommand( mapping.getFailHandlers(), asynCommand.addFailHandler );
-                if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
+                var aSyncCommand : IAsyncCommand = cast( command, IAsyncCommand );
+                aSyncCommand.preExecute();
+                if ( mapping.hasCompleteHandler )   AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCompleteHandlers(), aSyncCommand.addCompleteHandler );
+                if ( mapping.hasFailHandler )       AsyncCommandUtil.addListenersToAsyncCommand( mapping.getFailHandlers(), aSyncCommand.addFailHandler );
+                if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), aSyncCommand.addCancelHandler );
+				
+				aSyncCommand.addAsyncCommandListener( this._asyncCommandListener );
+                this._runningAsyncCommandList.push( aSyncCommand );
             }
 
             command.execute( e );
+			if ( !isAsync )
+			{
+				this._commandCalledCount++;
+			}
         }
 		
 		return command;
@@ -110,7 +124,7 @@ class MacroExecutor implements IMacroExecutor
 		return this._commandCalledCount == this._commandMappingCollection.length;
 	}
 	
-	public function setAsyncCommandListener( listener:IAsyncCommandListener ) : Void
+	public function setAsyncCommandListener( listener : IAsyncCommandListener ) : Void
 	{
 		this._asyncCommandListener = listener;
 	}

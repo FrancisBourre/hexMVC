@@ -1,19 +1,24 @@
 package control.macro;
 
+import haxe.Timer;
+import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncCommandEvent;
-import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandMapping;
+import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
+import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadEvent;
-import hex.di.IDependencyInjector;
+import hex.error.IllegalStateException;
 import hex.event.BasicEvent;
 import hex.event.IEvent;
+import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.module.Module;
 import hex.unittest.assertion.Assert;
+import hex.unittest.runner.MethodRunner;
 
 /**
  * ...
@@ -24,6 +29,7 @@ class MacroExecutorTest
 	private var _macroExecutor 		: MacroExecutor;
     private var _injector     		: MockDependencyInjectorForMapping;
     private var _module     		: IModule;
+    private var _mockMacro     		: MockMacroListener;
 
     @setUp
     public function setUp() : Void
@@ -31,6 +37,8 @@ class MacroExecutorTest
 		this._injector 			= new MockDependencyInjectorForMapping();
 		this._module 			= new Module();
         this._macroExecutor 	= new MacroExecutor();
+        this._mockMacro 		= new MockMacroListener( this._macroExecutor );
+		this._macroExecutor.setAsyncCommandListener( this._mockMacro );
 		
 		this._macroExecutor.injector = this._injector;
 		this._macroExecutor.initialize( this._module );
@@ -42,10 +50,11 @@ class MacroExecutorTest
 		this._injector 			= null;
 		this._module 			= null;
         this._macroExecutor 	= null;
+        this._mockMacro 		= null;
     }
 	
 	@test( "Test subCommandIndex" )
-    public function textSubCommandIndex() : Void
+    public function testSubCommandIndex() : Void
     {
 		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
 		this._macroExecutor.add( MockAsyncCommand );
@@ -53,8 +62,79 @@ class MacroExecutorTest
 		Assert.assertEquals( 1, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 1" );
 	}
 	
+	@test( "Test hasNextCommandMapping" )
+    public function testHasNextCommandMapping() : Void
+    {
+		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		this._macroExecutor.add( MockAsyncCommand );
+		Assert.assertTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
+		this._macroExecutor.executeNextCommand();
+		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+	}
+	
+	@async( "Test hasRunEveryCommand" )
+    public function testHasRunEveryCommand() : Void
+    {
+		Assert.assertTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
+		this._macroExecutor.add( MockCommand );
+		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+		this._macroExecutor.executeNextCommand();
+		Assert.assertTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
+		this._macroExecutor.add( MockAsyncCommand );
+		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+		this._macroExecutor.executeNextCommand();
+		Timer.delay( MethodRunner.asyncHandler( this._onTestHasRunEveryCommand ), 100 );
+	}
+	
+	@test( "Test executeNextCommand" )
+    public function testExecuteNextCommand() : Void
+    {
+		this._macroExecutor.add( MockCommand );
+		this._macroExecutor.add( MockAsyncCommand );
+		var command : ICommand = this._macroExecutor.executeNextCommand();
+		Assert.assertIsType( command, MockCommand, "command should be typed 'MockCommand'" );
+		command = this._macroExecutor.executeNextCommand();
+		Assert.assertIsType( command, MockAsyncCommand, "command should be typed 'MockCommand'" );
+	}
+	
+	@test( "Test asyncCommandCalled" )
+    public function testAsyncCommandCalled() : Void
+    {
+		Assert.assertMethodCallThrows( IllegalStateException, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
+	}
+	
+	private function _onTestHasRunEveryCommand() : Void
+	{
+		Assert.assertTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
+	}
+	
+	@test( "Test add" )
+    public function testAdd() : Void
+    {
+		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		
+		var commandMapping : ICommandMapping = this._macroExecutor.add( MockAsyncCommand );
+		Assert.assertEquals( MockAsyncCommand, commandMapping.getCommandClass(), "'add' should return expected mapping with right same command class" );
+		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.assertTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
+		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+	}
+	
+	@test( "Test add mapping" )
+    public function testAddMapping() : Void
+    {
+		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		
+		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommand );
+		var returnedCommandMapping : ICommandMapping = this._macroExecutor.addMapping( commandMapping );
+		Assert.assertEquals( commandMapping, returnedCommandMapping, "'addMapping' should return ethe same command mapping" );
+		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.assertTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
+		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+	}
+	
 	@test( "Test command execution" )
-    public function textExcuteCommand() : Void
+    public function testExcuteCommand() : Void
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
 		
@@ -90,9 +170,9 @@ class MacroExecutorTest
 		
 		Assert.assertDeepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
-		Assert.assertDeepEquals( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
-		Assert.assertDeepEquals( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
-		Assert.assertDeepEquals( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
+		Assert.assertArrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
+		Assert.assertArrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
+		Assert.assertArrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
 		
 		Assert.assertEquals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
 		Assert.assertEquals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
@@ -151,77 +231,24 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 	}
 }
 
-private class MockAsyncCommand implements IAsyncCommand
+private class MockAsyncCommand extends AsyncCommand
 {
+	override public function execute( ?e : IEvent ) : Void 
+	{
+		Timer.delay( this._handleComplete, 50 );
+	}
+}
+
+private class MockCommand implements ICommand
+{
+	private var _owner : IModule;
+	
 	public function new()
 	{
 		
 	}
 	
-	public function preExecute() : Void 
-	{
-		
-	}
-	
-	public function cancel() : Void 
-	{
-		
-	}
-	
-	public function addAsyncCommandListener( listener : IAsyncCommandListener ) : Void 
-	{
-		
-	}
-	
-	public function removeAsyncCommandListener( listener : IAsyncCommandListener ) : Void 
-	{
-		
-	}
-	
-	public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function removeCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function addFailHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function removeFailHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function addCancelHandler( handler : AsyncCommandEvent->Void) : Void 
-	{
-		
-	}
-	
-	public function removeCancelHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function handleComplete() : Void 
-	{
-		
-	}
-	
-	public function handleFail() : Void 
-	{
-		
-	}
-	
-	public function handleCancel() : Void 
-	{
-		
-	}
+	/* INTERFACE hex.control.command.ICommand */
 	
 	public function execute( ?e : IEvent ) : Void 
 	{
@@ -235,43 +262,39 @@ private class MockAsyncCommand implements IAsyncCommand
 	
 	public function getOwner() : IModule 
 	{
-		return null;
+		return this._owner;
 	}
 	
 	public function setOwner( owner : IModule ) : Void 
 	{
-		
+		this._owner = owner;
+	}
+}
+
+private class MockMacroListener extends ASyncCommandListener
+{
+	private var _macroExecutor : IMacroExecutor;
+	
+	public function new( macroExecutor : IMacroExecutor )
+	{
+		this._macroExecutor = macroExecutor;
+		super();
 	}
 	
-	public var wasUsed( get, null ) : Bool;
-	public function get_wasUsed() : Bool
-    {
-        return false;
-    }
-
-	public var isRunning( get, null ) : Bool;
-	public function get_isRunning() : Bool
-    {
-        return false;
-    }
-
-	public var hasCompleted( get, null ) : Bool;
-	public function get_hasCompleted() : Bool
-    {
-        return false;
-    }
-
-	public var hasFailed( get, null ) : Bool;
-	public function get_hasFailed() : Bool
-    {
-        return false;
-    }
-
-	public var isCancelled( get, null ) : Bool;
-	public function get_isCancelled() : Bool
-    {
-        return false;
-    }
+	override public function onAsyncCommandComplete( e : BasicEvent ) : Void 
+	{
+		this._macroExecutor.asyncCommandCalled( cast e.target );
+	}
+	
+	override public function onAsyncCommandFail( e : BasicEvent ) : Void 
+	{
+		this._macroExecutor.asyncCommandCalled( cast e.target );
+	}
+	
+	override public function onAsyncCommandCancel( e : BasicEvent ) : Void 
+	{
+		this._macroExecutor.asyncCommandCalled( cast e.target );
+	}
 }
 
 private class ASyncCommandListener implements IAsyncCommandListener
@@ -335,73 +358,4 @@ private class MockImplementation implements IMockType
 private interface IMockType
 {
 	
-}
-
-private class MockDependencyInjector implements IDependencyInjector
-{
-	public function new()
-	{
-		
-	}
-	
-	/* INTERFACE hex.di.IDependencyInjector */
-	public function hasMapping( type : Class<Dynamic>, name : String = '' ) : Bool 
-	{
-		return false;
-	}
-	
-	public function hasDirectMapping( type : Class<Dynamic>, name:String = '' ) : Bool 
-	{
-		return false;
-	}
-	
-	public function satisfies( type : Class<Dynamic>, name : String = '' ) : Bool 
-	{
-		return false;
-	}
-	
-	public function injectInto( target : Dynamic ) : Void 
-	{
-		
-	}
-	
-	public function getInstance( type : Class<Dynamic>, name : String = '', targetType : Class<Dynamic> = null ) : Dynamic 
-	{
-		return null;
-	}
-	
-	public function getOrCreateNewInstance( type : Class<Dynamic> ) : Dynamic 
-	{
-		return null;
-	}
-	
-	public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic 
-	{
-		return null;
-	}
-	
-	public function destroyInstance( instance : Dynamic ) : Void 
-	{
-		
-	}
-	
-	public function mapToValue( clazz : Class<Dynamic>, value : Dynamic, ?name : String = '' ) : Void 
-	{
-		
-	}
-	
-	public function mapToType( clazz : Class<Dynamic>, type : Class<Dynamic>, name : String = '' ) : Void 
-	{
-		
-	}
-	
-	public function mapToSingleton( clazz : Class<Dynamic>, type : Class<Dynamic>, name : String = '' ) : Void 
-	{
-		
-	}
-	
-	public function unmap( type : Class<Dynamic>, name : String = '' ) : Void 
-	{
-		
-	}
 }

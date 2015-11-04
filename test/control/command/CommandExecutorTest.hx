@@ -1,7 +1,7 @@
 package control.command;
 
+import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncCommandEvent;
-import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
@@ -11,10 +11,10 @@ import hex.control.payload.PayloadEvent;
 import hex.di.IDependencyInjector;
 import hex.event.BasicEvent;
 import hex.event.IEvent;
+import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.module.Module;
 import hex.unittest.assertion.Assert;
-
 
 /**
  * ...
@@ -80,9 +80,9 @@ class CommandExecutorTest
 		
 		Assert.assertDeepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
-		Assert.assertDeepEquals( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
-		Assert.assertDeepEquals( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
-		Assert.assertDeepEquals( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
+		Assert.assertArrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
+		Assert.assertArrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
+		Assert.assertArrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
 		
 		Assert.assertEquals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
 		Assert.assertEquals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
@@ -115,7 +115,7 @@ private class MockForTriggeringUnmap
 	}
 }
 
-private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
+private class MockAsyncCommandForTestingExecution extends AsyncCommand
 {
 	static public var executeCallCount 		: Int = 0;
 	static public var preExecuteCallCount 	: Int = 0;
@@ -157,129 +157,6 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 	{
 		MockAsyncCommandForTestingExecution.cancelHandlers.push( handler );
 	}
-}
-
-private class MockAsyncCommand implements IAsyncCommand
-{
-	public function new()
-	{
-		
-	}
-	
-	public function preExecute() : Void 
-	{
-		
-	}
-	
-	public function cancel() : Void 
-	{
-		
-	}
-	
-	public function addAsyncCommandListener( listener : IAsyncCommandListener ) : Void 
-	{
-		
-	}
-	
-	public function removeAsyncCommandListener( listener : IAsyncCommandListener ) : Void 
-	{
-		
-	}
-	
-	public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function removeCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function addFailHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function removeFailHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function addCancelHandler( handler : AsyncCommandEvent->Void) : Void 
-	{
-		
-	}
-	
-	public function removeCancelHandler( handler : AsyncCommandEvent->Void ) : Void 
-	{
-		
-	}
-	
-	public function handleComplete() : Void 
-	{
-		
-	}
-	
-	public function handleFail() : Void 
-	{
-		
-	}
-	
-	public function handleCancel() : Void 
-	{
-		
-	}
-	
-	public function execute( ?e : IEvent ) : Void 
-	{
-		
-	}
-	
-	public function getPayload() : Array<Dynamic> 
-	{
-		return null;
-	}
-	
-	public function getOwner() : IModule 
-	{
-		return null;
-	}
-	
-	public function setOwner( owner : IModule ) : Void 
-	{
-		
-	}
-	
-	public var wasUsed( get, null ) : Bool;
-	public function get_wasUsed() : Bool
-    {
-        return false;
-    }
-
-	public var isRunning( get, null ) : Bool;
-	public function get_isRunning() : Bool
-    {
-        return false;
-    }
-
-	public var hasCompleted( get, null ) : Bool;
-	public function get_hasCompleted() : Bool
-    {
-        return false;
-    }
-
-	public var hasFailed( get, null ) : Bool;
-	public function get_hasFailed() : Bool
-    {
-        return false;
-    }
-
-	public var isCancelled( get, null ) : Bool;
-	public function get_isCancelled() : Bool
-    {
-        return false;
-    }
 }
 
 private class ASyncCommandListener implements IAsyncCommandListener
@@ -343,73 +220,4 @@ private class MockImplementation implements IMockType
 private interface IMockType
 {
 	
-}
-
-private class MockDependencyInjector implements IDependencyInjector
-{
-	public function new()
-	{
-		
-	}
-	
-	/* INTERFACE hex.di.IDependencyInjector */
-	public function hasMapping( type : Class<Dynamic>, name : String = '' ) : Bool 
-	{
-		return false;
-	}
-	
-	public function hasDirectMapping( type : Class<Dynamic>, name:String = '' ) : Bool 
-	{
-		return false;
-	}
-	
-	public function satisfies( type : Class<Dynamic>, name : String = '' ) : Bool 
-	{
-		return false;
-	}
-	
-	public function injectInto( target : Dynamic ) : Void 
-	{
-		
-	}
-	
-	public function getInstance( type : Class<Dynamic>, name : String = '', targetType : Class<Dynamic> = null ) : Dynamic 
-	{
-		return null;
-	}
-	
-	public function getOrCreateNewInstance( type : Class<Dynamic> ) : Dynamic 
-	{
-		return null;
-	}
-	
-	public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic 
-	{
-		return null;
-	}
-	
-	public function destroyInstance( instance : Dynamic ) : Void 
-	{
-		
-	}
-	
-	public function mapToValue( clazz : Class<Dynamic>, value : Dynamic, ?name : String = '' ) : Void 
-	{
-		
-	}
-	
-	public function mapToType( clazz : Class<Dynamic>, type : Class<Dynamic>, name : String = '' ) : Void 
-	{
-		
-	}
-	
-	public function mapToSingleton( clazz : Class<Dynamic>, type : Class<Dynamic>, name : String = '' ) : Void 
-	{
-		
-	}
-	
-	public function unmap( type : Class<Dynamic>, name : String = '' ) : Void 
-	{
-		
-	}
 }

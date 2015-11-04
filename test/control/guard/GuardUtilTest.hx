@@ -11,12 +11,6 @@ import hex.unittest.assertion.Assert;
  */
 class GuardUtilTest
 {
-
-	public function new() 
-	{
-		
-	}
-	
 	@test( "Test guard-class approval without injector" )
     public function testGuardClassApproveWithoutInjector() : Void
     {
@@ -62,6 +56,11 @@ private class MockRefuseGuard implements IGuard
 
 private class MockDependencyInjectorForTestingGuard extends MockDependencyInjector
 {
+	public function new()
+	{
+		
+	}
+	
 	override public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic
 	{
 		return Type.createInstance( type, [] );
@@ -70,12 +69,6 @@ private class MockDependencyInjectorForTestingGuard extends MockDependencyInject
 
 private class MockDependencyInjector implements IDependencyInjector
 {
-	public function new()
-	{
-		
-	}
-	
-	/* INTERFACE hex.di.IDependencyInjector */
 	public function hasMapping( type : Class<Dynamic>, name : String = '' ) : Bool 
 	{
 		return false;
