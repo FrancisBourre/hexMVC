@@ -1,5 +1,6 @@
 package hex.control.macro;
 
+import hex.control.async.AsyncCommandEvent;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
@@ -24,30 +25,21 @@ class MacroExecutor implements IMacroExecutor
 	@inject
 	public var injector   					: IDependencyInjector;
 	
-    private var _module     				: IModule;
+	@inject
+    public var module     					: IModule;
 
 	private var _commandIndex 				: Int;
 	private var _commandCalledCount 		: Int;
 	private var _asyncCommandListener 		: IAsyncCommandListener;
 	private var _runningAsyncCommandList 	: Array<IAsyncCommand>;
 	
-	private var _commandMappingCollection  : Array<ICommandMapping> = [];
+	private var _commandMappingCollection  	: Array<ICommandMapping> = [];
 	
 	public function new()
 	{
-		
-	}
-
-	public function initialize( ?module : IModule ) : Void
-	{
-		//this._injector  				= injector;
-        this._module    				= module;
 		this._runningAsyncCommandList 	= [];
 		this._commandIndex				= 0;
 		this._commandCalledCount 		= 0;
-		
-		//this._injector 					= this._injector.createChild();
-		//MetaDataProvider.getInstance().registerInjector( this._injector );
 	}
 	
 	public function executeCommand( mapping : ICommandMapping, ?e : IEvent ) : ICommand
@@ -87,7 +79,7 @@ class MacroExecutor implements IMacroExecutor
 		// Execute command
         if ( command != null )
         {
-            command.setOwner( this._module );
+            command.setOwner( this.module );
 
             var isAsync : Bool = Std.is( command, IAsyncCommand );
             if ( isAsync )

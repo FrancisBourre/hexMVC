@@ -52,6 +52,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		super.preExecute();
 	}
 	
+	@:final 
 	override public function execute( ?e : IEvent ) : Void
 	{
 		!this.isRunning && this._throwExecutionIllegalStateError();
@@ -141,7 +142,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	public function onAsyncCommandFail( e : BasicEvent ) : Void
 	{
 		// I have to check if it's not null because the macroexecutor calls out when a guard protected the run of a command. Then it handles itself the callNotification - Duke
-		if ( e.target != null )
+		if ( e != null && e.target != null )
 		{
 			this.macroExecutor.asyncCommandCalled( cast e.target );
 		}

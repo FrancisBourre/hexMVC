@@ -41,7 +41,7 @@ class MacroExecutorTest
 		this._macroExecutor.setAsyncCommandListener( this._mockMacro );
 		
 		this._macroExecutor.injector = this._injector;
-		this._macroExecutor.initialize( this._module );
+		//this._macroExecutor.initialize( this._module );
     }
 
     @tearDown
@@ -134,7 +134,7 @@ class MacroExecutorTest
 	}
 	
 	@test( "Test command execution" )
-    public function testExcuteCommand() : Void
+    public function testExecuteCommand() : Void
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
 		
@@ -160,12 +160,15 @@ class MacroExecutorTest
 		var payloads 					: Array<ExecutionPayload> 	= [ stringPayload, anotherMockPayload ];
 		
 		var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
-		this._macroExecutor.executeCommand( commandMapping, event );
+		var command : ICommand = this._macroExecutor.executeCommand( commandMapping, event );
+		
+		Assert.failIsNull( command, "'command' should not be null" );
+		Assert.assertIsType( command, MockAsyncCommandForTestingExecution, "'command' shouldbe typed 'MockAsyncCommandForTestingExecution'" );
 		
 		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
 		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
-		Assert.assertEquals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
+//		Assert.assertEquals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
 		Assert.assertEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
 		Assert.assertDeepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
@@ -184,6 +187,38 @@ class MacroExecutorTest
 		Assert.assertDeepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
 									this._injector.unmappedPayloads,
 									"'CommandExecutor.unmapPayload' should unmap right values" );
+	}
+	
+	@test( "Test command execution with approved guards" )
+    public function testExecuteCommandWithApprovedGuards() : Void
+    {
+		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeApproved] );
+		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
+		Assert.failIsNull( command, "'command' should not be null" );
+		Assert.assertIsType( command, MockCommand, "'command' shouldbe typed 'MockCommand'" );
+	}
+	
+	@test( "Test command execution with refused guards" )
+    public function testExecuteCommandWithRefusedGuards() : Void
+    {
+		var failListener : MockMacroFailListener = new MockMacroFailListener();
+		this._macroExecutor.setAsyncCommandListener( failListener );
+		
+		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeRefused] );
+		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
+		Assert.assertIsNull( command, "'command' should be null" );
+		Assert.assertEquals( 1, failListener.onAsyncCommandFailCallCount, "'onAsyncCommandFail' method should be called once" );
+		//Assert.assertIsType( failListener.failEvent, AsyncCommandEvent, "'onAsyncCommandFail' method should be called once" );
+	}
+	
+	public function thatWillBeApproved() : Bool
+	{
+		return true;
+	}
+
+	public function thatWillBeRefused() : Bool
+	{
+		return false;
 	}
 }
 
@@ -268,6 +303,18 @@ private class MockCommand implements ICommand
 	public function setOwner( owner : IModule ) : Void 
 	{
 		this._owner = owner;
+	}
+}
+
+private class MockMacroFailListener extends ASyncCommandListener
+{
+	public var onAsyncCommandFailCallCount : Int = 0;
+	public var failEvent : BasicEvent;
+	
+	override public function onAsyncCommandFail( e : BasicEvent ) : Void 
+	{
+		this.onAsyncCommandFailCallCount++;
+		this.failEvent = e;
 	}
 }
 

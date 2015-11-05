@@ -47,6 +47,7 @@ class Module implements IModule
 	/**
 	 * Initialize the module
 	 */
+	@:final 
 	public function initialize() : Void
 	{
 		if ( !this.isInitialized )
@@ -70,6 +71,7 @@ class Module implements IModule
 	 * Accessor for module initialisation state
 	 * @return <code>true</code> if the module is initialized
 	 */
+	@:final 
 	@:isVar public var isInitialized( get, null ) : Bool;
 	function get_isInitialized() : Bool
 	{
@@ -80,6 +82,7 @@ class Module implements IModule
 	 * Accessor for module release state
 	 * @return <code>true</code> if the module is released
 	 */
+	@:final 
 	@:isVar public var isReleased( get, null ) : Bool;
 	public function get_isReleased() : Bool
 	{
@@ -145,6 +148,7 @@ class Module implements IModule
 	/**
 	 * Release this module
 	 */
+	@:final 
 	public function release() : Void
 	{
 		if ( !this.isReleased )

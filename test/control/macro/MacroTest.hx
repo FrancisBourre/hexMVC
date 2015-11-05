@@ -16,6 +16,7 @@ import hex.control.macro.Macro;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.log.Stringifier;
+import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -31,9 +32,10 @@ class MacroTest
     @setUp
     public function setUp() : Void
     {
-        this._macro 				= new MockMacro();
-		this._macroExecutor 		= new MockMacroExecutor();
-		this._macro.macroExecutor 	= this._macroExecutor;
+        this._macro 					= new MockMacro();
+		this._macroExecutor 			= new MockMacroExecutor();
+		this._macro.macroExecutor 		= this._macroExecutor;
+		MockCommand.executeCallCount 	= 0;
     }
 
     @tearDown
@@ -157,29 +159,85 @@ class MacroTest
 		Assert.assertTrue( this._macro.hasCompleted, "'hasCompleted' property should return true" );
 	}
 	
-	/*@test( "Test with guards" )
-	public function testWithGuards() : Void
+	@test( "Test with guards approved" )
+	public function testWithGuardsApproved() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
-		myMacro.macroExecutor = new MacroExecutor();
+		var macroExecutor : MacroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+
 		myMacro.preExecute();
 		myMacro.add( MockCommand ).withGuards( [thatWillBeApproved] );
 		myMacro.execute();
 		
-		Assert.assertIsType( Macro, myMacro, "'myMacro' should be Macro typed" );
-		
 		Assert.assertTrue( myMacro.hasCompleted, "'hasCompleted' property should return true" );
+		Assert.failTrue( myMacro.hasFailed, "'hasFailed' property should return false" );
+		Assert.failTrue( myMacro.isCancelled, "'isCancelled' property should return false" );
 	}
 	
 	public function thatWillBeApproved() : Bool
 	{
 		return true;
 	}
+	
+	@test( "Test with guards refused" )
+	public function testWithGuardsRefused() : Void
+	{
+		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var macroExecutor : MacroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
 
+		myMacro.preExecute();
+		myMacro.add( MockCommand ).withGuards( [thatWillBeRefused] );
+		myMacro.execute();
+		
+		Assert.assertTrue( myMacro.hasFailed, "'hasFailed' property should return true" );
+		Assert.failTrue( myMacro.hasCompleted, "'hasCompleted' property should return false" );
+		Assert.failTrue( myMacro.isCancelled, "'isCancelled' property should return false" );
+	}
+	
+	@test( "Test parallel mode" )
+	public function testParallelMode() : Void
+	{
+		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var macroExecutor : MacroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+		
+		myMacro.isInParallelMode = true;
+		myMacro.preExecute();
+		myMacro.add( MockAsyncCommand );
+		myMacro.add( MockCommand );
+		
+		Assert.assertEquals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		myMacro.execute();
+		Assert.assertEquals( 1, MockCommand.executeCallCount, "'execute' method shoud have been called once" );
+	}
+	
+	@test( "Test sequence mode" )
+	public function testSequenceMode() : Void
+	{
+		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var macroExecutor : MacroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+		
+		myMacro.isInSequenceMode = true;
+		myMacro.preExecute();
+		myMacro.add( MockAsyncCommand );
+		myMacro.add( MockCommand );
+		
+		Assert.assertEquals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		myMacro.execute();
+		Assert.assertEquals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+	}
+	
 	public function thatWillBeRefused() : Bool
 	{
 		return false;
-	}*/
+	}
 }
 
 private class MockAsyncCommand extends AsyncCommand
@@ -194,6 +252,8 @@ private class MockCommand implements ICommand
 {
 	private var _owner : IModule;
 	
+	static public var executeCallCount : Int = 0;
+	
 	public function new()
 	{
 		
@@ -203,7 +263,7 @@ private class MockCommand implements ICommand
 	
 	public function execute( ?e : IEvent ) : Void 
 	{
-		
+		MockCommand.executeCallCount++;
 	}
 	
 	public function getPayload() : Array<Dynamic> 

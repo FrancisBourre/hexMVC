@@ -107,6 +107,7 @@ class AsyncCommand implements IAsyncCommand
         this._ed.removeEventListener( AsyncCommandEvent.CANCEL, handler );
     }
 
+	@:final 
     private function _handleComplete() : Void
     {
 		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
@@ -115,6 +116,7 @@ class AsyncCommand implements IAsyncCommand
         this._release();
     }
 
+	@:final 
     private function _handleFail() : Void
     {
 		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
@@ -123,6 +125,7 @@ class AsyncCommand implements IAsyncCommand
         this._release();
     }
 
+	@:final 
     private function _handleCancel() : Void
     {
 		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
@@ -131,30 +134,35 @@ class AsyncCommand implements IAsyncCommand
         this._release();
     }
 
+	@:final 
 	public var wasUsed( get, null ) : Bool;
     public function get_wasUsed() : Bool
     {
         return this._status != AsyncCommand.WAS_NEVER_USED;
     }
 
+	@:final 
 	public var isRunning( get, null ) : Bool;
     public function get_isRunning() : Bool
     {
         return this._status == AsyncCommand.IS_RUNNING;
     }
 
+	@:final 
 	public var hasCompleted( get, null ) : Bool;
     public function get_hasCompleted() : Bool
     {
         return this._status == AsyncCommand.IS_COMPLETED;
     }
 
+	@:final 
 	public var hasFailed( get, null ) : Bool;
     public function get_hasFailed() : Bool
     {
         return this._status == AsyncCommand.IS_FAILED;
     }
 
+	@:final 
 	public var isCancelled( get, null ) : Bool;
     public function get_isCancelled() : Bool
     {

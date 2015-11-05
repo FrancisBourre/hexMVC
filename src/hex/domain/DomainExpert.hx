@@ -7,6 +7,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
+@:final 
 class DomainExpert
 {
 	private var _registeredDomains : Map<Int, Domain>;
