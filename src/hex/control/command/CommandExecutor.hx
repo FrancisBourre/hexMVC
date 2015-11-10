@@ -1,6 +1,5 @@
 package hex.control.command;
 
-import hex.control.async.AsyncCommandEvent;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.command.ICommand;
@@ -11,9 +10,7 @@ import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
 import hex.event.IEvent;
 import hex.module.IModule;
-import Reflect;
 import Std;
-import Type;
 
 /**
  * ...

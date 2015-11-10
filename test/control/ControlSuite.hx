@@ -4,8 +4,6 @@ import control.async.AsyncSuite;
 import control.command.CommandSuite;
 import control.guard.GuardUtilTest;
 import control.macro.MacroSuite;
-import control.payload.ExecutionPayloadTest;
-import control.payload.PayloadEventTest;
 import control.payload.PayloadSuite;
 
 /**

@@ -1,6 +1,7 @@
 package;
 
 import control.ControlSuite;
+import service.ServiceSuite;
 
 /**
  * ...
@@ -9,5 +10,5 @@ import control.ControlSuite;
 class HexMVCSuite
 {
 	@suite( "HexMVC suite" )
-    public var list : Array<Class<Dynamic>> = [ControlSuite];
+    public var list : Array<Class<Dynamic>> = [ControlSuite, ServiceSuite];
 }
