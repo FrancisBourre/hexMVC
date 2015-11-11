@@ -52,7 +52,7 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	{
 		this._timer.stop();
 		this._ed.dispatchEvent( new StatelessServiceEvent( StatelessServiceEvent.ERROR, this ) );
-		this._onFaultHandler( null );
+		this._onErrorHandler( null );
 	}
 
 	private function startTimer() : Void

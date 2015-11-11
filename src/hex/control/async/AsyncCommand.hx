@@ -110,7 +110,7 @@ class AsyncCommand implements IAsyncCommand
 	@:final 
     private function _handleComplete() : Void
     {
-		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
+		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_COMPLETED;
         this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.COMPLETE, this ) );
         this._release();
@@ -119,7 +119,7 @@ class AsyncCommand implements IAsyncCommand
 	@:final 
     private function _handleFail() : Void
     {
-		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
+		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_FAILED;
         this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.FAIL, this ) );
         this._release();
@@ -128,7 +128,7 @@ class AsyncCommand implements IAsyncCommand
 	@:final 
     private function _handleCancel() : Void
     {
-		this.wasUsed && _status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
+		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_CANCELLED;
         this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.CANCEL, this ) );
         this._release();

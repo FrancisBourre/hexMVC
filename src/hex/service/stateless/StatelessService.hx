@@ -28,6 +28,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	private function new() 
 	{
 		super();
+		this._ed = new LightweightClosureDispatcher<StatelessServiceEvent>();
 	}
 	
 	public function call() : Void
@@ -38,8 +39,6 @@ class StatelessService extends AbstractService implements IStatelessService
 
 	public function cancel() : Void
 	{
-		this.wasUsed && _status != StatelessService.IS_RUNNING && this._throwCancellationIllegalStateError();
-		this._status = StatelessService.IS_CANCELLED;
 		this.handleCancel();
 	}
 	
@@ -130,6 +129,11 @@ class StatelessService extends AbstractService implements IStatelessService
 		throw new IllegalStateException( msg );
 	}
 	
+	private function _throwIllegalStateError( msg : String ) : Bool 
+	{
+		throw new IllegalStateException( msg );
+	}
+	
 	private function _resetAllHandlers() : Void
 	{
 		this._ed.removeAllListeners();
@@ -146,7 +150,7 @@ class StatelessService extends AbstractService implements IStatelessService
 		this.handleComplete();
 	}
 
-	private function _onFaultHandler( result : Dynamic ) : Void
+	private function _onErrorHandler( result : Dynamic ) : Void
 	{
 		this.result = null;
 		this.handleFail();
@@ -184,22 +188,31 @@ class StatelessService extends AbstractService implements IStatelessService
 		this._parser = parser;
 	}
 
-	/**
-	 * Event handling
-	 */
+	@:final 
 	public function handleComplete() : Void
 	{
-		this._doComplete();
+		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleComplete failed" );
+		this._status = StatelessService.IS_COMPLETED;
+		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.SUCCESS, this ) );
+		this._release();
 	}
 
+	@:final 
 	public function handleFail() : Void
 	{
-		this._doFail();
+		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleFail failed" );
+		this._status = StatelessService.IS_FAILED;
+		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.ERROR, this ) );
+		this._release();
 	}
 
+	@:final 
 	public function handleCancel() : Void
 	{
-		this._doCancel();
+		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleCancel failed" );
+		this._status = StatelessService.IS_CANCELLED;
+		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.CANCEL, this ) );
+		this._release();
 	}
 
 	@:final 
@@ -235,28 +248,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	//
 	private function getRemoteArguments() : Array<Dynamic>
 	{
-		throw new UnsupportedOperationException( this + ".getRemoteArguments() is unsupported." );
-	}
-
-	private function _doComplete() : Void
-	{
-		this._status = StatelessService.IS_COMPLETED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.SUCCESS, this ) );
-		this._release();
-	}
-
-	private function _doFail() : Void
-	{
-		this._status = StatelessService.IS_FAILED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.ERROR, this ) );
-		this._release();
-	}
-
-	private function _doCancel() : Void
-	{
-		this._status = StatelessService.IS_CANCELLED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.CANCEL, this ) );
-		this._release();
+		throw new UnsupportedOperationException( this + ".getRemoteArguments is unsupported." );
 	}
 
 	private function _reset() : Void
