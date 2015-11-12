@@ -12,4 +12,14 @@ class MockStatelessService extends StatelessService
 	{
 		super();
 	}
+	
+	public function call_getRemoteArguments() : Array<Dynamic> 
+	{
+		return this._getRemoteArguments();
+	}
+	
+	public function call_reset() : Void 
+	{
+		this._reset();
+	}
 }

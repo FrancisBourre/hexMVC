@@ -56,9 +56,7 @@ class StatelessService extends AbstractService implements IStatelessService
 		}
 		else 
 		{
-			this.removeAllListeners();
-			this._result    = null;
-			this._parser    = null;
+			this._release();
 		}
 	}
 	
@@ -153,21 +151,17 @@ class StatelessService extends AbstractService implements IStatelessService
 		this._release();
 		return this._throwIllegalStateError( msg );
 	}
-	
-	@:final 
+
 	private function _throwIllegalStateError( msg : String ) : Bool 
 	{
 		throw new IllegalStateException( msg );
 	}
-	
-	private function _resetAllHandlers() : Void
-	{
-		this._ed.removeAllListeners();
-	}
 
 	private function _release() : Void
 	{
-		this._resetAllHandlers();
+		this.removeAllListeners();
+		this._result = null;
+		this._parser = null;
 	}
 	
 	private function _onResultHandler( result : Dynamic ) : Void
@@ -211,7 +205,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleComplete failed" );
 		this._status = StatelessService.IS_COMPLETED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.SUCCESS, this ) );
+		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.COMPLETE, this ) );
 		this._release();
 	}
 
@@ -220,7 +214,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleFail failed" );
 		this._status = StatelessService.IS_FAILED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.ERROR, this ) );
+		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.FAIL, this ) );
 		this._release();
 	}
 
@@ -241,20 +235,20 @@ class StatelessService extends AbstractService implements IStatelessService
 
 	public function addStatelessServiceListener( listener : IStatelessServiceListener ) : Void
 	{
-		this._ed.addEventListener( StatelessServiceEvent.SUCCESS, listener.onStatelessServiceSuccess );
-		this._ed.addEventListener( StatelessServiceEvent.ERROR, listener.onStatelessServiceError );
+		this._ed.addEventListener( StatelessServiceEvent.COMPLETE, listener.onStatelessServiceComplete );
+		this._ed.addEventListener( StatelessServiceEvent.FAIL, listener.onStatelessServiceFail );
 		this._ed.addEventListener( StatelessServiceEvent.CANCEL, listener.onStatelessServiceCancel );
 	}
 
 	public function removeStatelessServiceListener( listener : IStatelessServiceListener ) : Void
 	{
-		this._ed.removeEventListener( StatelessServiceEvent.SUCCESS, listener.onStatelessServiceSuccess );
-		this._ed.removeEventListener( StatelessServiceEvent.ERROR, listener.onStatelessServiceError );
+		this._ed.removeEventListener( StatelessServiceEvent.COMPLETE, listener.onStatelessServiceComplete );
+		this._ed.removeEventListener( StatelessServiceEvent.FAIL, listener.onStatelessServiceFail );
 		this._ed.removeEventListener( StatelessServiceEvent.CANCEL, listener.onStatelessServiceCancel );
 	}
 	
 	//
-	private function getRemoteArguments() : Array<Dynamic>
+	private function _getRemoteArguments() : Array<Dynamic>
 	{
 		throw new UnsupportedOperationException( this + ".getRemoteArguments is unsupported." );
 	}

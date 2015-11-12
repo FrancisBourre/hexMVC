@@ -7,7 +7,7 @@ import hex.service.stateless.StatelessServiceEvent;
  */
 interface IStatelessServiceListener 
 {
-	function onStatelessServiceSuccess( e : StatelessServiceEvent ) : Void;
-	function onStatelessServiceError( e : StatelessServiceEvent ) : Void;
+	function onStatelessServiceComplete( e : StatelessServiceEvent ) : Void;
+	function onStatelessServiceFail( e : StatelessServiceEvent ) : Void;
 	function onStatelessServiceCancel( e : StatelessServiceEvent ) : Void;
 }

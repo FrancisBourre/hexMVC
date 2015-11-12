@@ -9,7 +9,7 @@ import hex.service.IService;
  */
 class StatelessServiceEvent extends ServiceEvent
 {
-	public inline static var SUCCESS       	: String = "onStatelessServiceSuccess";
-    public inline static var ERROR          : String = "onStatelessServiceError";
+	public inline static var COMPLETE       : String = "onStatelessServiceComplete";
+    public inline static var FAIL 			: String = "onStatelessServiceFail";
     public inline static var CANCEL         : String = "onStatelessServiceCancel";
 }

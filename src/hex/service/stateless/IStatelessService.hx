@@ -43,6 +43,4 @@ interface IStatelessService extends IService extends ICancellable
 	var hasFailed( get, null ) : Bool;
 	
 	var isCancelled( get, null ) : Bool;
-	
-	
 }
