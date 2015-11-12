@@ -1,7 +1,6 @@
 package service;
 
 import hex.error.VirtualMethodException;
-import hex.service.AbstractService;
 import hex.service.ServiceConfiguration;
 import hex.unittest.assertion.Assert;
 
@@ -28,13 +27,14 @@ class AbstractServiceTest
     {
 		var service : MockService = new MockService();
 		Assert.assertMethodCallThrows( VirtualMethodException, service.createConfiguration, [], "'createConfiguration' call should throw an exception" );
+		Assert.assertMethodCallThrows( VirtualMethodException, service.setConfiguration, [], "'setConfiguration' call should throw an exception" );
 		Assert.assertMethodCallThrows( VirtualMethodException, service.addHandler, [], "'addHandler' call should throw an exception" );
 		Assert.assertMethodCallThrows( VirtualMethodException, service.removeHandler, [], "'method' removeHandler should throw an exception" );
-		Assert.assertMethodCallThrows( VirtualMethodException, service.setConfiguration, [], "'setConfiguration' call should throw an exception" );
+		Assert.assertMethodCallThrows( VirtualMethodException, service.release, [], "'method' release should throw an exception" );
 	}
 }
 
-private class MockServiceWithConfigurationSetter extends AbstractService
+private class MockServiceWithConfigurationSetter extends MockService
 {
 	public function new()
 	{

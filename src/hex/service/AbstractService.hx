@@ -2,7 +2,10 @@ package hex.service;
 
 import hex.error.VirtualMethodException;
 import hex.event.IEvent;
+import hex.event.LightweightClosureDispatcher;
+import hex.service.ServiceEvent;
 import hex.service.ServiceConfiguration;
+import hex.service.stateless.StatelessServiceEvent;
 
 /**
  * ...
@@ -16,7 +19,7 @@ class AbstractService implements IService
 	{
 		
 	}
-	
+
 	public function getConfiguration() : ServiceConfiguration
 	{
 		return this._configuration;
@@ -26,6 +29,11 @@ class AbstractService implements IService
 	public function createConfiguration() : Void
 	{
 		throw new VirtualMethodException( this + ".createConfiguration must be overridden" );
+	}
+	
+	public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	{
+		throw new VirtualMethodException( this + ".setConfiguration must be overridden" );
 	}
 	
 	public function addHandler( eventType : String, handler : IEvent->Void ) : Void
@@ -38,8 +46,8 @@ class AbstractService implements IService
 		throw new VirtualMethodException( this + ".removeHandler must be overridden" );
 	}
 	
-	public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	public function release() : Void
 	{
-		throw new VirtualMethodException( this + ".setConfiguration must be overridden" );
+		throw new VirtualMethodException( this + ".release must be overridden" );
 	}
 }

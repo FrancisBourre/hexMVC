@@ -3,7 +3,6 @@ package hex.service.stateless;
 import hex.control.ICancellable;
 import hex.data.IParser;
 import hex.service.IService;
-import hex.service.ServiceConfiguration;
 
 /**
  * @author Francis Bourre
@@ -31,9 +30,9 @@ interface IStatelessService extends IService extends ICancellable
 	
 	function removeAllListeners() : Void;
 	
-	function addHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void;
+	function addHandler( eventType : String, handler : ServiceEvent->Void ) : Void;
 	
-	function removeHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void;
+	function removeHandler( eventType : String, handler : ServiceEvent->Void ) : Void;
 	
 	var wasUsed( get, null ) : Bool;
 	

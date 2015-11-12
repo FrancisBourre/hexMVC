@@ -1,7 +1,6 @@
 package hex.service.stateless;
 
 import haxe.Timer;
-import hex.event.LightweightClosureDispatcher;
 
 /**
  * ...
@@ -15,13 +14,14 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	private function new()
 	{
 		super();
+		this._timeoutDuration = 0;
 	}
-	
+
 	override public function call() : Void
 	{
 		super.call();
-		this.startTimer();
-		AsyncStatelessService.detainService( this );
+		this._startTimer();
+		AsyncStatelessService._detainService( this );
 	}
 	
 	override public function getConfiguration() : ServiceConfiguration
@@ -44,32 +44,9 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 
 	public function set_timeoutDuration( duration : UInt ) : UInt
 	{
+		this.wasUsed && this._throwIllegalStateError( "timeoutDuration value can't be changed after service call" );
 		this._timeoutDuration = duration;
 		return this._timeoutDuration;
-	}
-	
-	private function onTimeoutHandler() : Void
-	{
-		this._timer.stop();
-		this._ed.dispatchEvent( new StatelessServiceEvent( StatelessServiceEvent.ERROR, this ) );
-		this._onErrorHandler( null );
-	}
-
-	private function startTimer() : Void
-	{
-		if ( this.timeoutDuration > 0 ) 
-		{
-			this._timer = new Timer( this._timeoutDuration );
-			this._timer.run = this.onTimeoutHandler;
-			this._timer.run();
-		}
-	}
-	
-	override private function _release() : Void
-	{
-		this._timer.stop();
-		super._release();
-		AsyncStatelessService.releaseService( this );
 	}
 
 	@:final 
@@ -79,17 +56,20 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 		super._reset();
 	}
 	
+	/**
+     * Event handling
+     */
 	public function addAsyncServiceListener( listener : IAsyncStatelessServiceListener ) : Void
 	{
 		super.addStatelessServiceListener( listener );
-		this._ed.addEventListener( StatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
+		this._ed.addEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
 
 	}
 
 	public function removeAsyncServiceListener( listener : IAsyncStatelessServiceListener ) : Void
 	{
 		super.removeStatelessServiceListener( listener );
-		this._ed.removeEventListener( StatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
+		this._ed.removeEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
 	}
 	
 	override public function addHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
@@ -107,21 +87,45 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
      */
     static private var _POOL : Map<AsyncStatelessService, Bool> = new Map<AsyncStatelessService, Bool>();
 
-    static private function isServiceDetained( service : AsyncStatelessService ) : Bool
+    static private function _isServiceDetained( service : AsyncStatelessService ) : Bool
     {
         return AsyncStatelessService._POOL.exists( service );
     }
 
-    static private function detainService( service : AsyncStatelessService ) : Void
+    static private function _detainService( service : AsyncStatelessService ) : Void
     {
         AsyncStatelessService._POOL.set( service, true );
     }
 
-    static private function releaseService( service : AsyncStatelessService ) : Void
+    static private function _releaseService( service : AsyncStatelessService ) : Void
     {
         if ( AsyncStatelessService._POOL.exists( service ) )
         {
             AsyncStatelessService._POOL.remove( service );
         }
     }
+	
+	// private
+	private function _onTimeoutHandler() : Void
+	{
+		this._timer.stop();
+		this._ed.dispatchEvent( new AsyncStatelessServiceEvent( AsyncStatelessServiceEvent.TIMEOUT, this ) );
+		this._onErrorHandler( null );
+	}
+
+	private function _startTimer() : Void
+	{
+		if ( this.timeoutDuration > 0 ) 
+		{
+			this._timer = new Timer( this._timeoutDuration );
+			this._timer.run = this._onTimeoutHandler;
+		}
+	}
+	
+	override private function _release() : Void
+	{
+		this._timer.stop();
+		super._release();
+		AsyncStatelessService._releaseService( this );
+	}
 }

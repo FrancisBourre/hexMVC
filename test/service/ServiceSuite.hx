@@ -9,5 +9,5 @@ import service.stateless.StatelessSuite;
 class ServiceSuite
 {
 	@suite("Service suite")
-    public var list : Array<Class<Dynamic>> = [StatelessSuite, AbstractServiceTest, ServiceConfigurationTest, ServiceURLConfigurationTest];
+    public var list : Array<Class<Dynamic>> = [StatelessSuite, AbstractServiceTest, ServiceConfigurationTest, ServiceEventTest, ServiceURLConfigurationTest];
 }

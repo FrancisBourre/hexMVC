@@ -2,8 +2,8 @@ package service.stateless;
 
 import hex.data.IParser;
 import hex.error.IllegalStateException;
+import hex.service.ServiceEvent;
 import hex.service.stateless.IStatelessServiceListener;
-import hex.service.stateless.StatelessServiceEvent;
 import hex.unittest.assertion.Assert;
 import service.AbstractServiceTest;
 
@@ -58,8 +58,8 @@ class StatelessServiceTest extends AbstractServiceTest
 		Assert.failTrue( service.isCancelled, "'isCancelled' should return false" );
 		
 		service.addStatelessServiceListener( new MockStatelessServiceListener() );
-		
 		service.release();
+		
 		Assert.failTrue( service.wasUsed, "'wasUsed' should return false" );
 		Assert.failTrue( service.isRunning, "'isRunning' should return false" );
 		Assert.failTrue( service.hasCompleted, "'hasCompleted' should return false" );
@@ -91,17 +91,17 @@ private class MockStatelessServiceListener implements IStatelessServiceListener
 		
 	}
 	
-	public function onStatelessServiceSuccess( e : StatelessServiceEvent ) : Void 
+	public function onStatelessServiceSuccess( e : ServiceEvent ) : Void 
 	{
 		this.onStatelessServiceSuccessCallCount++;
 	}
 	
-	public function onStatelessServiceError( e : StatelessServiceEvent ) : Void 
+	public function onStatelessServiceError( e : ServiceEvent ) : Void 
 	{
 		this.onStatelessServiceErrorCallCount++;
 	}
 	
-	public function onStatelessServiceCancel( e : StatelessServiceEvent ) : Void 
+	public function onStatelessServiceCancel( e : ServiceEvent ) : Void 
 	{
 		this.onStatelessServiceCancelCallCount++;
 	}

@@ -7,5 +7,5 @@ package service.stateless;
 class StatelessSuite
 {
 	@suite("Stateless suite")
-    public var list : Array<Class<Dynamic>> = [StatelessServiceEventTest, StatelessServiceTest];
+    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceEventTest, StatelessServiceEventTest, StatelessServiceTest];
 }

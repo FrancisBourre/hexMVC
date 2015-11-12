@@ -19,7 +19,8 @@ class StatelessService extends AbstractService implements IStatelessService
     public static inline var IS_FAILED          : String = "IS_FAILED";
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 	
-	private var _ed                             : LightweightClosureDispatcher<StatelessServiceEvent>;
+	private var _ed            					: LightweightClosureDispatcher<StatelessServiceEvent>;
+	
 	private var _result                     	: Dynamic;
     private var _rawResult                		: Dynamic;
 	private var _parser                    		: IParser;
@@ -29,6 +30,36 @@ class StatelessService extends AbstractService implements IStatelessService
 	{
 		super();
 		this._ed = new LightweightClosureDispatcher<StatelessServiceEvent>();
+	}
+
+	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	{
+		this.wasUsed && this._throwExecutionIllegalStateError( "setConfiguration" );
+        this._configuration = configuration;
+	}
+	
+	override public function addHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
+	{
+		this._ed.addEventListener( eventType, handler );
+	}
+
+	override public function removeHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
+	{
+		this._ed.addEventListener( eventType, handler );
+	}
+	
+	override public function release() : Void
+	{
+		if ( !this.wasUsed )
+		{
+			this.cancel();
+		}
+		else 
+		{
+			this.removeAllListeners();
+			this._result    = null;
+			this._parser    = null;
+		}
 	}
 	
 	public function call() : Void
@@ -77,12 +108,6 @@ class StatelessService extends AbstractService implements IStatelessService
         return this._status == StatelessService.IS_CANCELLED;
     }
 	
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
-	{
-		this.wasUsed && this._throwExecutionIllegalStateError( "setConfiguration" );
-        this._configuration = configuration;
-	}
-	
 	private function _throwExecutionIllegalStateError( methodName : String ) : Bool
 	{
 		var msg : String = "";
@@ -105,7 +130,7 @@ class StatelessService extends AbstractService implements IStatelessService
 		}
 
 		this._release();
-		throw new IllegalStateException( msg );
+		return this._throwIllegalStateError( msg );
 	}
 	
 	private function _throwCancellationIllegalStateError() : Bool
@@ -126,9 +151,10 @@ class StatelessService extends AbstractService implements IStatelessService
 		}
 
 		this._release();
-		throw new IllegalStateException( msg );
+		return this._throwIllegalStateError( msg );
 	}
 	
+	@:final 
 	private function _throwIllegalStateError( msg : String ) : Bool 
 	{
 		throw new IllegalStateException( msg );
@@ -174,14 +200,6 @@ class StatelessService extends AbstractService implements IStatelessService
     {
         return this._rawResult;
     }
-
-	public function release() : Void
-	{
-		this.removeAllListeners();
-
-		this._result    = null;
-		this._parser    = null;
-	}
 
 	public function setParser( parser : IParser ) : Void
 	{
@@ -233,16 +251,6 @@ class StatelessService extends AbstractService implements IStatelessService
 		this._ed.removeEventListener( StatelessServiceEvent.SUCCESS, listener.onStatelessServiceSuccess );
 		this._ed.removeEventListener( StatelessServiceEvent.ERROR, listener.onStatelessServiceError );
 		this._ed.removeEventListener( StatelessServiceEvent.CANCEL, listener.onStatelessServiceCancel );
-	}
-
-	override public function addHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
-	{
-		this._ed.addEventListener( eventType, handler );
-	}
-
-	override public function removeHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
-	{
-		this._ed.addEventListener( eventType, handler );
 	}
 	
 	//
