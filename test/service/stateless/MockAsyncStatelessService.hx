@@ -1,14 +1,14 @@
-package service;
+package service.stateless;
 
-import hex.service.stateless.StatelessService;
+import hex.service.stateless.AsyncStatelessService;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class MockStatelessService extends StatelessService
+class MockAsyncStatelessService extends AsyncStatelessService
 {
-	public function new() 
+	public function new()
 	{
 		super();
 	}

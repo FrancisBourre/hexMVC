@@ -52,7 +52,11 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	@:final 
 	override private function _reset() : Void
 	{
-		this._timer.stop();
+		if ( this._timer != null )
+		{
+			this._timer.stop();
+		}
+		
 		super._reset();
 	}
 	
@@ -108,7 +112,11 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	// private
 	private function _onTimeoutHandler() : Void
 	{
-		this._timer.stop();
+		if ( this._timer != null )
+		{
+			this._timer.stop();
+		}
+		
 		this._ed.dispatchEvent( new AsyncStatelessServiceEvent( AsyncStatelessServiceEvent.TIMEOUT, this ) );
 		this._onErrorHandler( null );
 	}
@@ -124,7 +132,11 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	
 	override private function _release() : Void
 	{
-		this._timer.stop();
+		if ( this._timer != null )
+		{
+			this._timer.stop();
+		}
+		
 		super._release();
 		AsyncStatelessService._releaseService( this );
 	}

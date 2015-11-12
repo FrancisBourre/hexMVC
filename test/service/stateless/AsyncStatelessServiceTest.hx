@@ -4,7 +4,9 @@ import hex.data.IParser;
 import hex.error.IllegalStateException;
 import hex.error.UnsupportedOperationException;
 import hex.service.ServiceEvent;
-import hex.service.stateless.IStatelessServiceListener;
+import hex.service.stateless.AsyncStatelessService;
+import hex.service.stateless.AsyncStatelessServiceEvent;
+import hex.service.stateless.IAsyncStatelessServiceListener;
 import hex.service.stateless.StatelessServiceEvent;
 import hex.unittest.assertion.Assert;
 
@@ -12,14 +14,14 @@ import hex.unittest.assertion.Assert;
  * ...
  * @author Francis Bourre
  */
-class StatelessServiceTest
+class AsyncStatelessServiceTest
 {
-	public var service : MockStatelessService;
+	public var service : MockAsyncStatelessService;
 	
 	@setUp
     public function setUp() : Void
     {
-        this.service = new MockStatelessService();
+        this.service = new MockAsyncStatelessService();
     }
 
     @tearDown
@@ -201,9 +203,9 @@ private class MockParser implements IParser
 	}
 }
 
-private class MockStatelessServiceListener implements IStatelessServiceListener
+private class MockStatelessServiceListener implements IAsyncStatelessServiceListener
 {
-	public var lastEventReceived 					: StatelessServiceEvent;
+	public var lastEventReceived 					: AsyncStatelessServiceEvent;
 	public var onStatelessServiceCompleteCallCount 	: Int;
 	public var onStatelessServiceFailCallCount 		: Int;
 	public var onStatelessServiceCancelCallCount 	: Int;
@@ -226,6 +228,12 @@ private class MockStatelessServiceListener implements IStatelessServiceListener
 	}
 	
 	public function onStatelessServiceCancel( e : ServiceEvent ) : Void 
+	{
+		this.lastEventReceived = cast e;
+		this.onStatelessServiceCancelCallCount++;
+	}
+	
+	public function onAsyncStatelessServiceTimeout( e : ServiceEvent ) : Void 
 	{
 		this.lastEventReceived = cast e;
 		this.onStatelessServiceCancelCallCount++;
