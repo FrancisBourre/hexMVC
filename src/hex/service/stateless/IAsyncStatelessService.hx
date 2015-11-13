@@ -8,7 +8,7 @@ interface IAsyncStatelessService extends IStatelessService
 {
 	var timeoutDuration( get, set ) : UInt;
 
-    function addAsyncServiceListener( listener : IAsyncStatelessServiceListener ) : Void;
+    function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void;
 
-    function removeAsyncServiceListener( listener : IAsyncStatelessServiceListener ) : Void;
+    function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void;
 }

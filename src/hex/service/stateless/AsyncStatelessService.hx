@@ -8,13 +8,15 @@ import haxe.Timer;
  */
 class AsyncStatelessService extends StatelessService implements IAsyncStatelessService
 {
+	public static inline var HAS_TIMEOUT : String = "HAS_TIMEOUT";
+	
 	private var _timer 				: Timer;
 	private var _timeoutDuration 	: UInt;
 	
 	private function new()
 	{
 		super();
-		this._timeoutDuration = 0;
+		this._timeoutDuration = 100;
 	}
 
 	override public function call() : Void
@@ -26,7 +28,11 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	
 	override public function getConfiguration() : ServiceConfiguration
 	{
-		this._configuration.serviceTimeout = this.timeoutDuration;
+		if ( this._configuration != null )
+		{
+			this._configuration.serviceTimeout = this.timeoutDuration;
+		}
+		
 		return super.getConfiguration();
 	}
 
@@ -36,13 +42,20 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 		this.timeoutDuration = this._configuration.serviceTimeout;
 	}
 	
+	@:final 
+	public var hasTimeout( get, null ) : Bool;
+    public function get_hasTimeout() : Bool
+    {
+        return this._status == AsyncStatelessService.HAS_TIMEOUT;
+    }
+	
 	public var timeoutDuration( get, set ) : UInt;
 	public function get_timeoutDuration() : UInt
 	{
 		return this._timeoutDuration;
 	}
 
-	public function set_timeoutDuration( duration : UInt ) : UInt
+	private function set_timeoutDuration( duration : UInt ) : UInt
 	{
 		this.wasUsed && this._throwIllegalStateError( "timeoutDuration value can't be changed after service call" );
 		this._timeoutDuration = duration;
@@ -63,14 +76,14 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	/**
      * Event handling
      */
-	public function addAsyncServiceListener( listener : IAsyncStatelessServiceListener ) : Void
+	public function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void
 	{
 		super.addStatelessServiceListener( listener );
 		this._ed.addEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
 
 	}
 
-	public function removeAsyncServiceListener( listener : IAsyncStatelessServiceListener ) : Void
+	public function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void
 	{
 		super.removeStatelessServiceListener( listener );
 		this._ed.removeEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
@@ -118,7 +131,8 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 		}
 		
 		this._ed.dispatchEvent( new AsyncStatelessServiceEvent( AsyncStatelessServiceEvent.TIMEOUT, this ) );
-		this._onErrorHandler( null );
+		this._status = AsyncStatelessService.HAS_TIMEOUT;
+		//this._onErrorHandler( null );
 	}
 
 	private function _startTimer() : Void
@@ -127,6 +141,10 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 		{
 			this._timer = new Timer( this._timeoutDuration );
 			this._timer.run = this._onTimeoutHandler;
+		}
+		else
+		{
+			this._onTimeoutHandler();
 		}
 	}
 	

@@ -3,6 +3,7 @@ package service.stateless;
 import hex.data.IParser;
 import hex.error.IllegalStateException;
 import hex.error.UnsupportedOperationException;
+import hex.service.ServiceConfiguration;
 import hex.service.ServiceEvent;
 import hex.service.stateless.IStatelessServiceListener;
 import hex.service.stateless.StatelessServiceEvent;
@@ -28,6 +29,17 @@ class StatelessServiceTest
         this.service = null;
     }
 	
+	@test( "Test 'getConfiguration' accessor" )
+    public function testGetConfiguration() : Void
+    {
+        var configuration : ServiceConfiguration = new ServiceConfiguration();
+
+		Assert.assertIsNull( this.service.getConfiguration(), "configuration should be null by default" );
+		
+		this.service.setConfiguration( configuration );
+        Assert.assertEquals( configuration, service.getConfiguration(), "configuration should be retrieved from getter" );
+    }
+	
 	@test( "test result accessors" )
 	public function testResult() : Void
 	{
@@ -50,12 +62,14 @@ class StatelessServiceTest
 		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
 		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
 		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
 		service.call();
 		Assert.assertTrue( this.service.wasUsed, "'wasUsed' should return true" );
 		Assert.assertTrue( this.service.isRunning, "'isRunning' should return true" );
 		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
 		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.call, [], "service called twice should throw IllegalStateException" );
 	}
@@ -67,6 +81,7 @@ class StatelessServiceTest
 		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
 		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
 		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
 		this.service.addStatelessServiceListener( new MockStatelessServiceListener() );
 		this.service.release();
@@ -75,6 +90,7 @@ class StatelessServiceTest
 		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
 		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
 		Assert.assertTrue( this.service.isCancelled, "'isCancelled' should return true" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.call, [], "service should throw IllegalStateException when called after release" );
 	}
@@ -89,9 +105,20 @@ class StatelessServiceTest
 		this.service.addStatelessServiceListener( listener );
 		this.service.addHandler( StatelessServiceEvent.CANCEL, handler.onStatelessServiceCancel );
 		
-		Assert.failTrue( this.service.isCancelled, "'isCancelled' property should return false" );
+		Assert.failTrue( this.service.wasUsed, "'wasUsed' should return false" );
+		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
+		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
+		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
+		
 		service.handleCancel();
-		Assert.assertTrue( this.service.isCancelled, "'isCancelled' property should return true" );
+		
+		Assert.assertTrue( this.service.wasUsed, "'wasUsed' should return true" );
+		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
+		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
+		Assert.assertTrue( this.service.isCancelled, "'isCancelled' should return true" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
+		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleCancel, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.onStatelessServiceCancelCallCount, "'listener' callback should be triggered once" );
@@ -117,9 +144,20 @@ class StatelessServiceTest
 		this.service.addStatelessServiceListener( listener );
 		this.service.addHandler( StatelessServiceEvent.COMPLETE, handler.onStatelessServiceComplete );
 		
-		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' property should return false" );
+		Assert.failTrue( this.service.wasUsed, "'wasUsed' should return false" );
+		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
+		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
+		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
+		
 		this.service.handleComplete();
+		
+		Assert.assertTrue( this.service.wasUsed, "'wasUsed' should return true" );
+		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
 		Assert.assertTrue( this.service.hasCompleted, "'hasCompleted' property should return true" );
+		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
+		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
+		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleComplete, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.onStatelessServiceCompleteCallCount, "'listener' callback should be triggered once" );
@@ -145,9 +183,20 @@ class StatelessServiceTest
 		this.service.addStatelessServiceListener( listener );
 		this.service.addHandler( StatelessServiceEvent.FAIL, handler.onStatelessServiceFail );
 		
+		Assert.failTrue( this.service.wasUsed, "'wasUsed' should return false" );
+		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
+		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
+		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
+		
 		this.service.handleFail();
+		
+		Assert.assertTrue( this.service.wasUsed, "'wasUsed' should return true" );
+		Assert.failTrue( this.service.isRunning, "'isRunning' should return false" );
+		Assert.failTrue( this.service.hasCompleted, "'hasCompleted' should return false" );
+		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.assertTrue( this.service.hasFailed, "'hasFailed' property should return true" );
+		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleFail, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.onStatelessServiceFailCallCount, "'listener' callback should be triggered once" );
