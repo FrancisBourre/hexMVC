@@ -1,7 +1,9 @@
 package;
 
 import control.ControlSuite;
+import module.ModuleSuite;
 import service.ServiceSuite;
+import viewhelper.ViewHelperSuite;
 
 /**
  * ...
@@ -10,5 +12,5 @@ import service.ServiceSuite;
 class HexMVCSuite
 {
 	@suite( "HexMVC suite" )
-    public var list : Array<Class<Dynamic>> = [ControlSuite, ServiceSuite];
+    public var list : Array<Class<Dynamic>> = [ControlSuite, ModuleSuite, ServiceSuite, ViewHelperSuite];
 }
