@@ -1,6 +1,7 @@
 package hex.view.viewhelper;
 
 import hex.event.BasicEvent;
+import hex.view.IView;
 
 /**
  * ...
@@ -13,7 +14,9 @@ class ViewHelperEvent extends BasicEvent
 	static public inline var ATTACH_VIEW 	: String = "onAttachView";
 	static public inline var REMOVE_VIEW 	: String = "onRemoveView";
 	
-	public function new ( eventType : String, target : IViewHelper )
+	private var _view 						: IView;
+	
+	public function new ( eventType : String, target : IViewHelper, ?view : IView )
 	{
 		super( eventType, target );
 	}

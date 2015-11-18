@@ -1,15 +1,14 @@
 package viewhelper;
 
-import hex.event.LightweightClosureDispatcher;
 import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
+import hex.view.IView;
 import hex.view.viewhelper.IMainViewHelperManagerListener;
 import hex.view.viewhelper.IViewHelper;
 import hex.view.viewhelper.IViewHelperManagerListener;
 import hex.view.viewhelper.MainViewHelperManagerEvent;
 import hex.view.viewhelper.ViewHelper;
-import hex.view.viewhelper.ViewHelperEvent;
 import hex.view.viewhelper.ViewHelperManager;
 import hex.view.viewhelper.ViewHelperManagerEvent;
 import module.MockModule;
@@ -189,10 +188,21 @@ private class MainViewHelperManagerListener implements IMainViewHelperManagerLis
 	}
 }
 
-private class MockView
+private class MockView implements IView
 {
 	public function new()
 	{
 		
+	}
+
+	public var visible( get, set ) : Bool;
+	public function get_visible() : Bool 
+	{
+		return false;
+	}
+	
+	public function set_visible( visible : Bool ) : Bool
+	{
+		return visible;
 	}
 }

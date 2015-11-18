@@ -9,26 +9,75 @@ import hex.module.IModule;
  */
 class ViewHelper implements IViewHelper
 {
-	private var _ed 		: LightweightClosureDispatcher<ViewHelperEvent>;
-	private var _owner 		: IModule;
-	private var _view 		: Dynamic;
-	private var _visible 	: Bool;
+	private var _ed 				: LightweightClosureDispatcher<ViewHelperEvent>;
+	private var _owner 				: IModule;
+	private var _view 				: IView;
+	private var _isVisible 			: Bool;
+	
+	private var _isPreInitialized 	: Bool = false;
+		
 	
 	public function new ()
 	{
 		this._ed = new LightweightClosureDispatcher<ViewHelperEvent>();
 	}
 	
-	public var view( get, set ) : Dynamic;
-	public function get_view() : Dynamic 
+	private function _preInitialize() : Void
+	{
+		
+	}
+
+	private function _initialize() : Void
+	{
+
+	}
+	
+	private function _release() : Void
+	{
+
+	}
+	
+	public var view( get, set ) : IView;
+	public function get_view() : IView 
 	{
 		return this._view;
 	}
 	
-	public function set_view( view : Dynamic ) : Dynamic 
+	public function set_view( view : IView ) : IView 
 	{
+		if ( !this._isPreInitialized )
+		{
+			this._preInitialize();
+		}
+
+		if ( this.view != null || view == null )
+		{
+			this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.REMOVE_VIEW, this, this._view ) );
+		}
+			
 		this._view = view;
-		return this._visible;
+		
+		if ( view != null )
+		{
+			this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.ATTACH_VIEW, this, this._view ) );
+
+			if ( view.visible )
+			{
+				view.visible = this._isVisible;
+			}
+			else
+			{
+				this._isVisible = false;
+			}
+		}
+		
+		return this._view;
+	}
+	
+	private function _fireInitialisation() : Void
+	{
+		this._initialize();
+		this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.INIT, this ) );
 	}
 	
 	public function getOwner() : IModule
@@ -43,24 +92,46 @@ class ViewHelper implements IViewHelper
 	
 	public function show() : Void 
 	{
-		this.visible = true;
+		if ( !this._isVisible )
+		{
+			this.visible = true;
+			if ( this._view != null )
+			{
+				this._view.visible = true;
+			}
+		}
 	}
 	
 	public function hide() : Void 
 	{
-		this.visible = false;
+		if ( this._isVisible )
+		{
+			this.visible = false;
+			if ( this._view != null )
+			{
+				this._view.visible = false;
+			}
+		}
 	}
 	
 	public var visible( get, set ) : Bool;
 	public function get_visible() : Bool 
 	{
-		return this._visible;
+		return this._isVisible;
 	}
 	
 	public function set_visible( visible : Bool ) : Bool 
 	{
-		this._visible = visible;
-		return this._visible;
+		if ( visible )
+		{
+			show();
+		}
+		else
+		{
+			hide();
+		}
+
+		return this._isVisible;
 	}
 	
 	public function release() : Void 

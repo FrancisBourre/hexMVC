@@ -7,7 +7,7 @@ import hex.module.IModule;
  */
 interface IViewHelper 
 {
-	var view( get, set ) : Dynamic;
+	var view( get, set ) : IView;
 	
 	function getOwner() : IModule;
 	

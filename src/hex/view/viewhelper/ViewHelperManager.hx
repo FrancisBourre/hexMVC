@@ -67,7 +67,7 @@ class ViewHelperManager
 		}
 	}
 	
-	public function buildViewHelper( injector : IDependencyInjector, clazz : Class<IViewHelper>, view : Dynamic ) : IViewHelper
+	public function buildViewHelper( injector : IDependencyInjector, clazz : Class<IViewHelper>, view : IView ) : IViewHelper
 	{
 		var viewHelper : IViewHelper = injector.instantiateUnmapped( clazz );
 
