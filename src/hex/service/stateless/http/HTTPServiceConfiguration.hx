@@ -6,13 +6,13 @@ package hex.service.stateless.http;
  */
 class HTTPServiceConfiguration extends ServiceURLConfiguration
 {
-	public var requestMethod            : String;
+	public var requestMethod            : HTTPRequestMethod;
 	public var dataFormat               : String;
 	public var parameters	            : HTTPServiceParameters;
 	public var requestHeaders           : Array<HTTPRequestHeader>;
 	public var parameterFactory         : IHTTPServiceParameterFactory;
 		
-	public function new( url : String = null, method : String = "POST", dataFormat : String = "text", timeout : UInt = 5000 ) 
+	public function new( url : String = null, method : HTTPRequestMethod = HTTPRequestMethod.GET, dataFormat : String = "text", timeout : UInt = 5000 ) 
 	{
 		super( url, timeout );
 		

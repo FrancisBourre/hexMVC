@@ -31,7 +31,7 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 		this._timestamp = Date.now().getTime ();
 		this._createRequest();
 		super.call();
-		this._request.request( ( cast this._configuration ).requestMethod );
+		this._request.request( ( cast this._configuration ).requestMethod == HTTPRequestMethod.POST );
 	}
 
 	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
@@ -73,8 +73,8 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 		return ( cast this._configuration ).serviceUrl;
 	}
 	
-	public var method( get, null ) : String;
-	public function get_method() : String
+	public var method( get, null ) : HTTPRequestMethod;
+	public function get_method() : HTTPRequestMethod
 	{
 		return ( cast this._configuration ).requestMethod;
 	}
@@ -144,7 +144,7 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 	
 	private function _onStatus( status : Int ) : Void
 	{
-		//
+		//trace( "_onStatus:", status );
 	}
 
 	public function setURL( url : String ) : Void
