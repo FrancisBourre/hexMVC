@@ -90,12 +90,6 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 	{
 		return ( cast this._configuration ).serviceTimeout;
 	}
-	
-	override public function set_result( response : Dynamic ) : Dynamic
-	{
-		super.result = response;
-		return result;
-	}
 
 	override public function release() : Void
 	{

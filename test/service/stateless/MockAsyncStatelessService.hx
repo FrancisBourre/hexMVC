@@ -22,4 +22,9 @@ class MockAsyncStatelessService extends AsyncStatelessService
 	{
 		this._reset();
 	}
+	
+	public function testSetResult( result : Dynamic ) : Void
+	{
+		this._setResult( result );
+	}
 }

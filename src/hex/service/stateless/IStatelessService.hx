@@ -10,9 +10,11 @@ import hex.service.IService;
 
 interface IStatelessService extends IService extends ICancellable
 {
-	var result( get, set ) : Dynamic;
+	//var result( get, set ) : Dynamic;
+	function getResult() : Dynamic;
 	
-	var rawResult( get, null ) : Dynamic;
+	//var rawResult( get, null ) : Dynamic;
+	function getRawResult() : Dynamic;
 	
 	function setParser( parser : IParser ) : Void;
 	

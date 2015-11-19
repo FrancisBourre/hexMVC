@@ -43,16 +43,16 @@ class StatelessServiceTest
 	@test( "test result accessors" )
 	public function testResult() : Void
 	{
-		this.service.result = "result";
-		Assert.assertEquals( "result", this.service.result, "result getter should provide result setted value" );
+		this.service.testSetResult( "result" );
+		Assert.assertEquals( "result", this.service.getResult(), "result getter should provide result setted value" );
 	}
 	
 	@test( "test result accessors with parser" )
 	public function testResultWithParser() : Void
 	{
 		this.service.setParser( new MockParser() );
-		this.service.result = 5;
-		Assert.assertEquals( 6, this.service.result, "result getter should provide result parsed value" );
+		this.service.testSetResult( 5 );
+		Assert.assertEquals( 6, this.service.getResult(), "result getter should provide result parsed value" );
 	}
 	
 	@test( "test call" )

@@ -166,34 +166,33 @@ class StatelessService extends AbstractService implements IStatelessService
 	
 	private function _onResultHandler( result : Dynamic ) : Void
 	{
-		this.result = result;
+		this._setResult( result );
 		this.handleComplete();
 	}
 
 	private function _onErrorHandler( result : Dynamic ) : Void
 	{
-		this.result = null;
+		this._setResult( null );
 		this.handleFail();
 	}
 	
-	public var result( get, set ) : Dynamic;
-	public function get_result() : Dynamic
+	@:final 
+	public function getResult() : Dynamic
 	{
 		return this._result;
 	}
 	
-	public function set_result( response : Dynamic ) : Dynamic
+	private function _setResult( response : Dynamic ) : Dynamic
 	{
 		this._rawResult = response;
 		this._result = this._parser != null ? this._parser.parse( this._rawResult ) : this._rawResult;
 		return this._result;
 	}
 	
-	public var rawResult( get, null ) : Dynamic;
-    public function get_rawResult() : Dynamic
-    {
-        return this._rawResult;
-    }
+	public function getRawResult() : Dynamic
+	{
+		return this._rawResult;
+	}
 
 	public function setParser( parser : IParser ) : Void
 	{
