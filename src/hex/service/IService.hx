@@ -5,11 +5,13 @@ import hex.event.IEvent;
 /**
  * @author Francis Bourre
  */
-interface IService 
+interface IService<EventClass:ServiceEvent> 
 {
-	function addHandler( eventType : String, handler : IEvent->Void ) : Void;
+	function createConfiguration() : Void;
+	
+	function addHandler( eventType : String, handler : EventClass->Void ) : Void;
 
-	function removeHandler( eventType : String, handler : IEvent->Void ) : Void;
+	function removeHandler( eventType : String, handler : EventClass->Void ) : Void;
 		
 	function getConfiguration() : ServiceConfiguration;
 

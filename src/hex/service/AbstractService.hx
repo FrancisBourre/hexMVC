@@ -8,9 +8,10 @@ import hex.service.ServiceConfiguration;
  * ...
  * @author Francis Bourre
  */
-class AbstractService implements IService
+class AbstractService<EventClass:ServiceEvent> implements IService<EventClass>
 {
 	private var _configuration : ServiceConfiguration;
+	private var _serviceEventClass : Class<EventClass>;
 	
 	private function new() 
 	{
@@ -28,17 +29,23 @@ class AbstractService implements IService
 		throw new VirtualMethodException( this + ".createConfiguration must be overridden" );
 	}
 	
+	@final
+	public function setEventClass( serviceEventClass : Class<EventClass> ) : Void
+	{
+		this._serviceEventClass = serviceEventClass;
+	}
+	
 	public function setConfiguration( configuration : ServiceConfiguration ) : Void
 	{
 		throw new VirtualMethodException( this + ".setConfiguration must be overridden" );
 	}
 	
-	public function addHandler( eventType : String, handler : IEvent->Void ) : Void
+	public function addHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		throw new VirtualMethodException( this + ".addHandler must be overridden" );
 	}
 	
-	public function removeHandler( eventType : String, handler : IEvent->Void ) : Void
+	public function removeHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		throw new VirtualMethodException( this + ".removeHandler must be overridden" );
 	}

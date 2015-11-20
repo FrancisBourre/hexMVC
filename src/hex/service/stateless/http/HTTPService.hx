@@ -8,7 +8,7 @@ import hex.service.stateless.AsyncStatelessService;
  * ...
  * @author Francis Bourre
  */
-class HTTPService extends AsyncStatelessService implements IHTTPService implements IURLConfigurable implements IMetaDataParsable
+class HTTPService<EventClass:HTTPServiceEvent> extends AsyncStatelessService<HTTPServiceEvent> implements IHTTPService implements IURLConfigurable implements IMetaDataParsable
 {
 	public function new() 
 	{
@@ -23,7 +23,8 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 	@postConstruct
 	override public function createConfiguration() : Void
 	{
-		this._configuration = new HTTPServiceConfiguration();
+		this._configuration 	= new HTTPServiceConfiguration();
+		this._serviceEventClass = HTTPServiceEvent;
 	}
 
 	override public function call() : Void

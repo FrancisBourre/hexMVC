@@ -1,16 +1,18 @@
 package service.stateless;
 
 import hex.service.stateless.StatelessService;
+import hex.service.stateless.StatelessServiceEvent;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class MockStatelessService extends StatelessService
+class MockStatelessService extends StatelessService<StatelessServiceEvent>
 {
 	public function new() 
 	{
 		super();
+		this.setEventClass( StatelessServiceEvent );
 	}
 	
 	public function call_getRemoteArguments() : Array<Dynamic> 

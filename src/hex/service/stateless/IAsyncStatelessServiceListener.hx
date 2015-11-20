@@ -3,7 +3,7 @@ package hex.service.stateless;
 /**
  * @author Francis Bourre
  */
-interface IAsyncStatelessServiceListener extends IStatelessServiceListener
+interface IAsyncStatelessServiceListener<EventClass> extends IStatelessServiceListener<EventClass>
 {
-	function onAsyncStatelessServiceTimeout( event : StatelessServiceEvent ) : Void;
+	function onAsyncStatelessServiceTimeout( event : EventClass ) : Void;
 }

@@ -12,4 +12,9 @@ class StatelessServiceEvent extends ServiceEvent
 	public inline static var COMPLETE       : String = "onStatelessServiceComplete";
     public inline static var FAIL 			: String = "onStatelessServiceFail";
     public inline static var CANCEL         : String = "onStatelessServiceCancel";
+	
+	public function new( eventType : String, target : StatelessService<StatelessServiceEvent> ) 
+	{
+		super( eventType, target );
+	}
 }

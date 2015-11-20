@@ -310,7 +310,7 @@ private class MockParser implements IParser
 	}
 }
 
-private class MockStatelessServiceListener implements IAsyncStatelessServiceListener
+private class MockStatelessServiceListener implements IAsyncStatelessServiceListener<AsyncStatelessServiceEvent>
 {
 	public var lastEventReceived 						: AsyncStatelessServiceEvent;
 	public var onStatelessServiceCompleteCallCount 		: Int;
@@ -323,25 +323,25 @@ private class MockStatelessServiceListener implements IAsyncStatelessServiceList
 		
 	}
 	
-	public function onStatelessServiceComplete( e : ServiceEvent ) : Void 
+	public function onStatelessServiceComplete( e : AsyncStatelessServiceEvent ) : Void 
 	{
 		this.lastEventReceived = cast e;
 		this.onStatelessServiceCompleteCallCount++;
 	}
 	
-	public function onStatelessServiceFail( e : ServiceEvent ) : Void 
+	public function onStatelessServiceFail( e : AsyncStatelessServiceEvent ) : Void 
 	{
 		this.lastEventReceived = cast e;
 		this.onStatelessServiceFailCallCount++;
 	}
 	
-	public function onStatelessServiceCancel( e : ServiceEvent ) : Void 
+	public function onStatelessServiceCancel( e : AsyncStatelessServiceEvent ) : Void 
 	{
 		this.lastEventReceived = cast e;
 		this.onStatelessServiceCancelCallCount++;
 	}
 	
-	public function onAsyncStatelessServiceTimeout( e : ServiceEvent ) : Void 
+	public function onAsyncStatelessServiceTimeout( e : AsyncStatelessServiceEvent ) : Void 
 	{
 		this.lastEventReceived = cast e;
 		this.onAsyncStatelessServiceTimeoutCallCount++;

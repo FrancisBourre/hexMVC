@@ -11,7 +11,7 @@ import hex.service.stateless.IStatelessService;
  * ...
  * @author Francis Bourre
  */
-class StatelessService extends AbstractService implements IStatelessService
+class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventClass> implements IStatelessService<EventClass>
 {
 	public static inline var WAS_NEVER_USED     : String = "WAS_NEVER_USED";
     public static inline var IS_RUNNING         : String = "IS_RUNNING";
@@ -19,7 +19,7 @@ class StatelessService extends AbstractService implements IStatelessService
     public static inline var IS_FAILED          : String = "IS_FAILED";
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 	
-	private var _ed            					: LightweightClosureDispatcher<StatelessServiceEvent>;
+	private var _ed            					: LightweightClosureDispatcher<EventClass>;
 	
 	private var _result                     	: Dynamic;
     private var _rawResult                		: Dynamic;
@@ -29,7 +29,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	private function new() 
 	{
 		super();
-		this._ed = new LightweightClosureDispatcher<StatelessServiceEvent>();
+		this._ed = new LightweightClosureDispatcher<EventClass>();
 	}
 
 	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
@@ -38,12 +38,12 @@ class StatelessService extends AbstractService implements IStatelessService
         this._configuration = configuration;
 	}
 	
-	override public function addHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
+	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		this._ed.addEventListener( eventType, handler );
 	}
 
-	override public function removeHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
+	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		this._ed.addEventListener( eventType, handler );
 	}
@@ -204,7 +204,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleComplete failed" );
 		this._status = StatelessService.IS_COMPLETED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.COMPLETE, this ) );
+		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEvent.COMPLETE, this] ) );
 		this._release();
 	}
 
@@ -213,7 +213,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleFail failed" );
 		this._status = StatelessService.IS_FAILED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.FAIL, this ) );
+		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEvent.FAIL, this] ) );
 		this._release();
 	}
 
@@ -222,7 +222,7 @@ class StatelessService extends AbstractService implements IStatelessService
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleCancel failed" );
 		this._status = StatelessService.IS_CANCELLED;
-		this._ed.dispatchEvent( new StatelessServiceEvent ( StatelessServiceEvent.CANCEL, this ) );
+		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEvent.CANCEL, this] ) );
 		this._release();
 	}
 
@@ -232,14 +232,14 @@ class StatelessService extends AbstractService implements IStatelessService
 		this._ed.removeAllListeners();
 	}
 
-	public function addStatelessServiceListener( listener : IStatelessServiceListener ) : Void
+	public function addStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void
 	{
 		this._ed.addEventListener( StatelessServiceEvent.COMPLETE, listener.onStatelessServiceComplete );
 		this._ed.addEventListener( StatelessServiceEvent.FAIL, listener.onStatelessServiceFail );
 		this._ed.addEventListener( StatelessServiceEvent.CANCEL, listener.onStatelessServiceCancel );
 	}
 
-	public function removeStatelessServiceListener( listener : IStatelessServiceListener ) : Void
+	public function removeStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void
 	{
 		this._ed.removeEventListener( StatelessServiceEvent.COMPLETE, listener.onStatelessServiceComplete );
 		this._ed.removeEventListener( StatelessServiceEvent.FAIL, listener.onStatelessServiceFail );

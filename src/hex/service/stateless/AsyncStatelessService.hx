@@ -1,19 +1,20 @@
 package hex.service.stateless;
 
 import haxe.Timer;
+import hex.collection.HashMap;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class AsyncStatelessService extends StatelessService implements IAsyncStatelessService
+class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<EventClass> implements IAsyncStatelessService<EventClass>
 {
 	public static inline var HAS_TIMEOUT : String = "HAS_TIMEOUT";
 	
 	private var _timer 				: Timer;
 	private var _timeoutDuration 	: UInt;
 	
-	private function new()
+	private function new() 
 	{
 		super();
 		this._timeoutDuration = 100;
@@ -76,25 +77,25 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	/**
      * Event handling
      */
-	public function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void
+	public function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void
 	{
 		super.addStatelessServiceListener( listener );
 		this._ed.addEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
 
 	}
 
-	public function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void
+	public function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void
 	{
 		super.removeStatelessServiceListener( listener );
 		this._ed.removeEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
 	}
 	
-	override public function addHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
+	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		this._ed.addEventListener( eventType, handler );
 	}
 
-	override public function removeHandler( eventType : String, handler : StatelessServiceEvent->Void ) : Void
+	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		this._ed.addEventListener( eventType, handler );
 	}
@@ -102,21 +103,21 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 	/**
      * Memory handling
      */
-    static private var _POOL : Map<AsyncStatelessService, Bool> = new Map<AsyncStatelessService, Bool>();
+    static private var _POOL : HashMap<Dynamic, Bool> = new HashMap<Dynamic, Bool>();
 
-    static private function _isServiceDetained( service : AsyncStatelessService ) : Bool
+    static private function _isServiceDetained( service : Dynamic ) : Bool
     {
-        return AsyncStatelessService._POOL.exists( service );
+        return AsyncStatelessService._POOL.containsKey( service );
     }
 
-    static private function _detainService( service : AsyncStatelessService ) : Void
+    static private function _detainService( service : Dynamic ) : Void
     {
-        AsyncStatelessService._POOL.set( service, true );
+        AsyncStatelessService._POOL.put( service, true );
     }
 
-    static private function _releaseService( service : AsyncStatelessService ) : Void
+    static private function _releaseService( service : Dynamic ) : Void
     {
-        if ( AsyncStatelessService._POOL.exists( service ) )
+        if ( AsyncStatelessService._POOL.containsKey( service ) )
         {
             AsyncStatelessService._POOL.remove( service );
         }
@@ -130,9 +131,8 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 			this._timer.stop();
 		}
 		
-		this._ed.dispatchEvent( new AsyncStatelessServiceEvent( AsyncStatelessServiceEvent.TIMEOUT, this ) );
+		this._ed.dispatchEvent( Type.createInstance( this._serviceEventClass, [AsyncStatelessServiceEvent.TIMEOUT, this] ) );
 		this._status = AsyncStatelessService.HAS_TIMEOUT;
-		//this._onErrorHandler( null );
 	}
 
 	private function _startTimer() : Void

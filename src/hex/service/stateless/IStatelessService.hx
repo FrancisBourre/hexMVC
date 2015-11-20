@@ -8,12 +8,10 @@ import hex.service.IService;
  * @author Francis Bourre
  */
 
-interface IStatelessService extends IService extends ICancellable
+interface IStatelessService<EventClass:ServiceEvent> extends IService<EventClass> extends ICancellable
 {
-	//var result( get, set ) : Dynamic;
 	function getResult() : Dynamic;
-	
-	//var rawResult( get, null ) : Dynamic;
+
 	function getRawResult() : Dynamic;
 	
 	function setParser( parser : IParser ) : Void;
@@ -26,15 +24,15 @@ interface IStatelessService extends IService extends ICancellable
 	
 	function release() : Void;
 	
-	function addStatelessServiceListener( listener : IStatelessServiceListener ) : Void;
+	function addStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void;
 	
-	function removeStatelessServiceListener( listener : IStatelessServiceListener ) : Void;
+	function removeStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void;
 	
 	function removeAllListeners() : Void;
 	
-	function addHandler( eventType : String, handler : ServiceEvent->Void ) : Void;
+	function addHandler( eventType : String, handler : EventClass->Void ) : Void;
 	
-	function removeHandler( eventType : String, handler : ServiceEvent->Void ) : Void;
+	function removeHandler( eventType : String, handler : EventClass->Void ) : Void;
 	
 	var wasUsed( get, null ) : Bool;
 	

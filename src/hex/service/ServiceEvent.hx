@@ -8,12 +8,12 @@ import hex.event.BasicEvent;
  */
 class ServiceEvent extends BasicEvent
 {
-	public function new ( eventType : String, target : IService )
+	public function new ( eventType : String, target : Dynamic )
     {
         super( eventType, target );
     }
 	
-	public function getService() : IService
+	public function getService() : Dynamic
 	{
 		return cast target;
 	}

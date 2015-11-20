@@ -4,11 +4,11 @@ package hex.service.stateless;
  * @author Francis Bourre
  */
 
-interface IAsyncStatelessService extends IStatelessService
+interface IAsyncStatelessService<EventClass:ServiceEvent> extends IStatelessService<EventClass>
 {
 	var timeoutDuration( get, set ) : UInt;
 
-    function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void;
+    function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void;
 
-    function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener ) : Void;
+    function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void;
 }
