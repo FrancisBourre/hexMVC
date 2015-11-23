@@ -166,8 +166,11 @@ class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventCla
 	
 	private function _onResultHandler( result : Dynamic ) : Void
 	{
-		this._setResult( result );
-		this.handleComplete();
+		if ( this._status == StatelessService.IS_RUNNING )
+		{
+			this._setResult( result );
+			this.handleComplete();
+		}
 	}
 
 	private function _onErrorHandler( result : Dynamic ) : Void
