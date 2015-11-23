@@ -4,6 +4,8 @@ import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.control.FrontController;
 import hex.control.IFrontController;
+import hex.control.macro.IMacroExecutor;
+import hex.control.macro.MacroExecutor;
 import hex.core.HashCodeFactory;
 import hex.di.IDependencyInjector;
 import hex.domain.ApplicationDomainDispatcher;
@@ -18,6 +20,9 @@ import hex.inject.Injector;
 import hex.log.Stringifier;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
+import hex.view.IView;
+import hex.view.viewhelper.IViewHelper;
+import hex.view.viewhelper.ViewHelperManager;
 
 /**
  * ...
@@ -35,12 +40,13 @@ class Module implements IModule
 	{
 		this._injector = new Injector();
 		this._injector.mapToValue( IDependencyInjector, this._injector );
+		this._injector.mapToValue( IModuleInjector, this._injector );
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
 		//this._metaDataProvider 	= MetaDataProvider.getInstance( this._injector );
 		this._injector.mapToSingleton( IFrontController, FrontController );
 		this._ed = new EventDispatcher<IModuleListener, IEvent>();
 		this._injector.mapToValue( IEventDispatcher, this._ed );
-		//this._injector.mapToType( IMacroExecutor, MacroExecutor );
+		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 	}
 			
@@ -140,10 +146,10 @@ class Module implements IModule
 		this._ed.sendNoteArr( type, request?[request]:[] );
 	}*/
 
-	/*private function buildViewHelper( clazz : Class, view : DisplayObject ) : BaseViewHelper
+	private function buildViewHelper( type : Class<IViewHelper>, view : IView ) : IViewHelper
 	{
-		return ViewHelperManager.getInstance( this ).buildViewHelper( this._injector, clazz, view );
-	}*/
+		return ViewHelperManager.getInstance( this ).buildViewHelper( this._injector, type, view );
+	}
 
 	/**
 	 * Release this module
@@ -157,7 +163,7 @@ class Module implements IModule
 			this._onRelease();
 			_fireReleaseEvent();
 
-			//ViewHelperManager.release( this );
+			ViewHelperManager.release( this );
 			this._domainDispatcher.removeAllListeners();
 			this._ed.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
