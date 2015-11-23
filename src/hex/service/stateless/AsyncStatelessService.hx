@@ -27,16 +27,6 @@ class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<Ev
 		AsyncStatelessService._detainService( this );
 	}
 	
-	override public function getConfiguration() : ServiceConfiguration
-	{
-		if ( this._configuration != null )
-		{
-			this._configuration.serviceTimeout = this.timeoutDuration;
-		}
-		
-		return super.getConfiguration();
-	}
-
 	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
 	{
 		super.setConfiguration( configuration );
