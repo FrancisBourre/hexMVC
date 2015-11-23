@@ -16,7 +16,6 @@ class HTTPService<EventClass:HTTPServiceEvent> extends AsyncStatelessService<HTT
 	}
 	
 	private var _request 			: Http;
-	private var _parameterFactory 	: IHTTPServiceParameterFactory;
 	private var _excludedParameters : Array<String>;
 	private var _timestamp 			: Float;
 
@@ -34,18 +33,12 @@ class HTTPService<EventClass:HTTPServiceEvent> extends AsyncStatelessService<HTT
 		super.call();
 		this._request.request( ( cast this._configuration ).requestMethod == HTTPRequestMethod.POST );
 	}
-
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
-	{
-		super.setConfiguration( configuration );
-		this._parameterFactory = ( cast this._configuration ).parameterFactory;
-	}
 	
 	private function _createRequest() : Void
 	{
 		this._request = new Http( ( cast this._configuration ).serviceUrl );
 		
-		this._parameterFactory.setParameters( this._request, ( cast this._configuration ).parameters, _excludedParameters );
+		( cast this._configuration ).parameterFactory.setParameters( this._request, ( cast this._configuration ).parameters, _excludedParameters );
 		this.timeoutDuration = ( cast this.getConfiguration() ).serviceTimeout;
 		
 		this._request.async 		= true;
