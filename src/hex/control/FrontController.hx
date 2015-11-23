@@ -9,14 +9,14 @@ import hex.module.IModule;
 import hex.event.IEvent;
 import hex.event.IEventListener;
 import hex.event.IEventDispatcher;
-import hex.collection.BaseLocator;
+import hex.collection.Locator;
 
 /**
  * ...
  * @author Francis Bourre
  */
 @:rtti
-class FrontController extends BaseLocator<String, ICommandMapping> implements IFrontController
+class FrontController extends Locator<String, ICommandMapping> implements IFrontController
 {
     private var _module     : IModule;
     private var _injector   : IDependencyInjector;
