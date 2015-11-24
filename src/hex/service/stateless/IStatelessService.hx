@@ -8,7 +8,7 @@ import hex.service.IService;
  * @author Francis Bourre
  */
 
-interface IStatelessService<EventClass:ServiceEvent> extends IService<EventClass> extends ICancellable
+interface IStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends IService<EventClass, ConfigurationClass> extends ICancellable
 {
 	function getResult() : Dynamic;
 

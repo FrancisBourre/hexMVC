@@ -8,9 +8,9 @@ import hex.service.ServiceConfiguration;
  * ...
  * @author Francis Bourre
  */
-class AbstractService<EventClass:ServiceEvent> implements IService<EventClass>
+class AbstractService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> implements IService<EventClass, ConfigurationClass>
 {
-	private var _configuration : ServiceConfiguration;
+	private var _configuration : ConfigurationClass;
 	private var _serviceEventClass : Class<EventClass>;
 	
 	private function new() 
@@ -18,7 +18,7 @@ class AbstractService<EventClass:ServiceEvent> implements IService<EventClass>
 		
 	}
 
-	public function getConfiguration() : ServiceConfiguration
+	public function getConfiguration() : ConfigurationClass
 	{
 		return this._configuration;
 	}
@@ -35,7 +35,7 @@ class AbstractService<EventClass:ServiceEvent> implements IService<EventClass>
 		this._serviceEventClass = serviceEventClass;
 	}
 	
-	public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	public function setConfiguration( configuration : ConfigurationClass ) : Void
 	{
 		throw new VirtualMethodException( this + ".setConfiguration must be overridden" );
 	}

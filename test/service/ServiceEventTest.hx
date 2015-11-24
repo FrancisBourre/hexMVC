@@ -1,7 +1,6 @@
 package service;
 
-import hex.event.BasicEventTest;
-import hex.service.stateless.StatelessServiceEvent;
+import hex.service.ServiceEvent;
 import hex.unittest.assertion.Assert;
 import service.stateless.MockStatelessService;
 
@@ -16,7 +15,7 @@ class ServiceEventTest
     {
         var type : String = "type";
 		var target : MockStatelessService = new MockStatelessService();
-        var e : StatelessServiceEvent = new StatelessServiceEvent( type, target );
+        var e : ServiceEvent = new ServiceEvent( type, target );
         Assert.assertEquals( type, e.type, "'type' property should be the same passed to constructor" );
     }
 
@@ -24,7 +23,7 @@ class ServiceEventTest
     public function testTarget() : Void
     {
         var target : MockStatelessService = new MockStatelessService();
-        var e : StatelessServiceEvent = new StatelessServiceEvent( "", target );
+        var e : ServiceEvent = new ServiceEvent( "", target );
 
         Assert.assertEquals( target, e.target, "'target' property should be the same passed to constructor" );
     }
@@ -34,8 +33,8 @@ class ServiceEventTest
     {
         var type : String = "type";
         var target : MockStatelessService = new MockStatelessService();
-        var e : StatelessServiceEvent = new StatelessServiceEvent( type, target );
-        var clonedEvent : StatelessServiceEvent = cast e.clone();
+        var e : ServiceEvent = new ServiceEvent( type, target );
+        var clonedEvent : ServiceEvent = cast e.clone();
 
         Assert.assertEquals( type, clonedEvent.type, "'clone' method should return cloned event with same 'type' property" );
         Assert.assertEquals( target, clonedEvent.target, "'clone' method should return cloned event with same 'target' property" );
@@ -45,7 +44,7 @@ class ServiceEventTest
     public function testServiceParameter() : Void
     {
 		var service : MockStatelessService = new MockStatelessService();
-        var e : StatelessServiceEvent = new StatelessServiceEvent( "eventType", service );
+        var e : ServiceEvent = new ServiceEvent( "eventType", service );
 
         Assert.assertEquals( service, e.getService(), "'getStatelessService' accessor should return property passed to constructor" );
     }

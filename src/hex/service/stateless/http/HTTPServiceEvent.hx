@@ -8,7 +8,7 @@ import hex.service.ServiceEvent;
  */
 class HTTPServiceEvent extends ServiceEvent
 {
-	public function new( eventType : String, target : HTTPService<HTTPServiceEvent> ) 
+	public function new( eventType : String, target : HTTPService<HTTPServiceEvent, HTTPServiceConfiguration> ) 
 	{
 		super( eventType, target );
 	}

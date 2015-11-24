@@ -5,5 +5,5 @@ package hex.service.stateless;
  */
 interface IAsyncStatelessServiceListener<EventClass> extends IStatelessServiceListener<EventClass>
 {
-	function onAsyncStatelessServiceTimeout( event : EventClass ) : Void;
+	function onServiceTimeout( event : EventClass ) : Void;
 }

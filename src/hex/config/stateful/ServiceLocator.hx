@@ -5,6 +5,7 @@ import hex.di.IDependencyInjector;
 import hex.error.IllegalArgumentException;
 import hex.error.NoSuchElementException;
 import hex.service.IService;
+import hex.service.ServiceConfiguration;
 import hex.service.ServiceEvent;
 import hex.service.stateful.IStatefulService;
 
@@ -101,12 +102,12 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 		}
 	}
 	
-	public function addService<EventClass:ServiceEvent>( service : Class<IService<EventClass>>, value : Dynamic, ?mapName : String = "" ) : Bool
+	public function addService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration>( service : Class<IService<EventClass, ConfigurationClass>>, value : Dynamic, ?mapName : String = "" ) : Bool
 	{
 		return this._registerService( service, new ServiceLocatorHelper( value, mapName ), mapName );
 	}
 	
-	private function _registerService<EventClass:ServiceEvent>( type : Class<IService<EventClass>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
+	private function _registerService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration>( type : Class<IService<EventClass, ConfigurationClass>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
 	{
 		var className : String = ( mapName != "" ? mapName + "#" : "" ) + Type.getClassName( type );
 		return this.register( className, service );

@@ -6,12 +6,13 @@ import hex.error.UnsupportedOperationException;
 import hex.event.LightweightClosureDispatcher;
 import hex.service.AbstractService;
 import hex.service.stateless.IStatelessService;
+import hex.service.stateless.StatelessServiceEventType;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventClass> implements IStatelessService<EventClass>
+class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends AbstractService<EventClass, ConfigurationClass> implements IStatelessService<EventClass, ConfigurationClass>
 {
 	public static inline var WAS_NEVER_USED     : String = "WAS_NEVER_USED";
     public static inline var IS_RUNNING         : String = "IS_RUNNING";
@@ -32,7 +33,7 @@ class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventCla
 		this._ed = new LightweightClosureDispatcher<EventClass>();
 	}
 
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	override public function setConfiguration( configuration : ConfigurationClass ) : Void
 	{
 		this.wasUsed && this._throwExecutionIllegalStateError( "setConfiguration" );
         this._configuration = configuration;
@@ -207,7 +208,7 @@ class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventCla
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleComplete failed" );
 		this._status = StatelessService.IS_COMPLETED;
-		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEvent.COMPLETE, this] ) );
+		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEventType.COMPLETE, this] ) );
 		this._release();
 	}
 
@@ -216,7 +217,7 @@ class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventCla
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleFail failed" );
 		this._status = StatelessService.IS_FAILED;
-		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEvent.FAIL, this] ) );
+		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEventType.FAIL, this] ) );
 		this._release();
 	}
 
@@ -225,7 +226,7 @@ class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventCla
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleCancel failed" );
 		this._status = StatelessService.IS_CANCELLED;
-		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEvent.CANCEL, this] ) );
+		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEventType.CANCEL, this] ) );
 		this._release();
 	}
 
@@ -237,16 +238,16 @@ class StatelessService<EventClass:ServiceEvent> extends AbstractService<EventCla
 
 	public function addStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void
 	{
-		this._ed.addEventListener( StatelessServiceEvent.COMPLETE, listener.onStatelessServiceComplete );
-		this._ed.addEventListener( StatelessServiceEvent.FAIL, listener.onStatelessServiceFail );
-		this._ed.addEventListener( StatelessServiceEvent.CANCEL, listener.onStatelessServiceCancel );
+		this._ed.addEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
+		this._ed.addEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
+		this._ed.addEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
 	}
 
 	public function removeStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void
 	{
-		this._ed.removeEventListener( StatelessServiceEvent.COMPLETE, listener.onStatelessServiceComplete );
-		this._ed.removeEventListener( StatelessServiceEvent.FAIL, listener.onStatelessServiceFail );
-		this._ed.removeEventListener( StatelessServiceEvent.CANCEL, listener.onStatelessServiceCancel );
+		this._ed.removeEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
+		this._ed.removeEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
+		this._ed.removeEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
 	}
 	
 	//

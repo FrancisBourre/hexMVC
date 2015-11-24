@@ -7,7 +7,7 @@ import hex.collection.HashMap;
  * ...
  * @author Francis Bourre
  */
-class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<EventClass> implements IAsyncStatelessService<EventClass>
+class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends StatelessService<EventClass, ConfigurationClass> implements IAsyncStatelessService<EventClass, ConfigurationClass>
 {
 	public static inline var HAS_TIMEOUT : String = "HAS_TIMEOUT";
 	
@@ -27,7 +27,7 @@ class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<Ev
 		AsyncStatelessService._detainService( this );
 	}
 	
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	override public function setConfiguration( configuration : ConfigurationClass ) : Void
 	{
 		super.setConfiguration( configuration );
 		this.timeoutDuration = this._configuration.serviceTimeout;
@@ -74,14 +74,14 @@ class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<Ev
 	public function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void
 	{
 		super.addStatelessServiceListener( listener );
-		this._ed.addEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
+		this._ed.addEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
 
 	}
 
 	public function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void
 	{
 		super.removeStatelessServiceListener( listener );
-		this._ed.removeEventListener( AsyncStatelessServiceEvent.TIMEOUT, listener.onAsyncStatelessServiceTimeout );
+		this._ed.removeEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
 	}
 	
 	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void
@@ -125,7 +125,7 @@ class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<Ev
 			this._timer.stop();
 		}
 		
-		this._ed.dispatchEvent( Type.createInstance( this._serviceEventClass, [AsyncStatelessServiceEvent.TIMEOUT, this] ) );
+		this._ed.dispatchEvent( Type.createInstance( this._serviceEventClass, [AsyncStatelessServiceEventType.TIMEOUT, this] ) );
 		this._status = AsyncStatelessService.HAS_TIMEOUT;
 	}
 
