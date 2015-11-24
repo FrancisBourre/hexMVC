@@ -127,8 +127,8 @@ class StatelessServiceTest
 		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be StatelessService instance" );
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be StatelessService instance" );
 		
-		Assert.assertEquals( StatelessServiceEventType.CANCEL, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEvent.CANCEL" );
-		Assert.assertEquals( StatelessServiceEventType.CANCEL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEvent.CANCEL" );
+		Assert.assertEquals( StatelessServiceEventType.CANCEL, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEventType.CANCEL" );
+		Assert.assertEquals( StatelessServiceEventType.CANCEL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.CANCEL" );
 		
 		service.addHandler( StatelessServiceEventType.CANCEL, anotherHandler.onServiceCancel );
 		Assert.assertIsNull( anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
@@ -166,8 +166,8 @@ class StatelessServiceTest
 		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be StatelessService instance" );
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be StatelessService instance" );
 		
-		Assert.assertEquals( StatelessServiceEventType.COMPLETE, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEvent.COMPLETE" );
-		Assert.assertEquals( StatelessServiceEventType.COMPLETE, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEvent.COMPLETE" );
+		Assert.assertEquals( StatelessServiceEventType.COMPLETE, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEventType.COMPLETE" );
+		Assert.assertEquals( StatelessServiceEventType.COMPLETE, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.COMPLETE" );
 		
 		service.addHandler( StatelessServiceEventType.COMPLETE, anotherHandler.onServiceComplete );
 		Assert.assertIsNull( anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
@@ -205,8 +205,8 @@ class StatelessServiceTest
 		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be StatelessService instance" );
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be StatelessService instance" );
 		
-		Assert.assertEquals( StatelessServiceEventType.FAIL, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEvent.FAIL" );
-		Assert.assertEquals( StatelessServiceEventType.FAIL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEvent.FAIL" );
+		Assert.assertEquals( StatelessServiceEventType.FAIL, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEventType.FAIL" );
+		Assert.assertEquals( StatelessServiceEventType.FAIL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.FAIL" );
 		
 		this.service.addHandler( StatelessServiceEventType.FAIL, anotherHandler.onServiceFail );
 		Assert.assertIsNull( anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
