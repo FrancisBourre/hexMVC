@@ -235,20 +235,6 @@ class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
 	{
 		this._ed.removeAllListeners();
 	}
-
-	public function addStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void
-	{
-		this._ed.addEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
-		this._ed.addEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
-		this._ed.addEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
-	}
-
-	public function removeStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void
-	{
-		this._ed.removeEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
-		this._ed.removeEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
-		this._ed.removeEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
-	}
 	
 	//
 	private function _getRemoteArguments() : Array<Dynamic>

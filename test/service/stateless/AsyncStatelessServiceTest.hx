@@ -6,7 +6,6 @@ import hex.error.UnsupportedOperationException;
 import hex.service.ServiceConfiguration;
 import hex.service.ServiceEvent;
 import hex.service.stateless.AsyncStatelessServiceEventType;
-import hex.service.stateless.IAsyncStatelessServiceListener;
 import hex.service.stateless.StatelessServiceEventType;
 import hex.unittest.assertion.Assert;
 
@@ -104,7 +103,6 @@ class AsyncStatelessServiceTest
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
-		this.service.addStatelessServiceListener( new MockStatelessServiceListener() );
 		this.service.release();
 		
 		Assert.assertTrue( this.service.wasUsed, "'wasUsed' should return false" );
@@ -120,11 +118,9 @@ class AsyncStatelessServiceTest
 	@test( "Test handleCancel" )
     public function testHandleCancel() : Void
     {
-		var listener 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
 		
-		this.service.addAsyncStatelessServiceListener( listener );
 		this.service.addHandler( StatelessServiceEventType.CANCEL, handler.onServiceCancel );
 		
 		Assert.failTrue( this.service.wasUsed, "'wasUsed' should return false" );
@@ -146,13 +142,10 @@ class AsyncStatelessServiceTest
 		Assert.assertTrue( this.service.isCancelled, "'isCancelled' property should return true" );
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleCancel, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
-		Assert.assertEquals( 1, listener.onServiceCancelCallCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.onServiceCancelCallCount, "'handler' callback should be triggered once" );
 		
-		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be AsyncStatelessService instance" );
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be AsyncStatelessService instance" );
-		
-		Assert.assertEquals( StatelessServiceEventType.CANCEL, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEventType.CANCEL" );
+
 		Assert.assertEquals( StatelessServiceEventType.CANCEL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.CANCEL" );
 		
 		service.addHandler( StatelessServiceEventType.CANCEL, anotherHandler.onServiceCancel );
@@ -162,11 +155,9 @@ class AsyncStatelessServiceTest
 	@test( "Test handleComplete" )
     public function testHandleComplete() : Void
     {
-		var listener 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
 		
-		this.service.addAsyncStatelessServiceListener( listener );
 		this.service.addHandler( StatelessServiceEventType.COMPLETE, handler.onServiceComplete );
 		
 		Assert.failTrue( this.service.wasUsed, "'wasUsed' should return false" );
@@ -187,13 +178,10 @@ class AsyncStatelessServiceTest
 		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleComplete, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
-		Assert.assertEquals( 1, listener.onServiceCompleteCallCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.onServiceCompleteCallCount, "'handler' callback should be triggered once" );
-		
-		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be AsyncStatelessService instance" );
+
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be AsyncStatelessService instance" );
 		
-		Assert.assertEquals( StatelessServiceEventType.COMPLETE, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEventType.COMPLETE" );
 		Assert.assertEquals( StatelessServiceEventType.COMPLETE, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.COMPLETE" );
 		
 		service.addHandler( StatelessServiceEventType.COMPLETE, anotherHandler.onServiceComplete );
@@ -203,11 +191,9 @@ class AsyncStatelessServiceTest
 	@test( "Test handleFail" )
     public function testHandleFail() : Void
     {
-		var listener 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
 		
-		this.service.addAsyncStatelessServiceListener( listener );
 		this.service.addHandler( StatelessServiceEventType.FAIL, handler.onServiceFail );
 		
 		Assert.failTrue( this.service.wasUsed, "'wasUsed' should return false" );
@@ -227,14 +213,11 @@ class AsyncStatelessServiceTest
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
 		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleFail, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
-		
-		Assert.assertEquals( 1, listener.onServiceFailCallCount, "'listener' callback should be triggered once" );
+
 		Assert.assertEquals( 1, handler.onServiceFailCallCount, "'handler' callback should be triggered once" );
 		
-		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be AsyncStatelessService instance" );
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be AsyncStatelessService instance" );
-		
-		Assert.assertEquals( StatelessServiceEventType.FAIL, listener.lastEventReceived.type, "'event.type' received by listener should be StatelessServiceEventType.FAIL" );
+
 		Assert.assertEquals( StatelessServiceEventType.FAIL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.FAIL" );
 		
 		this.service.addHandler( StatelessServiceEventType.FAIL, anotherHandler.onServiceFail );
@@ -244,25 +227,20 @@ class AsyncStatelessServiceTest
 	@test( "test timeout" )
 	public function testTimeout() : Void
 	{
-		var listener 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
 		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
 		
-		this.service.addAsyncStatelessServiceListener( listener );
 		this.service.addHandler( AsyncStatelessServiceEventType.TIMEOUT, handler.onServiceTimeout );
 		
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' property should return false" );
 		this.service.timeoutDuration = 0;
 		this.service.call();
 		Assert.assertTrue( this.service.hasTimeout, "'hasTimeout' property should return true" );
-		
-		Assert.assertEquals( 1, listener.onServiceTimeoutCallCount, "'listener' callback should be triggered once" );
+
 		Assert.assertEquals( 1, handler.onServiceTimeoutCallCount, "'handler' callback should be triggered once" );
-		
-		Assert.assertEquals( this.service, listener.lastEventReceived.target, "'event.target' received by listener should be AsyncStatelessService instance" );
+
 		Assert.assertEquals( this.service, handler.lastEventReceived.target, "'event.target' received by handler should be AsyncStatelessService instance" );
-		
-		Assert.assertEquals( AsyncStatelessServiceEventType.TIMEOUT, listener.lastEventReceived.type, "'event.type' received by listener should be AsyncStatelessServiceEventType.TIMEOUT" );
+
 		Assert.assertEquals( AsyncStatelessServiceEventType.TIMEOUT, handler.lastEventReceived.type, "'event.type' received by handler should be AsyncStatelessServiceEventType.TIMEOUT" );
 		
 		this.service.addHandler( AsyncStatelessServiceEventType.TIMEOUT, anotherHandler.onServiceTimeout );
@@ -309,7 +287,7 @@ private class MockParser implements IParser
 	}
 }
 
-private class MockStatelessServiceListener implements IAsyncStatelessServiceListener<ServiceEvent>
+private class MockStatelessServiceListener
 {
 	public var lastEventReceived 						: ServiceEvent;
 	public var onServiceCompleteCallCount 				: Int;

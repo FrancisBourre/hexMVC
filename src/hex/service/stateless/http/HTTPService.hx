@@ -132,4 +132,23 @@ class HTTPService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigurati
 	{
 		( cast this._configuration ).serviceUrl = url;
 	}
+	
+	/**
+     * Event handling
+     */
+	public function addHTTPServiceListener( listener : IHTTPServiceListener<EventClass> ) : Void
+	{
+		this._ed.addEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
+		this._ed.addEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
+		this._ed.addEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
+		this._ed.addEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
+	}
+
+	public function removeHTTPServiceListener( listener : IHTTPServiceListener<EventClass> ) : Void
+	{
+		this._ed.removeEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
+		this._ed.removeEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
+		this._ed.removeEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
+		this._ed.removeEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
+	}
 }

@@ -24,10 +24,6 @@ interface IStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
 	
 	function release() : Void;
 	
-	function addStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void;
-	
-	function removeStatelessServiceListener( listener : IStatelessServiceListener<EventClass> ) : Void;
-	
 	function removeAllListeners() : Void;
 	
 	function addHandler( eventType : String, handler : EventClass->Void ) : Void;

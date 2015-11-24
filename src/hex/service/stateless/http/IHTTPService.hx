@@ -12,4 +12,6 @@ interface IHTTPService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
 	var dataFormat( get, null ) : String;
 	var timeout( get, null ) : UInt;
 	function addHeader( header : HTTPRequestHeader ) : Void;
+	function addHTTPServiceListener( listener : IHTTPServiceListener<EventClass> ) : Void;
+	function removeHTTPServiceListener( listener : IHTTPServiceListener<EventClass> ) : Void;
 }

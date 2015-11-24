@@ -1,5 +1,7 @@
 package service.stateless;
 
+import service.stateless.http.HTTPSuite;
+
 /**
  * ...
  * @author Francis Bourre
@@ -7,5 +9,5 @@ package service.stateless;
 class StatelessSuite
 {
 	@suite("Stateless suite")
-    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest, StatelessServiceTest];
+    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest, HTTPSuite, StatelessServiceTest];
 }

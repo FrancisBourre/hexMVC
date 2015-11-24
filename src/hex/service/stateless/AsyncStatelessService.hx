@@ -71,19 +71,6 @@ class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
 	/**
      * Event handling
      */
-	public function addAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void
-	{
-		super.addStatelessServiceListener( listener );
-		this._ed.addEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
-
-	}
-
-	public function removeAsyncStatelessServiceListener( listener : IAsyncStatelessServiceListener<EventClass> ) : Void
-	{
-		super.removeStatelessServiceListener( listener );
-		this._ed.removeEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
-	}
-	
 	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void
 	{
 		this._ed.addEventListener( eventType, handler );
