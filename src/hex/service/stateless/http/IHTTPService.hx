@@ -5,7 +5,7 @@ import hex.service.stateless.IAsyncStatelessService;
 /**
  * @author Francis Bourre
  */
-interface IHTTPService extends IAsyncStatelessService<HTTPServiceEvent>
+interface IHTTPService<EventClass:ServiceEvent> extends IAsyncStatelessService<EventClass>
 {
 	var url( get, null ) : String;
 	var method( get, null ) : HTTPRequestMethod;

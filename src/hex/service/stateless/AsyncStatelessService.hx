@@ -50,6 +50,10 @@ class AsyncStatelessService<EventClass:ServiceEvent> extends StatelessService<Ev
 	{
 		this.wasUsed && this._throwIllegalStateError( "timeoutDuration value can't be changed after service call" );
 		this._timeoutDuration = duration;
+		if ( this._configuration != null )
+		{
+			this._configuration.serviceTimeout = this._timeoutDuration;
+		}
 		return this._timeoutDuration;
 	}
 
