@@ -13,7 +13,7 @@ import hex.module.IModuleListener;
  * ...
  * @author Francis Bourre
  */
-class ApplicationDomainDispatcher<ListenerType:IEventListener> extends DomainDispatcher<ListenerType, IEvent>
+class ApplicationDomainDispatcher<ListenerType:IEventListener> extends DomainDispatcher<ListenerType, IEvent> implements IApplicationDomainDispatcher<ListenerType>
 {
 	static private var _Instance : ApplicationDomainDispatcher<IModuleListener> = new ApplicationDomainDispatcher<IModuleListener>();
 
