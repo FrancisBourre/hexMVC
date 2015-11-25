@@ -13,7 +13,7 @@ class MainMVCTest
 	static public function main() : Void
 	{
 		var emu : ExMachinaUnitCore = new ExMachinaUnitCore();
-        emu.addListener( new ConsoleNotifier() );
+        emu.addListener( new ConsoleNotifier( false ) );
         emu.addTest( hex.HexMVCSuite );
         emu.run();
 	}

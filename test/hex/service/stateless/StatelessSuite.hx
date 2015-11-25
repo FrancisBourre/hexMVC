@@ -9,5 +9,5 @@ import hex.service.stateless.http.HTTPSuite;
 class StatelessSuite
 {
 	@suite("Stateless suite")
-    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest, HTTPSuite, StatelessServiceTest];
+    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest/*, HTTPSuite*/, StatelessServiceTest];
 }
