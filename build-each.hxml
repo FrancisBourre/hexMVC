@@ -2,4 +2,6 @@
 -cp src
 -cp test
 -cp /home/travis/hexcore/src
+-cp /home/travis/hexcore/test
 -cp /home/travis/hexunit/src
+-cp /home/travis/hexunit/test
