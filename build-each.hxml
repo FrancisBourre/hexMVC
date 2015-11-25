@@ -1,0 +1,5 @@
+-main MainMVCTest
+-cp src
+-cp test
+-cp /home/travis/hexcore/src
+-cp /home/travis/hexunit/src
