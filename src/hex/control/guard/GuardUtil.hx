@@ -26,7 +26,8 @@ class GuardUtil
         {
             for ( guard in guards )
             {
-                if ( Reflect.hasField( guard, "approve" ) ){
+                if ( Reflect.hasField( guard, "approve" ) )
+				{
                     guard = Reflect.field( guard, "approve" );
                 }
                 else if ( Std.is( guard, Class ) )
@@ -37,8 +38,7 @@ class GuardUtil
 
                 if ( Reflect.isFunction( guard ) )
                 {
-                    var scope : Dynamic = Reflect.field( guard, "scope" );
-                    var b : Bool = Reflect.callMethod( scope, guard, [] );
+                    var b : Bool = guard();
 
                     if ( !b )
                     {
