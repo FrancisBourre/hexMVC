@@ -100,7 +100,7 @@ class MacroExecutorTest
 	@test( "Test asyncCommandCalled" )
     public function testAsyncCommandCalled() : Void
     {
-		Assert.assertMethodCallThrows( IllegalStateException, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
+		Assert.assertMethodCallThrows( IllegalStateException, this._macroExecutor, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
 	}
 	
 	private function _onTestHasRunEveryCommand() : Void

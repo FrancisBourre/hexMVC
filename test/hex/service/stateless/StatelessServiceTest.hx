@@ -70,7 +70,7 @@ class StatelessServiceTest
 		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.call, [], "service called twice should throw IllegalStateException" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.call, [], "service called twice should throw IllegalStateException" );
 	}
 	
 	@test( "test release" )
@@ -90,7 +90,7 @@ class StatelessServiceTest
 		Assert.assertTrue( this.service.isCancelled, "'isCancelled' should return true" );
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.call, [], "service should throw IllegalStateException when called after release" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.call, [], "service should throw IllegalStateException when called after release" );
 	}
 	
 	@test( "Test handleCancel" )
@@ -115,7 +115,7 @@ class StatelessServiceTest
 		Assert.assertTrue( this.service.isCancelled, "'isCancelled' should return true" );
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleCancel, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.handleCancel, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, handler.onServiceCancelCallCount, "'handler' callback should be triggered once" );
 
@@ -149,7 +149,7 @@ class StatelessServiceTest
 		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleComplete, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.handleComplete, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, handler.onServiceCompleteCallCount, "'handler' callback should be triggered once" );
 		
@@ -183,7 +183,7 @@ class StatelessServiceTest
 		Assert.failTrue( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.assertTrue( this.service.hasFailed, "'hasFailed' property should return true" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleFail, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.handleFail, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, handler.onServiceFailCallCount, "'handler' callback should be triggered once" );
 		
@@ -198,7 +198,7 @@ class StatelessServiceTest
 	@test( "Test _getRemoteArguments call without override" )
     public function test_getRemoteArgumentsCall() : Void
     {
-		Assert.assertMethodCallThrows( UnsupportedOperationException, this.service.call_getRemoteArguments, [], "'_getRemoteArguments' call should throw an exception" );
+		Assert.assertMethodCallThrows( UnsupportedOperationException, this.service, this.service.call_getRemoteArguments, [], "'_getRemoteArguments' call should throw an exception" );
 	}
 	
 	@test( "Test _reset call" )

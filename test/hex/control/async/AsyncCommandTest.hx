@@ -40,7 +40,7 @@ class AsyncCommandTest
 		this._asyncCommand.preExecute();
 		Assert.assertTrue( this._asyncCommand.wasUsed, "'wasUsed' property should return true" );
 		Assert.assertTrue( this._asyncCommand.isRunning, "'isRunning' property should return true" );
-        Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand.preExecute,[], "AsyncCommand should throw IllegalStateException when calling preExecute method twice" );
+        Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand, this._asyncCommand.preExecute,[], "AsyncCommand should throw IllegalStateException when calling preExecute method twice" );
     }
 	
 	@test( "Test get payload" )
@@ -62,7 +62,8 @@ class AsyncCommandTest
 	@test( "Test execute" )
     public function testExecute() : Void
     {
-		Assert.assertMethodCallThrows( VirtualMethodException, ( new AsyncCommand() ).execute, [], "'execute' should throw VirtualMethodException" );
+		var asyncCommand : AsyncCommand = new AsyncCommand();
+		Assert.assertMethodCallThrows( VirtualMethodException, asyncCommand, asyncCommand.execute, [], "'execute' should throw VirtualMethodException" );
     }
 	
 	@test( "Test cancel" )
@@ -78,7 +79,7 @@ class AsyncCommandTest
 		Assert.failTrue( this._asyncCommand.isCancelled, "'isCancelled' property should return false" );
 		this._asyncCommand.cancel();
 		Assert.assertTrue( this._asyncCommand.isCancelled, "'isCancelled' property should return true" );
-		Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand.cancel, [], "AsyncCommand should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand, this._asyncCommand.cancel, [], "AsyncCommand should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.cancelCallbackCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.cancelCallbackCount, "'handler' callback should be triggered once" );
@@ -108,7 +109,7 @@ class AsyncCommandTest
 		Assert.failTrue( this._asyncCommand.hasCompleted, "'hasCompleted' property should return false" );
 		this._asyncCommand.execute();
 		Assert.assertTrue( this._asyncCommand.hasCompleted, "'hasCompleted' property should return true" );
-		Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand.execute, [], "AsyncCommand should throw IllegalStateException when calling execute twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand, this._asyncCommand.execute, [], "AsyncCommand should throw IllegalStateException when calling execute twice" );
 		
 		Assert.assertEquals( 1, listener.completeCallbackCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.completeCallbackCount, "'handler' callback should be triggered once" );
@@ -138,7 +139,7 @@ class AsyncCommandTest
 		Assert.failTrue( this._asyncCommand.hasFailed, "'hasFailed' property should return false" );
 		this._asyncCommand.fail();
 		Assert.assertTrue( this._asyncCommand.hasFailed, "'hasFailed' property should return true" );
-		Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand.fail, [], "AsyncCommand should throw IllegalStateException when failing twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this._asyncCommand, this._asyncCommand.fail, [], "AsyncCommand should throw IllegalStateException when failing twice" );
 		
 		Assert.assertEquals( 1, listener.failCallbackCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.failCallbackCount, "'handler' callback should be triggered once" );

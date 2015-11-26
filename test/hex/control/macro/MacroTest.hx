@@ -85,12 +85,12 @@ class MacroTest
 		
 		Assert.failTrue( myMacro.wasUsed, "'wasUsed' property should return false" );
 		Assert.failTrue( myMacro.isRunning, "'isRunning' property should return false" );
-		Assert.assertMethodCallThrows( NullPointerException, myMacro.preExecute, [], "" );
+		Assert.assertMethodCallThrows( NullPointerException, myMacro, myMacro.preExecute, [], "" );
 		
 		myMacro.macroExecutor = new MockMacroExecutor();
 		Assert.failTrue( myMacro.wasUsed, "'wasUsed' property should return false" );
 		Assert.failTrue( myMacro.isRunning, "'isRunning' property should return false" );
-		Assert.assertMethodCallThrows( VirtualMethodException, myMacro.preExecute, [], "" );
+		Assert.assertMethodCallThrows( VirtualMethodException, myMacro, myMacro.preExecute, [], "" );
 		
 		Assert.failTrue( myMacro.wasUsed, "'wasUsed' property should return false" );
 		Assert.failTrue( myMacro.isRunning, "'isRunning' property should return false" );
@@ -102,7 +102,7 @@ class MacroTest
 		Assert.assertEquals( this._macro, this._macroExecutor.listener, "macro should listen macroexecutor" );
 		Assert.assertTrue( this._macro.wasUsed, "'wasUsed' property should return true" );
 		Assert.assertTrue( this._macro.isRunning, "'isRunning' property should return true" );
-        Assert.assertMethodCallThrows( IllegalStateException, this._macro.preExecute,[], "Macro should throw IllegalStateException when calling preExecute method twice" );
+        Assert.assertMethodCallThrows( IllegalStateException, this._macro, this._macro.preExecute,[], "Macro should throw IllegalStateException when calling preExecute method twice" );
 	}
 	
 	@test( "Test addComand" )
@@ -131,7 +131,7 @@ class MacroTest
 		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
 		myMacro.macroExecutor = this._macroExecutor;
 		
-		Assert.assertMethodCallThrows( IllegalStateException, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
+		Assert.assertMethodCallThrows( IllegalStateException, myMacro, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
 		myMacro.preExecute();
 		var event : BasicEvent = new BasicEvent( "onTest", this );
 		myMacro.execute( event );

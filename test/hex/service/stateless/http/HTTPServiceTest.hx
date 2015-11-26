@@ -93,7 +93,7 @@ class HTTPServiceTest
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.call, [], "service called twice should throw IllegalStateException" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.call, [], "service called twice should throw IllegalStateException" );
 	}
 	
 	@test( "test release" )
@@ -115,7 +115,7 @@ class HTTPServiceTest
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.call, [], "service should throw IllegalStateException when called after release" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.call, [], "service should throw IllegalStateException when called after release" );
 	}
 	
 	@test( "Test handleCancel" )
@@ -145,7 +145,7 @@ class HTTPServiceTest
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
 		Assert.assertTrue( this.service.isCancelled, "'isCancelled' property should return true" );
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleCancel, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.handleCancel, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.onServiceCancelCallCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.onServiceCancelCallCount, "'handler' callback should be triggered once" );
@@ -186,7 +186,7 @@ class HTTPServiceTest
 		Assert.failTrue( this.service.hasFailed, "'hasFailed' property should return false" );
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleComplete, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.handleComplete, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.onServiceCompleteCallCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.onServiceCompleteCallCount, "'handler' callback should be triggered once" );
@@ -227,7 +227,7 @@ class HTTPServiceTest
 		Assert.assertTrue( this.service.hasFailed, "'hasFailed' property should return true" );
 		Assert.failTrue( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
-		Assert.assertMethodCallThrows( IllegalStateException, this.service.handleFail, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
+		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.handleFail, [], "StatelessService should throw IllegalStateException when calling cancel twice" );
 		
 		Assert.assertEquals( 1, listener.onServiceFailCallCount, "'listener' callback should be triggered once" );
 		Assert.assertEquals( 1, handler.onServiceFailCallCount, "'handler' callback should be triggered once" );
