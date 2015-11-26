@@ -70,6 +70,7 @@ class ViewHelper implements IViewHelper
 				this._isVisible = false;
 			}
 			
+			//TODO: figure out when we should fire it. now it's automatic - grosmar
 			this._fireInitialisation();
 		}
 		
