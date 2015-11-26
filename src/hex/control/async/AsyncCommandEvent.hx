@@ -22,4 +22,10 @@ class AsyncCommandEvent extends BasicEvent
 	{
 		return cast target;
 	}
+	
+	override public function clone():BasicEvent 
+	{
+		return new AsyncCommandEvent(this.type, this.target);
+	}
+	
 }

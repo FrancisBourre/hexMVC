@@ -34,7 +34,9 @@ class HTTPService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigurati
 		( cast this._configuration ).parameterFactory.setParameters( this._request, ( cast this._configuration ).parameters, _excludedParameters );
 		this.timeoutDuration = ( cast this.getConfiguration() ).serviceTimeout;
 		
-		this._request.async 		= true;
+		#if js
+			this._request.async 		= true; //TODO: check with flash
+		#end
 		this._request.onData 		= this._onData;
 		this._request.onError 		= this._onError;
 		this._request.onStatus 		= this._onStatus;
