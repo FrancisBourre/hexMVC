@@ -17,4 +17,9 @@ class ServiceEvent extends BasicEvent
 	{
 		return cast target;
 	}
+	
+	override public function clone():BasicEvent 
+	{
+		return new ServiceEvent(this.type, this.target) ;
+	}
 }
