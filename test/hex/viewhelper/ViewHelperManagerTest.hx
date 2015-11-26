@@ -195,6 +195,7 @@ private class MockView implements IView
 		
 	}
 
+	@:isVar
 	public var visible( get, set ) : Bool;
 	public function get_visible() : Bool 
 	{

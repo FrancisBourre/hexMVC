@@ -121,6 +121,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		return value;
 	}
 	
+	@:isVar
 	public var isInParallelMode( get, set ) : Bool;
 	function get_isInParallelMode() : Bool
 	{

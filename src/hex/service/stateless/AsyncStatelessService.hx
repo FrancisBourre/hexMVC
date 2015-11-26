@@ -40,6 +40,7 @@ class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
         return this._status == AsyncStatelessService.HAS_TIMEOUT;
     }
 	
+	@:isVar
 	public var timeoutDuration( get, set ) : UInt;
 	public function get_timeoutDuration() : UInt
 	{
