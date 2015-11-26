@@ -69,6 +69,8 @@ class ViewHelper implements IViewHelper
 			{
 				this._isVisible = false;
 			}
+			
+			this._fireInitialisation();
 		}
 		
 		return this._view;
