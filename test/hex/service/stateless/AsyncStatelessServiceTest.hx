@@ -149,7 +149,7 @@ class AsyncStatelessServiceTest
 		Assert.assertEquals( StatelessServiceEventType.CANCEL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.CANCEL" );
 		
 		service.addHandler( StatelessServiceEventType.CANCEL, anotherHandler.onServiceCancel );
-		Assert.assertIsNull( anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
+		Assert.assertEquals( 0, anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
     }
 	
 	@test( "Test handleComplete" )
@@ -185,7 +185,7 @@ class AsyncStatelessServiceTest
 		Assert.assertEquals( StatelessServiceEventType.COMPLETE, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.COMPLETE" );
 		
 		service.addHandler( StatelessServiceEventType.COMPLETE, anotherHandler.onServiceComplete );
-		Assert.assertIsNull( anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
+		Assert.assertEquals( 0, anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
     }
 	
 	@test( "Test handleFail" )
@@ -221,7 +221,7 @@ class AsyncStatelessServiceTest
 		Assert.assertEquals( StatelessServiceEventType.FAIL, handler.lastEventReceived.type, "'event.type' received by handler should be StatelessServiceEventType.FAIL" );
 		
 		this.service.addHandler( StatelessServiceEventType.FAIL, anotherHandler.onServiceFail );
-		Assert.assertIsNull( anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
+		Assert.assertEquals( 0, anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
     }
 	
 	@test( "test timeout" )
@@ -244,7 +244,7 @@ class AsyncStatelessServiceTest
 		Assert.assertEquals( AsyncStatelessServiceEventType.TIMEOUT, handler.lastEventReceived.type, "'event.type' received by handler should be AsyncStatelessServiceEventType.TIMEOUT" );
 		
 		this.service.addHandler( AsyncStatelessServiceEventType.TIMEOUT, anotherHandler.onServiceTimeout );
-		Assert.assertIsNull( anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );
+		Assert.assertEquals( 0, anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );
 	}
 	
 	@test( "Test _getRemoteArguments call without override" )
@@ -290,10 +290,10 @@ private class MockParser implements IParser
 private class MockStatelessServiceListener
 {
 	public var lastEventReceived 						: ServiceEvent;
-	public var onServiceCompleteCallCount 				: Int;
-	public var onServiceFailCallCount 					: Int;
-	public var onServiceCancelCallCount 				: Int;
-	public var onServiceTimeoutCallCount 				: Int;
+	public var onServiceCompleteCallCount 				: Int = 0;
+	public var onServiceFailCallCount 					: Int = 0;
+	public var onServiceCancelCallCount 				: Int = 0;
+	public var onServiceTimeoutCallCount 				: Int = 0;
 	
 	public function new()
 	{

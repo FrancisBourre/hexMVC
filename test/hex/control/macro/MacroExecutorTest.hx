@@ -41,7 +41,6 @@ class MacroExecutorTest
 		this._macroExecutor.setAsyncCommandListener( this._mockMacro );
 		
 		this._macroExecutor.injector = this._injector;
-		//this._macroExecutor.initialize( this._module );
     }
 
     @tearDown
