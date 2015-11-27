@@ -9,7 +9,7 @@ hexMVC is a powerful MVC+S framework
 * [hexInject](https://github.com/DoclerLabs/hexInject)
 	
 	
-## ServiceLocator example
+## Module example with service locator
 ```haxe
 private class MModule extends Module
 {
@@ -34,7 +34,7 @@ private class MModule extends Module
 }
 ```
 	
-## Model config example
+## Model config
 ```haxe
 private class MStatelessModelConfig extends StatelessModelConfig
 {
@@ -46,7 +46,7 @@ private class MStatelessModelConfig extends StatelessModelConfig
 ```
 
 
-## Command config example
+## Stateful command config
 ```haxe
 private class MStatefulCommandConfig extends StatefulCommandConfig
 {
@@ -64,7 +64,7 @@ private class MStatefulCommandConfig extends StatefulCommandConfig
 ```
 
 
-## Command example
+## Asynchronous command example with injections
 ```haxe
 @:rtti
 private class TestCommand extends AsyncCommand implements IHTTPServiceListener<GitServiceEvent>
