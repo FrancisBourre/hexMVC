@@ -1,5 +1,8 @@
 package hex.view.viewhelper;
 
+import hex.event.IEvent;
+import hex.event.IEventDispatcher;
+import hex.event.IEventListener;
 import hex.event.LightweightClosureDispatcher;
 import hex.module.IModule;
 
@@ -7,8 +10,12 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
+@:rtti
 class ViewHelper implements IViewHelper
 {
+	@inject
+	public var dispatcher 			: IEventDispatcher<IEventListener, IEvent>;
+	
 	private var _ed 				: LightweightClosureDispatcher<ViewHelperEvent>;
 	private var _owner 				: IModule;
 	private var _view 				: IView;

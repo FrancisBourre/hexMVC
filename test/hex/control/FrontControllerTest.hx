@@ -179,7 +179,6 @@ private class MockDependencyInjector implements IDependencyInjector
 		
 	}
 	
-	/* INTERFACE hex.di.IDependencyInjector */
 	public function hasMapping( type : Class<Dynamic>, name : String = '' ) : Bool 
 	{
 		return false;

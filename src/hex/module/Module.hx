@@ -16,6 +16,7 @@ import hex.error.VirtualMethodException;
 import hex.event.EventDispatcher;
 import hex.event.IEvent;
 import hex.event.IEventDispatcher;
+import hex.event.IEventListener;
 import hex.inject.Injector;
 import hex.log.Stringifier;
 import hex.module.dependency.IRuntimeDependencies;
@@ -30,7 +31,7 @@ import hex.view.viewhelper.ViewHelperManager;
  */
 class Module implements IModule
 {
-	private var _ed 				: IEventDispatcher<IModuleListener, IEvent>;
+	private var _ed 				: IEventDispatcher<IEventListener, IEvent>;
 	private var _domainDispatcher 	: IEventDispatcher<IModuleListener, IEvent>;
 	private var _injector 			: Injector;
 	
@@ -43,8 +44,9 @@ class Module implements IModule
 		this._injector.mapToValue( IModuleInjector, this._injector );
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
 		//this._metaDataProvider 	= MetaDataProvider.getInstance( this._injector );
-		this._injector.mapToSingleton( IFrontController, FrontController );
-		this._ed = new EventDispatcher<IModuleListener, IEvent>();
+		
+		this._ed = new EventDispatcher<IEventListener, IEvent>();
+		this._injector.mapToValue( IFrontController, new FrontController( this._ed, this._injector, this ) );
 		this._injector.mapToValue( IEventDispatcher, this._ed );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
