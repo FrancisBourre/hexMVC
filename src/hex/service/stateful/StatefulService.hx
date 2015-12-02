@@ -32,38 +32,34 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
         this._configuration = configuration;
 	}
 	
-	private function _lock():Void
+	private function _lock() : Void
 	{
 		this.inUse = true;
 	}
 
-	private function _release():Void
+	private function _release() : Void
 	{
 		this.inUse = false;
 	}
 
-	private function get_inUse():Bool
+	private function get_inUse() : Bool
 	{
 		return this.inUse;
 	}
 	
-	override public function addHandler(eventType:String, handler:EventClass->Void):Void 
+	override public function addHandler( eventType : String, handler : EventClass->Void ):Void 
 	{
 		this._ed.addEventListener( eventType, handler );
 	}
 	
-	override public function removeHandler(eventType:String, handler:EventClass->Void):Void 
+	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void 
 	{
 		this._ed.addEventListener( eventType, handler );
 	}
 	
-	private function _throwExecutionIllegalStateError( methodName : String ):Bool
+	private function _throwExecutionIllegalStateError( methodName : String ) : Bool
 	{
-		var msg : String = "";
-
-		msg = methodName + "() failed. This service is already in use.";
-		
-		return this._throwIllegalStateError( msg );
+		return this._throwIllegalStateError( methodName + "() failed. This service is already in use." );
 	}
 	
 	private function _throwIllegalStateError( msg : String ) : Bool 
