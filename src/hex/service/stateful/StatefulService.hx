@@ -19,7 +19,7 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 	
 	private var _ed			: LightweightClosureDispatcher<EventClass>;
 	
-	@:isVar public var inUse(get, null):Bool;
+	@:isVar public var inUse(get, null):Bool = false;
 
 	public function new() 
 	{

@@ -26,10 +26,6 @@ interface IStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
 	
 	function removeAllListeners() : Void;
 	
-	function addHandler( eventType : String, handler : EventClass->Void ) : Void;
-	
-	function removeHandler( eventType : String, handler : EventClass->Void ) : Void;
-	
 	var wasUsed( get, null ) : Bool;
 	
 	var isRunning( get, null ) : Bool;
