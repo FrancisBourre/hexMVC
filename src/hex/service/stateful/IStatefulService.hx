@@ -5,5 +5,5 @@ package hex.service.stateful;
  */
 interface IStatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends IService<EventClass, ConfigurationClass>
 {
-	
+	var inUse( get, null ) : Bool;
 }
