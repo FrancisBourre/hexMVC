@@ -57,7 +57,7 @@ class StatefulServiceTest
 	}
 	
 	@test( "event subscription" )
-    public function testLockAndRelease() : Void
+    public function testEventSubscriptions() : Void
 	{
 		//TODO: implement these tests - grosmar
 	}
