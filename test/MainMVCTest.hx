@@ -21,7 +21,7 @@ class MainMVCTest
 		var emu : ExMachinaUnitCore = new ExMachinaUnitCore();
         
 		#if flash
-		TestRunner.RENDER_DELAY = 0;
+		//TestRunner.RENDER_DELAY = 0;
 		emu.addListener( new TraceNotifier( false ) );
 		#else
 		emu.addListener( new ConsoleNotifier( false ) );

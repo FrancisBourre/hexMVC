@@ -67,8 +67,10 @@ class AsyncStatelessServiceTest
 		this.service.timeoutDuration = 200;
 		Assert.assertEquals( 200, service.timeoutDuration, "'serviceTimeout' value should be 200" );
 		
+		#if !flash
 		this.service.call();
 		Assert.assertSetPropertyThrows( IllegalStateException, this.service, "timeoutDuration", 40, "'timeoutDuration' call should throw IllegalStateException" );
+		#end
 	}
 	
 	@test( "test call" )
