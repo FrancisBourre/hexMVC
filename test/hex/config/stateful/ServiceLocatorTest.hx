@@ -1,5 +1,7 @@
 package hex.config.stateful;
 
+import hex.data.IParser;
+import hex.error.IllegalArgumentException;
 import hex.error.NoSuchElementException;
 import hex.event.IEvent;
 import hex.event.LightweightClosureDispatcher;
@@ -8,6 +10,9 @@ import hex.service.ServiceConfiguration;
 import hex.service.ServiceEvent;
 import hex.service.stateful.IStatefulService;
 import hex.service.stateful.StatefulService;
+import hex.service.stateless.IStatelessService;
+import hex.service.stateless.MockStatelessService;
+import hex.service.stateless.StatelessService;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -30,6 +35,61 @@ class ServiceLocatorTest
         this._serviceLocator = null;
     }
 	
+	/*@test( "Test getService with stateless service unnamed" )
+    public function testGetServiceWithStatelessServiceUnnamed() : Void
+    {
+		var statelessService : MockStatelessService = new MockStatelessService();
+		this._serviceLocator.addService( IStatelessService, statelessService );
+		Assert.methodCallThrows( IllegalArgumentException, this._serviceLocator, this._serviceLocator.getService, [ IStatelessService ], "'getService' should throw IllegalArgumentException" );
+	}*/
+	
+	@test( "Test configure with instance of not a stateful service" )
+    public function testConfigureWithInstanceOfNotAStatefulService() : Void
+    {
+		this._serviceLocator.addService( IStatelessService, new MockStatelessService(), "myServiceName" );
+		var injector : MockInjectorForMapToTypeTest = new MockInjectorForMapToTypeTest();
+		Assert.methodCallThrows( IllegalArgumentException, this._serviceLocator, this._serviceLocator.configure, [ injector, null, null ], "'getService' should throw IllegalArgumentException" );
+	}
+	
+	@test( "Test getService with stateless service unnamed" )
+    public function testGetServiceWithStatelessServiceUnnamed() : Void
+    {
+		this._serviceLocator.addService( IStatelessService, MockStatelessService );
+		Assert.isInstanceOf( this._serviceLocator.getService( IStatelessService ), MockStatelessService, "'getService' should return an instance of 'MockStatelessService'" );
+	}
+	
+	@test( "Test getService with stateless service named" )
+    public function testGetServiceWithStatelessServiceNamed() : Void
+    {
+		this._serviceLocator.addService( IStatelessService, MockStatelessService, "myServiceName" );
+		Assert.isInstanceOf( this._serviceLocator.getService( IStatelessService, "myServiceName" ), MockStatelessService, "'getService' should return instance of 'MockStatelessService'" );
+		Assert.methodCallThrows( NoSuchElementException, this._serviceLocator, this._serviceLocator.getService, [IStatelessService], "'getService' without service name should throw NoSuchElementException" );
+	}
+	
+	@test( "Test configure with stateless service unnnamed" )
+    public function testConfigureWithStatelessServiceUnnamed() : Void
+    {
+		this._serviceLocator.addService( IStatelessService, MockStatelessService );
+		var injector : MockInjectorForMapToTypeTest = new MockInjectorForMapToTypeTest();
+		this._serviceLocator.configure( injector, null, null );
+		
+		Assert.equals( IStatelessService, injector.clazz, "injector should map the class" );
+		Assert.equals( injector.type, MockStatelessService, "injector should map the service instance" );
+		Assert.equals( "", injector.name, "injector should map the service name" );
+	}
+	
+	@test( "Test configure with stateless service named" )
+    public function testConfigureWithStatelessServiceNamed() : Void
+    {
+		this._serviceLocator.addService( IStatelessService, MockStatelessService, "myServiceName" );
+		var injector : MockInjectorForMapToTypeTest = new MockInjectorForMapToTypeTest();
+		this._serviceLocator.configure( injector, null, null );
+		
+		Assert.equals( IStatelessService, injector.clazz, "injector should map the service class" );
+		Assert.equals( injector.type, MockStatelessService, "injector should map the service type" );
+		Assert.equals( "myServiceName", injector.name, "injector should map the service name" );
+	}
+	
 	@test( "Test getService with stateful service unnamed" )
     public function testGetServiceWithStatefulServiceUnnamed() : Void
     {
@@ -48,7 +108,7 @@ class ServiceLocatorTest
 	}
 	
 	@test( "Test configure with stateful service unnnamed" )
-    public function testGetConfigureWithStatefulServiceUnnamed() : Void
+    public function testConfigureWithStatefulServiceUnnamed() : Void
     {
 		var dispatcher : LightweightClosureDispatcher<IEvent> = new LightweightClosureDispatcher();
 		
@@ -71,7 +131,7 @@ class ServiceLocatorTest
 	}
 	
 	@test( "Test configure with stateful service named" )
-    public function testGetConfigureWithStatefulService() : Void
+    public function testConfigureWithStatefulServiceNamed() : Void
     {
 		var dispatcher : LightweightClosureDispatcher<IEvent> = new LightweightClosureDispatcher();
 		
@@ -104,6 +164,20 @@ private class MockStatefulService extends StatefulService<ServiceEvent, ServiceC
 	public function dispatchEvent( e : ServiceEvent ) : Void
 	{
 		this._compositeDispatcher.dispatchEvent( e );
+	}
+}
+
+private class MockInjectorForMapToTypeTest extends MockDependencyInjector
+{
+	public var clazz	: Class<Dynamic>;
+	public var type		: Class<Dynamic>;
+	public var name		: String;
+	
+	override public function mapToType( clazz : Class<Dynamic>, type : Class<Dynamic>, name : String = '' ) : Void 
+	{
+		this.clazz 	= clazz;
+		this.type 	= type;
+		this.name 	= name;
 	}
 }
 
