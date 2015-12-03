@@ -1,6 +1,5 @@
 package hex.config.stateful;
 
-import hex.data.IParser;
 import hex.error.IllegalArgumentException;
 import hex.error.NoSuchElementException;
 import hex.event.IEvent;
@@ -12,7 +11,6 @@ import hex.service.stateful.IStatefulService;
 import hex.service.stateful.StatefulService;
 import hex.service.stateless.IStatelessService;
 import hex.service.stateless.MockStatelessService;
-import hex.service.stateless.StatelessService;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -34,14 +32,6 @@ class ServiceLocatorTest
     {
         this._serviceLocator = null;
     }
-	
-	/*@test( "Test getService with stateless service unnamed" )
-    public function testGetServiceWithStatelessServiceUnnamed() : Void
-    {
-		var statelessService : MockStatelessService = new MockStatelessService();
-		this._serviceLocator.addService( IStatelessService, statelessService );
-		Assert.methodCallThrows( IllegalArgumentException, this._serviceLocator, this._serviceLocator.getService, [ IStatelessService ], "'getService' should throw IllegalArgumentException" );
-	}*/
 	
 	@test( "Test configure with instance of not a stateful service" )
     public function testConfigureWithInstanceOfNotAStatefulService() : Void
