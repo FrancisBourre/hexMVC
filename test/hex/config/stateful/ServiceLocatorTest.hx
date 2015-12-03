@@ -1,6 +1,8 @@
 package hex.config.stateful;
 
 import hex.error.NoSuchElementException;
+import hex.event.IEvent;
+import hex.event.LightweightClosureDispatcher;
 import hex.MockDependencyInjector;
 import hex.service.ServiceConfiguration;
 import hex.service.ServiceEvent;
@@ -48,27 +50,47 @@ class ServiceLocatorTest
 	@test( "Test configure with stateful service unnnamed" )
     public function testGetConfigureWithStatefulServiceUnnamed() : Void
     {
+		var dispatcher : LightweightClosureDispatcher<IEvent> = new LightweightClosureDispatcher();
+		
 		var statefulService : MockStatefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService );
 		var injector : MockInjectorForMapToValueTest = new MockInjectorForMapToValueTest();
-		this._serviceLocator.configure( injector );
+		this._serviceLocator.configure( injector, dispatcher, null );
 		
 		Assert.equals( IStatefulService, injector.clazz, "injector should map the class" );
 		Assert.equals( statefulService, injector.value, "injector should map the service instance" );
 		Assert.equals( "", injector.name, "injector should map the service name" );
+		
+		var listener : MockServiceListener = new MockServiceListener();
+		dispatcher.addEventListener( "test", listener.onTest );
+		var event : ServiceEvent = new ServiceEvent( "test", statefulService );
+		statefulService.dispatchEvent( event );
+		
+		Assert.equals( event, listener.lastEventReceived, "event should be received by sub-dispatcher listener" );
+		Assert.equals( 1, listener.eventReceivedCount, "event should be received by sub-dispatcher listener once" );
 	}
 	
 	@test( "Test configure with stateful service named" )
     public function testGetConfigureWithStatefulService() : Void
     {
+		var dispatcher : LightweightClosureDispatcher<IEvent> = new LightweightClosureDispatcher();
+		
 		var statefulService : MockStatefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService, "myServiceName" );
 		var injector : MockInjectorForMapToValueTest = new MockInjectorForMapToValueTest();
-		this._serviceLocator.configure( injector );
+		this._serviceLocator.configure( injector, dispatcher, null );
 		
 		Assert.equals( IStatefulService, injector.clazz, "injector should map the class" );
 		Assert.equals( statefulService, injector.value, "injector should map the service instance" );
 		Assert.equals( "myServiceName", injector.name, "injector should map the service name" );
+		
+		var listener : MockServiceListener = new MockServiceListener();
+		dispatcher.addEventListener( "test", listener.onTest );
+		var event : ServiceEvent = new ServiceEvent( "test", statefulService );
+		statefulService.dispatchEvent( event );
+		
+		Assert.equals( event, listener.lastEventReceived, "event should be received by sub-dispatcher listener" );
+		Assert.equals( 1, listener.eventReceivedCount, "event should be received by sub-dispatcher listener once" );
 	}
 }
 
@@ -77,6 +99,11 @@ private class MockStatefulService extends StatefulService<ServiceEvent, ServiceC
 	public function new()
 	{
 		super();
+	}
+	
+	public function dispatchEvent( e : ServiceEvent ) : Void
+	{
+		this._compositeDispatcher.dispatchEvent( e );
 	}
 }
 
@@ -91,5 +118,22 @@ private class MockInjectorForMapToValueTest extends MockDependencyInjector
 		this.clazz 	= clazz;
 		this.value 	= value;
 		this.name 	= name;
+	}
+}
+
+private class MockServiceListener
+{
+	public var lastEventReceived 	: IEvent;
+	public var eventReceivedCount 	: Int = 0;
+	
+	public function new()
+	{
+		
+	}
+	
+	public function onTest( e : IEvent ) : Void
+	{
+		this.lastEventReceived = e;
+		this.eventReceivedCount++;
 	}
 }

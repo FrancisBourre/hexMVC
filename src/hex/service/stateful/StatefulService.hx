@@ -1,8 +1,8 @@
 package hex.service.stateful;
 
 import hex.error.IllegalStateException;
+import hex.event.CompositeClosureDispatcher;
 import hex.event.IEvent;
-import hex.event.IEventDispatcher;
 import hex.event.IEventListener;
 import hex.event.LightweightClosureDispatcher;
 import hex.service.AbstractService;
@@ -14,16 +14,24 @@ import hex.service.stateful.IStatefulService;
  */
 class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends AbstractService<EventClass, ConfigurationClass> implements IStatefulService<EventClass, ConfigurationClass>
 {
-	@inject
-	public var dispatcher	: IEventDispatcher<IEventListener, IEvent>;
+	private var _dispatcher				: LightweightClosureDispatcher<EventClass>;
+	private var _compositeDispatcher	: CompositeClosureDispatcher<EventClass>;
 	
-	private var _ed			: LightweightClosureDispatcher<EventClass>;
-	
-	@:isVar public var inUse(get, null):Bool = false;
+	@:isVar public var inUse( get, null ) : Bool = false;
 
 	public function new() 
 	{
 		super();
+		
+		this._compositeDispatcher 	= new CompositeClosureDispatcher();
+		this._dispatcher 			= new LightweightClosureDispatcher();
+		
+		this._compositeDispatcher.add( this._dispatcher );
+	}
+	
+	public function getDispatcher() : CompositeClosureDispatcher<EventClass>
+	{
+		return this._compositeDispatcher;
 	}
 	
 	override public function setConfiguration( configuration : ConfigurationClass ) : Void
@@ -47,14 +55,14 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 		return this.inUse;
 	}
 	
-	override public function addHandler( eventType : String, handler : EventClass->Void ):Void 
+	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void 
 	{
-		this._ed.addEventListener( eventType, handler );
+		this._dispatcher.addEventListener( eventType, handler );
 	}
 	
 	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void 
 	{
-		this._ed.addEventListener( eventType, handler );
+		this._dispatcher.addEventListener( eventType, handler );
 	}
 	
 	private function _throwExecutionIllegalStateError( methodName : String ) : Bool

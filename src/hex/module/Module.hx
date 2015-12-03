@@ -287,7 +287,7 @@ class Module implements IModule
 			var configuration : IStatefulConfig = configurations[ i ];
 			if ( configuration != null )
 			{
-				configuration.configure( this._injector );
+				configuration.configure( this._injector, this._ed, this );
 			}
 		}
 	}

@@ -1,6 +1,9 @@
 package hex.module;
 import hex.config.stateful.IStatefulConfig;
 import hex.di.IDependencyInjector;
+import hex.event.IEvent;
+import hex.event.IEventDispatcher;
+import hex.event.IEventListener;
 
 /**
  * ...
@@ -51,7 +54,7 @@ private class MockStatefulConfig implements IStatefulConfig
 		
 	}
 	
-	public function configure( injector : IDependencyInjector ) : Void 
+	public function configure( injector : IDependencyInjector, dispatcher : IEventDispatcher<IEventListener, IEvent>, module : IModule ) : Void
 	{
 		this.injector = injector;
 	}

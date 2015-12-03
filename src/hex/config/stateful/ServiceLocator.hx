@@ -4,6 +4,11 @@ import hex.collection.Locator;
 import hex.di.IDependencyInjector;
 import hex.error.IllegalArgumentException;
 import hex.error.NoSuchElementException;
+import hex.event.CompositeClosureDispatcher;
+import hex.event.IEvent;
+import hex.event.IEventDispatcher;
+import hex.event.IEventListener;
+import hex.module.IModule;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
 import hex.service.ServiceEvent;
@@ -50,7 +55,7 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 		}
 	}
 	
-	public function configure( injector : IDependencyInjector ) : Void 
+	public function configure( injector : IDependencyInjector, dispatcher : IEventDispatcher<IEventListener, IEvent>, module : IModule ) : Void
 	{
 		var keys = this.keys();
         for ( className in keys )
@@ -84,7 +89,12 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 			}
 			else if ( Std.is( service, IStatefulService ) )
 			{
-				//( ( service as AStatefulService ).contextHub as ICommonHUB ).addHUB( contextHUB );
+				var serviceDispatcher : CompositeClosureDispatcher<IEvent> = ( cast service ).getDispatcher();
+				if ( serviceDispatcher != null )
+				{
+					serviceDispatcher.add( dispatcher );
+				}
+				
 				if ( helper.mapName.length > 0 )
 				{
 					injector.mapToValue( serviceClassKey, service, helper.mapName );

@@ -7,6 +7,7 @@ import hex.di.IDependencyInjector;
 import hex.error.VirtualMethodException;
 import hex.event.IEvent;
 import hex.event.IEventDispatcher;
+import hex.event.IEventListener;
 import hex.module.IModule;
 import hex.module.IModuleListener;
 
@@ -27,7 +28,7 @@ class StatefulCommandConfig implements IStatefulConfig
 	/**
      * Configure will be invoked after dependencies have been supplied
      */
-	public function configure( injector : IDependencyInjector ) : Void
+	public function configure( injector : IDependencyInjector, dispatcher : IEventDispatcher<IEventListener, IEvent>, module : IModule ) : Void
 	{
 		this._frontController = injector.getInstance( IFrontController );
 	}
