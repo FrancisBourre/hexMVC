@@ -55,32 +55,32 @@ class MacroExecutorTest
 	@test( "Test subCommandIndex" )
     public function testSubCommandIndex() : Void
     {
-		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
 		this._macroExecutor.add( MockAsyncCommand );
 		this._macroExecutor.executeNextCommand();
-		Assert.assertEquals( 1, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 1" );
+		Assert.equals( 1, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 1" );
 	}
 	
 	@test( "Test hasNextCommandMapping" )
     public function testHasNextCommandMapping() : Void
     {
-		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 		this._macroExecutor.add( MockAsyncCommand );
-		Assert.assertTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
+		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
 		this._macroExecutor.executeNextCommand();
-		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 	}
 	
 	@async( "Test hasRunEveryCommand" )
     public function testHasRunEveryCommand() : Void
     {
-		Assert.assertTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
+		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
 		this._macroExecutor.add( MockCommand );
-		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 		this._macroExecutor.executeNextCommand();
-		Assert.assertTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
+		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
 		this._macroExecutor.add( MockAsyncCommand );
-		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 		this._macroExecutor.executeNextCommand();
 		Timer.delay( MethodRunner.asyncHandler( this._onTestHasRunEveryCommand ), 100 );
 	}
@@ -91,45 +91,45 @@ class MacroExecutorTest
 		this._macroExecutor.add( MockCommand );
 		this._macroExecutor.add( MockAsyncCommand );
 		var command : ICommand = this._macroExecutor.executeNextCommand();
-		Assert.assertIsType( command, MockCommand, "command should be typed 'MockCommand'" );
+		Assert.isInstanceOf( command, MockCommand, "command should be typed 'MockCommand'" );
 		command = this._macroExecutor.executeNextCommand();
-		Assert.assertIsType( command, MockAsyncCommand, "command should be typed 'MockCommand'" );
+		Assert.isInstanceOf( command, MockAsyncCommand, "command should be typed 'MockCommand'" );
 	}
 	
 	@test( "Test asyncCommandCalled" )
     public function testAsyncCommandCalled() : Void
     {
-		Assert.assertMethodCallThrows( IllegalStateException, this._macroExecutor, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
+		Assert.methodCallThrows( IllegalStateException, this._macroExecutor, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
 	}
 	
 	private function _onTestHasRunEveryCommand() : Void
 	{
-		Assert.assertTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
+		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
 	}
 	
 	@test( "Test add" )
     public function testAdd() : Void
     {
-		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 		
 		var commandMapping : ICommandMapping = this._macroExecutor.add( MockAsyncCommand );
-		Assert.assertEquals( MockAsyncCommand, commandMapping.getCommandClass(), "'add' should return expected mapping with right same command class" );
-		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
-		Assert.assertTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
-		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+		Assert.equals( MockAsyncCommand, commandMapping.getCommandClass(), "'add' should return expected mapping with right same command class" );
+		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
+		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 	}
 	
 	@test( "Test add mapping" )
     public function testAddMapping() : Void
     {
-		Assert.failTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
+		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 		
 		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommand );
 		var returnedCommandMapping : ICommandMapping = this._macroExecutor.addMapping( commandMapping );
-		Assert.assertEquals( commandMapping, returnedCommandMapping, "'addMapping' should return ethe same command mapping" );
-		Assert.assertEquals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
-		Assert.assertTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
-		Assert.failTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
+		Assert.equals( commandMapping, returnedCommandMapping, "'addMapping' should return ethe same command mapping" );
+		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
+		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 	}
 	
 	@test( "Test command execution" )
@@ -161,29 +161,29 @@ class MacroExecutorTest
 		var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping, event );
 		
-		Assert.failIsNull( command, "'command' should not be null" );
-		Assert.assertIsType( command, MockAsyncCommandForTestingExecution, "'command' shouldbe typed 'MockAsyncCommandForTestingExecution'" );
+		Assert.isNotNull( command, "'command' should not be null" );
+		Assert.isInstanceOf( command, MockAsyncCommandForTestingExecution, "'command' shouldbe typed 'MockAsyncCommandForTestingExecution'" );
 		
-		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
-		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
+		Assert.equals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
+		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
 //		Assert.assertEquals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
-		Assert.assertEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.equals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
-		Assert.assertDeepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.deepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
-		Assert.assertArrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
-		Assert.assertArrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
-		Assert.assertArrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
+		Assert.arrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
+		Assert.arrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
+		Assert.arrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
 		
-		Assert.assertEquals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
-		Assert.assertEquals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
+		Assert.equals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
+		Assert.equals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
 		
-		Assert.assertDeepEquals( 	[ [mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
+		Assert.deepEquals( 	[ [mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
 									this._injector.mappedPayloads,
 									"'CommandExecutor.mapPayload' should map right values" );
 									
-		Assert.assertDeepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
+		Assert.deepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
 									this._injector.unmappedPayloads,
 									"'CommandExecutor.unmapPayload' should unmap right values" );
 	}
@@ -193,8 +193,8 @@ class MacroExecutorTest
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeApproved] );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
-		Assert.failIsNull( command, "'command' should not be null" );
-		Assert.assertIsType( command, MockCommand, "'command' shouldbe typed 'MockCommand'" );
+		Assert.isNotNull( command, "'command' should not be null" );
+		Assert.isInstanceOf( command, MockCommand, "'command' shouldbe typed 'MockCommand'" );
 	}
 	
 	@test( "Test command execution with refused guards" )
@@ -205,8 +205,8 @@ class MacroExecutorTest
 		
 		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeRefused] );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
-		Assert.assertIsNull( command, "'command' should be null" );
-		Assert.assertEquals( 1, failListener.onAsyncCommandFailCallCount, "'onAsyncCommandFail' method should be called once" );
+		Assert.isNull( command, "'command' should be null" );
+		Assert.equals( 1, failListener.onAsyncCommandFailCallCount, "'onAsyncCommandFail' method should be called once" );
 		//Assert.assertIsType( failListener.failEvent, AsyncCommandEvent, "'onAsyncCommandFail' method should be called once" );
 	}
 	

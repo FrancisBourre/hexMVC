@@ -72,27 +72,27 @@ class CommandExecutorTest
 		var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
 		this._commandExecutor.executeCommand( commandMapping, event, mockForTriggeringUnmap.unmap );
 		
-		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
-		Assert.assertEquals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
+		Assert.equals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
+		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
-		Assert.assertEquals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
-		Assert.assertEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.equals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
+		Assert.equals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
-		Assert.assertDeepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.deepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
 		
-		Assert.assertArrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
-		Assert.assertArrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
-		Assert.assertArrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
+		Assert.arrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
+		Assert.arrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
+		Assert.arrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
 		
-		Assert.assertEquals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
-		Assert.assertEquals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
-		Assert.assertEquals( 1, mockForTriggeringUnmap.unmapCallCount, "unmap handler should be called once" );
+		Assert.equals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
+		Assert.equals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
+		Assert.equals( 1, mockForTriggeringUnmap.unmapCallCount, "unmap handler should be called once" );
 		
-		Assert.assertDeepEquals( 	[ [mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
+		Assert.deepEquals( 	[ [mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
 									this._injector.mappedPayloads,
 									"'CommandExecutor.mapPayload' should map right values" );
 									
-		Assert.assertDeepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
+		Assert.deepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
 									this._injector.unmappedPayloads,
 									"'CommandExecutor.unmapPayload' should unmap right values" );
 	}

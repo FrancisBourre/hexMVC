@@ -27,7 +27,7 @@ class AsyncCommandUtilTest
 		var listeners : Array<AsyncCommandEvent->Void> = [listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel];
 		AsyncCommandUtil.addListenersToAsyncCommand( listeners, mockAsyncCommandForTestingListeners.addCompleteHandler );
 		
-		Assert.assertDeepEquals( 	listeners, 
+		Assert.deepEquals( 	listeners, 
 									mockAsyncCommandForTestingListeners.handlers,
 									"'CommandExecutor.mapPayload' should unmap right values" );
 	}

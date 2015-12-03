@@ -16,11 +16,11 @@ class GuardUtilTest
     {
 		var guards : Array<Dynamic> = [ MockApproveGuard ];
         var isApproved : Bool = GuardUtil.guardsApprove( guards );
-        Assert.assertTrue( isApproved, "'GuardUtil.guardsApprove' property should return true" );
+        Assert.isTrue( isApproved, "'GuardUtil.guardsApprove' property should return true" );
 		
 		guards = [ MockRefuseGuard ];
         isApproved = GuardUtil.guardsApprove( guards );
-        Assert.failTrue( isApproved, "'GuardUtil.guardsApprove' property should return false" );
+        Assert.isFalse( isApproved, "'GuardUtil.guardsApprove' property should return false" );
     }
 	
 	@test( "Test guard-class approval with injector" )
@@ -30,11 +30,11 @@ class GuardUtilTest
 		
 		var guards 		: Array<Dynamic> 	= [ MockApproveGuard ];
         var isApproved 	: Bool 				= GuardUtil.guardsApprove( guards, injector );
-        Assert.assertTrue( isApproved, "'GuardUtil.guardsApprove' property should return true" );
+        Assert.isTrue( isApproved, "'GuardUtil.guardsApprove' property should return true" );
 		
 		guards 		= [ MockRefuseGuard ];
         isApproved 	= GuardUtil.guardsApprove( guards, injector );
-        Assert.failTrue( isApproved, "'GuardUtil.guardsApprove' property should return false" );
+        Assert.isFalse( isApproved, "'GuardUtil.guardsApprove' property should return false" );
     }
 }
 

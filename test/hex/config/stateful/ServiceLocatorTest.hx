@@ -33,7 +33,7 @@ class ServiceLocatorTest
     {
 		var statefulService : MockStatefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService );
-		Assert.assertEquals( statefulService, this._serviceLocator.getService( IStatefulService ), "'getService' should return service added previously" );
+		Assert.equals( statefulService, this._serviceLocator.getService( IStatefulService ), "'getService' should return service added previously" );
 	}
 	
 	@test( "Test getService with stateful service named" )
@@ -41,8 +41,8 @@ class ServiceLocatorTest
     {
 		var statefulService : MockStatefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService, "myServiceName" );
-		Assert.assertEquals( statefulService, this._serviceLocator.getService( IStatefulService, "myServiceName" ), "'getService' should return service added previously" );
-		Assert.assertMethodCallThrows( NoSuchElementException, this._serviceLocator, this._serviceLocator.getService, [IStatefulService], "'getService' without service name should throw NoSuchElementException" );
+		Assert.equals( statefulService, this._serviceLocator.getService( IStatefulService, "myServiceName" ), "'getService' should return service added previously" );
+		Assert.methodCallThrows( NoSuchElementException, this._serviceLocator, this._serviceLocator.getService, [IStatefulService], "'getService' without service name should throw NoSuchElementException" );
 	}
 	
 	@test( "Test configure with stateful service unnnamed" )
@@ -53,9 +53,9 @@ class ServiceLocatorTest
 		var injector : MockInjectorForMapToValueTest = new MockInjectorForMapToValueTest();
 		this._serviceLocator.configure( injector );
 		
-		Assert.assertEquals( IStatefulService, injector.clazz, "injector should map the class" );
-		Assert.assertEquals( statefulService, injector.value, "injector should map the service instance" );
-		Assert.assertEquals( "", injector.name, "injector should map the service name" );
+		Assert.equals( IStatefulService, injector.clazz, "injector should map the class" );
+		Assert.equals( statefulService, injector.value, "injector should map the service instance" );
+		Assert.equals( "", injector.name, "injector should map the service name" );
 	}
 	
 	@test( "Test configure with stateful service named" )
@@ -66,9 +66,9 @@ class ServiceLocatorTest
 		var injector : MockInjectorForMapToValueTest = new MockInjectorForMapToValueTest();
 		this._serviceLocator.configure( injector );
 		
-		Assert.assertEquals( IStatefulService, injector.clazz, "injector should map the class" );
-		Assert.assertEquals( statefulService, injector.value, "injector should map the service instance" );
-		Assert.assertEquals( "myServiceName", injector.name, "injector should map the service name" );
+		Assert.equals( IStatefulService, injector.clazz, "injector should map the class" );
+		Assert.equals( statefulService, injector.value, "injector should map the service instance" );
+		Assert.equals( "myServiceName", injector.name, "injector should map the service name" );
 	}
 }
 

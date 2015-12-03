@@ -16,7 +16,7 @@ class ServiceEventTest
         var type : String = "type";
 		var target : MockStatelessService = new MockStatelessService();
         var e : ServiceEvent = new ServiceEvent( type, target );
-        Assert.assertEquals( type, e.type, "'type' property should be the same passed to constructor" );
+        Assert.equals( type, e.type, "'type' property should be the same passed to constructor" );
     }
 
     @test( "Test 'target' parameter passed to constructor" )
@@ -25,7 +25,7 @@ class ServiceEventTest
         var target : MockStatelessService = new MockStatelessService();
         var e : ServiceEvent = new ServiceEvent( "", target );
 
-        Assert.assertEquals( target, e.target, "'target' property should be the same passed to constructor" );
+        Assert.equals( target, e.target, "'target' property should be the same passed to constructor" );
     }
 
     @test( "Test clone method" )
@@ -36,8 +36,8 @@ class ServiceEventTest
         var e : ServiceEvent = new ServiceEvent( type, target );
         var clonedEvent : ServiceEvent = cast e.clone();
 
-        Assert.assertEquals( type, clonedEvent.type, "'clone' method should return cloned event with same 'type' property" );
-        Assert.assertEquals( target, clonedEvent.target, "'clone' method should return cloned event with same 'target' property" );
+        Assert.equals( type, clonedEvent.type, "'clone' method should return cloned event with same 'type' property" );
+        Assert.equals( target, clonedEvent.target, "'clone' method should return cloned event with same 'target' property" );
     }
 	
 	@test( "Test 'service' parameter passed to constructor" )
@@ -46,6 +46,6 @@ class ServiceEventTest
 		var service : MockStatelessService = new MockStatelessService();
         var e : ServiceEvent = new ServiceEvent( "eventType", service );
 
-        Assert.assertEquals( service, e.getService(), "'getStatelessService' accessor should return property passed to constructor" );
+        Assert.equals( service, e.getService(), "'getStatelessService' accessor should return property passed to constructor" );
     }
 }

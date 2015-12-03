@@ -26,7 +26,7 @@ class PayloadUtilTest
 		var payloads 					: Array<ExecutionPayload> 	= [ mockPayload, stringPayload, anotherMockPayload ];
 		PayloadUtil.mapPayload( payloads, injector );
 		
-        Assert.assertDeepEquals( 	[[mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
+        Assert.deepEquals( 	[[mockImplementation, IMockType, "mockPayload"], ["test", String, "stringPayload"], [anotherMockImplementation, IMockType, "anotherMockPayload"] ], 
 									injector.mappedPayloads,
 									"'CommandExecutor.mapPayload' should map right values" );
     }
@@ -46,7 +46,7 @@ class PayloadUtilTest
 		var payloads 					: Array<ExecutionPayload> 	= [ mockPayload, stringPayload, anotherMockPayload ];
 		PayloadUtil.unmapPayload( payloads, injector );
 		
-        Assert.assertDeepEquals( 	[[IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
+        Assert.deepEquals( 	[[IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
 									injector.unmappedPayloads,
 									"'CommandExecutor.mapPayload' should unmap right values" );
     }

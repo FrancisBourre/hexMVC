@@ -48,34 +48,34 @@ class MacroTest
 	@test( "Test atomic property" )
 	public function testIsAtomic() : Void
 	{
-		Assert.assertTrue( this._macro.isAtomic, "'isAtomic' should return true" );
+		Assert.isTrue( this._macro.isAtomic, "'isAtomic' should return true" );
 
 		this._macro.isAtomic = false;
-		Assert.failTrue( this._macro.isAtomic, "'isAtomic' should return false" );
+		Assert.isFalse( this._macro.isAtomic, "'isAtomic' should return false" );
 
 		this._macro.isAtomic = true;
-		Assert.assertTrue( this._macro.isAtomic, "'isAtomic' should return true" );
+		Assert.isTrue( this._macro.isAtomic, "'isAtomic' should return true" );
 	}
 	
 	@test( "Test parallel and sequence modes" )
 	public function testParallelAndSequenceModes() : Void
 	{
-		Assert.assertTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
-		Assert.failTrue( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
+		Assert.isTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
+		Assert.isFalse( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
 
 		this._macro.isInSequenceMode = false;
-		Assert.failTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return false" );
-		Assert.assertTrue( this._macro.isInParallelMode, "'isInParallelMode' should return true" );
+		Assert.isFalse( this._macro.isInSequenceMode, "'isInSequenceMode' should return false" );
+		Assert.isTrue( this._macro.isInParallelMode, "'isInParallelMode' should return true" );
 		this._macro.isInSequenceMode = true;
-		Assert.assertTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
-		Assert.failTrue( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
+		Assert.isTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
+		Assert.isFalse( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
 
 		this._macro.isInParallelMode = true;
-		Assert.failTrue( _macro.isInSequenceMode, "'isInSequenceMode' should return false" );
-		Assert.assertTrue( _macro.isInParallelMode, "'isInParallelMode' should return true" );
+		Assert.isFalse( _macro.isInSequenceMode, "'isInSequenceMode' should return false" );
+		Assert.isTrue( _macro.isInParallelMode, "'isInParallelMode' should return true" );
 		this._macro.isInParallelMode = false;
-		Assert.assertTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
-		Assert.failTrue( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
+		Assert.isTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
+		Assert.isFalse( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
 	}
 	
 	@test( "Test preExecute without overriding prepare" )
@@ -83,26 +83,26 @@ class MacroTest
 	{
 		var myMacro : MockEmptyMacro = new MockEmptyMacro();
 		
-		Assert.failTrue( myMacro.wasUsed, "'wasUsed' property should return false" );
-		Assert.failTrue( myMacro.isRunning, "'isRunning' property should return false" );
-		Assert.assertMethodCallThrows( NullPointerException, myMacro, myMacro.preExecute, [], "" );
+		Assert.isFalse( myMacro.wasUsed, "'wasUsed' property should return false" );
+		Assert.isFalse( myMacro.isRunning, "'isRunning' property should return false" );
+		Assert.methodCallThrows( NullPointerException, myMacro, myMacro.preExecute, [], "" );
 		
 		myMacro.macroExecutor = new MockMacroExecutor();
-		Assert.failTrue( myMacro.wasUsed, "'wasUsed' property should return false" );
-		Assert.failTrue( myMacro.isRunning, "'isRunning' property should return false" );
-		Assert.assertMethodCallThrows( VirtualMethodException, myMacro, myMacro.preExecute, [], "" );
+		Assert.isFalse( myMacro.wasUsed, "'wasUsed' property should return false" );
+		Assert.isFalse( myMacro.isRunning, "'isRunning' property should return false" );
+		Assert.methodCallThrows( VirtualMethodException, myMacro, myMacro.preExecute, [], "" );
 		
-		Assert.failTrue( myMacro.wasUsed, "'wasUsed' property should return false" );
-		Assert.failTrue( myMacro.isRunning, "'isRunning' property should return false" );
+		Assert.isFalse( myMacro.wasUsed, "'wasUsed' property should return false" );
+		Assert.isFalse( myMacro.isRunning, "'isRunning' property should return false" );
 		
-		Assert.failTrue( this._macro.wasUsed, "'wasUsed' property should return false" );
-		Assert.failTrue( this._macro.isRunning, "'isRunning' property should return false" );
+		Assert.isFalse( this._macro.wasUsed, "'wasUsed' property should return false" );
+		Assert.isFalse( this._macro.isRunning, "'isRunning' property should return false" );
 		this._macro.preExecute();
 		
-		Assert.assertEquals( this._macro, this._macroExecutor.listener, "macro should listen macroexecutor" );
-		Assert.assertTrue( this._macro.wasUsed, "'wasUsed' property should return true" );
-		Assert.assertTrue( this._macro.isRunning, "'isRunning' property should return true" );
-        Assert.assertMethodCallThrows( IllegalStateException, this._macro, this._macro.preExecute,[], "Macro should throw IllegalStateException when calling preExecute method twice" );
+		Assert.equals( this._macro, this._macroExecutor.listener, "macro should listen macroexecutor" );
+		Assert.isTrue( this._macro.wasUsed, "'wasUsed' property should return true" );
+		Assert.isTrue( this._macro.isRunning, "'isRunning' property should return true" );
+        Assert.methodCallThrows( IllegalStateException, this._macro, this._macro.preExecute,[], "Macro should throw IllegalStateException when calling preExecute method twice" );
 	}
 	
 	@test( "Test addComand" )
@@ -110,8 +110,8 @@ class MacroTest
 	{
 		this._macroExecutor.returnedMapping = new CommandMapping( MockCommand );
 		var commandMapping : ICommandMapping = this._macro.add( MockCommand );
-		Assert.assertEquals( this._macroExecutor.returnedMapping, commandMapping, "command mapping should be returned when command class is added" );
-		Assert.assertEquals( MockCommand, this._macroExecutor.lastCommandClassAdded, "command class should be passed to macroexecutor" );
+		Assert.equals( this._macroExecutor.returnedMapping, commandMapping, "command mapping should be returned when command class is added" );
+		Assert.equals( MockCommand, this._macroExecutor.lastCommandClassAdded, "command class should be passed to macroexecutor" );
 	}
 	
 	@test( "Test addMapping" )
@@ -121,8 +121,8 @@ class MacroTest
 		
 		var mappingToAdd : CommandMapping = new CommandMapping( MockCommand );
 		var commandMapping : ICommandMapping = this._macro.addMapping( mappingToAdd );
-		Assert.assertEquals( this._macroExecutor.returnedMapping, commandMapping, "command mapping should be returned when mapping is added" );
-		Assert.assertEquals( mappingToAdd, this._macroExecutor.lastMappingAdded, "mapping added should be passed to macroexecutor" );
+		Assert.equals( this._macroExecutor.returnedMapping, commandMapping, "command mapping should be returned when mapping is added" );
+		Assert.equals( mappingToAdd, this._macroExecutor.lastMappingAdded, "mapping added should be passed to macroexecutor" );
 	}
 	
 	@test( "Test execute empty macro" )
@@ -131,15 +131,15 @@ class MacroTest
 		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
 		myMacro.macroExecutor = this._macroExecutor;
 		
-		Assert.assertMethodCallThrows( IllegalStateException, myMacro, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
+		Assert.methodCallThrows( IllegalStateException, myMacro, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
 		myMacro.preExecute();
 		var event : BasicEvent = new BasicEvent( "onTest", this );
 		myMacro.execute( event );
-		Assert.assertEquals( event, this._macroExecutor.eventPassedDuringExecution, "event passed to execute should be passed to macroexecutor" );
+		Assert.equals( event, this._macroExecutor.eventPassedDuringExecution, "event passed to execute should be passed to macroexecutor" );
 		
 		var anotherEvent = new BasicEvent( "onAnotherTest", this );
 		myMacro.execute( event );
-		Assert.assertEquals( event, this._macroExecutor.eventPassedDuringExecution, "event passed to execute should be passed to macroexecutor" );
+		Assert.equals( event, this._macroExecutor.eventPassedDuringExecution, "event passed to execute should be passed to macroexecutor" );
 	}
 	
 	@test( "Test execute triggers 'handleComplete'" )
@@ -152,11 +152,11 @@ class MacroTest
 		this._macro.preExecute();
 		this._macro.execute( e );
 		
-		Assert.failTrue( this._macro.isCancelled, "'isCancelled' property should return false" );
-		Assert.failTrue( this._macro.hasFailed, "'hasFailed' property should return false" );
-		Assert.failTrue( this._macro.isRunning, "'isRunning' property should return false" );
-		Assert.assertTrue( this._macro.wasUsed, "'wasUsed' property should return true" );
-		Assert.assertTrue( this._macro.hasCompleted, "'hasCompleted' property should return true" );
+		Assert.isFalse( this._macro.isCancelled, "'isCancelled' property should return false" );
+		Assert.isFalse( this._macro.hasFailed, "'hasFailed' property should return false" );
+		Assert.isFalse( this._macro.isRunning, "'isRunning' property should return false" );
+		Assert.isTrue( this._macro.wasUsed, "'wasUsed' property should return true" );
+		Assert.isTrue( this._macro.hasCompleted, "'hasCompleted' property should return true" );
 	}
 	
 	@test( "Test with guards approved" )
@@ -171,9 +171,9 @@ class MacroTest
 		myMacro.add( MockCommand ).withGuards( [thatWillBeApproved] );
 		myMacro.execute();
 		
-		Assert.assertTrue( myMacro.hasCompleted, "'hasCompleted' property should return true" );
-		Assert.failTrue( myMacro.hasFailed, "'hasFailed' property should return false" );
-		Assert.failTrue( myMacro.isCancelled, "'isCancelled' property should return false" );
+		Assert.isTrue( myMacro.hasCompleted, "'hasCompleted' property should return true" );
+		Assert.isFalse( myMacro.hasFailed, "'hasFailed' property should return false" );
+		Assert.isFalse( myMacro.isCancelled, "'isCancelled' property should return false" );
 	}
 	
 	public function thatWillBeApproved() : Bool
@@ -193,9 +193,9 @@ class MacroTest
 		myMacro.add( MockCommand ).withGuards( [thatWillBeRefused] );
 		myMacro.execute();
 		
-		Assert.assertTrue( myMacro.hasFailed, "'hasFailed' property should return true" );
-		Assert.failTrue( myMacro.hasCompleted, "'hasCompleted' property should return false" );
-		Assert.failTrue( myMacro.isCancelled, "'isCancelled' property should return false" );
+		Assert.isTrue( myMacro.hasFailed, "'hasFailed' property should return true" );
+		Assert.isFalse( myMacro.hasCompleted, "'hasCompleted' property should return false" );
+		Assert.isFalse( myMacro.isCancelled, "'isCancelled' property should return false" );
 	}
 	
 	@test( "Test parallel mode" )
@@ -211,9 +211,9 @@ class MacroTest
 		myMacro.add( MockAsyncCommand );
 		myMacro.add( MockCommand );
 		
-		Assert.assertEquals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
 		myMacro.execute();
-		Assert.assertEquals( 1, MockCommand.executeCallCount, "'execute' method shoud have been called once" );
+		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method shoud have been called once" );
 	}
 	
 	@test( "Test sequence mode" )
@@ -229,9 +229,9 @@ class MacroTest
 		myMacro.add( MockAsyncCommand );
 		myMacro.add( MockCommand );
 		
-		Assert.assertEquals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
 		myMacro.execute();
-		Assert.assertEquals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
 	}
 	
 	public function thatWillBeRefused() : Bool

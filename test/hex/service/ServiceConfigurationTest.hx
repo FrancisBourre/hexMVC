@@ -14,7 +14,7 @@ class ServiceConfigurationTest
     {
         var serviceConfiguration : ServiceConfiguration = new ServiceConfiguration();
 
-        Assert.assertEquals( 5000, serviceConfiguration.serviceTimeout, "'serviceTimeout' property value should be 5000 by default" );
+        Assert.equals( 5000, serviceConfiguration.serviceTimeout, "'serviceTimeout' property value should be 5000 by default" );
     }
 	
 	@test( "Test 'serviceTimeout' parameter passed to constructor" )
@@ -23,6 +23,6 @@ class ServiceConfigurationTest
         var serviceTimeout : UInt = 400;
         var serviceConfiguration : ServiceConfiguration = new ServiceConfiguration( serviceTimeout );
 
-        Assert.assertEquals( serviceTimeout, serviceConfiguration.serviceTimeout, "'serviceTimeout' property should be the same passed to constructor" );
+        Assert.equals( serviceTimeout, serviceConfiguration.serviceTimeout, "'serviceTimeout' property should be the same passed to constructor" );
     }
 }

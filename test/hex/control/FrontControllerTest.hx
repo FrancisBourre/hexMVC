@@ -44,14 +44,14 @@ class FrontControllerTest
 	@test( "Test map" )
     public function testMap() : Void
     {
-		Assert.failTrue( this._dispatcher.hasEventListener( "eventType" ), "event type should not be listened" );
+		Assert.isFalse( this._dispatcher.hasEventListener( "eventType" ), "event type should not be listened" );
 		
 		var commandMapping : ICommandMapping = this._frontcontroller.map( "eventType", MockCommand );
-		Assert.assertEquals( MockCommand, commandMapping.getCommandClass(), "Command class should be the same" );
-		Assert.assertTrue( this._frontcontroller.isRegisteredWithKey( "eventType" ), "event type should be registered" );
-		Assert.assertEquals( commandMapping, this._frontcontroller.locate( "eventType" ), "command mapping should be associated to event type" );
+		Assert.equals( MockCommand, commandMapping.getCommandClass(), "Command class should be the same" );
+		Assert.isTrue( this._frontcontroller.isRegisteredWithKey( "eventType" ), "event type should be registered" );
+		Assert.equals( commandMapping, this._frontcontroller.locate( "eventType" ), "command mapping should be associated to event type" );
 		
-		Assert.assertTrue( this._dispatcher.hasEventListener( "eventType" ), "event type should be listened" );
+		Assert.isTrue( this._dispatcher.hasEventListener( "eventType" ), "event type should be listened" );
     }
 	
 	@test( "Test unmap" )
@@ -60,9 +60,9 @@ class FrontControllerTest
 		var commandMapping0 : ICommandMapping = this._frontcontroller.map( "eventType", MockCommand );
 		var commandMapping1 : ICommandMapping = this._frontcontroller.unmap( "eventType" );
 		
-		Assert.assertEquals( commandMapping0, commandMapping1, "Command mappings should be the same" );
-		Assert.failTrue( this._frontcontroller.isRegisteredWithKey( "eventType" ), "event type should not be registered anymore" );
-		Assert.failTrue( this._dispatcher.hasEventListener( "eventType" ), "event type should not be listened anymore" );
+		Assert.equals( commandMapping0, commandMapping1, "Command mappings should be the same" );
+		Assert.isFalse( this._frontcontroller.isRegisteredWithKey( "eventType" ), "event type should not be registered anymore" );
+		Assert.isFalse( this._dispatcher.hasEventListener( "eventType" ), "event type should not be listened anymore" );
     }
 	
 	@test( "Functional test of event handling" )
@@ -73,20 +73,20 @@ class FrontControllerTest
 		var event : BasicEvent = new BasicEvent( "eventType", this._module );
 		this._dispatcher.dispatchEvent( event );
 		
-		Assert.assertEquals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
-		Assert.assertEquals( event, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
+		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
+		Assert.equals( event, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
 		
 		var anotherEvent : BasicEvent = new BasicEvent( "anotherEventType", this._module );
 		this._dispatcher.dispatchEvent( anotherEvent );
 		
-		Assert.assertEquals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
-		Assert.assertEquals( event, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
+		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
+		Assert.equals( event, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
 		
 		this._frontcontroller.map( "anotherEventType", MockCommand );
 		this._dispatcher.dispatchEvent( anotherEvent );
 		
-		Assert.assertEquals( 2, MockCommand.executeCallCount, "Command execution should happenned twice" );
-		Assert.assertEquals( anotherEvent, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
+		Assert.equals( 2, MockCommand.executeCallCount, "Command execution should happenned twice" );
+		Assert.equals( anotherEvent, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
 	}
 	
 }

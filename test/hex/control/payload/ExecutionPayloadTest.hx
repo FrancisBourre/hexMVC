@@ -30,32 +30,32 @@ class ExecutionPayloadTest
 	@test( "Test constructor" )
     public function testConstructor() : Void
     {
-        Assert.assertEquals( this._data, this._executionPayload.getData(), "data should be the same" );
-        Assert.assertEquals( IMockData, this._executionPayload.getType(), "type should be the same" );
-        Assert.assertEquals( "name", this._executionPayload.getName(), "name should be the same" );
+        Assert.equals( this._data, this._executionPayload.getData(), "data should be the same" );
+        Assert.equals( IMockData, this._executionPayload.getType(), "type should be the same" );
+        Assert.equals( "name", this._executionPayload.getName(), "name should be the same" );
     }
 	
 	@test( "Test overwriting type property" )
     public function testOverwritingType() : Void
     {
 		this._executionPayload.withClass( IMockType );
-        Assert.failEquals( IMockData, this._executionPayload.getType(), "type should not be the same" );
-        Assert.assertEquals( IMockType, this._executionPayload.getType(), "type should be the same" );
+        Assert.notEquals( IMockData, this._executionPayload.getType(), "type should not be the same" );
+        Assert.equals( IMockType, this._executionPayload.getType(), "type should be the same" );
     }
 	
 	@test( "Test overwriting name property" )
     public function testOverwritingName() : Void
     {
 		this._executionPayload.withName( "anotherName" );
-        Assert.failEquals( "name", this._executionPayload.getName(), "name should not be the same" );
-        Assert.assertEquals( "anotherName", this._executionPayload.getName(), "name should be the same" );
+        Assert.notEquals( "name", this._executionPayload.getName(), "name should not be the same" );
+        Assert.equals( "anotherName", this._executionPayload.getName(), "name should be the same" );
     }
 	
 	@test( "Test passing no name parameter to constructor" )
     public function testNoNameParameterToConstructor() : Void
     {
 		var executionPayload : ExecutionPayload = new ExecutionPayload( this._data, IMockData );
-        Assert.assertEquals( "", executionPayload.getName(), "name should be empty String" );
+        Assert.equals( "", executionPayload.getName(), "name should be empty String" );
     }
 }
 

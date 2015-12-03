@@ -27,15 +27,15 @@ class ViewHelperManagerTest
 		
 		var module : IModule = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
-		Assert.failIsNull( viewHelperManager, "viewHelperManager shouldn't be null" );
-		Assert.assertEquals( 1, listener.onViewHelperManagerCreationCallbackCount, "creation event should be dispatched once" );
-		Assert.assertIsType( listener.lastMainViewHelperManagerEvent, MainViewHelperManagerEvent, "event received should be an instance of MainViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastMainViewHelperManagerEvent.getviewHelperManager(), "viewHelperManager should be the same" );
+		Assert.isNotNull( viewHelperManager, "viewHelperManager shouldn't be null" );
+		Assert.equals( 1, listener.onViewHelperManagerCreationCallbackCount, "creation event should be dispatched once" );
+		Assert.isInstanceOf( listener.lastMainViewHelperManagerEvent, MainViewHelperManagerEvent, "event received should be an instance of MainViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastMainViewHelperManagerEvent.getviewHelperManager(), "viewHelperManager should be the same" );
 		
-		Assert.assertEquals( viewHelperManager, ViewHelperManager.getInstance( module ), "viewHelperManager should be the same" );
-		Assert.assertEquals( 1, listener.onViewHelperManagerCreationCallbackCount, "creation event shouldn't be dispatched again" );
+		Assert.equals( viewHelperManager, ViewHelperManager.getInstance( module ), "viewHelperManager should be the same" );
+		Assert.equals( 1, listener.onViewHelperManagerCreationCallbackCount, "creation event shouldn't be dispatched again" );
 		
-		Assert.assertEquals( module, viewHelperManager.getOwner(), "owner should be the same" );
+		Assert.equals( module, viewHelperManager.getOwner(), "owner should be the same" );
 	}
 	
 	@test( "test release" )
@@ -47,17 +47,17 @@ class ViewHelperManagerTest
 		var module : IModule = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
 		var viewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
-		Assert.assertEquals( 1, viewHelperManager.size(), "size should return 1" );
+		Assert.equals( 1, viewHelperManager.size(), "size should return 1" );
 		ViewHelperManager.release( module );
-		Assert.assertEquals( 0, viewHelperManager.size(), "size should return 0" );
+		Assert.equals( 0, viewHelperManager.size(), "size should return 0" );
 		
-		Assert.assertEquals( 1, listener.onViewHelperManagerReleaseCallbackCount, "release event should be dispatched once" );
-		Assert.assertIsType( listener.lastMainViewHelperManagerEvent, MainViewHelperManagerEvent, "event received should be an instance of MainViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastMainViewHelperManagerEvent.getviewHelperManager(), "viewHelperManager should be the same" );
+		Assert.equals( 1, listener.onViewHelperManagerReleaseCallbackCount, "release event should be dispatched once" );
+		Assert.isInstanceOf( listener.lastMainViewHelperManagerEvent, MainViewHelperManagerEvent, "event received should be an instance of MainViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastMainViewHelperManagerEvent.getviewHelperManager(), "viewHelperManager should be the same" );
 		
 		ViewHelperManager.release( module );
-		Assert.assertEquals( 1, listener.onViewHelperManagerReleaseCallbackCount, "release event shouldn't be dispatched again" );
-		Assert.assertEquals( 0, viewHelperManager.size(), "size should return 0" );
+		Assert.equals( 1, listener.onViewHelperManagerReleaseCallbackCount, "release event shouldn't be dispatched again" );
+		Assert.equals( 0, viewHelperManager.size(), "size should return 0" );
 	}
 	
 	@test( "test buildViewHelper" )
@@ -71,46 +71,46 @@ class ViewHelperManagerTest
 		viewHelperManager.addListener( listener );
 		
 		var viewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
-		Assert.failIsNull( viewHelper, "viewHelper shouldn't be null" );
-		Assert.assertIsType( viewHelper, ViewHelper, "viewHelper should be an instance of ViewHelper" );
-		Assert.assertEquals( module, viewHelper.getOwner(), "owner should be the same" );
+		Assert.isNotNull( viewHelper, "viewHelper shouldn't be null" );
+		Assert.isInstanceOf( viewHelper, ViewHelper, "viewHelper should be an instance of ViewHelper" );
+		Assert.equals( module, viewHelper.getOwner(), "owner should be the same" );
 		
-		Assert.assertEquals( 1, viewHelperManager.size(), "size should return 1" );
+		Assert.equals( 1, viewHelperManager.size(), "size should return 1" );
 		
-		Assert.assertEquals( 1, listener.onViewHelperCreationCallbackCount, "creation event should be dispatched once" );
-		Assert.assertIsType( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
-		Assert.assertEquals( viewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
+		Assert.equals( 1, listener.onViewHelperCreationCallbackCount, "creation event should be dispatched once" );
+		Assert.isInstanceOf( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
+		Assert.equals( viewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
 		
 		var anotherViewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
-		Assert.failIsNull( anotherViewHelper, "viewHelper shouldn't be null" );
-		Assert.assertIsType( anotherViewHelper, ViewHelper, "viewHelper should be an instance of ViewHelper" );
-		Assert.assertEquals( module, anotherViewHelper.getOwner(), "owner should be the same" );
+		Assert.isNotNull( anotherViewHelper, "viewHelper shouldn't be null" );
+		Assert.isInstanceOf( anotherViewHelper, ViewHelper, "viewHelper should be an instance of ViewHelper" );
+		Assert.equals( module, anotherViewHelper.getOwner(), "owner should be the same" );
 		
-		Assert.assertEquals( 2, viewHelperManager.size(), "size should return 2" );
+		Assert.equals( 2, viewHelperManager.size(), "size should return 2" );
 		
-		Assert.assertEquals( 2, listener.onViewHelperCreationCallbackCount, "creation event should be dispatched once" );
-		Assert.assertIsType( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
-		Assert.assertEquals( anotherViewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
+		Assert.equals( 2, listener.onViewHelperCreationCallbackCount, "creation event should be dispatched once" );
+		Assert.isInstanceOf( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
+		Assert.equals( anotherViewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
 		
-		Assert.failEquals( viewHelper, anotherViewHelper, "viewHelpers shouldn't be the same" );
+		Assert.notEquals( viewHelper, anotherViewHelper, "viewHelpers shouldn't be the same" );
 		
 		viewHelper.release();
-		Assert.assertEquals( 1, viewHelperManager.size(), "size should return 1" );
+		Assert.equals( 1, viewHelperManager.size(), "size should return 1" );
 		
-		Assert.assertEquals( 1, listener.onViewHelperReleaseCallbackCount, "release event should be dispatched once" );
-		Assert.assertIsType( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
-		Assert.assertEquals( viewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
+		Assert.equals( 1, listener.onViewHelperReleaseCallbackCount, "release event should be dispatched once" );
+		Assert.isInstanceOf( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
+		Assert.equals( viewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
 		
 		anotherViewHelper.release();
-		Assert.assertEquals( 0, viewHelperManager.size(), "size should return 0" );
+		Assert.equals( 0, viewHelperManager.size(), "size should return 0" );
 		
-		Assert.assertEquals( 2, listener.onViewHelperReleaseCallbackCount, "release event should be dispatched one more time" );
-		Assert.assertIsType( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
-		Assert.assertEquals( anotherViewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
+		Assert.equals( 2, listener.onViewHelperReleaseCallbackCount, "release event should be dispatched one more time" );
+		Assert.isInstanceOf( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
+		Assert.equals( anotherViewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
 	}
 	
 	@test( "test releaseViewHelper" )
@@ -127,12 +127,12 @@ class ViewHelperManagerTest
 		
 		viewHelperManager.releaseAllViewHelpers();
 		
-		Assert.assertEquals( 0, viewHelperManager.size(), "size should return 0" );
+		Assert.equals( 0, viewHelperManager.size(), "size should return 0" );
 		
-		Assert.assertEquals( 2, listener.onViewHelperReleaseCallbackCount, "release event should be dispatched one more time" );
-		Assert.assertIsType( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
-		Assert.assertEquals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
-		Assert.assertEquals( viewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
+		Assert.equals( 2, listener.onViewHelperReleaseCallbackCount, "release event should be dispatched one more time" );
+		Assert.isInstanceOf( listener.lastViewHelperManagerEvent,ViewHelperManagerEvent, "event received should be an instance of ViewHelperManagerEvent" );
+		Assert.equals( viewHelperManager, listener.lastViewHelperManagerEvent.getViewHelperManager(), "viewHelperManager should be the same" );
+		Assert.equals( viewHelper, listener.lastViewHelperManagerEvent.getViewHelper(), "viewHelper should be the same" );
 	}
 }
 

@@ -16,6 +16,6 @@ class ServiceURLConfigurationTest extends ServiceConfigurationTest
         var serviceUrl : String = "url";
         var serviceConfiguration : ServiceURLConfiguration = new ServiceURLConfiguration( serviceUrl );
 
-        Assert.assertEquals( serviceUrl, serviceConfiguration.serviceUrl, "'serviceURL' property should be the same passed to constructor" );
+        Assert.equals( serviceUrl, serviceConfiguration.serviceUrl, "'serviceURL' property should be the same passed to constructor" );
     }
 }

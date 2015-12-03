@@ -15,7 +15,7 @@ class AsyncCommandEventTest
     {
         var type : String 			= "type";
         var e : AsyncCommandEvent 	= new AsyncCommandEvent( type, new AsyncCommand() );
-        Assert.assertEquals( type, e.type, "'type' property should be the same passed to constructor" );
+        Assert.equals( type, e.type, "'type' property should be the same passed to constructor" );
     }
 
     @test( "Test 'target' parameter passed to constructor" )
@@ -24,7 +24,7 @@ class AsyncCommandEventTest
         var target : AsyncCommand 	= new AsyncCommand();
         var e : AsyncCommandEvent 	= new AsyncCommandEvent( "", target );
 
-        Assert.assertEquals( target, e.target, "'target' property should be the same passed to constructor" );
+        Assert.equals( target, e.target, "'target' property should be the same passed to constructor" );
     }
 
     @test( "Test clone method" )
@@ -35,7 +35,7 @@ class AsyncCommandEventTest
         var e : AsyncCommandEvent 				= new AsyncCommandEvent( type, target );
         var clonedEvent : AsyncCommandEvent 	= cast e.clone();
 
-        Assert.assertEquals( type, clonedEvent.type, "'clone' method should return cloned event with same 'type' property" );
-        Assert.assertEquals( target, clonedEvent.target, "'clone' method should return cloned event with same 'target' property" );
+        Assert.equals( type, clonedEvent.type, "'clone' method should return cloned event with same 'type' property" );
+        Assert.equals( target, clonedEvent.target, "'clone' method should return cloned event with same 'target' property" );
     }
 }
