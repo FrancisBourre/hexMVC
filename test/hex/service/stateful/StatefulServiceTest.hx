@@ -1,4 +1,5 @@
 package hex.service.stateful;
+
 import hex.error.IllegalStateException;
 import hex.service.ServiceConfiguration;
 import hex.service.stateful.StatefulService;
@@ -28,32 +29,31 @@ class StatefulServiceTest
 	@test( "Test 'setConfiguration' method" )
     public function testSetConfiguration() : Void
     {
-		var dummyConfig:ServiceConfiguration = new ServiceConfiguration();
-		this.service.setConfiguration(dummyConfig);
+		var dummyConfig : ServiceConfiguration = new ServiceConfiguration();
+		this.service.setConfiguration( dummyConfig );
 		
-		Assert.assertEquals(dummyConfig, this.service.getConfiguration(), "setted configuration should be returned" );
+		Assert.equals( dummyConfig, this.service.getConfiguration(), "setted configuration should be returned" );
 		
 		this.service.run();
-		Assert.assertMethodCallThrows( IllegalStateException, this.service, this.service.setConfiguration, [dummyConfig], "StatefulService should throw IllegalStateException when calling setConfiguration when in use" );
+		Assert.methodCallThrows( IllegalStateException, this.service, this.service.setConfiguration, [ dummyConfig ], "StatefulService should throw IllegalStateException when calling setConfiguration when in use" );
 		
 		this.service.stop();
 		
-		Assert.assertEquals(dummyConfig, this.service.getConfiguration(), "should be able to call setConfiguration after _release called" );
+		Assert.equals( dummyConfig, this.service.getConfiguration(), "should be able to call setConfiguration after _release called" );
 	}
 	
 	@test( "Test 'lock' and 'release' behavion" )
     public function testLockAndRelease() : Void
     {
-		trace("apple", this.service.inUse);
-		Assert.failTrue( this.service.inUse, "the inUse property should be false by default" );
+		Assert.isFalse( this.service.inUse, "the inUse property should be false by default" );
 		
 		this.service.run();
 		
-		Assert.assertTrue( this.service.inUse, "the inUse property should be true after _lock called" );
+		Assert.isTrue( this.service.inUse, "the inUse property should be true after _lock called" );
 		
 		this.service.stop();
 		
-		Assert.failTrue( this.service.inUse, "the inUse property should be false after _release called" );
+		Assert.isFalse( this.service.inUse, "the inUse property should be false after _release called" );
 	}
 	
 	@test( "event subscription" )
@@ -63,3 +63,21 @@ class StatefulServiceTest
 	}
 }
 
+private class MockStatefulService extends StatefulService<ServiceEvent, ServiceConfiguration>
+{
+	public function new() 
+	{
+		super();
+		
+	}
+	
+	public function run()
+	{
+		this._lock();
+	}
+	
+	public function stop()
+	{
+		this._release();
+	}
+}
