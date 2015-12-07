@@ -1,6 +1,7 @@
 package hex.config.stateful;
 
 import hex.collection.Locator;
+import hex.collection.LocatorEvent;
 import hex.di.IDependencyInjector;
 import hex.error.IllegalArgumentException;
 import hex.error.NoSuchElementException;
@@ -18,7 +19,7 @@ import hex.service.stateful.IStatefulService;
  * ...
  * @author Francis Bourre
  */
-class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IStatefulConfig
+class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<String, ServiceLocatorHelper>> implements IStatefulConfig
 {
 	public function new() 
 	{
@@ -123,6 +124,15 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 		return this.register( className, service );
 	}
 	
+	override function _dispatchRegisterEvent( key : String, element : ServiceLocatorHelper ) : Void 
+	{
+		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.REGISTER, this, key, element ) );
+	}
+	
+	override function _dispatchUnregisterEvent( key : String ) : Void 
+	{
+		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.UNREGISTER, this, key ) );
+	}
 }
 
 private class ServiceLocatorHelper

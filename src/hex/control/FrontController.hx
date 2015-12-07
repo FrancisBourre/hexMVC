@@ -1,5 +1,6 @@
 package hex.control;
 
+import hex.collection.LocatorEvent;
 import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
@@ -16,26 +17,26 @@ import hex.collection.Locator;
  * @author Francis Bourre
  */
 @:rtti
-class FrontController extends Locator<String, ICommandMapping> implements IFrontController
+class FrontController extends Locator<String, ICommandMapping, LocatorEvent<String, ICommandMapping>> implements IFrontController
 {
-    private var _module     : IModule;
-    private var _injector   : IDependencyInjector;
-    private var _dispatcher : IEventDispatcher<IEventListener, IEvent>;
+    private var _module     		: IModule;
+    private var _injector   		: IDependencyInjector;
+    private var _facadeDispatcher 	: IEventDispatcher<IEventListener, IEvent>;
 
-    public function new( dispatcher : IEventDispatcher<IEventListener, IEvent>, injector : IDependencyInjector, ?module : IModule )
+    public function new( facadeDispatcher : IEventDispatcher<IEventListener, IEvent>, injector : IDependencyInjector, ?module : IModule )
     {
         super();
 
-        this._dispatcher        = dispatcher;
-        this._injector          = injector;
-        this._module            = module;
+        this._facadeDispatcher 		= facadeDispatcher;
+        this._injector 				= injector;
+        this._module 				= module;
     }
 
     public function map( eventType : String, commandClass : Class<ICommand> ) : ICommandMapping
     {
         var commandMapping : ICommandMapping = new CommandMapping( commandClass );
         this.register( eventType, commandMapping );
-        this._dispatcher.addEventListener( eventType, this._handleEvent );
+        this._facadeDispatcher.addEventListener( eventType, this._handleEvent );
         return commandMapping;
     }
 
@@ -43,7 +44,7 @@ class FrontController extends Locator<String, ICommandMapping> implements IFront
     {
         var commandMapping : ICommandMapping = this.locate( eventType );
         this.unregister( eventType );
-        this._dispatcher.removeEventListener( eventType, this._handleEvent );
+        this._facadeDispatcher.removeEventListener( eventType, this._handleEvent );
         return commandMapping;
     }
 
@@ -60,8 +61,18 @@ class FrontController extends Locator<String, ICommandMapping> implements IFront
                 mappingRemoval = this.unmap.bind( e.type );
             }
 
-			e.target = this._dispatcher;
+			e.target = this._facadeDispatcher;
             commandExecutor.executeCommand( commandMapping, e, mappingRemoval );
         }
     }
+	
+	override function _dispatchRegisterEvent( key : String, element : ICommandMapping ) : Void 
+	{
+		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.REGISTER, this, key, element ) );
+	}
+	
+	override function _dispatchUnregisterEvent( key : String ) : Void 
+	{
+		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.UNREGISTER, this, key ) );
+	}
 }
