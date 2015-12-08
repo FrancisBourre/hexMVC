@@ -62,7 +62,7 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 	
 	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void 
 	{
-		this._dispatcher.addEventListener( eventType, handler );
+		this._dispatcher.removeEventListener( eventType, handler );
 	}
 	
 	private function _throwExecutionIllegalStateError( methodName : String ) : Bool

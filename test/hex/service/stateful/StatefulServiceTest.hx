@@ -1,10 +1,13 @@
 package hex.service.stateful;
 
+import haxe.Constraints.Function;
+import haxe.Timer;
 import hex.error.IllegalStateException;
 import hex.service.ServiceConfiguration;
 import hex.service.stateful.StatefulService;
-import hex.service.stateless.MockStatelessService;
 import hex.unittest.assertion.Assert;
+import hex.unittest.runner.MethodRunner;
+import hex.service.ServiceEvent;
 
 /**
  * ...
@@ -57,10 +60,26 @@ class StatefulServiceTest
 	}
 	
 	@test( "event subscription" )
-    public function testEventSubscriptions() : Void
+    public function testAddAndRemoveHandler() : Void
 	{
-		//TODO: implement these tests - grosmar
+		var event:MockEvent = new MockEvent(MockEvent.ON_SAMPLE, this);
+		
+		//var callback:Dynamic =  MethodRunner.asyncHandler( this._mockAddEventHandler, [event] );
+		
+		var listener:MockAsyncEventListener = new MockAsyncEventListener();
+		
+		this.service.addHandler(MockEvent.ON_SAMPLE, listener.onAddHandlerSuccess);
+		this.service.getDispatcher().dispatchEvent(event);
+		
+		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should happen after call dispatchEvent on service" );
+		Assert.equals( event, listener.lastEventReceived, "dispatched event should be equal to the imput" );
+		
+		this.service.removeHandler(MockEvent.ON_SAMPLE, listener.onAddHandlerSuccess);
+		this.service.getDispatcher().dispatchEvent( event );
+		
+		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should not happen after call removeHandler" );
 	}
+	
 }
 
 private class MockStatefulService extends StatefulService<ServiceEvent, ServiceConfiguration>
@@ -79,5 +98,34 @@ private class MockStatefulService extends StatefulService<ServiceEvent, ServiceC
 	public function stop()
 	{
 		this._release();
+	}
+}
+
+
+private class MockEvent extends ServiceEvent
+{
+	public static var ON_SAMPLE:String = "onSample";
+	
+	public function new ( eventType : String, target : Dynamic )
+	{
+		super( eventType, target );
+	}
+}
+
+private class MockAsyncEventListener
+{
+	public var lastEventReceived 		: MockEvent;
+	public var addHandlerSuccessCount 	: Int = 0;
+	
+	public function new()
+	{
+		
+	}
+	
+	
+	public function onAddHandlerSuccess( e : ServiceEvent ) : Void 
+	{
+		this.lastEventReceived = cast e;
+		this.addHandlerSuccessCount++;
 	}
 }
