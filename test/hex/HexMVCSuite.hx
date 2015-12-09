@@ -1,10 +1,10 @@
 package hex;
 
-import hex.config.ConfigSuite;
+import hex.config.MVCConfigSuite;
 import hex.control.ControlSuite;
-import hex.module.ModuleSuite;
-import hex.service.ServiceSuite;
-import hex.viewhelper.ViewHelperSuite;
+import hex.module.MVCModuleSuite;
+import hex.service.MVCServiceSuite;
+import hex.viewhelper.MVCViewHelperSuite;
 
 /**
  * ...
@@ -12,6 +12,6 @@ import hex.viewhelper.ViewHelperSuite;
  */
 class HexMVCSuite
 {
-	@suite( "HexMVC suite" )
-    public var list : Array<Class<Dynamic>> = [ConfigSuite, ControlSuite, ModuleSuite, ServiceSuite, ViewHelperSuite];
+	@suite( "HexMVC" )
+    public var list : Array<Class<Dynamic>> = [MVCConfigSuite, ControlSuite, MVCModuleSuite, MVCServiceSuite, MVCViewHelperSuite];
 }

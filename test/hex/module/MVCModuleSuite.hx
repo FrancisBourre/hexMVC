@@ -4,8 +4,8 @@ package hex.module;
  * ...
  * @author Francis Bourre
  */
-class ModuleSuite
+class MVCModuleSuite
 {
-	@suite( "Module suite" )
+	@suite( "MVC Module" )
     public var list : Array<Class<Dynamic>> = [ModuleTest];
 }

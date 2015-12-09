@@ -6,8 +6,8 @@ import hex.service.stateless.http.HTTPSuite;
  * ...
  * @author Francis Bourre
  */
-class StatelessSuite
+class MVCStatelessServiceSuite
 {
-	@suite("Stateless suite")
+	@suite("MVC stateless service")
     public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest/*, HTTPSuite*/, StatelessServiceTest];
 }

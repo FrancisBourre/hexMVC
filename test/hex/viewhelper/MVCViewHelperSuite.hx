@@ -4,8 +4,8 @@ package hex.viewhelper;
  * ...
  * @author Francis Bourre
  */
-class ViewHelperSuite
+class MVCViewHelperSuite
 {
-	@suite("ViewHelper suite")
+	@suite("MVC ViewHelper")
     public var list : Array<Class<Dynamic>> = [ViewHelperManagerTest];
 }
