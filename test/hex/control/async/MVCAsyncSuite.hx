@@ -4,9 +4,9 @@ package hex.control.async;
  * ...
  * @author Francis Bourre
  */
-class AsyncSuite
+class MVCAsyncSuite
 {
-	@suite("Async suite")
+	@suite("Async")
     public var list : Array<Class<Dynamic>> = [AsyncCommandEventTest, AsyncCommandTest, AsyncCommandUtilTest ];
 	
 }

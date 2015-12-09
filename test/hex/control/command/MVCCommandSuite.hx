@@ -4,8 +4,8 @@ package hex.control.command;
  * ...
  * @author Francis Bourre
  */
-class CommandSuite
+class MVCCommandSuite
 {
-	@suite("Command suite")
+	@suite("Command")
     public var list : Array<Class<Dynamic>> = [CommandExecutorTest, CommandMappingTest];
 }

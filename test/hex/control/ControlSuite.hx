@@ -1,10 +1,10 @@
 package hex.control;
 
-import hex.control.async.AsyncSuite;
-import hex.control.command.CommandSuite;
+import hex.control.async.MVCAsyncSuite;
+import hex.control.command.MVCCommandSuite;
 import hex.control.guard.GuardUtilTest;
-import hex.control.macro.MacroSuite;
-import hex.control.payload.PayloadSuite;
+import hex.control.macro.MVCMacroSuite;
+import hex.control.payload.MVCPayloadSuite;
 
 /**
  * ...
@@ -12,6 +12,6 @@ import hex.control.payload.PayloadSuite;
  */
 class ControlSuite
 {
-	@suite("Control suite")
-    public var list : Array<Class<Dynamic>> = [ AsyncSuite, CommandSuite, GuardUtilTest, FrontControllerTest, MacroSuite, PayloadSuite ];
+	@suite("Control")
+    public var list : Array<Class<Dynamic>> = [ MVCAsyncSuite, MVCCommandSuite, GuardUtilTest, FrontControllerTest, MVCMacroSuite, MVCPayloadSuite ];
 }

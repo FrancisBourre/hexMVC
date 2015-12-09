@@ -4,8 +4,8 @@ package hex.control.macro;
  * ...
  * @author Francis Bourre
  */
-class MacroSuite
+class MVCMacroSuite
 {
-	@suite("Macro suite")
+	@suite("Macro")
     public var list : Array<Class<Dynamic>> = [MacroExecutorTest, MacroTest];
 }

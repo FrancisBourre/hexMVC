@@ -8,6 +8,6 @@ import hex.service.stateless.http.HTTPSuite;
  */
 class MVCStatelessServiceSuite
 {
-	@suite("MVC stateless service")
+	@suite("Stateless")
     public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest/*, HTTPSuite*/, StatelessServiceTest];
 }

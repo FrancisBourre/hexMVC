@@ -6,6 +6,6 @@ package hex.module;
  */
 class MVCModuleSuite
 {
-	@suite( "MVC Module" )
+	@suite( "Module" )
     public var list : Array<Class<Dynamic>> = [ModuleTest];
 }

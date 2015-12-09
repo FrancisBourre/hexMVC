@@ -6,6 +6,6 @@ package hex.config.stateful;
  */
 class MVCStatefulConfigSuite
 {
-	@suite( "MVC stateful config" )
+	@suite( "Stateful" )
     public var list : Array<Class<Dynamic>> = [ ServiceLocatorTest ];
 }

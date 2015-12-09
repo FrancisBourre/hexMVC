@@ -6,6 +6,6 @@ package hex.service.stateful;
  */
 class MVCStatefulServiceSuite
 {
-	@suite(" MVC stateful service")
+	@suite(" Stateful")
 	public var list : Array<Class<Dynamic>> = [StatefulServiceTest];
 }

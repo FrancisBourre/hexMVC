@@ -6,6 +6,6 @@ package hex.viewhelper;
  */
 class MVCViewHelperSuite
 {
-	@suite("MVC ViewHelper")
+	@suite("ViewHelper")
     public var list : Array<Class<Dynamic>> = [ViewHelperManagerTest];
 }
