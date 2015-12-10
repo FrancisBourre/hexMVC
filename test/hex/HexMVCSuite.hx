@@ -1,7 +1,8 @@
 package hex;
 
 import hex.config.MVCConfigSuite;
-import hex.control.ControlSuite;
+import hex.control.MVCControlSuite;
+import hex.event.MVCEventSuite;
 import hex.module.MVCModuleSuite;
 import hex.service.MVCServiceSuite;
 import hex.viewhelper.MVCViewHelperSuite;
@@ -13,5 +14,5 @@ import hex.viewhelper.MVCViewHelperSuite;
 class HexMVCSuite
 {
 	@suite( "HexMVC" )
-    public var list : Array<Class<Dynamic>> = [MVCConfigSuite, ControlSuite, MVCModuleSuite, MVCServiceSuite, MVCViewHelperSuite];
+    public var list : Array<Class<Dynamic>> = [MVCConfigSuite, MVCControlSuite, MVCEventSuite, MVCModuleSuite, MVCServiceSuite, MVCViewHelperSuite];
 }

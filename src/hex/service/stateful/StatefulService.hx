@@ -15,7 +15,7 @@ import hex.service.stateful.IStatefulService;
 class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends AbstractService<EventClass, ConfigurationClass> implements IStatefulService<EventClass, ConfigurationClass>
 {
 	private var _dispatcher				: LightweightClosureDispatcher<EventClass>;
-	private var _compositeDispatcher	: CompositeClosureDispatcher<EventClass>;
+	private var _compositeDispatcher	: CompositeClosureDispatcher;
 	
 	@:isVar public var inUse( get, null ) : Bool = false;
 
@@ -29,7 +29,7 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 		this._compositeDispatcher.add( this._dispatcher );
 	}
 	
-	public function getDispatcher() : CompositeClosureDispatcher<EventClass>
+	public function getDispatcher() : CompositeClosureDispatcher
 	{
 		return this._compositeDispatcher;
 	}

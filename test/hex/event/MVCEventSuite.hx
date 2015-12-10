@@ -6,6 +6,6 @@ package hex.event;
  */
 class MVCEventSuite
 {
-	@suite("MVC event")
+	@suite("event")
     public var list : Array<Class<Dynamic>> = [CallbackAdapterTest];
 }

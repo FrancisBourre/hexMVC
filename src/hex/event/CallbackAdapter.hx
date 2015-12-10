@@ -9,120 +9,55 @@ import hex.util.ClassUtil;
  */
 class CallbackAdapter
 {
-	private var _callback 		: Dynamic;
-	private var _adapterMethod 	: Dynamic;
-	private var _adapterClass 	: Class<IEventAdapterStrategy>;
-	private var _adapterInstance: IEventAdapterStrategy;
-	private var _factoryMethod 	: Dynamic;
+	private var _callbackTarget 	: Dynamic;
+	private var _callbackMethod 	: Dynamic;
+	
+	private var _adapterTarget 		: Dynamic;
+	private var _adapterMethod 		: Dynamic;
+
+	public function new() 
+	{
 		
-	public function new( callback : Dynamic, ?adapterStrategy : Dynamic, ?factoryMethod : Dynamic ) 
+	}
+	
+	public function setCallBackMethod( callbackTarget : Dynamic, callbackMethod : Dynamic ) : Void
 	{
-		this.setCallBack( callback );
-
-		if ( adapterStrategy != null )
-		{
-			if ( Std.is( adapterStrategy, Class ) && ClassUtil.classExtendsOrImplements( adapterStrategy, IEventAdapterStrategy ) )
-			{
-				this.setAdapterClass( adapterStrategy );
-
-				if ( factoryMethod != null )
-				{
-					this._factoryMethod = factoryMethod;
-				}
-
-			} else if ( Reflect.isFunction( adapterStrategy ) )
-			{
-				this.setAdapterMethod( adapterStrategy );
-
-			} else
-			{
-				throw new IllegalArgumentException( this + " constructor failed, adapterStrategy argument should be only instance of Function or Class." );
-			}
-		}
+		this._callbackTarget = callbackTarget;
+		this._callbackMethod = callbackMethod;
 	}
 
-	public function setCallBack( callback : Dynamic ) : Void
+	public function setAdapterMethod( adapterTarget : Dynamic, adapterMethod : Dynamic ) : Void
 	{
-		this._callback = callback;
-	}
-
-	public function setAdapterMethod( adapterMethod : Dynamic ) : Void
-	{
+		this._adapterTarget = adapterTarget;
 		this._adapterMethod = adapterMethod;
-	}
-
-	public function setAdapterClass( adapterClass : Class<IEventAdapterStrategy> ) : Void
-	{
-		this._adapterClass = adapterClass;
 	}
 	
 	public function getCallbackAdapter() : Dynamic
 	{
-		/*var adapterMethod 		: Dynamic;
-		var adapterInstance 	: IEventAdapterStrategy;
-		var adapterClass 		: Class;
-		var factoryMethod 		: Dynamic;
-
-		if ( this._adapterClass != null )
+		var adapterTarget 		: Dynamic = null;
+		var adapterMethod 		: Dynamic = null;
+		
+		var callbackTarget 		: Dynamic = this._callbackTarget;
+		var callbackMethod 		: Dynamic = this._callbackMethod;
+		
+		if ( this._adapterTarget != null && this._adapterMethod != null )
 		{
-			adapterClass = this._adapterClass;
-			factoryMethod = this._factoryMethod;
-			var isEventAdapterStrategyMacro : Bool =  ClassUtil.classExtendsOrImplements( this._adapterClass, EventAdapterStrategyMacro );
-
-			if ( !isEventAdapterStrategyMacro )
-			{
-				adapterInstance = this._adapterInstance =
-						this._factoryMethod != null ?
-						cast this._factoryMethod( this._adapterClass ) :
-						cast ( new this._adapterClass() );
-			}
-		}
-		else if ( this._adapterMethod != null )
-		{
+			adapterTarget = this._adapterMethod;
 			adapterMethod = this._adapterMethod;
 		}
 
-		var callback : Dynamic = this._callback;
-
-		return function( ... rest ) : void
+		var f : Array<Dynamic>->Void = function ( rest : Array<Dynamic> ) : Void
 		{
-			var result : Array;
+			var result : Dynamic = null;
 
-			if ( adapterMethod != null )
+			if ( adapterTarget != null && adapterMethod != null )
 			{
-				result = adapterMethod( rest );
-
-			}
-			else if ( isEventAdapterStrategyMacro )
-			{
-				var aSyncCommand:EventAdapterStrategyMacro = factoryMethod ? factoryMethod( adapterClass ) as EventAdapterStrategyMacro : ( new adapterClass() ) as EventAdapterStrategyMacro;
-				if ( aSyncCommand is IMetaDataParsable ) MetaDataProvider.getInstance().parse( aSyncCommand );
-				adapterInstance = aSyncCommand;
-				aSyncCommand.adapt.apply( null, rest );
-				aSyncCommand.preExecute();
-				aSyncCommand.addCompleteHandler( function ( cmd:EventAdapterStrategyMacro )
-				{
-					callback.apply( null, cmd.returnPayload );
-				} );
-				aSyncCommand.execute();
-				return;
-			}
-			else if ( adapterInstance )
-			{
-				if ( adapterInstance is IMetaDataParsable ) MetaDataProvider.getInstance().parse( adapterInstance );
-				result = adapterInstance.adapt.apply( null, rest );
+				result = Reflect.callMethod( adapterTarget, adapterMethod, null );
 			}
 
-			if ( result is Array || result is Vector )
-			{
-				callback.apply( null, result );
-
-			} else
-			{
-				callback( result );
-			}
-		}*/
+			Reflect.callMethod( callbackTarget, callbackMethod, [result] );
+		}
 		
-		return null;
+		return Reflect.makeVarArgs( f );
 	}
 }

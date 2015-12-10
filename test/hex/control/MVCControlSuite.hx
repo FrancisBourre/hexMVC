@@ -10,7 +10,7 @@ import hex.control.payload.MVCPayloadSuite;
  * ...
  * @author Francis Bourre
  */
-class ControlSuite
+class MVCControlSuite
 {
 	@suite("Control")
     public var list : Array<Class<Dynamic>> = [ MVCAsyncSuite, MVCCommandSuite, GuardUtilTest, FrontControllerTest, MVCMacroSuite, MVCPayloadSuite ];

@@ -90,7 +90,7 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<
 			}
 			else if ( Std.is( service, IStatefulService ) )
 			{
-				var serviceDispatcher : CompositeClosureDispatcher<IEvent> = ( cast service ).getDispatcher();
+				var serviceDispatcher : CompositeClosureDispatcher = ( cast service ).getDispatcher();
 				if ( serviceDispatcher != null )
 				{
 					serviceDispatcher.add( dispatcher );
