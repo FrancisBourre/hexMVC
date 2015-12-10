@@ -25,7 +25,7 @@ class AsyncCommandEvent extends BasicEvent
 	
 	override public function clone():BasicEvent 
 	{
-		return new AsyncCommandEvent(this.type, this.target);
+		return new AsyncCommandEvent( this.type, this.target );
 	}
 	
 }
