@@ -4,7 +4,7 @@ package hex.event;
  * @author Francis Bourre
  */
 
-interface IEventAdapterStrategy 
+interface IAdapterStrategy 
 {
 	function adapt( args : Array<Dynamic> ) : Array<Dynamic>;
 }
