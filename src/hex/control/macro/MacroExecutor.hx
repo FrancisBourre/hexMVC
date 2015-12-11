@@ -20,6 +20,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
+@:rtti
 class MacroExecutor implements IMacroExecutor
 {
 	@inject

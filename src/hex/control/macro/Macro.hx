@@ -15,6 +15,7 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
+@:rtti
 class Macro extends AsyncCommand implements IAsyncCommandListener
 {
 	private var _event 				: IEvent;

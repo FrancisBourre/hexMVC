@@ -104,7 +104,7 @@ class ViewHelper implements IViewHelper
 	{
 		if ( !this._isVisible )
 		{
-			this.visible = true;
+			this._isVisible = true;
 			if ( this._view != null )
 			{
 				this._view.visible = true;
@@ -116,7 +116,7 @@ class ViewHelper implements IViewHelper
 	{
 		if ( this._isVisible )
 		{
-			this.visible = false;
+			this._isVisible = false;
 			if ( this._view != null )
 			{
 				this._view.visible = false;

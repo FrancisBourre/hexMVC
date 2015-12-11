@@ -4,7 +4,7 @@ package hex.model;
  * ...
  * @author Francis Bourre
  */
-class ModelDispatcher<ListenerType:IModelListener> implements IModelDispatcher
+class ModelDispatcher<ListenerType:IModelListener> implements IModelDispatcher<ListenerType>
 {
 	private var _listeners : Array<ListenerType>;
 	
