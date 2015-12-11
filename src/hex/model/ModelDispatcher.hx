@@ -11,7 +11,6 @@ class ModelDispatcher<ListenerType:IModelListener> implements IModelDispatcher
 	public function new() 
 	{
 		this._listeners = [];
-	}
 		
 	}
 
