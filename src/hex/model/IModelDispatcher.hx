@@ -3,9 +3,9 @@ package hex.model;
 /**
  * @author Francis Bourre
  */
-interface IModelDispatcher 
+interface IModelDispatcher<ListenerType:IModelListener>
 {
-	function addListener( listener : IModelListener ) : Bool;
+	function addListener( listener : ListenerType ) : Bool;
 
-	function removeListener( listener : IModelListener ) : Bool;
+	function removeListener( listener : ListenerType ) : Bool;
 }
