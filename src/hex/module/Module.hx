@@ -19,6 +19,7 @@ import hex.event.IEventDispatcher;
 import hex.event.IEventListener;
 import hex.inject.Injector;
 import hex.log.Stringifier;
+import hex.metadata.IMetaDataProvider;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
@@ -31,11 +32,10 @@ import hex.view.viewhelper.ViewHelperManager;
  */
 class Module implements IModule
 {
-	private var _ed 				: IEventDispatcher<IEventListener, IEvent>;
+	private var _internalDispatcher : IEventDispatcher<IEventListener, IEvent>;
 	private var _domainDispatcher 	: IEventDispatcher<IModuleListener, IEvent>;
 	private var _injector 			: Injector;
-	
-	//private var _metaDataProvider 	: IMetaDataProvider;
+	private var _metaDataProvider 	: IMetaDataProvider;
 
 	public function new()
 	{
@@ -45,9 +45,9 @@ class Module implements IModule
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
 		//this._metaDataProvider 	= MetaDataProvider.getInstance( this._injector );
 		
-		this._ed = new EventDispatcher<IEventListener, IEvent>();
-		this._injector.mapToValue( IFrontController, new FrontController( this._ed, this._injector, this ) );
-		this._injector.mapToValue( IEventDispatcher, this._ed );
+		this._internalDispatcher = new EventDispatcher<IEventListener, IEvent>();
+		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
+		this._injector.mapToValue( IEventDispatcher, this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 	}
@@ -137,16 +137,16 @@ class Module implements IModule
 	{
 		this._domainDispatcher.addEventListener( type, callback );
 	}
-
-	/*public function sendExternalRequest( request : BaseRequest ) : Void
+	
+	private function _dispatchInternalEvent( e : IEvent ) : Void
 	{
-		this.sendExternalNoteFromDomain( request.type, request );
-	}*/
-
-	/*public function sendRequest( type : String, request : BaseRequest = null ) : Void
+		this._internalDispatcher.dispatchEvent( e );
+	}
+	
+	private function _dispatchDomainEvent( e : IEvent ) : Void
 	{
-		this._ed.sendNoteArr( type, request?[request]:[] );
-	}*/
+		this._domainDispatcher.dispatchEvent( e );
+	}
 
 	private function buildViewHelper( type : Class<IViewHelper>, view : IView ) : IViewHelper
 	{
@@ -167,7 +167,7 @@ class Module implements IModule
 
 			ViewHelperManager.release( this );
 			this._domainDispatcher.removeAllListeners();
-			this._ed.removeAllListeners();
+			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
 			this._injector.destroyInstance( this );
@@ -287,7 +287,7 @@ class Module implements IModule
 			var configuration : IStatefulConfig = configurations[ i ];
 			if ( configuration != null )
 			{
-				configuration.configure( this._injector, this._ed, this );
+				configuration.configure( this._injector, this._internalDispatcher, this );
 			}
 		}
 	}

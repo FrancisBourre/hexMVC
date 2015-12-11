@@ -4,16 +4,18 @@ package hex.model;
  * ...
  * @author Francis Bourre
  */
-class ModelDispatcher implements IModelDispatcher
+class ModelDispatcher<ListenerType:IModelListener> implements IModelDispatcher
 {
-	private var _listeners : Array<IModelListener> = [];
+	private var _listeners : Array<ListenerType>;
 	
 	public function new() 
 	{
+		this._listeners = [];
+	}
 		
 	}
 
-	public function addListener( listener : IModelListener ) : Bool
+	public function addListener( listener : ListenerType ) : Bool
 	{
 		if ( this._listeners.indexOf( listener ) == -1 )
 		{
@@ -26,7 +28,7 @@ class ModelDispatcher implements IModelDispatcher
 		}
 	}
 
-	public function removeListener( listener : IModelListener ) : Bool
+	public function removeListener( listener : ListenerType ) : Bool
 	{
 		var index : Int = this._listeners.indexOf( listener );
 		
