@@ -32,8 +32,3 @@ class ApplicationDomainDispatcher<ListenerType:IEventListener> extends DomainDis
 		return ( domain != NoDomain.DOMAIN ) ? super.getDomainDispatcher( domain ) : null;
 	}
 }
-
-private class TopLevelDomain extends Domain
-{
-    public static var DOMAIN : TopLevelDomain = new TopLevelDomain( "TopLevelDomain" );
-}
