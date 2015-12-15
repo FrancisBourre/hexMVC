@@ -1,4 +1,5 @@
 package hex.domain;
+
 import hex.domain.Domain;
 import hex.error.IllegalStateException;
 import hex.module.IModule;
@@ -10,8 +11,8 @@ import hex.module.IModule;
 @:final 
 class DomainExpert
 {
-	private var _registeredDomains : Map<Int, Domain>;
-	private var _subscribedModules : Map<IModule, Domain>;
+	private var _registeredDomains 	: Map<Int, Domain>;
+	private var _subscribedModules 	: Map<IModule, Domain>;
 	
 	static private var _Instance : DomainExpert = new DomainExpert();
 	
@@ -40,6 +41,7 @@ class DomainExpert
 	public function registerDomain( domain : Domain ) : Void
 	{
 		//Register
+		trace( "Implement me please" );
 	}
 	
 	public function releaseDomain( module : IModule ) : Void

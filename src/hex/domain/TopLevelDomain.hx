@@ -6,5 +6,5 @@ package hex.domain;
  */
 class TopLevelDomain extends Domain
 {
-    public static var DOMAIN : TopLevelDomain = new TopLevelDomain( "TopLevelDomain" );
+	public static var DOMAIN : TopLevelDomain = DomainUtil.getDomain( "TopLevelDomain", TopLevelDomain );
 }
