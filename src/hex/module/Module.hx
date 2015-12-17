@@ -7,6 +7,7 @@ import hex.control.IFrontController;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
 import hex.core.HashCodeFactory;
+import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
@@ -183,6 +184,12 @@ class Module implements IModule
 	{
 		user.registerInjector( this._injector );
 	}*/
+	
+	@:allow( hex.ioc.locator.DomainListenerVOLocator )
+	public function getBasicInjector() : IBasicInjector
+	{
+		return this._injector;
+	}
 	
 	/**
 	 * Fire initialisation event

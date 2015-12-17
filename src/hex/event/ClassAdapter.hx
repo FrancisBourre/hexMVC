@@ -47,7 +47,7 @@ class ClassAdapter
 		var callbackTarget 				: Dynamic 				= this._callbackTarget;
 		var callbackMethod 				: Dynamic 				= this._callbackMethod;
 		
-		var adapterInstance 			: IAdapterStrategy = null;
+		var adapterInstance 			: IAdapterStrategy 		= null;
 		var adapterClass 				: Class<Dynamic> 		= null;
 		
 		var factoryTarget 				: Dynamic 				= null;
@@ -61,7 +61,7 @@ class ClassAdapter
 			factoryTarget 	= this._factoryTarget;
 			factoryMethod 	= this._factoryMethod;
 			
-			isEventAdapterStrategyMacro = ClassUtil.classExtendsOrImplements( this._adapterClass, MacroAdapter );
+			isEventAdapterStrategyMacro = ClassUtil.classExtendsOrImplements( this._adapterClass, MacroAdapterStrategy );
 
 			if ( !isEventAdapterStrategyMacro )
 			{
@@ -78,7 +78,7 @@ class ClassAdapter
 
 			if ( isEventAdapterStrategyMacro )
 			{
-				var aSyncCommand : MacroAdapter;
+				var aSyncCommand : MacroAdapterStrategy;
 
 				if ( factoryTarget != null && factoryMethod != null )
 				{

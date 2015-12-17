@@ -70,12 +70,12 @@ class ClassAdapterTest
 	}
 	
 	
-	@test( "Test call to getCallbackAdapter with adapterMacro" )
+	@test( "Test call to getCallbackAdapter with MacroAdapterStrategy" )
     public function testCallToGetCallbackAdapterWithAdapterMacro() : Void
     {
 		this._classAdapter = new ClassAdapter();
 		this._classAdapter.setCallBackMethod( this, this.macroCallbackTest );
-		this._classAdapter.setAdapterClass( MockMacro );
+		this._classAdapter.setAdapterClass( MockMacroAdapterStrategy );
 		this._classAdapter.setFactoryMethod( this, this.factoryForMacroClass );
 		this.triggerCallbackAdapterWithMacro( this._classAdapter.getCallbackAdapter() );
 	}
@@ -89,7 +89,7 @@ class ClassAdapterTest
 	
 	private function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
 	{
-		var m : MacroAdapter = cast Type.createInstance( adapterClass, [] );
+		var m : MacroAdapterStrategy = cast Type.createInstance( adapterClass, [] );
 		var me : MacroExecutor = new MacroExecutor();
 		me.injector = new Injector();
 		m.macroExecutor = me;
@@ -132,7 +132,7 @@ private class MockAdapterClassForFactory implements IAdapterStrategy
 	}
 }
 
-private class MockMacro extends MacroAdapter
+private class MockMacroAdapterStrategy extends MacroAdapterStrategy
 {
 	private var data0 : MockValueObject;
 	private var data1 : MockValueObject;

@@ -6,7 +6,7 @@ import hex.control.macro.Macro;
  * ...
  * @author Francis Bourre
  */
-class MacroAdapter extends Macro implements IAdapterStrategy
+class MacroAdapterStrategy extends Macro implements IAdapterStrategy
 {
 	private var _target 		: Dynamic;
 	private var _method 		: Dynamic;
@@ -21,7 +21,7 @@ class MacroAdapter extends Macro implements IAdapterStrategy
 		super();
 	}
 
-	public function adapt( args : Array<Dynamic> ) : Array<Dynamic>
+	public function adapt( args : Array<Dynamic> ) : Dynamic
 	{
 		return Reflect.callMethod( this._target, this._method, args );
 	}
