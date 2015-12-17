@@ -2,9 +2,7 @@ package hex.module;
 
 import hex.domain.Domain;
 import hex.event.IEvent;
-import hex.di.IDependencyInjector;
 
-import hex.domain.Domain;
 /**
  * ...
  * @author Francis Bourre
@@ -24,4 +22,6 @@ interface IModule
     function addHandler( type : String, callback : IEvent->Void ) : Void;
 
     function removeHandler( type : String, callback : IEvent->Void ) : Void;
+	
+	function getDomain() : Domain;
 }

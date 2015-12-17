@@ -11,10 +11,11 @@ import hex.module.IModule;
 @:final 
 class DomainExpert
 {
-	private var _registeredDomains 	: Map<Int, Domain>;
+	private var _registeredDomains 	: Map<UInt, Domain>;
 	private var _subscribedModules 	: Map<IModule, Domain>;
 	
-	static private var _Instance : DomainExpert = new DomainExpert();
+	static private var _Instance 	: DomainExpert = new DomainExpert();
+	static private var _DomainIndex : UInt = 0;
 	
 	static public function getInstance() : DomainExpert
 	{
@@ -23,6 +24,7 @@ class DomainExpert
 	
 	function new() 
 	{
+		this._registeredDomains = new Map<UInt, Domain>();
 		this._subscribedModules = new Map<IModule, Domain>();
 	}
 	
@@ -30,7 +32,19 @@ class DomainExpert
 	{
 		if ( !this._subscribedModules.exists( module ) )
 		{
-			return null;
+			if ( this._registeredDomains.exists( DomainExpert._DomainIndex ) )
+			{
+				var moduleDomain : Domain = this._registeredDomains.get( DomainExpert._DomainIndex );
+				this._registeredDomains.remove( DomainExpert._DomainIndex );
+				DomainExpert._DomainIndex++;
+				this._subscribedModules.set( module, moduleDomain );
+				return moduleDomain;
+			}
+			else
+			{
+				this._subscribedModules.set( module, NoDomain.DOMAIN );
+				return NoDomain.DOMAIN;
+			}
 		}
 		else
 		{
@@ -40,8 +54,7 @@ class DomainExpert
 	
 	public function registerDomain( domain : Domain ) : Void
 	{
-		//Register
-		trace( "Implement me please" );
+		this._registeredDomains.set( DomainExpert._DomainIndex, domain );
 	}
 	
 	public function releaseDomain( module : IModule ) : Void

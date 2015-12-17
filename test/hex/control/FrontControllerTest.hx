@@ -4,6 +4,7 @@ import hex.control.FrontController;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.di.IDependencyInjector;
+import hex.domain.Domain;
 import hex.event.BasicEvent;
 import hex.event.EventDispatcher;
 import hex.event.IEvent;
@@ -169,6 +170,11 @@ private class MockModule implements IModule
 	public function removeHandler( type : String, callback : IEvent->Void ) : Void 
 	{
 		
+	}
+	
+	public function getDomain() : Domain 
+	{
+		return null;
 	}
 }
 

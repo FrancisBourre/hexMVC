@@ -1,5 +1,6 @@
 package hex.module;
 
+import hex.domain.Domain;
 import hex.event.IEvent;
 import hex.module.IModule;
 import hex.module.ModuleEvent;
@@ -53,4 +54,8 @@ class MockModule implements IModule
 		
 	}
 	
+	public function getDomain() : Domain 
+	{
+		return null;
+	}
 }

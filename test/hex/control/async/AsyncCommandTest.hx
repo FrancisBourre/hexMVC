@@ -3,6 +3,7 @@ package hex.control.async;
 import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncCommandEvent;
 import hex.control.async.IAsyncCommandListener;
+import hex.domain.Domain;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.BasicEvent;
@@ -248,5 +249,10 @@ private class MockModule implements IModule
 	public function removeHandler( type : String, callback : IEvent->Void) : Void 
 	{
 		
+	}
+	
+	public function getDomain() : Domain 
+	{
+		return null;
 	}
 }
