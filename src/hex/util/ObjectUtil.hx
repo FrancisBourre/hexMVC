@@ -36,6 +36,12 @@ class ObjectUtil
 						ObjectUtil.fastEvalFromTarget( target, toEval, coreFactory );
 					}
 				}
+				#if js
+				else if ( Std.is( target, js.html.HTMLDocument ) )
+				{
+					result = cast( target, js.html.HTMLDocument).getElementById(member);
+				}
+				#end
 				else
 				{
 					throw new IllegalArgumentException( "ObjectUtil.fastEvalFromTarget(" + target + ", " + toEval + ", " + coreFactory + ") failed." );
