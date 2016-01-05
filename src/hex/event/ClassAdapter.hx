@@ -99,7 +99,7 @@ class ClassAdapter
 				aSyncCommand.preExecute();
 				aSyncCommand.addCompleteHandler( function ( e : AsyncCommandEvent )
 				{
-					Reflect.callMethod( callbackTarget, callbackMethod, e.getAsyncCommand().getPayload() );
+					Reflect.callMethod( callbackTarget, callbackMethod, [e.getAsyncCommand().getPayload()] );
 				} );
 				aSyncCommand.execute();
 				return;

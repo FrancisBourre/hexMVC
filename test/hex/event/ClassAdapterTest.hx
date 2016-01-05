@@ -96,10 +96,10 @@ class ClassAdapterTest
 		return m;
 	}
 	
-	private function macroCallbackTest( data0 : MockValueObject, data1 : MockValueObject ) : Void
+	private function macroCallbackTest( args : Array<MockValueObject> ) : Void
 	{
-		Assert.equals( "hola!", data0.value, "'getCallbackAdapter' should return 'hola'" );
-		Assert.equals( "mundo!", data1.value, "'getCallbackAdapter' should return 'mundo'" );
+		Assert.equals( "hola!", args[ 0 ].value, "'getCallbackAdapter' should return 'hola'" );
+		Assert.equals( "mundo!", args[ 1 ].value, "'getCallbackAdapter' should return 'mundo'" );
 	}
 	
 }
