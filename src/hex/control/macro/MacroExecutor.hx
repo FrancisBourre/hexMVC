@@ -26,8 +26,6 @@ class MacroExecutor implements IMacroExecutor
 	@inject
 	public var injector   					: IDependencyInjector;
 	
-	@inject
-    public var module     					: IModule;
 
 	private var _commandIndex 				: Int;
 	private var _commandCalledCount 		: Int;
@@ -80,7 +78,10 @@ class MacroExecutor implements IMacroExecutor
 		// Execute command
         if ( command != null )
         {
-            command.setOwner( this.module );
+			if ( this.injector.hasMapping( IModule ) )
+			{
+				command.setOwner ( this.injector.getInstance( IModule ) );
+			}
 
             var isAsync : Bool = Std.is( command, IAsyncCommand );
             if ( isAsync )
