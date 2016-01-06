@@ -13,13 +13,15 @@ import hex.module.IModule;
 @:rtti
 class ViewHelper implements IViewHelper
 {
+	public static var DEFAULT_VISIBLE:Bool = true;
+	
 	@inject
 	public var dispatcher 			: IEventDispatcher<IEventListener, IEvent>;
 	
 	private var _ed 				: LightweightClosureDispatcher<ViewHelperEvent>;
 	private var _owner 				: IModule;
 	private var _view 				: IView;
-	private var _isVisible 			: Bool;
+	private var _isVisible 			: Bool = ViewHelper.DEFAULT_VISIBLE;
 	
 	private var _isPreInitialized 	: Bool = false;
 		
