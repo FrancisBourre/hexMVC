@@ -179,7 +179,8 @@ class StatelessService extends AbstractService implements IStatelessService
 
 	private function _onErrorHandler( result : Dynamic ) : Void
 	{
-		this._setResult( null );
+		this._rawResult = null;
+		this._result = null;
 		this.handleFail();
 	}
 	

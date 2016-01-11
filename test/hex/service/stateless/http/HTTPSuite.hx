@@ -7,5 +7,5 @@ package hex.service.stateless.http;
 class HTTPSuite
 {
 	@suite("HTTP suite")
-    public var list : Array<Class<Dynamic>> = [HTTPServiceTest];
+    public var list : Array<Class<Dynamic>> = [HTTPServiceTest, DefaultHTTPServiceParameterFactoryTest];
 }
