@@ -5,8 +5,6 @@ import hex.error.IllegalStateException;
 import hex.error.UnsupportedOperationException;
 import hex.event.MessageType;
 import hex.service.ServiceConfiguration;
-import hex.service.ServiceEvent;
-import hex.service.stateless.StatelessServiceEventType;
 import hex.unittest.assertion.Assert;
 
 /**

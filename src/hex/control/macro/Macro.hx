@@ -7,7 +7,6 @@ import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.event.BasicEvent;
 import hex.log.Stringifier;
 
 /**
@@ -134,18 +133,18 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		return this.isInSequenceMode;
 	}
 	
-	public function onAsyncCommandComplete( e : BasicEvent ) : Void
+	public function onAsyncCommandComplete( cmd : AsyncCommand ) : Void
 	{
-		this.macroExecutor.asyncCommandCalled( cast e.target );
+		this.macroExecutor.asyncCommandCalled( cmd );
 		this._executeNextCommand();
 	}
 
-	public function onAsyncCommandFail( e : BasicEvent ) : Void
+	public function onAsyncCommandFail( cmd : AsyncCommand ) : Void
 	{
 		// I have to check if it's not null because the macroexecutor calls out when a guard protected the run of a command. Then it handles itself the callNotification - Duke
-		if ( e != null && e.target != null )
+		if ( cmd != null )
 		{
-			this.macroExecutor.asyncCommandCalled( cast e.target );
+			this.macroExecutor.asyncCommandCalled( cmd );
 		}
 		
 		if ( this.isAtomic )
@@ -161,9 +160,9 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		}
 	}
 
-	public function onAsyncCommandCancel( e : BasicEvent ) : Void
+	public function onAsyncCommandCancel( cmd : AsyncCommand ) : Void
 	{
-		this.macroExecutor.asyncCommandCalled( cast e.target );
+		this.macroExecutor.asyncCommandCalled( cmd );
 		
 		if ( this.isAtomic )
 		{

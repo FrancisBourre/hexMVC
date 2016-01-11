@@ -2,6 +2,7 @@ package hex.viewhelper;
 
 import hex.MockDependencyInjector;
 import hex.module.IModule;
+import hex.module.MockModule;
 import hex.unittest.assertion.Assert;
 import hex.view.IView;
 import hex.view.viewhelper.IMainViewHelperManagerListener;
@@ -11,7 +12,6 @@ import hex.view.viewhelper.MainViewHelperManagerEvent;
 import hex.view.viewhelper.ViewHelper;
 import hex.view.viewhelper.ViewHelperManager;
 import hex.view.viewhelper.ViewHelperManagerEvent;
-import hex.module.MockModule;
 
 /**
  * ...

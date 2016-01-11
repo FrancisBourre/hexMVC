@@ -1,8 +1,6 @@
 package hex.service;
 
 import hex.service.AbstractService;
-import hex.service.ServiceConfiguration;
-import hex.service.ServiceEvent;
 
 /**
  * ...

@@ -1,8 +1,6 @@
 package hex.module.dependency;
 
-import hex.service.IService;
 import hex.service.Service;
-import hex.service.ServiceEvent;
 
 /**
  * ...

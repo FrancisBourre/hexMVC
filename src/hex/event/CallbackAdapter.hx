@@ -1,8 +1,5 @@
 package hex.event;
 
-import hex.error.IllegalArgumentException;
-import hex.util.ClassUtil;
-
 /**
  * ...
  * @author Francis Bourre

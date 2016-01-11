@@ -7,10 +7,8 @@ import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
-import hex.event.IEvent;
 import hex.event.MessageType;
 import hex.module.IModule;
-import hex.module.ModuleEvent;
 import hex.unittest.assertion.Assert;
 
 /**

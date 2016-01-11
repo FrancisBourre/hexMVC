@@ -1,6 +1,5 @@
 package hex.service;
 
-import hex.service.ServiceConfiguration;
 import hex.service.ServiceURLConfiguration;
 import hex.unittest.assertion.Assert;
 

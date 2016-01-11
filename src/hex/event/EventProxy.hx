@@ -1,7 +1,5 @@
 package hex.event;
 
-import hex.event.IEvent;
-
 /**
  * ...
  * @author Francis Bourre

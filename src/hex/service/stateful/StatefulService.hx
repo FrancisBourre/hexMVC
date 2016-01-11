@@ -1,12 +1,9 @@
 package hex.service.stateful;
 
 import hex.error.IllegalStateException;
-import hex.event.Dispatcher;
-import hex.event.IEvent;
-import hex.event.IEventListener;
-import hex.event.LightweightClosureDispatcher;
-import hex.event.MessageType;
 import hex.event.CompositeDispatcher;
+import hex.event.Dispatcher;
+import hex.event.MessageType;
 import hex.service.AbstractService;
 import hex.service.ServiceConfiguration;
 import hex.service.stateful.IStatefulService;

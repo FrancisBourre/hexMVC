@@ -1,10 +1,11 @@
 package hex.control.async;
 
+import hex.control.async.AsyncCommandMessage;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
-import hex.event.LightweightClosureDispatcher;
+import hex.event.Dispatcher;
 import hex.module.IModule;
 
 /**
@@ -20,13 +21,13 @@ class AsyncCommand implements IAsyncCommand
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 
     private var _status                         : String;
-    private var _ed                             : LightweightClosureDispatcher<AsyncCommandEvent>;
+    private var _dispatcher 					: Dispatcher<{}>;
     private var _owner                          : IModule;
 
     public function new()
     {
-        this._status    = AsyncCommand.WAS_NEVER_USED;
-        this._ed        = new LightweightClosureDispatcher<AsyncCommandEvent>();
+        this._status 			= AsyncCommand.WAS_NEVER_USED;
+        this._dispatcher        = new Dispatcher<{}>();
     }
 
     public function preExecute() :  Void
@@ -43,67 +44,67 @@ class AsyncCommand implements IAsyncCommand
 
     public function addAsyncCommandListener( listener : IAsyncCommandListener ) : Void
     {
-        this.addCompleteHandler( listener.onAsyncCommandComplete );
-        this.addFailHandler( listener.onAsyncCommandFail );
-        this.addCancelHandler( listener.onAsyncCommandCancel );
+		this.addCompleteHandler( listener, listener.onAsyncCommandComplete );
+        this.addFailHandler( listener, listener.onAsyncCommandFail );
+        this.addCancelHandler( listener, listener.onAsyncCommandCancel );
     }
 
     public function removeAsyncCommandListener( listener : IAsyncCommandListener ) : Void
     {
-        this.removeCompleteHandler( listener.onAsyncCommandComplete );
-        this.removeFailHandler( listener.onAsyncCommandFail );
-        this.removeCancelHandler( listener.onAsyncCommandCancel );
+		this.removeCompleteHandler( listener, listener.onAsyncCommandComplete );
+        this.removeFailHandler( listener, listener.onAsyncCommandFail );
+        this.removeCancelHandler( listener, listener.onAsyncCommandCancel );
     }
 
-    public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void
+    public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
         if ( this.hasCompleted )
         {
-            handler( new AsyncCommandEvent( AsyncCommandEvent.COMPLETE, this ) );
+            callback( this );
         }
         else
         {
-            this._ed.addEventListener( AsyncCommandEvent.COMPLETE, handler );
+            this._dispatcher.addHandler( AsyncCommandMessage.COMPLETE, scope, callback );
         }
     }
 
-    public function removeCompleteHandler( handler : AsyncCommandEvent->Void ) : Void
+    public function removeCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
-        this._ed.removeEventListener( AsyncCommandEvent.COMPLETE, handler );
+        this._dispatcher.removeHandler( AsyncCommandMessage.COMPLETE, scope, callback );
     }
 
-    public function addFailHandler( handler : AsyncCommandEvent->Void ) : Void
+    public function addFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
         if ( this.hasFailed )
         {
-            handler( new AsyncCommandEvent( AsyncCommandEvent.FAIL, this ) );
+            callback( this );
         }
         else
         {
-            this._ed.addEventListener( AsyncCommandEvent.FAIL, handler );
+            this._dispatcher.addHandler( AsyncCommandMessage.FAIL, scope, callback );
         }
     }
 
-    public function removeFailHandler( handler : AsyncCommandEvent->Void ) : Void
+    public function removeFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
-        this._ed.removeEventListener( AsyncCommandEvent.FAIL, handler );
+        this._dispatcher.removeHandler( AsyncCommandMessage.FAIL, scope, callback );
     }
 
-    public function addCancelHandler( handler : AsyncCommandEvent->Void ) : Void
+    public function addCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
         if ( this.isCancelled )
         {
-            handler( new AsyncCommandEvent( AsyncCommandEvent.CANCEL, this ) );
+            callback( this );
         }
         else
         {
-            this._ed.addEventListener( AsyncCommandEvent.CANCEL, handler );
+            this._dispatcher.addHandler( AsyncCommandMessage.CANCEL, scope, callback );
         }
     }
 
-    public function removeCancelHandler( handler : AsyncCommandEvent->Void ) : Void
+    public function removeCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
-        this._ed.removeEventListener( AsyncCommandEvent.CANCEL, handler );
+        this._dispatcher.removeHandler( AsyncCommandMessage.CANCEL, scope, callback );
     }
 
 	@:final 
@@ -111,7 +112,7 @@ class AsyncCommand implements IAsyncCommand
     {
 		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_COMPLETED;
-        this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.COMPLETE, this ) );
+        this._dispatcher.dispatch( AsyncCommandMessage.COMPLETE, [ this ] );
         this._release();
     }
 
@@ -120,7 +121,7 @@ class AsyncCommand implements IAsyncCommand
     {
 		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_FAILED;
-        this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.FAIL, this ) );
+        this._dispatcher.dispatch( AsyncCommandMessage.FAIL, [ this ] );
         this._release();
     }
 
@@ -129,7 +130,7 @@ class AsyncCommand implements IAsyncCommand
     {
 		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
         this._status = AsyncCommand.IS_CANCELLED;
-        this._ed.dispatchEvent( new AsyncCommandEvent( AsyncCommandEvent.CANCEL, this ) );
+        this._dispatcher.dispatch( AsyncCommandMessage.CANCEL, [ this ] );
         this._release();
     }
 
@@ -196,7 +197,7 @@ class AsyncCommand implements IAsyncCommand
      */
     private function _removeAllListeners() : Void
     {
-        this._ed.removeAllListeners();
+        this._dispatcher.removeAllListeners();
     }
 
     private function _throwExecutionIllegalStateError() : Bool

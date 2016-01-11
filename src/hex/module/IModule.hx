@@ -1,6 +1,5 @@
 package hex.module;
 
-import hex.control.Request;
 import hex.domain.Domain;
 import hex.event.MessageType;
 

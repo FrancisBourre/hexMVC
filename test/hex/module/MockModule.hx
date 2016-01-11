@@ -1,10 +1,8 @@
 package hex.module;
 
 import hex.domain.Domain;
-import hex.event.IEvent;
 import hex.event.MessageType;
 import hex.module.IModule;
-import hex.module.ModuleEvent;
 
 /**
  * ...

@@ -1,4 +1,5 @@
 package hex.service.stateless;
+
 import hex.event.MessageType;
 
 /**

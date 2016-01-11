@@ -1,6 +1,6 @@
 package hex.control.command;
 
-import hex.control.async.AsyncCommandEvent;
+import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 
@@ -58,7 +58,7 @@ interface ICommandMapping
     /**
      * A list of complete callbacks
      */
-    function getCompleteHandlers() : Array<AsyncCommandEvent->Void>;
+    function getCompleteHandlers() : Array<AsyncHandler>;
 
     /**
      * Returns true if mapping has complete callbacks
@@ -68,12 +68,12 @@ interface ICommandMapping
     /**
      * A list of complete callbacks
      */
-    function withCompleteHandlers( handlers : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
+    function withCompleteHandlers( handler : AsyncHandler ) : ICommandMapping;
 
     /**
      * A list of fail callbacks
      */
-    function getFailHandlers() : Array<AsyncCommandEvent->Void>;
+    function getFailHandlers() : Array<AsyncHandler>;
 
     /**
      * Returns true if mapping has fail callbacks
@@ -83,12 +83,12 @@ interface ICommandMapping
     /**
      * A list of fail callbacks
      */
-    function withFailHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
+    function withFailHandlers( handler : AsyncHandler ) : ICommandMapping;
 
     /**
      * A list of cancel callbacks
      */
-    function getCancelHandlers() : Array<AsyncCommandEvent->Void>;
+    function getCancelHandlers() : Array<AsyncHandler>;
 
     /**
      * Returns true if mapping has cancel callbacks
@@ -98,7 +98,7 @@ interface ICommandMapping
     /**
      * A list of cancel callbacks
      */
-    function withCancelHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping;
+    function withCancelHandlers( handler : AsyncHandler ) : ICommandMapping;
 
     /**
      * A list of mapping results

@@ -20,7 +20,7 @@ class StatelessModelConfig implements IStatelessConfig
 	
 	public function configure() : Void 
 	{
-		throw new VirtualMethodException( "'configure' is not implemented" );
+		throw new VirtualMethodException( this + ".configure must be overridden" );
 	}
 	
 	public function mapModel<ModelType>( modelInterface : Class<ModelType>, modelClass : Class<ModelType>,  name : String = "" ) : Void

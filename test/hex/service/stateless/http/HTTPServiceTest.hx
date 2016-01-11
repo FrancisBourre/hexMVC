@@ -4,10 +4,8 @@ import haxe.Http;
 import hex.data.IParser;
 import hex.error.IllegalStateException;
 import hex.event.MessageType;
-import hex.service.stateless.AsyncStatelessServiceEventType;
 import hex.service.stateless.http.HTTPServiceConfiguration;
 import hex.service.stateless.http.IHTTPServiceListener;
-import hex.service.stateless.StatelessServiceEventType;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -155,7 +153,7 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "service received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "service received by handler should be HTTPService instance" );
 		
-		Assert.equals( StatelessServiceMessage.CANCEL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceEventType.CANCEL" );
+		Assert.equals( StatelessServiceMessage.CANCEL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.CANCEL" );
 		
 		service.addHandler( StatelessServiceMessage.CANCEL, anotherHandler, anotherHandler.onServiceCancel );
 		Assert.isNull( anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
@@ -197,7 +195,7 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "service received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "service received by handler should be HTTPService instance" );
 		
-		Assert.equals( StatelessServiceEventType.COMPLETE, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceEventType.COMPLETE" );
+		Assert.equals( StatelessServiceMessage.COMPLETE, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceMessage.COMPLETE" );
 		
 		service.addHandler( StatelessServiceMessage.COMPLETE, anotherHandler, anotherHandler.onServiceComplete );
 		Assert.isNull( anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
@@ -239,7 +237,7 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "'event.target' received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "'event.target' received by handler should be HTTPService instance" );
 		
-		Assert.equals( StatelessServiceEventType.FAIL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceEventType.FAIL" );
+		Assert.equals( StatelessServiceMessage.FAIL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceMessage.FAIL" );
 		
 		this.service.addHandler( StatelessServiceMessage.FAIL, anotherHandler, anotherHandler.onServiceFail );
 		Assert.isNull( anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
@@ -268,7 +266,7 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "'event.target' received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "'event.target' received by handler should be HTTPService instance" );
 		
-		Assert.equals( AsyncStatelessServiceEventType.TIMEOUT, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceEventType.TIMEOUT" );
+		Assert.equals( AsyncStatelessServiceMessage.TIMEOUT, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.TIMEOUT" );
 		
 		this.service.addHandler( AsyncStatelessServiceMessage.TIMEOUT, anotherHandler, anotherHandler.onServiceTimeout );
 		Assert.isNull( anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );

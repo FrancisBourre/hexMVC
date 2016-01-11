@@ -1,7 +1,5 @@
 package hex.service.stateless;
 
-import hex.service.ServiceConfiguration;
-import hex.service.ServiceEvent;
 import hex.service.stateless.StatelessService;
 
 /**

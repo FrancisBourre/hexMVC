@@ -1,10 +1,9 @@
 package hex.control.async;
 
-import hex.control.async.AsyncCommandEvent;
 import hex.control.async.AsyncCommandUtil;
+import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
-import hex.event.BasicEvent;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -23,23 +22,31 @@ class AsyncCommandUtilTest
 		var listener2 		: ASyncCommandListener = new ASyncCommandListener();
 		
 		var mockAsyncCommandForTestingListeners : MockAsyncCommandForTestingListeners = new MockAsyncCommandForTestingListeners();
-		var listeners : Array<AsyncCommandEvent->Void> = [listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel];
+		var listeners : Array<AsyncHandler> = [ new AsyncHandler( listener0, listener0.onAsyncCommandComplete ), 
+												new AsyncHandler( listener1, listener1.onAsyncCommandFail), 
+												new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) ];
 		AsyncCommandUtil.addListenersToAsyncCommand( listeners, mockAsyncCommandForTestingListeners.addCompleteHandler );
 		
-		Assert.deepEquals( 	listeners, 
-									mockAsyncCommandForTestingListeners.handlers,
-									"'CommandExecutor.mapPayload' should unmap right values" );
+		Assert.deepEquals( 	[ listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel ], 
+							mockAsyncCommandForTestingListeners.callback,
+							"'CommandExecutor.mapPayload' should map right callbacks" );
+							
+		Assert.deepEquals( 	[ listener0, listener1, listener2 ], 
+							mockAsyncCommandForTestingListeners.scope,
+							"'CommandExecutor.mapPayload' should map right scopes" );
 	}
 	
 }
 
 private class MockAsyncCommandForTestingListeners extends MockAsyncCommand
 {
-	public var handlers : Array<AsyncCommandEvent->Void> = [];
+	public var scope 	: Array<Dynamic> 			= [];
+	public var callback : Array<AsyncCommand->Void> = [];
 	
-	override public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
+	override public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
-		this.handlers.push( handler );
+		this.scope.push( scope );
+		this.callback.push( callback );
 	}
 }
 
@@ -49,8 +56,6 @@ private class MockAsyncCommand implements IAsyncCommand
 	{
 		
 	}
-	
-	/* INTERFACE hex.control.IAsyncCommand */
 	
 	public function preExecute() : Void 
 	{
@@ -72,32 +77,32 @@ private class MockAsyncCommand implements IAsyncCommand
 		
 	}
 	
-	public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
+	public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
 		
 	}
 	
-	public function removeCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
+	public function removeCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void 
 	{
 		
 	}
 	
-	public function addFailHandler( handler : AsyncCommandEvent->Void ) : Void 
+	public function addFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void 
 	{
 		
 	}
 	
-	public function removeFailHandler( handler : AsyncCommandEvent->Void ) : Void 
+	public function removeFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
 		
 	}
 	
-	public function addCancelHandler( handler : AsyncCommandEvent->Void) : Void 
+	public function addCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
 		
 	}
 	
-	public function removeCancelHandler( handler : AsyncCommandEvent->Void ) : Void 
+	public function removeCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
 		
 	}
@@ -175,19 +180,17 @@ private class ASyncCommandListener implements IAsyncCommandListener
 		
 	}
 	
-	/* INTERFACE hex.control.IAsyncCommandListener */
-	
-	public function onAsyncCommandComplete( e : BasicEvent ) : Void 
+	public function onAsyncCommandComplete( cmd : AsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandFail( e : BasicEvent ) : Void 
+	public function onAsyncCommandFail( cmd : AsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandCancel( e : BasicEvent ) : Void 
+	public function onAsyncCommandCancel( cmd : AsyncCommand ) : Void 
 	{
 		
 	}

@@ -1,6 +1,6 @@
 package hex.event;
 
-import hex.control.async.AsyncCommandEvent;
+import hex.control.async.AsyncCommand;
 import hex.core.IMetaDataParsable;
 import hex.metadata.MetadataProvider;
 import hex.util.ClassUtil;
@@ -93,15 +93,14 @@ class ClassAdapter
 				{
 					MetadataProvider.getInstance().parse( aSyncCommand );
 				}
-				
+	
 				adapterInstance = aSyncCommand;
 				Reflect.callMethod( aSyncCommand, aSyncCommand.adapt, [rest] );
 				aSyncCommand.preExecute();
-				aSyncCommand.addCompleteHandler( function ( e : AsyncCommandEvent )
-				{
-					Reflect.callMethod( callbackTarget, callbackMethod, [e.getAsyncCommand().getPayload()] );
-				} );
+				var handler : Handler = new Handler( callbackTarget, callbackMethod );
+				aSyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );	
 				aSyncCommand.execute();
+
 				return;
 			}
 			else if ( adapterInstance != null )
@@ -118,5 +117,22 @@ class ClassAdapter
 		}
 		
 		return Reflect.makeVarArgs( f );
+	}
+}
+
+private class Handler
+{
+	public var scope 	: Dynamic;
+	public var callback	: AsyncCommand->Void;
+
+	public function new( scope : Dynamic, callback : AsyncCommand->Void ) 
+	{
+		this.scope = scope;
+		this.callback = callback;
+	}
+	
+	public function onAsyncCommandComplete( command : AsyncCommand ) : Void
+	{
+		Reflect.callMethod( scope, callback, [command.getPayload()] );
 	}
 }
