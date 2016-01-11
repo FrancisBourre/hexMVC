@@ -4,6 +4,7 @@ import hex.control.async.AsyncCommand;
 import hex.control.macro.Macro;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
+import hex.control.Request;
 import hex.inject.Injector;
 import hex.MockDependencyInjector;
 import hex.unittest.assertion.Assert;
@@ -127,7 +128,7 @@ private class MockAdapterClassForFactory implements IAdapterStrategy
 	}
 
 	public function adapt( args : Array<Dynamic> ) : Array<Dynamic> 
-	{
+	{	trace( args );
 		return ["test" +this._value, 1 +this._value, args[0] +this._value, args[1] +this._value ];
 	}
 }
@@ -176,7 +177,7 @@ private class MockAsyncCommand extends AsyncCommand
 	@inject
 	public var data : MockValueObject;
 	
-	override public function execute( ?e : IEvent ) : Void
+	override public function execute( ?request : Request ) : Void
     {
 		this.data.value += "!";
 		this._handleComplete();

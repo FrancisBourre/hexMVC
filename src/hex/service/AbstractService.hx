@@ -1,24 +1,23 @@
 package hex.service;
 
 import hex.error.VirtualMethodException;
-import hex.event.IEvent;
+import hex.event.MessageType;
 import hex.service.ServiceConfiguration;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class AbstractService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> implements IService<EventClass, ConfigurationClass>
+class AbstractService implements IService
 {
-	private var _configuration : ConfigurationClass;
-	private var _serviceEventClass : Class<EventClass>;
+	private var _configuration : ServiceConfiguration;
 	
 	private function new() 
 	{
 		
 	}
 
-	public function getConfiguration() : ConfigurationClass
+	public function getConfiguration() : ServiceConfiguration
 	{
 		return this._configuration;
 	}
@@ -29,23 +28,17 @@ class AbstractService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 		throw new VirtualMethodException( this + ".createConfiguration must be overridden" );
 	}
 	
-	@final
-	public function setEventClass( serviceEventClass : Class<EventClass> ) : Void
-	{
-		this._serviceEventClass = serviceEventClass;
-	}
-	
-	public function setConfiguration( configuration : ConfigurationClass ) : Void
+	public function setConfiguration( configuration : ServiceConfiguration ) : Void
 	{
 		throw new VirtualMethodException( this + ".setConfiguration must be overridden" );
 	}
 	
-	public function addHandler( eventType : String, handler : EventClass->Void ) : Void
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		throw new VirtualMethodException( this + ".addHandler must be overridden" );
 	}
 	
-	public function removeHandler( eventType : String, handler : EventClass->Void ) : Void
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		throw new VirtualMethodException( this + ".removeHandler must be overridden" );
 	}

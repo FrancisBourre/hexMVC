@@ -1,9 +1,10 @@
 package hex.control.command;
-import hex.error.VirtualMethodException;
-import hex.module.IModule;
 
 import hex.control.command.ICommand;
+import hex.error.VirtualMethodException;
 import hex.event.IEvent;
+import hex.module.IModule;
+
 
 /**
  * ...

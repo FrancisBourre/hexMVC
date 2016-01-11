@@ -2,13 +2,12 @@ package hex.service.stateless.http;
 
 import hex.service.stateless.http.HTTPService;
 import hex.service.stateless.http.HTTPServiceConfiguration;
-import hex.service.stateless.http.HTTPServiceEvent;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class MockHTTPService extends HTTPService<HTTPServiceEvent, HTTPServiceConfiguration>
+class MockHTTPService extends HTTPService
 {
 	public function new()
 	{
@@ -19,7 +18,6 @@ class MockHTTPService extends HTTPService<HTTPServiceEvent, HTTPServiceConfigura
 	override public function createConfiguration() : Void
 	{
 		this._configuration 	= new HTTPServiceConfiguration();
-		this._serviceEventClass = HTTPServiceEvent;
 	}
 	
 	public function call_getRemoteArguments() : Array<Dynamic> 

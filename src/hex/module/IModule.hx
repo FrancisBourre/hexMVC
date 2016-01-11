@@ -1,7 +1,8 @@
 package hex.module;
 
+import hex.control.Request;
 import hex.domain.Domain;
-import hex.event.IEvent;
+import hex.event.MessageType;
 
 /**
  * ...
@@ -17,11 +18,11 @@ interface IModule
 
 	var isReleased( get, null ) : Bool;
 
-    function sendExternalEventFromDomain( e : ModuleEvent ) : Void;
+    function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void;
 
-    function addHandler( type : String, callback : IEvent->Void ) : Void;
+    function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 
-    function removeHandler( type : String, callback : IEvent->Void ) : Void;
+    function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 	
 	function getDomain() : Domain;
 }

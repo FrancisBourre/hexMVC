@@ -4,9 +4,8 @@ import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
-import hex.event.IEvent;
-import hex.module.IModule;
 import hex.event.LightweightClosureDispatcher;
+import hex.module.IModule;
 
 /**
  * ...
@@ -169,7 +168,7 @@ class AsyncCommand implements IAsyncCommand
         return this._status == AsyncCommand.IS_CANCELLED;
     }
 
-    public function execute( ?e : IEvent ) : Void
+    public function execute( ?request : Request ) : Void
     {
         throw new VirtualMethodException( this + ".execute must be overridden" );
     }

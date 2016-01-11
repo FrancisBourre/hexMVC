@@ -14,10 +14,10 @@ import hex.domain.Domain;
 import hex.domain.DomainExpert;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
-import hex.event.EventDispatcher;
-import hex.event.IEvent;
+import hex.event.Dispatcher;
+import hex.event.IDispatcher;
 import hex.event.IEventDispatcher;
-import hex.event.IEventListener;
+import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.Stringifier;
 import hex.metadata.IMetaDataProvider;
@@ -33,8 +33,8 @@ import hex.view.viewhelper.ViewHelperManager;
  */
 class Module implements IModule
 {
-	private var _internalDispatcher : IEventDispatcher<IEventListener, IEvent>;
-	private var _domainDispatcher 	: IEventDispatcher<IModuleListener, IEvent>;
+	private var _internalDispatcher : IDispatcher<{}>;
+	private var _domainDispatcher 	: IDispatcher<{}>;
 	private var _injector 			: Injector;
 	private var _metaDataProvider 	: IMetaDataProvider;
 
@@ -46,7 +46,7 @@ class Module implements IModule
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
 		//this._metaDataProvider 	= MetaDataProvider.getInstance( this._injector );
 		
-		this._internalDispatcher = new EventDispatcher<IEventListener, IEvent>();
+		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
 		this._injector.mapToValue( IEventDispatcher, this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
@@ -111,42 +111,33 @@ class Module implements IModule
 	 * Sends an event outside of the module
 	 * @param	event
 	 */
-	public function sendExternalEventFromDomain( event : ModuleEvent ) : Void
+	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
 		if ( this._domainDispatcher != null )
 		{
-			this._domainDispatcher.dispatchEvent( event );
+			this._domainDispatcher.dispatch( messageType, data );
 		}
 	}
 	
 	/**
-	 * Add event callback for specific event type
-	 * @param	type
-	 * @param	callback
+	 * Add callback for specific message type
 	 */
-	public function addHandler( type : String, callback : IEvent->Void ) : Void
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._domainDispatcher.addEventListener( type, callback );
+		this._domainDispatcher.addHandler( messageType, scope, callback );
 	}
 
 	/**
-	 * Remove event callback for specific event type
-	 * @param	type
-	 * @param	callback
+	 * Remove callback for specific message type
 	 */
-	public function removeHandler( type : String, callback : IEvent->Void ) : Void
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._domainDispatcher.addEventListener( type, callback );
+		this._domainDispatcher.removeHandler( messageType, scope, callback );
 	}
 	
-	private function _dispatchInternalEvent( e : IEvent ) : Void
+	private function _dispatchToInternal( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
-		this._internalDispatcher.dispatchEvent( e );
-	}
-	
-	private function _dispatchDomainEvent( e : IEvent ) : Void
-	{
-		this._domainDispatcher.dispatchEvent( e );
+		this._internalDispatcher.dispatch( messageType, data );
 	}
 
 	private function buildViewHelper( type : Class<IViewHelper>, view : IView ) : IViewHelper
@@ -198,7 +189,7 @@ class Module implements IModule
 	{
 		if ( this.isInitialized )
 		{
-			this.sendExternalEventFromDomain( new ModuleEvent( ModuleEvent.INITIALIZED, this ) );
+			this.sendMessageFromDomain( ModuleMessage.INITIALIZED, [ this ] );
 		}
 		else
 		{
@@ -213,7 +204,7 @@ class Module implements IModule
 	{
 		if ( this.isReleased )
 		{
-			this.sendExternalEventFromDomain( new ModuleEvent( ModuleEvent.RELEASED, this ) );
+			this.sendMessageFromDomain( ModuleMessage.RELEASED, [ this ] );
 		}
 		else
 		{

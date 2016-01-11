@@ -1,9 +1,7 @@
 package hex.config.stateful;
 
 import hex.di.IDependencyInjector;
-import hex.event.IEvent;
-import hex.event.IEventDispatcher;
-import hex.event.IEventListener;
+import hex.event.IDispatcher;
 import hex.module.IModule;
 
 /**
@@ -12,5 +10,5 @@ import hex.module.IModule;
  */
 interface IStatefulConfig
 {
-    function configure( injector : IDependencyInjector, dispatcher : IEventDispatcher<IEventListener, IEvent>, module : IModule ) : Void;
+    function configure( injector : IDependencyInjector, dispatcher : IDispatcher<{}>, module : IModule ) : Void;
 }

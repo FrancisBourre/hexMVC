@@ -1,25 +1,21 @@
 package hex.config.stateful;
 
 import hex.collection.Locator;
-import hex.collection.LocatorEvent;
+import hex.collection.LocatorMessage;
 import hex.di.IDependencyInjector;
 import hex.error.IllegalArgumentException;
 import hex.error.NoSuchElementException;
-import hex.event.CompositeClosureDispatcher;
-import hex.event.IEvent;
-import hex.event.IEventDispatcher;
-import hex.event.IEventListener;
+import hex.event.IDispatcher;
+import hex.event.CompositeDispatcher;
 import hex.module.IModule;
 import hex.service.IService;
-import hex.service.ServiceConfiguration;
-import hex.service.ServiceEvent;
 import hex.service.stateful.IStatefulService;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<String, ServiceLocatorHelper>> implements IStatefulConfig
+class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IStatefulConfig
 {
 	public function new() 
 	{
@@ -56,7 +52,7 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<
 		}
 	}
 	
-	public function configure( injector : IDependencyInjector, dispatcher : IEventDispatcher<IEventListener, IEvent>, module : IModule ) : Void
+	public function configure( injector : IDependencyInjector, dispatcher : IDispatcher<{}>, module : IModule ) : Void
 	{
 		var keys = this.keys();
         for ( className in keys )
@@ -90,7 +86,7 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<
 			}
 			else if ( Std.is( service, IStatefulService ) )
 			{
-				var serviceDispatcher : CompositeClosureDispatcher = ( cast service ).getDispatcher();
+				var serviceDispatcher : CompositeDispatcher = ( cast service ).getDispatcher();
 				if ( serviceDispatcher != null )
 				{
 					serviceDispatcher.add( dispatcher );
@@ -113,12 +109,12 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<
 		}
 	}
 	
-	public function addService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration>( service : Class<IService<EventClass, ConfigurationClass>>, value : Dynamic, ?mapName : String = "" ) : Bool
+	public function addService( service : Class<IService>, value : Dynamic, ?mapName : String = "" ) : Bool
 	{
 		return this._registerService( service, new ServiceLocatorHelper( value, mapName ), mapName );
 	}
 	
-	private function _registerService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration>( type : Class<IService<EventClass, ConfigurationClass>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
+	private function _registerService( type : Class<IService>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
 	{
 		var className : String = ( mapName != "" ? mapName + "#" : "" ) + Type.getClassName( type );
 		return this.register( className, service );
@@ -126,12 +122,12 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper, LocatorEvent<
 	
 	override function _dispatchRegisterEvent( key : String, element : ServiceLocatorHelper ) : Void 
 	{
-		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.REGISTER, this, key, element ) );
+		this._dispatcher.dispatch( LocatorMessage.REGISTER, [ key, element ] );
 	}
 	
 	override function _dispatchUnregisterEvent( key : String ) : Void 
 	{
-		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.UNREGISTER, this, key ) );
+		this._dispatcher.dispatch( LocatorMessage.UNREGISTER, [ key ] );
 	}
 }
 

@@ -5,7 +5,6 @@ import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.event.BasicEvent;
-import hex.event.IEvent;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -118,7 +117,7 @@ private class MockAsyncCommand implements IAsyncCommand
 		
 	}
 	
-	public function execute( ?e : IEvent ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}

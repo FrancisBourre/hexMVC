@@ -8,6 +8,7 @@ import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.BasicEvent;
 import hex.event.IEvent;
+import hex.event.MessageType;
 import hex.module.IModule;
 import hex.module.ModuleEvent;
 import hex.unittest.assertion.Assert;
@@ -160,7 +161,7 @@ class AsyncCommandTest
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?e : IEvent ) : Void
+	override public function execute( ?request : Request ) : Void
 	{
 		this._handleComplete();
 	}
@@ -211,9 +212,7 @@ private class MockModule implements IModule
 	{
 		
 	}
-	
-	/* INTERFACE hex.module.IModule */
-	
+
 	public function initialize():Void 
 	{
 		
@@ -236,17 +235,17 @@ private class MockModule implements IModule
 		return false;
 	}
 	
-	public function sendExternalEventFromDomain( e : ModuleEvent ) : Void 
+	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
 		
 	}
 	
-	public function addHandler( type : String, callback : IEvent->Void ) : Void 
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}
 	
-	public function removeHandler( type : String, callback : IEvent->Void) : Void 
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}

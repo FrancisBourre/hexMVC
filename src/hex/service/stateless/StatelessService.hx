@@ -3,16 +3,19 @@ package hex.service.stateless;
 import hex.data.IParser;
 import hex.error.IllegalStateException;
 import hex.error.UnsupportedOperationException;
-import hex.event.LightweightClosureDispatcher;
+import hex.event.Dispatcher;
+import hex.event.IDispatcher;
+import hex.event.MessageType;
 import hex.service.AbstractService;
+import hex.service.ServiceConfiguration;
 import hex.service.stateless.IStatelessService;
-import hex.service.stateless.StatelessServiceEventType;
+import hex.service.stateless.StatelessServiceMessage;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends AbstractService<EventClass, ConfigurationClass> implements IStatelessService<EventClass, ConfigurationClass>
+class StatelessService extends AbstractService implements IStatelessService
 {
 	public static inline var WAS_NEVER_USED     : String = "WAS_NEVER_USED";
     public static inline var IS_RUNNING         : String = "IS_RUNNING";
@@ -20,7 +23,7 @@ class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
     public static inline var IS_FAILED          : String = "IS_FAILED";
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 	
-	private var _ed            					: LightweightClosureDispatcher<EventClass>;
+	private var _ed            					: IDispatcher<{}>;
 	
 	private var _result                     	: Dynamic;
     private var _rawResult                		: Dynamic;
@@ -30,23 +33,23 @@ class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
 	private function new() 
 	{
 		super();
-		this._ed = new LightweightClosureDispatcher<EventClass>();
+		this._ed = new Dispatcher<{}>();
 	}
 
-	override public function setConfiguration( configuration : ConfigurationClass ) : Void
+	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
 	{
 		this.wasUsed && this._throwExecutionIllegalStateError( "setConfiguration" );
         this._configuration = configuration;
 	}
 	
-	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void
+	override public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._ed.addEventListener( eventType, handler );
+		this._ed.addHandler( messageType, scope, callback );
 	}
 
-	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void
+	override public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._ed.addEventListener( eventType, handler );
+		this._ed.removeHandler( messageType, scope, callback );
 	}
 	
 	override public function release() : Void
@@ -208,7 +211,7 @@ class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleComplete failed" );
 		this._status = StatelessService.IS_COMPLETED;
-		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEventType.COMPLETE, this] ) );
+		this._ed.dispatch( StatelessServiceMessage.COMPLETE, [this] );
 		this._release();
 	}
 
@@ -217,7 +220,7 @@ class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleFail failed" );
 		this._status = StatelessService.IS_FAILED;
-		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEventType.FAIL, this] ) );
+		this._ed.dispatch( StatelessServiceMessage.FAIL, [this] );
 		this._release();
 	}
 
@@ -226,7 +229,7 @@ class StatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfig
 	{
 		this.wasUsed && this._status != StatelessService.IS_RUNNING && this._throwIllegalStateError( "handleCancel failed" );
 		this._status = StatelessService.IS_CANCELLED;
-		this._ed.dispatchEvent( Type.createInstance ( this._serviceEventClass, [StatelessServiceEventType.CANCEL, this] ) );
+		this._ed.dispatch( StatelessServiceMessage.CANCEL, [this] );
 		this._release();
 	}
 

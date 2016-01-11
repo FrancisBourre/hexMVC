@@ -8,7 +8,6 @@ import hex.control.command.ICommandMapping;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
 import hex.event.BasicEvent;
-import hex.event.IEvent;
 import hex.log.Stringifier;
 
 /**
@@ -18,7 +17,7 @@ import hex.log.Stringifier;
 @:rtti
 class Macro extends AsyncCommand implements IAsyncCommandListener
 {
-	private var _event 				: IEvent;
+	private var _request 			: Request;
 	private var _isAtomic 			: Bool = true;
     private var _isSequenceMode 	: Bool = true;
 	
@@ -54,10 +53,10 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	}
 	
 	@:final 
-	override public function execute( ?e : IEvent ) : Void
+	override public function execute( ?request : Request ) : Void
 	{
 		!this.isRunning && this._throwExecutionIllegalStateError();
-		this._event = e;
+		this._request = request;
 		this._executeNextCommand();
 	}
 	
@@ -73,7 +72,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	
 	private function _executeCommand() : Void
 	{
-		var command : ICommand = this.macroExecutor.executeNextCommand( this._event );
+		var command : ICommand = this.macroExecutor.executeNextCommand( this._request );
 		
 		if ( command != null )
 		{

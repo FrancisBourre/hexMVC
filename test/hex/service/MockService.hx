@@ -8,11 +8,10 @@ import hex.service.ServiceEvent;
  * ...
  * @author Francis Bourre
  */
-class MockService extends AbstractService<ServiceEvent, ServiceConfiguration>
+class MockService extends AbstractService
 {
 	public function new()
 	{
 		super();
-		this.setEventClass( ServiceEvent );
 	}
 }

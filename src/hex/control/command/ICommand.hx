@@ -1,6 +1,5 @@
 package hex.control.command;
 
-import hex.event.IEvent;
 import hex.module.IModule;
 
 /**
@@ -9,7 +8,7 @@ import hex.module.IModule;
  */
 interface ICommand
 {
-    function execute( ?e : IEvent ) : Void;
+    function execute( ?e : Request ) : Void;
 
     function getPayload() : Array<Dynamic>;
 

@@ -11,6 +11,7 @@ import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadEvent;
+import hex.control.Request;
 import hex.error.IllegalStateException;
 import hex.event.BasicEvent;
 import hex.event.IEvent;
@@ -158,8 +159,8 @@ class MacroExecutorTest
 		var anotherMockPayload 			: ExecutionPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
 		var payloads 					: Array<ExecutionPayload> 	= [ stringPayload, anotherMockPayload ];
 		
-		var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
-		var command : ICommand = this._macroExecutor.executeCommand( commandMapping, event );
+		var request : Request = new Request( payloads );
+		var command : ICommand = this._macroExecutor.executeCommand( commandMapping, request );
 		
 		Assert.isNotNull( command, "'command' should not be null" );
 		Assert.isInstanceOf( command, MockAsyncCommandForTestingExecution, "'command' shouldbe typed 'MockAsyncCommandForTestingExecution'" );
@@ -168,9 +169,9 @@ class MacroExecutorTest
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
 //		Assert.assertEquals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
-		Assert.equals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.equals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
 		
-		Assert.deepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.deepEquals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
 		
 		Assert.arrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
 		Assert.arrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
@@ -226,7 +227,7 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 	static public var executeCallCount 		: Int = 0;
 	static public var preExecuteCallCount 	: Int = 0;
 	
-	static public var event 				: IEvent;
+	static public var request 				: Request;
 	static public var owner 				: IModule;
 	
 	static public var completeHandlers 		: Array<AsyncCommandEvent->Void> = [];
@@ -243,10 +244,10 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
 	}
 	
-	override public function execute( ?e : IEvent ) : Void 
+	override public function execute( ?request : Request ) : Void 
 	{
 		MockAsyncCommandForTestingExecution.executeCallCount++;
-		MockAsyncCommandForTestingExecution.event = e;
+		MockAsyncCommandForTestingExecution.request = request;
 	}
 	
 	override public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
@@ -267,7 +268,7 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?e : IEvent ) : Void 
+	override public function execute( ?request : Request ) : Void 
 	{
 		Timer.delay( this._handleComplete, 50 );
 	}
@@ -281,10 +282,8 @@ private class MockCommand implements ICommand
 	{
 		
 	}
-	
-	/* INTERFACE hex.control.command.ICommand */
-	
-	public function execute( ?e : IEvent ) : Void 
+
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}

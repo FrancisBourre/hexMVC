@@ -1,21 +1,24 @@
 package hex.service.stateful;
 
 import hex.error.IllegalStateException;
-import hex.event.CompositeClosureDispatcher;
+import hex.event.Dispatcher;
 import hex.event.IEvent;
 import hex.event.IEventListener;
 import hex.event.LightweightClosureDispatcher;
+import hex.event.MessageType;
+import hex.event.CompositeDispatcher;
 import hex.service.AbstractService;
+import hex.service.ServiceConfiguration;
 import hex.service.stateful.IStatefulService;
 
 /**
  * ...
  * @author duke
  */
-class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends AbstractService<EventClass, ConfigurationClass> implements IStatefulService<EventClass, ConfigurationClass>
+class StatefulService extends AbstractService implements IStatefulService
 {
-	private var _dispatcher				: LightweightClosureDispatcher<EventClass>;
-	private var _compositeDispatcher	: CompositeClosureDispatcher;
+	private var _dispatcher				: Dispatcher<{}>;
+	private var _compositeDispatcher	: CompositeDispatcher;
 	
 	@:isVar public var inUse( get, null ) : Bool = false;
 
@@ -23,18 +26,18 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 	{
 		super();
 		
-		this._compositeDispatcher 	= new CompositeClosureDispatcher();
-		this._dispatcher 			= new LightweightClosureDispatcher();
+		this._compositeDispatcher 	= new CompositeDispatcher();
+		this._dispatcher 			= new Dispatcher<{}>();
 		
 		this._compositeDispatcher.add( this._dispatcher );
 	}
 	
-	public function getDispatcher() : CompositeClosureDispatcher
+	public function getDispatcher() : CompositeDispatcher
 	{
 		return this._compositeDispatcher;
 	}
 	
-	override public function setConfiguration( configuration : ConfigurationClass ) : Void
+	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
 	{
 		this.inUse && this._throwExecutionIllegalStateError( "setConfiguration" );
         this._configuration = configuration;
@@ -55,14 +58,14 @@ class StatefulService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigu
 		return this.inUse;
 	}
 	
-	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void 
+	override public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 
 	{
-		this._dispatcher.addEventListener( eventType, handler );
+		this._dispatcher.addHandler( messageType, scope, callback );
 	}
 	
-	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void 
+	override public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 
 	{
-		this._dispatcher.removeEventListener( eventType, handler );
+		this._dispatcher.removeHandler( messageType, scope, callback );
 	}
 	
 	private function _throwExecutionIllegalStateError( methodName : String ) : Bool

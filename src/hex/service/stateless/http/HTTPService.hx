@@ -8,7 +8,7 @@ import hex.service.stateless.AsyncStatelessService;
  * ...
  * @author Francis Bourre
  */
-class HTTPService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends AsyncStatelessService<EventClass, ConfigurationClass> implements IHTTPService<EventClass, ConfigurationClass> implements IURLConfigurable implements IMetaDataParsable
+class HTTPService extends AsyncStatelessService implements IHTTPService implements IURLConfigurable implements IMetaDataParsable
 {
 	private function new() 
 	{
@@ -138,19 +138,19 @@ class HTTPService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfigurati
 	/**
      * Event handling
      */
-	public function addHTTPServiceListener( listener : IHTTPServiceListener<EventClass> ) : Void
+	public function addHTTPServiceListener( listener : IHTTPServiceListener ) : Void
 	{
-		this._ed.addEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
-		this._ed.addEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
-		this._ed.addEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
-		this._ed.addEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
+		this._ed.addHandler( StatelessServiceMessage.COMPLETE, listener, listener.onServiceComplete );
+		this._ed.addHandler( StatelessServiceMessage.FAIL, listener, listener.onServiceFail );
+		this._ed.addHandler( StatelessServiceMessage.CANCEL, listener, listener.onServiceCancel );
+		this._ed.addHandler( AsyncStatelessServiceMessage.TIMEOUT, listener, listener.onServiceTimeout );
 	}
 
-	public function removeHTTPServiceListener( listener : IHTTPServiceListener<EventClass> ) : Void
+	public function removeHTTPServiceListener( listener : IHTTPServiceListener ) : Void
 	{
-		this._ed.removeEventListener( StatelessServiceEventType.COMPLETE, listener.onServiceComplete );
-		this._ed.removeEventListener( StatelessServiceEventType.FAIL, listener.onServiceFail );
-		this._ed.removeEventListener( StatelessServiceEventType.CANCEL, listener.onServiceCancel );
-		this._ed.removeEventListener( AsyncStatelessServiceEventType.TIMEOUT, listener.onServiceTimeout );
+		this._ed.removeHandler( StatelessServiceMessage.COMPLETE, listener, listener.onServiceComplete );
+		this._ed.removeHandler( StatelessServiceMessage.FAIL, listener, listener.onServiceFail );
+		this._ed.removeHandler( StatelessServiceMessage.CANCEL, listener, listener.onServiceCancel );
+		this._ed.removeHandler( AsyncStatelessServiceMessage.TIMEOUT, listener, listener.onServiceTimeout );
 	}
 }

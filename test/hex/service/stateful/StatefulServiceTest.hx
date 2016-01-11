@@ -1,13 +1,10 @@
 package hex.service.stateful;
 
-import haxe.Constraints.Function;
-import haxe.Timer;
 import hex.error.IllegalStateException;
+import hex.event.MessageType;
 import hex.service.ServiceConfiguration;
 import hex.service.stateful.StatefulService;
 import hex.unittest.assertion.Assert;
-import hex.unittest.runner.MethodRunner;
-import hex.service.ServiceEvent;
 
 /**
  * ...
@@ -45,7 +42,7 @@ class StatefulServiceTest
 		Assert.equals( dummyConfig, this.service.getConfiguration(), "should be able to call setConfiguration after _release called" );
 	}
 	
-	@test( "Test 'lock' and 'release' behavion" )
+	@test( "Test 'lock' and 'release' behavior" )
     public function testLockAndRelease() : Void
     {
 		Assert.isFalse( this.service.inUse, "the inUse property should be false by default" );
@@ -62,27 +59,23 @@ class StatefulServiceTest
 	@test( "event subscription" )
     public function testAddAndRemoveHandler() : Void
 	{
-		var event:MockEvent = new MockEvent(MockEvent.ON_SAMPLE, this);
+		var listener : MockAsyncEventListener = new MockAsyncEventListener();
 		
-		//var callback:Dynamic =  MethodRunner.asyncHandler( this._mockAddEventHandler, [event] );
-		
-		var listener:MockAsyncEventListener = new MockAsyncEventListener();
-		
-		this.service.addHandler(MockEvent.ON_SAMPLE, listener.onAddHandlerSuccess);
-		this.service.getDispatcher().dispatchEvent(event);
+		this.service.addHandler( MockMessage.ON_SAMPLE, listener, listener.onAddHandlerSuccess );
+		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
 		
 		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should happen after call dispatchEvent on service" );
-		Assert.equals( event, listener.lastEventReceived, "dispatched event should be equal to the imput" );
+		Assert.equals( "test", listener.lastDataReceived, "dispatched event should be equal to the imput" );
 		
-		this.service.removeHandler(MockEvent.ON_SAMPLE, listener.onAddHandlerSuccess);
-		this.service.getDispatcher().dispatchEvent( event );
+		this.service.removeHandler( MockMessage.ON_SAMPLE, listener, listener.onAddHandlerSuccess );
+		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
 		
 		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should not happen after call removeHandler" );
 	}
 	
 }
 
-private class MockStatefulService extends StatefulService<ServiceEvent, ServiceConfiguration>
+private class MockStatefulService extends StatefulService
 {
 	public function new() 
 	{
@@ -102,19 +95,19 @@ private class MockStatefulService extends StatefulService<ServiceEvent, ServiceC
 }
 
 
-private class MockEvent extends ServiceEvent
+private class MockMessage
 {
-	public static var ON_SAMPLE:String = "onSample";
+	public static var ON_SAMPLE : MessageType = new MessageType( "onSample" );
 	
-	public function new ( eventType : String, target : Dynamic )
+	private function new ()
 	{
-		super( eventType, target );
+
 	}
 }
 
 private class MockAsyncEventListener
 {
-	public var lastEventReceived 		: MockEvent;
+	public var lastDataReceived 		: String;
 	public var addHandlerSuccessCount 	: Int = 0;
 	
 	public function new()
@@ -123,9 +116,9 @@ private class MockAsyncEventListener
 	}
 	
 	
-	public function onAddHandlerSuccess( e : ServiceEvent ) : Void 
+	public function onAddHandlerSuccess( data : String ) : Void 
 	{
-		this.lastEventReceived = cast e;
+		this.lastDataReceived = data;
 		this.addHandlerSuccessCount++;
 	}
 }

@@ -128,9 +128,7 @@ private class MockCommand implements ICommand
 		
 	}
 	
-	/* INTERFACE hex.control.ICommand */
-	
-	public function execute( ?e : IEvent ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}

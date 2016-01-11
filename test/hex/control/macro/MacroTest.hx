@@ -7,6 +7,7 @@ import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandMapping;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
+import hex.control.Request;
 import hex.error.NullPointerException;
 import hex.event.BasicEvent;
 import hex.event.IEvent;
@@ -15,6 +16,7 @@ import hex.control.command.ICommandMapping;
 import hex.control.macro.Macro;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
+import hex.event.MessageType;
 import hex.log.Stringifier;
 import hex.MockDependencyInjector;
 import hex.module.IModule;
@@ -128,18 +130,19 @@ class MacroTest
 	@test( "Test execute empty macro" )
 	public function testExecuteEmptyMacro() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
 		myMacro.macroExecutor = this._macroExecutor;
 		
 		Assert.methodCallThrows( IllegalStateException, myMacro, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
 		myMacro.preExecute();
-		var event : BasicEvent = new BasicEvent( "onTest", this );
-		myMacro.execute( event );
-		Assert.equals( event, this._macroExecutor.eventPassedDuringExecution, "event passed to execute should be passed to macroexecutor" );
 		
-		var anotherEvent = new BasicEvent( "onAnotherTest", this );
-		myMacro.execute( event );
-		Assert.equals( event, this._macroExecutor.eventPassedDuringExecution, "event passed to execute should be passed to macroexecutor" );
+		var request : Request = new Request();
+		myMacro.execute( request );
+		Assert.equals( request, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
+		
+		var anotherRequest : Request = new Request();
+		myMacro.execute( anotherRequest );
+		Assert.equals( anotherRequest, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
 	}
 	
 	@test( "Test execute triggers 'handleComplete'" )
@@ -148,9 +151,8 @@ class MacroTest
 		this._macroExecutor.hasNextCommandMappingReturnValue 	= false;
 		this._macroExecutor.hasRunEveryCommandReturnValue 		= true;
 		
-		var e : BasicEvent = new BasicEvent( "onTest", this );
 		this._macro.preExecute();
-		this._macro.execute( e );
+		this._macro.execute();
 		
 		Assert.isFalse( this._macro.isCancelled, "'isCancelled' property should return false" );
 		Assert.isFalse( this._macro.hasFailed, "'hasFailed' property should return false" );
@@ -162,7 +164,7 @@ class MacroTest
 	@test( "Test with guards approved" )
 	public function testWithGuardsApproved() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
 		var macroExecutor : MacroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
@@ -184,7 +186,7 @@ class MacroTest
 	@test( "Test with guards refused" )
 	public function testWithGuardsRefused() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
 		var macroExecutor : MacroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
@@ -201,7 +203,7 @@ class MacroTest
 	@test( "Test parallel mode" )
 	public function testParallelMode() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
 		var macroExecutor : MacroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
@@ -219,7 +221,7 @@ class MacroTest
 	@test( "Test sequence mode" )
 	public function testSequenceMode() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverrided = new MockEmptyMacroWithPrepareOverrided();
+		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
 		var macroExecutor : MacroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
@@ -242,7 +244,7 @@ class MacroTest
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?e : IEvent ) : Void 
+	override public function execute( ?request : Request ) : Void 
 	{
 		Timer.delay( this._handleComplete, 50 );
 	}
@@ -261,7 +263,7 @@ private class MockCommand implements ICommand
 	
 	/* INTERFACE hex.control.command.ICommand */
 	
-	public function execute( ?e : IEvent ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		MockCommand.executeCallCount++;
 	}
@@ -287,7 +289,7 @@ private class MockEmptyMacro extends Macro
 	
 }
 
-private class MockEmptyMacroWithPrepareOverrided extends Macro
+private class MockEmptyMacroWithPrepareOverriden extends Macro
 {
 	override private function _prepare() : Void
 	{
@@ -306,7 +308,7 @@ private class MockMacro extends Macro
 
 private class MockMacroExecutor implements IMacroExecutor
 {
-	public var eventPassedDuringExecution		: IEvent;
+	public var requestPassedDuringExecution		: Request;
 	public var returnedMapping					: ICommandMapping;
 	public var lastCommandClassAdded 			: Class<ICommand>;
 	public var lastMappingAdded 				: ICommandMapping;
@@ -322,17 +324,15 @@ private class MockMacroExecutor implements IMacroExecutor
 		
 	}
 	
-	/* INTERFACE hex.control.macro.IMacroExecutor */
-	
 	public function add( commandClass : Class<ICommand> ) : ICommandMapping 
 	{
 		this.lastCommandClassAdded = commandClass;
 		return this.returnedMapping;
 	}
 	
-	public function executeNextCommand( ?e : IEvent ) : ICommand 
+	public function executeNextCommand( ?request : Request ) : ICommand 
 	{
-		this.eventPassedDuringExecution = e;
+		this.requestPassedDuringExecution = request;
 		return null;
 	}
 	

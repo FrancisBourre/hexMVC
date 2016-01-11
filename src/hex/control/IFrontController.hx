@@ -1,6 +1,8 @@
 package hex.control;
+
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
+import hex.event.MessageType;
 
 /**
  * ...
@@ -8,6 +10,6 @@ import hex.control.command.ICommandMapping;
  */
 interface IFrontController
 {
-    function map( eventType : String, commandClass : Class<ICommand> ) : ICommandMapping;
-    function unmap( eventType : String ) : ICommandMapping;
+    function map( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping;
+    function unmap( messageType : MessageType ) : ICommandMapping;
 }

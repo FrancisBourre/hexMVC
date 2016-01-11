@@ -2,6 +2,7 @@ package hex.module;
 
 import hex.domain.Domain;
 import hex.event.IEvent;
+import hex.event.MessageType;
 import hex.module.IModule;
 import hex.module.ModuleEvent;
 
@@ -39,17 +40,17 @@ class MockModule implements IModule
 		return this.isReleased;
 	}
 	
-	public function sendExternalEventFromDomain( e : ModuleEvent ) : Void 
+	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
 		
 	}
 	
-	public function addHandler( type : String, callback : IEvent->Void ) : Void 
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}
 	
-	public function removeHandler( type : String, callback : IEvent->Void ) : Void 
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}

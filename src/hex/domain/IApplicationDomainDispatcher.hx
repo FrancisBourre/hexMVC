@@ -1,12 +1,11 @@
 package hex.domain;
 
-import hex.event.IEvent;
-import hex.event.IEventListener;
+import hex.domain.IDomainDispatcher;
 
 /**
  * @author Francis Bourre
  */
-interface IApplicationDomainDispatcher<ListenerType:IEventListener> extends IDomainDispatcher<ListenerType, IEvent>
+interface IApplicationDomainDispatcher extends IDomainDispatcher<{}>
 {
 	
 }
