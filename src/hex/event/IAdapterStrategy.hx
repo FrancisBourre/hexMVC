@@ -6,5 +6,5 @@ package hex.event;
 
 interface IAdapterStrategy 
 {
-	function adapt( args : Array<Dynamic> ) : Array<Dynamic>;
+	function adapt( args : Array<Dynamic> ) : Dynamic;
 }
