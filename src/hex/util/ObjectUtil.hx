@@ -37,9 +37,9 @@ class ObjectUtil
 					}
 				}
 				#if js
-				else if ( Std.is( target, js.html.HTMLDocument ) )
+				else if ( Std.is( target, js.html.Element ) )
 				{
-					result = cast( target, js.html.HTMLDocument).getElementById(member);
+					result = cast( target, js.html.Element).getElementsByClassName(member)[0];
 				}
 				#end
 				else
