@@ -97,7 +97,7 @@ class ClassAdapter
 				adapterInstance = aSyncCommand;
 				Reflect.callMethod( aSyncCommand, aSyncCommand.adapt, [rest] );
 				aSyncCommand.preExecute();
-				var handler : Handler = new Handler( callbackTarget, callbackMethod );
+				var handler : MacroAdapterStrategyHandler = new MacroAdapterStrategyHandler( callbackTarget, callbackMethod );
 				aSyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );	
 				aSyncCommand.execute();
 
@@ -120,7 +120,7 @@ class ClassAdapter
 	}
 }
 
-private class Handler
+private class MacroAdapterStrategyHandler
 {
 	public var scope 	: Dynamic;
 	public var callback	: AsyncCommand->Void;
