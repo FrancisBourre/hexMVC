@@ -1,11 +1,11 @@
 package hex.control.command;
 
-import hex.control.async.AsyncCommandEvent;
-import hex.control.payload.ExecutionPayload;
-import hex.control.command.ICommand;
-import hex.module.IModule;
+import hex.control.async.AsyncCommand;
+import hex.control.async.AsyncHandler;
 import hex.control.command.CommandMapping;
-import hex.event.IEvent;
+import hex.control.command.ICommand;
+import hex.control.payload.ExecutionPayload;
+import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -70,10 +70,15 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return false" );
 		
-		var completeHandler0 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		var completeHandler1 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		var completeHandler2 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		this._commandMapping.withCompleteHandlers( [completeHandler0, completeHandler1, completeHandler2] );
+		var listener0 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener1 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener2 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		
+		var completeHandler0 	: AsyncHandler 	= new AsyncHandler( listener0, listener0.handler );
+		var completeHandler1 	: AsyncHandler 	= new AsyncHandler( listener1, listener1.handler );
+		var completeHandler2 	: AsyncHandler 	= new AsyncHandler( listener2, listener2.handler );
+		
+		this._commandMapping.withCompleteHandlers( completeHandler0 ).withCompleteHandlers( completeHandler1 ).withCompleteHandlers( completeHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return true" );
 		Assert.deepEquals( [completeHandler0, completeHandler1, completeHandler2], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
@@ -84,10 +89,14 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasFailHandler, "hasFailHandler should return false" );
 		
-		var failHandler0 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		var failHandler1 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		var failHandler2 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		this._commandMapping.withFailHandlers( [failHandler0, failHandler1, failHandler2] );
+		var listener0 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener1 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener2 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		
+		var failHandler0 	: AsyncHandler 	= new AsyncHandler( listener0, listener0.handler );
+		var failHandler1 	: AsyncHandler 	= new AsyncHandler( listener1, listener1.handler );
+		var failHandler2 	: AsyncHandler 	= new AsyncHandler( listener2, listener2.handler );
+		this._commandMapping.withFailHandlers( failHandler0 ).withFailHandlers( failHandler1 ).withFailHandlers( failHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasFailHandler, "hasFailHandler should return true" );
 		Assert.deepEquals( [failHandler0, failHandler1, failHandler2], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
@@ -98,10 +107,14 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasCancelHandler, "hasCancelHandler should return false" );
 		
-		var cancelHandler0 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		var cancelHandler1 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		var cancelHandler2 	: AsyncCommandEvent->Void 	= ( new MockAsyncCommandListener() ).handler;
-		this._commandMapping.withCancelHandlers( [cancelHandler0, cancelHandler1, cancelHandler2] );
+		var listener0 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener1 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener2 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		
+		var cancelHandler0 	: AsyncHandler 	= new AsyncHandler( listener0, listener0.handler );
+		var cancelHandler1 	: AsyncHandler 	= new AsyncHandler( listener1, listener1.handler );
+		var cancelHandler2 	: AsyncHandler 	= new AsyncHandler( listener2, listener2.handler );
+		this._commandMapping.withCancelHandlers( cancelHandler0 ).withCancelHandlers( cancelHandler1 ).withCancelHandlers( cancelHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
 		Assert.deepEquals( [cancelHandler0, cancelHandler1, cancelHandler2], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
@@ -115,7 +128,7 @@ private class MockAsyncCommandListener
 		
 	}
 	
-	public function handler( command : AsyncCommandEvent ) : Void
+	public function handler( command : AsyncCommand ) : Void
 	{
 		
 	}
@@ -128,9 +141,7 @@ private class MockCommand implements ICommand
 		
 	}
 	
-	/* INTERFACE hex.control.ICommand */
-	
-	public function execute( ?e : IEvent ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}

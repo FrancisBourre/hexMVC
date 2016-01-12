@@ -3,31 +3,28 @@ package hex.domain;
 import hex.domain.Domain;
 import hex.domain.DomainDispatcher;
 import hex.domain.NoDomain;
-import hex.event.IEvent;
-import hex.event.IEventListener;
-import hex.event.IEventDispatcher;
-import hex.event.EventDispatcher;
-import hex.module.IModuleListener;
+import hex.event.Dispatcher;
+import hex.event.IDispatcher;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class ApplicationDomainDispatcher<ListenerType:IEventListener> extends DomainDispatcher<ListenerType, IEvent> implements IApplicationDomainDispatcher<ListenerType>
+class ApplicationDomainDispatcher extends DomainDispatcher<{}> implements IApplicationDomainDispatcher
 {
-	static private var _Instance : ApplicationDomainDispatcher<IModuleListener> = new ApplicationDomainDispatcher<IModuleListener>();
+	static private var _Instance : ApplicationDomainDispatcher = new ApplicationDomainDispatcher();
 
 	private function new() 
 	{
-		super( TopLevelDomain.DOMAIN, EventDispatcher );
+		super( TopLevelDomain.DOMAIN, Dispatcher );
 	}
 	
-	static public function getInstance() : ApplicationDomainDispatcher<IModuleListener>
+	static public function getInstance() : ApplicationDomainDispatcher
 	{
 		return ApplicationDomainDispatcher._Instance;
 	}
 	
-	override public function getDomainDispatcher( ?domain : Domain ) : IEventDispatcher<ListenerType, IEvent>
+	override public function getDomainDispatcher( ?domain : Domain ) : IDispatcher<{}>
 	{
 		return ( domain != NoDomain.DOMAIN ) ? super.getDomainDispatcher( domain ) : null;
 	}

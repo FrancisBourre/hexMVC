@@ -1,6 +1,5 @@
 package hex.control.macro;
 
-import hex.control.async.AsyncCommandEvent;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
@@ -9,11 +8,9 @@ import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
-import hex.control.payload.PayloadEvent;
 import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
 import hex.error.IllegalStateException;
-import hex.event.IEvent;
 import hex.module.IModule;
 
 /**
@@ -41,13 +38,13 @@ class MacroExecutor implements IMacroExecutor
 		this._commandCalledCount 		= 0;
 	}
 	
-	public function executeCommand( mapping : ICommandMapping, ?e : IEvent ) : ICommand
+	public function executeCommand( mapping : ICommandMapping, ?request : Request ) : ICommand
     {
 		// Build payloads collection
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
-		if ( e != null && Std.is( e, PayloadEvent ) )
+		if ( request != null )
 		{
-			payloads = payloads != null ? payloads.concat( ( cast e ).getExecutionPayloads() ) : ( cast e ).getExecutionPayloads();
+			payloads = payloads != null ? payloads.concat( request.getExecutionPayloads() ) : request.getExecutionPayloads();
 		}
 
 		// Map payloads
@@ -96,7 +93,7 @@ class MacroExecutor implements IMacroExecutor
                 this._runningAsyncCommandList.push( aSyncCommand );
             }
 
-            command.execute( e );
+            command.execute( request );
 			if ( !isAsync )
 			{
 				this._commandCalledCount++;
@@ -142,9 +139,9 @@ class MacroExecutor implements IMacroExecutor
 		return mapping;
 	}
 	
-	public function executeNextCommand( ?e : IEvent ) : ICommand
+	public function executeNextCommand( ?request : Request ) : ICommand
 	{
-		return this.executeCommand( this._commandMappingCollection[ this._commandIndex++ ], e );
+		return this.executeCommand( this._commandMappingCollection[ this._commandIndex++ ], request );
 	}
 	
 	public function asyncCommandCalled( asyncCommand : IAsyncCommand ) : Void

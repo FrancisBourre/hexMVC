@@ -1,19 +1,19 @@
 package hex.service;
 
-import hex.event.IEvent;
+import hex.event.MessageType;
 
 /**
  * @author Francis Bourre
  */
-interface IService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> 
+interface IService
 {
 	function createConfiguration() : Void;
 	
-	function addHandler( eventType : String, handler : EventClass->Void ) : Void;
+	function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 
-	function removeHandler( eventType : String, handler : EventClass->Void ) : Void;
+	function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 		
-	function getConfiguration() : ConfigurationClass;
+	function getConfiguration() : ServiceConfiguration;
 
-	function setConfiguration( configuration : ConfigurationClass ) : Void;
+	function setConfiguration( configuration : ServiceConfiguration ) : Void;
 }

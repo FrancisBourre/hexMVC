@@ -1,78 +1,76 @@
 package hex.control;
 
-import hex.collection.LocatorEvent;
+import hex.collection.Locator;
+import hex.collection.LocatorMessage;
 import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.di.IDependencyInjector;
+import hex.event.IDispatcher;
+import hex.event.MessageType;
 import hex.module.IModule;
-import hex.event.IEvent;
-import hex.event.IEventListener;
-import hex.event.IEventDispatcher;
-import hex.collection.Locator;
 
 /**
  * ...
  * @author Francis Bourre
  */
 @:rtti
-class FrontController extends Locator<String, ICommandMapping, LocatorEvent<String, ICommandMapping>> implements IFrontController
+class FrontController extends Locator<MessageType, ICommandMapping> implements IFrontController
 {
     private var _module     		: IModule;
     private var _injector   		: IDependencyInjector;
-    private var _facadeDispatcher 	: IEventDispatcher<IEventListener, IEvent>;
+    private var _facadeDispatcher 	: IDispatcher<{}>;
 
-    public function new( facadeDispatcher : IEventDispatcher<IEventListener, IEvent>, injector : IDependencyInjector, ?module : IModule )
+    public function new( facadeDispatcher : IDispatcher<{}>, injector : IDependencyInjector, ?module : IModule )
     {
         super();
 
         this._facadeDispatcher 		= facadeDispatcher;
         this._injector 				= injector;
         this._module 				= module;
+		
+		this._facadeDispatcher.addListener( this );
     }
 
-    public function map( eventType : String, commandClass : Class<ICommand> ) : ICommandMapping
+    public function map( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping
     {
         var commandMapping : ICommandMapping = new CommandMapping( commandClass );
-        this.register( eventType, commandMapping );
-        this._facadeDispatcher.addEventListener( eventType, this._handleEvent );
+        this.register( messageType, commandMapping );
         return commandMapping;
     }
 
-    public function unmap( eventType : String ) : ICommandMapping
+    public function unmap( messageType : MessageType ) : ICommandMapping
     {
-        var commandMapping : ICommandMapping = this.locate( eventType );
-        this.unregister( eventType );
-        this._facadeDispatcher.removeEventListener( eventType, this._handleEvent );
+        var commandMapping : ICommandMapping = this.locate( messageType );
+        this.unregister( messageType );
         return commandMapping;
     }
 
-    private function _handleEvent( e : IEvent ) : Void
+    public function handleMessage( messageType : MessageType, request : Request ) : Void
     {
-        if ( this.isRegisteredWithKey( e.type ) )
+        if ( this.isRegisteredWithKey( messageType ) )
         {
-            var commandMapping : ICommandMapping    = this.locate( e.type );
+            var commandMapping : ICommandMapping    = this.locate( messageType );
             var commandExecutor : CommandExecutor   = new CommandExecutor( this._injector, this._module );
 
             var mappingRemoval : Void->ICommandMapping  = null;
             if ( commandMapping.isFiredOnce )
             {
-                mappingRemoval = this.unmap.bind( e.type );
+                mappingRemoval = this.unmap.bind( messageType );
             }
 
-			e.target = this._facadeDispatcher;
-            commandExecutor.executeCommand( commandMapping, e, mappingRemoval );
+            commandExecutor.executeCommand( commandMapping, request, mappingRemoval );
         }
     }
 	
-	override function _dispatchRegisterEvent( key : String, element : ICommandMapping ) : Void 
+	override function _dispatchRegisterEvent( key : MessageType, element : ICommandMapping ) : Void 
 	{
-		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.REGISTER, this, key, element ) );
+		this._dispatcher.dispatch( LocatorMessage.REGISTER, [ key, element ] );
 	}
 	
-	override function _dispatchUnregisterEvent( key : String ) : Void 
+	override function _dispatchUnregisterEvent( key : MessageType ) : Void 
 	{
-		this._dispatcher.dispatchEvent( new LocatorEvent( LocatorEvent.UNREGISTER, this, key ) );
+		this._dispatcher.dispatch( LocatorMessage.UNREGISTER, [ key ] );
 	}
 }

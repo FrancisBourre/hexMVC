@@ -1,16 +1,13 @@
 package hex.control.command;
 
 import hex.control.async.AsyncCommand;
-import hex.control.async.AsyncCommandEvent;
+import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommandMapping;
 import hex.control.payload.ExecutionPayload;
-import hex.control.payload.PayloadEvent;
-import hex.di.IDependencyInjector;
-import hex.event.BasicEvent;
-import hex.event.IEvent;
+import hex.control.Request;
 import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.module.Module;
@@ -51,13 +48,21 @@ class CommandExecutorTest
 		var listener1 			: ASyncCommandListener 				= new ASyncCommandListener();
 		var listener2 			: ASyncCommandListener 				= new ASyncCommandListener();
 		
-		var completeHandlers 	: Array<AsyncCommandEvent->Void> 	= [listener0.onAsyncCommandComplete, listener1.onAsyncCommandComplete, listener2.onAsyncCommandComplete];
-		var failHandlers 		: Array<AsyncCommandEvent->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
-		var cancelHandlers 		: Array<AsyncCommandEvent->Void> 	= [listener0.onAsyncCommandCancel, listener1.onAsyncCommandCancel, listener2.onAsyncCommandCancel];
+		var completeHandlers 	: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandComplete, listener1.onAsyncCommandComplete, listener2.onAsyncCommandComplete];
+		var failHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
+		var cancelHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandCancel, listener1.onAsyncCommandCancel, listener2.onAsyncCommandCancel];
 		
-		commandMapping.withCompleteHandlers( completeHandlers );
-		commandMapping.withFailHandlers( failHandlers );
-		commandMapping.withCancelHandlers( cancelHandlers );
+		commandMapping	.withCompleteHandlers( new AsyncHandler( listener0, listener0.onAsyncCommandComplete ) )
+						.withCompleteHandlers( new AsyncHandler( listener1, listener1.onAsyncCommandComplete ) )
+						.withCompleteHandlers( new AsyncHandler( listener2, listener2.onAsyncCommandComplete ) );
+						
+		commandMapping	.withFailHandlers( new AsyncHandler( listener0, listener0.onAsyncCommandFail ) )
+						.withFailHandlers( new AsyncHandler( listener1, listener1.onAsyncCommandFail ) )
+						.withFailHandlers( new AsyncHandler( listener2, listener2.onAsyncCommandFail ) );
+						
+		commandMapping	.withCancelHandlers( new AsyncHandler( listener0, listener0.onAsyncCommandCancel ) )
+						.withCancelHandlers( new AsyncHandler( listener1, listener1.onAsyncCommandCancel ) )
+						.withCancelHandlers( new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) );
 		
 		var mockImplementation 	: MockImplementation 				= new MockImplementation( "mockImplementation" );
 		var mockPayload 		: ExecutionPayload 					= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
@@ -69,16 +74,17 @@ class CommandExecutorTest
 		var payloads 					: Array<ExecutionPayload> 	= [ stringPayload, anotherMockPayload ];
 		
 		var mockForTriggeringUnmap : MockForTriggeringUnmap = new MockForTriggeringUnmap( commandMapping );
-		var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
-		this._commandExecutor.executeCommand( commandMapping, event, mockForTriggeringUnmap.unmap );
+		//var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
+		var request : Request = new Request( payloads );
+		this._commandExecutor.executeCommand( commandMapping, request, mockForTriggeringUnmap.unmap );
 		
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
 		Assert.equals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
-		Assert.equals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.equals( request, MockAsyncCommandForTestingExecution.request, "event should be the same" );
 		
-		Assert.deepEquals( event, MockAsyncCommandForTestingExecution.event, "event should be the same" );
+		Assert.deepEquals( request, MockAsyncCommandForTestingExecution.request, "event should be the same" );
 		
 		Assert.arrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
 		Assert.arrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
@@ -120,12 +126,12 @@ private class MockAsyncCommandForTestingExecution extends AsyncCommand
 	static public var executeCallCount 		: Int = 0;
 	static public var preExecuteCallCount 	: Int = 0;
 	
-	static public var event 				: IEvent;
+	static public var request 				: Request;
 	static public var owner 				: IModule;
 	
-	static public var completeHandlers 		: Array<AsyncCommandEvent->Void> = [];
-	static public var failHandlers 			: Array<AsyncCommandEvent->Void> = [];
-	static public var cancelHandlers 		: Array<AsyncCommandEvent->Void> = [];
+	static public var completeHandlers 		: Array<AsyncCommand->Void> = [];
+	static public var failHandlers 			: Array<AsyncCommand->Void> = [];
+	static public var cancelHandlers 		: Array<AsyncCommand->Void> = [];
 	
 	override public function setOwner( owner : IModule ) : Void 
 	{
@@ -137,25 +143,25 @@ private class MockAsyncCommandForTestingExecution extends AsyncCommand
 		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
 	}
 	
-	override public function execute( ?e : IEvent ) : Void 
+	override public function execute( ?request : Request ) : Void 
 	{
 		MockAsyncCommandForTestingExecution.executeCallCount++;
-		MockAsyncCommandForTestingExecution.event = e;
+		MockAsyncCommandForTestingExecution.request = request;
 	}
 	
-	override public function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void 
+	override public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
-		MockAsyncCommandForTestingExecution.completeHandlers.push( handler );
+		MockAsyncCommandForTestingExecution.completeHandlers.push( callback );
 	}
 	
-	override public function addFailHandler( handler : AsyncCommandEvent->Void ) : Void 
+	override public function addFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
-		MockAsyncCommandForTestingExecution.failHandlers.push( handler );
+		MockAsyncCommandForTestingExecution.failHandlers.push( callback );
 	}
 	
-	override public function addCancelHandler( handler : AsyncCommandEvent->Void ) : Void 
+	override public function addCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
-		MockAsyncCommandForTestingExecution.cancelHandlers.push( handler );
+		MockAsyncCommandForTestingExecution.cancelHandlers.push( callback );
 	}
 }
 
@@ -166,17 +172,17 @@ private class ASyncCommandListener implements IAsyncCommandListener
 		
 	}
 	
-	public function onAsyncCommandComplete( e : BasicEvent ) : Void 
+	public function onAsyncCommandComplete( command : AsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandFail( e : BasicEvent ) : Void 
+	public function onAsyncCommandFail( command : AsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandCancel( e : BasicEvent ) : Void 
+	public function onAsyncCommandCancel( command : AsyncCommand ) : Void 
 	{
 		
 	}

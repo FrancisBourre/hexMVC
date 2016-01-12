@@ -15,17 +15,17 @@ interface IAsyncCommand extends ICommand
 
     function removeAsyncCommandListener( listener : IAsyncCommandListener ) : Void;
 
-    function addCompleteHandler( handler : AsyncCommandEvent->Void ) : Void;
+    function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void;
 
-    function removeCompleteHandler( handler : AsyncCommandEvent->Void ) : Void;
+    function removeCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void;
 
-    function addFailHandler( handler : AsyncCommandEvent->Void ) : Void;
+    function addFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void;
 
-    function removeFailHandler( handler : AsyncCommandEvent->Void ) : Void;
+    function removeFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void;
 
-    function addCancelHandler( handler : AsyncCommandEvent->Void ) : Void;
+    function addCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void;
 
-    function removeCancelHandler( handler : AsyncCommandEvent->Void ) : Void;
+    function removeCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void;
 
 
     /**

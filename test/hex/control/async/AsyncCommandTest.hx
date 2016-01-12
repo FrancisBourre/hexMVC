@@ -1,15 +1,12 @@
 package hex.control.async;
 
 import hex.control.async.AsyncCommand;
-import hex.control.async.AsyncCommandEvent;
 import hex.control.async.IAsyncCommandListener;
 import hex.domain.Domain;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
-import hex.event.BasicEvent;
-import hex.event.IEvent;
+import hex.event.MessageType;
 import hex.module.IModule;
-import hex.module.ModuleEvent;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -75,7 +72,7 @@ class AsyncCommandTest
 		var anotherHandler 	: MockAsyncCommandListener = new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
-		this._asyncCommand.addCancelHandler( handler.onAsyncCommandCancel );
+		this._asyncCommand.addCancelHandler( handler, handler.onAsyncCommandCancel );
 		
 		Assert.isFalse( this._asyncCommand.isCancelled, "'isCancelled' property should return false" );
 		this._asyncCommand.cancel();
@@ -85,16 +82,12 @@ class AsyncCommandTest
 		Assert.equals( 1, listener.cancelCallbackCount, "'listener' callback should be triggered once" );
 		Assert.equals( 1, handler.cancelCallbackCount, "'handler' callback should be triggered once" );
 		
-		Assert.equals( this._asyncCommand, listener.lastEventReceived.target, "'event.target' received by listener should be asyncCommand instance" );
-		Assert.equals( this._asyncCommand, handler.lastEventReceived.target, "'event.target' received by handler should be asyncCommand instance" );
+		Assert.equals( this._asyncCommand, listener.lastCommandReceived, "command received by listener should be asyncCommand instance" );
+		Assert.equals( this._asyncCommand, handler.lastCommandReceived, "command received by handler should be asyncCommand instance" );
 		
-		Assert.equals( AsyncCommandEvent.CANCEL, listener.lastEventReceived.type, "'event.type' received by listener should be AsyncCommandEvent.CANCEL" );
-		Assert.equals( AsyncCommandEvent.CANCEL, handler.lastEventReceived.type, "'event.type' received by handler should be AsyncCommandEvent.CANCEL" );
-		
-		this._asyncCommand.addCancelHandler( anotherHandler.onAsyncCommandCancel );
+		this._asyncCommand.addCancelHandler( anotherHandler, anotherHandler.onAsyncCommandCancel );
 		Assert.equals( 1, anotherHandler.cancelCallbackCount, "'post-handler' callback should be triggered once" );
-		Assert.equals( this._asyncCommand, anotherHandler.lastEventReceived.target, "'event.target' received by post-handler should be asyncCommand instance" );
-		Assert.equals( AsyncCommandEvent.CANCEL, anotherHandler.lastEventReceived.type, "'event.type' received by post-handler should be AsyncCommandEvent.CANCEL" );
+		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
     }
 	
 	@test( "Test complete" )
@@ -105,7 +98,7 @@ class AsyncCommandTest
 		var anotherHandler 	: MockAsyncCommandListener = new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
-		this._asyncCommand.addCompleteHandler( handler.onAsyncCommandComplete );
+		this._asyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );
 		
 		Assert.isFalse( this._asyncCommand.hasCompleted, "'hasCompleted' property should return false" );
 		this._asyncCommand.execute();
@@ -115,16 +108,12 @@ class AsyncCommandTest
 		Assert.equals( 1, listener.completeCallbackCount, "'listener' callback should be triggered once" );
 		Assert.equals( 1, handler.completeCallbackCount, "'handler' callback should be triggered once" );
 		
-		Assert.equals( this._asyncCommand, listener.lastEventReceived.target, "'event.target' received by listener should be asyncCommand instance" );
-		Assert.equals( this._asyncCommand, handler.lastEventReceived.target, "'event.target' received by handler should be asyncCommand instance" );
+		Assert.equals( this._asyncCommand, listener.lastCommandReceived, "command received by listener should be asyncCommand instance" );
+		Assert.equals( this._asyncCommand, handler.lastCommandReceived, "command received by handler should be asyncCommand instance" );
 		
-		Assert.equals( AsyncCommandEvent.COMPLETE, listener.lastEventReceived.type, "'event.type' received by listener should be AsyncCommandEvent.COMPLETE" );
-		Assert.equals( AsyncCommandEvent.COMPLETE, handler.lastEventReceived.type, "'event.type' received by handler should be AsyncCommandEvent.COMPLETE" );
-		
-		this._asyncCommand.addCompleteHandler( anotherHandler.onAsyncCommandComplete );
+		this._asyncCommand.addCompleteHandler( anotherHandler, anotherHandler.onAsyncCommandComplete );
 		Assert.equals( 1, anotherHandler.completeCallbackCount, "'post-handler' callback should be triggered once" );
-		Assert.equals( this._asyncCommand, anotherHandler.lastEventReceived.target, "'event.target' received by post-handler should be asyncCommand instance" );
-		Assert.equals( AsyncCommandEvent.COMPLETE, anotherHandler.lastEventReceived.type, "'event.type' received by post-handler should be AsyncCommandEvent.COMPLETE" );
+		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
 	}
 	
 	@test( "Test fail" )
@@ -135,7 +124,7 @@ class AsyncCommandTest
 		var anotherHandler 	: MockAsyncCommandListener = new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
-		this._asyncCommand.addFailHandler( handler.onAsyncCommandFail );
+		this._asyncCommand.addFailHandler( handler, handler.onAsyncCommandFail );
 		
 		Assert.isFalse( this._asyncCommand.hasFailed, "'hasFailed' property should return false" );
 		this._asyncCommand.fail();
@@ -145,22 +134,18 @@ class AsyncCommandTest
 		Assert.equals( 1, listener.failCallbackCount, "'listener' callback should be triggered once" );
 		Assert.equals( 1, handler.failCallbackCount, "'handler' callback should be triggered once" );
 		
-		Assert.equals( this._asyncCommand, listener.lastEventReceived.target, "'event.target' received by listener should be asyncCommand instance" );
-		Assert.equals( this._asyncCommand, handler.lastEventReceived.target, "'event.target' received by handler should be asyncCommand instance" );
+		Assert.equals( this._asyncCommand, listener.lastCommandReceived, "command received by listener should be asyncCommand instance" );
+		Assert.equals( this._asyncCommand, handler.lastCommandReceived, "command received by handler should be asyncCommand instance" );
 		
-		Assert.equals( AsyncCommandEvent.FAIL, listener.lastEventReceived.type, "'event.type' received by listener should be AsyncCommandEvent.FAIL" );
-		Assert.equals( AsyncCommandEvent.FAIL, handler.lastEventReceived.type, "'event.type' received by handler should be AsyncCommandEvent.FAIL" );
-		
-		this._asyncCommand.addFailHandler( anotherHandler.onAsyncCommandFail );
+		this._asyncCommand.addFailHandler( anotherHandler, anotherHandler.onAsyncCommandFail );
 		Assert.equals( 1, anotherHandler.failCallbackCount, "'post-handler' callback should be triggered once" );
-		Assert.equals( this._asyncCommand, anotherHandler.lastEventReceived.target, "'event.target' received by post-handler should be asyncCommand instance" );
-		Assert.equals( AsyncCommandEvent.FAIL, anotherHandler.lastEventReceived.type, "'event.type' received by post-handler should be AsyncCommandEvent.FAIL" );
+		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
 	}
 }
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?e : IEvent ) : Void
+	override public function execute( ?request : Request ) : Void
 	{
 		this._handleComplete();
 	}
@@ -173,7 +158,7 @@ private class MockAsyncCommand extends AsyncCommand
 
 private class MockAsyncCommandListener implements IAsyncCommandListener
 {
-	public var lastEventReceived 		: AsyncCommandEvent;
+	public var lastCommandReceived 		: AsyncCommand;
 	public var completeCallbackCount 	: Int = 0;
 	public var failCallbackCount 		: Int = 0;
 	public var cancelCallbackCount 		: Int = 0;
@@ -185,21 +170,21 @@ private class MockAsyncCommandListener implements IAsyncCommandListener
 	
 	/* INTERFACE hex.control.IAsyncCommandListener */
 	
-	public function onAsyncCommandComplete( e : BasicEvent ) : Void 
+	public function onAsyncCommandComplete( cmd : AsyncCommand ) : Void 
 	{
-		this.lastEventReceived = cast e;
+		this.lastCommandReceived = cmd;
 		this.completeCallbackCount++;
 	}
 	
-	public function onAsyncCommandFail( e : BasicEvent ) : Void 
+	public function onAsyncCommandFail( cmd : AsyncCommand ) : Void 
 	{
-		this.lastEventReceived = cast e;
+		this.lastCommandReceived = cmd;
 		this.failCallbackCount++;
 	}
 	
-	public function onAsyncCommandCancel( e : BasicEvent ) : Void 
+	public function onAsyncCommandCancel( cmd : AsyncCommand ) : Void 
 	{
-		this.lastEventReceived = cast e;
+		this.lastCommandReceived = cmd;
 		this.cancelCallbackCount++;
 	}
 }
@@ -211,9 +196,7 @@ private class MockModule implements IModule
 	{
 		
 	}
-	
-	/* INTERFACE hex.module.IModule */
-	
+
 	public function initialize():Void 
 	{
 		
@@ -236,17 +219,17 @@ private class MockModule implements IModule
 		return false;
 	}
 	
-	public function sendExternalEventFromDomain( e : ModuleEvent ) : Void 
+	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
 		
 	}
 	
-	public function addHandler( type : String, callback : IEvent->Void ) : Void 
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}
 	
-	public function removeHandler( type : String, callback : IEvent->Void) : Void 
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}

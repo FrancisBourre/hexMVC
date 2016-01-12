@@ -1,6 +1,6 @@
 package hex.control.command;
 
-import hex.control.async.AsyncCommandEvent;
+import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 
@@ -14,9 +14,9 @@ class CommandMapping implements ICommandMapping
     private var _guards                     : Array<Dynamic>;
     private var _payloads                   : Array<ExecutionPayload>;
 	
-    private var _completeHandlers          : Array<AsyncCommandEvent->Void>;
-    private var _cancelHandlers            : Array<AsyncCommandEvent->Void>;
-    private var _failHandlers              : Array<AsyncCommandEvent->Void>;
+    private var _completeHandlers          : Array<AsyncHandler>;
+    private var _cancelHandlers            : Array<AsyncHandler>;
+    private var _failHandlers              : Array<AsyncHandler>;
 
     public function new( commandClass : Class<ICommand> )
     {
@@ -85,7 +85,7 @@ class CommandMapping implements ICommandMapping
         return this;
     }
 
-    public function getCompleteHandlers() : Array<AsyncCommandEvent->Void>
+    public function getCompleteHandlers() : Array<AsyncHandler>
     {
         return this._completeHandlers;
     }
@@ -96,18 +96,18 @@ class CommandMapping implements ICommandMapping
 		return this._completeHandlers != null;
 	}
 
-    public function withCompleteHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
+    public function withCompleteHandlers( handler : AsyncHandler ) : ICommandMapping
     {
         if ( this._completeHandlers == null )
         {
-            this._completeHandlers = new Array<AsyncCommandEvent->Void>();
+            this._completeHandlers = new Array<AsyncHandler>();
         }
 
-        this._completeHandlers = this._completeHandlers.concat( listeners );
+        this._completeHandlers.push( handler );
         return this;
     }
 
-    public function getFailHandlers() : Array<AsyncCommandEvent->Void>
+    public function getFailHandlers() : Array<AsyncHandler>
     {
         return this._failHandlers;
     }
@@ -118,18 +118,18 @@ class CommandMapping implements ICommandMapping
 		return this._failHandlers != null;
 	}
 
-    public function withFailHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
+    public function withFailHandlers( handler : AsyncHandler ) : ICommandMapping
     {
         if ( this._failHandlers == null )
         {
-            this._failHandlers = new Array<AsyncCommandEvent->Void>();
+            this._failHandlers = [];
         }
 
-        this._failHandlers = this._failHandlers.concat( listeners );
+        this._failHandlers.push( handler );
         return this;
     }
 
-    public function getCancelHandlers() : Array<AsyncCommandEvent->Void>
+    public function getCancelHandlers() : Array<AsyncHandler>
     {
         return this._cancelHandlers;
     }
@@ -140,14 +140,14 @@ class CommandMapping implements ICommandMapping
 		return this._cancelHandlers != null;
 	}
 
-    public function withCancelHandlers( listeners : Array<AsyncCommandEvent->Void> ) : ICommandMapping
+    public function withCancelHandlers( handler : AsyncHandler ) : ICommandMapping
     {
         if ( this._cancelHandlers == null )
         {
-            this._cancelHandlers = new Array<AsyncCommandEvent->Void>();
+            this._cancelHandlers = [];
         }
 
-        this._cancelHandlers = this._cancelHandlers.concat( listeners );
+        this._cancelHandlers.push( handler );
         return this;
     }
 

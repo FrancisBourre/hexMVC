@@ -1,11 +1,10 @@
 package hex.event;
 
 import hex.control.async.AsyncCommand;
-import hex.control.macro.Macro;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
+import hex.control.Request;
 import hex.inject.Injector;
-import hex.MockDependencyInjector;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -176,7 +175,7 @@ private class MockAsyncCommand extends AsyncCommand
 	@inject
 	public var data : MockValueObject;
 	
-	override public function execute( ?e : IEvent ) : Void
+	override public function execute( ?request : Request ) : Void
     {
 		this.data.value += "!";
 		this._handleComplete();

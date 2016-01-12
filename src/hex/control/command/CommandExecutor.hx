@@ -5,10 +5,8 @@ import hex.control.async.IAsyncCommand;
 import hex.control.command.ICommand;
 import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
-import hex.control.payload.PayloadEvent;
 import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
-import hex.event.IEvent;
 import hex.module.IModule;
 import Std;
 
@@ -28,13 +26,13 @@ class CommandExecutor
         //MetaDataProvider.getInstance().registerInjector( this._injector );
     }
 
-    public function executeCommand( mapping : ICommandMapping, ?e : IEvent, ?mappingRemoval : Void->ICommandMapping ) : Void
+    public function executeCommand( mapping : ICommandMapping, ?request : Request, ?mappingRemoval : Void->ICommandMapping ) : Void
     {
 		// Build payloads collection
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
-		if ( Std.is( e, PayloadEvent ) )
+		if ( request != null )
 		{
-			payloads = payloads != null ? payloads.concat( ( cast e ).getExecutionPayloads() ) : ( cast e ).getExecutionPayloads();
+			payloads = payloads != null ? payloads.concat( request.getExecutionPayloads() ) : request.getExecutionPayloads();
 		}
 
 		// Map payloads
@@ -76,7 +74,7 @@ class CommandExecutor
                 if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
             }
 
-            command.execute( e );
+            command.execute( request );
         }
     }
 }

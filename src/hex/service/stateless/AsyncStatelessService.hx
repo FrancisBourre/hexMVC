@@ -2,12 +2,13 @@ package hex.service.stateless;
 
 import haxe.Timer;
 import hex.collection.HashMap;
+import hex.service.ServiceConfiguration;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceConfiguration> extends StatelessService<EventClass, ConfigurationClass> implements IAsyncStatelessService<EventClass, ConfigurationClass>
+class AsyncStatelessService extends StatelessService implements IAsyncStatelessService
 {
 	public static inline var HAS_TIMEOUT : String = "HAS_TIMEOUT";
 	
@@ -27,7 +28,7 @@ class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
 		AsyncStatelessService._detainService( this );
 	}
 	
-	override public function setConfiguration( configuration : ConfigurationClass ) : Void
+	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
 	{
 		super.setConfiguration( configuration );
 		this.timeoutDuration = this._configuration.serviceTimeout;
@@ -70,19 +71,6 @@ class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
 	}
 	
 	/**
-     * Event handling
-     */
-	override public function addHandler( eventType : String, handler : EventClass->Void ) : Void
-	{
-		this._ed.addEventListener( eventType, handler );
-	}
-
-	override public function removeHandler( eventType : String, handler : EventClass->Void ) : Void
-	{
-		this._ed.addEventListener( eventType, handler );
-	}
-	
-	/**
      * Memory handling
      */
     static private var _POOL : HashMap<Dynamic, Bool> = new HashMap<Dynamic, Bool>();
@@ -113,7 +101,7 @@ class AsyncStatelessService<EventClass:ServiceEvent, ConfigurationClass:ServiceC
 			this._timer.stop();
 		}
 		
-		this._ed.dispatchEvent( Type.createInstance( this._serviceEventClass, [AsyncStatelessServiceEventType.TIMEOUT, this] ) );
+		this._ed.dispatch( AsyncStatelessServiceMessage.TIMEOUT, [this] );
 		this._status = AsyncStatelessService.HAS_TIMEOUT;
 	}
 

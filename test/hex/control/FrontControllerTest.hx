@@ -1,18 +1,14 @@
 package hex.control;
 
-import hex.control.FrontController;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
+import hex.control.FrontController;
 import hex.di.IDependencyInjector;
 import hex.domain.Domain;
-import hex.event.BasicEvent;
-import hex.event.EventDispatcher;
-import hex.event.IEvent;
-import hex.event.IEventDispatcher;
-import hex.event.IEventListener;
+import hex.event.Dispatcher;
+import hex.event.IDispatcher;
+import hex.event.MessageType;
 import hex.module.IModule;
-import hex.module.Module;
-import hex.module.ModuleEvent;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -21,7 +17,7 @@ import hex.unittest.assertion.Assert;
  */
 class FrontControllerTest
 {
-	private var _dispatcher 		: IEventDispatcher<IEventListener, IEvent>;
+	private var _dispatcher 		: IDispatcher<{}>;
     private var _injector   		: MockDependencyInjector;
 	private var _module     		: MockModule;
 	
@@ -30,7 +26,7 @@ class FrontControllerTest
     @setUp
     public function setUp() : Void
     {
-		this._dispatcher 		= new EventDispatcher<IEventListener, IEvent>();
+		this._dispatcher 		= new Dispatcher<{}>();
 		this._injector 			= new MockDependencyInjector();
 		this._module 			= new MockModule();
         this._frontcontroller 	= new FrontController( this._dispatcher, this._injector, this._module );
@@ -45,49 +41,48 @@ class FrontControllerTest
 	@test( "Test map" )
     public function testMap() : Void
     {
-		Assert.isFalse( this._dispatcher.hasEventListener( "eventType" ), "event type should not be listened" );
-		
-		var commandMapping : ICommandMapping = this._frontcontroller.map( "eventType", MockCommand );
+		var messageType : MessageType = new MessageType( "messageType" );
+		var commandMapping : ICommandMapping = this._frontcontroller.map( messageType, MockCommand );
 		Assert.equals( MockCommand, commandMapping.getCommandClass(), "Command class should be the same" );
-		Assert.isTrue( this._frontcontroller.isRegisteredWithKey( "eventType" ), "event type should be registered" );
-		Assert.equals( commandMapping, this._frontcontroller.locate( "eventType" ), "command mapping should be associated to event type" );
-		
-		Assert.isTrue( this._dispatcher.hasEventListener( "eventType" ), "event type should be listened" );
+		Assert.isTrue( this._frontcontroller.isRegisteredWithKey( messageType ), "messageType should be registered" );
+		Assert.equals( commandMapping, this._frontcontroller.locate( messageType ), "command mapping should be associated to messageType" );
     }
 	
 	@test( "Test unmap" )
     public function testUnmap() : Void
     {
-		var commandMapping0 : ICommandMapping = this._frontcontroller.map( "eventType", MockCommand );
-		var commandMapping1 : ICommandMapping = this._frontcontroller.unmap( "eventType" );
+		var messageType : MessageType = new MessageType( "messageType" );
+		var commandMapping0 : ICommandMapping = this._frontcontroller.map( messageType, MockCommand );
+		var commandMapping1 : ICommandMapping = this._frontcontroller.unmap( messageType );
 		
 		Assert.equals( commandMapping0, commandMapping1, "Command mappings should be the same" );
-		Assert.isFalse( this._frontcontroller.isRegisteredWithKey( "eventType" ), "event type should not be registered anymore" );
-		Assert.isFalse( this._dispatcher.hasEventListener( "eventType" ), "event type should not be listened anymore" );
+		Assert.isFalse( this._frontcontroller.isRegisteredWithKey( messageType ), "messageType should not be registered anymore" );
     }
 	
-	@test( "Functional test of event handling" )
-    public function testEventHandling() : Void
+	@test( "Functional test of request handling" )
+    public function testRequestHandling() : Void
     {
-		this._frontcontroller.map( "eventType", MockCommand );
+		var messageType : MessageType = new MessageType( "messageType" );
+		var request : Request = new Request();
+		this._frontcontroller.map( messageType, MockCommand );
 		
-		var event : BasicEvent = new BasicEvent( "eventType", this._module );
-		this._dispatcher.dispatchEvent( event );
-		
-		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
-		Assert.equals( event, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
-		
-		var anotherEvent : BasicEvent = new BasicEvent( "anotherEventType", this._module );
-		this._dispatcher.dispatchEvent( anotherEvent );
+		this._dispatcher.dispatch( messageType, [request] );
 		
 		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
-		Assert.equals( event, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
+		Assert.equals( request, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 		
-		this._frontcontroller.map( "anotherEventType", MockCommand );
-		this._dispatcher.dispatchEvent( anotherEvent );
+		var anotherMessageType : MessageType = new MessageType( "anotherMessageType" );
+		var anotherRequest : Request = new Request();
+		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
+		
+		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
+		Assert.equals( request, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
+		
+		this._frontcontroller.map( anotherMessageType, MockCommand );
+		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
 		
 		Assert.equals( 2, MockCommand.executeCallCount, "Command execution should happenned twice" );
-		Assert.equals( anotherEvent, MockCommand.executeEventCallParameter, "event received by the command should be the same that was dispatched" );
+		Assert.equals( anotherRequest, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 	}
 	
 }
@@ -95,19 +90,17 @@ class FrontControllerTest
 private class MockCommand implements ICommand
 {
 	public static var executeCallCount 				: Int = 0;
-	public static var executeEventCallParameter 	: IEvent;
+	public static var requestParameter 				: Request;
 	
 	public function new()
 	{
 		
 	}
 	
-	/* INTERFACE hex.control.ICommand */
-	
-	public function execute( ?e : IEvent ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		MockCommand.executeCallCount++;
-		MockCommand.executeEventCallParameter = e;
+		MockCommand.requestParameter = request;
 	}
 	
 	public function getPayload() : Array<Dynamic> 
@@ -133,8 +126,6 @@ private class MockModule implements IModule
 		
 	}
 	
-	/* INTERFACE hex.module.IModule */
-	
 	public function initialize() : Void 
 	{
 		
@@ -157,17 +148,17 @@ private class MockModule implements IModule
 		return false;
 	}
 	
-	public function sendExternalEventFromDomain( e : ModuleEvent ) : Void 
+	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
 		
 	}
 	
-	public function addHandler( type : String, callback : IEvent->Void ) : Void 
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}
 	
-	public function removeHandler( type : String, callback : IEvent->Void ) : Void 
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
 		
 	}

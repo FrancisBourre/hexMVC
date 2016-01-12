@@ -1,9 +1,9 @@
 package hex.control.command;
-import hex.error.VirtualMethodException;
-import hex.module.IModule;
 
 import hex.control.command.ICommand;
-import hex.event.IEvent;
+import hex.control.Request;
+import hex.error.VirtualMethodException;
+import hex.module.IModule;
 
 /**
  * ...
@@ -11,29 +11,29 @@ import hex.event.IEvent;
  */
 class BasicCommand implements ICommand
 {
-	private var _owner:IModule;
+	private var _owner : IModule;
 
 	public function new() 
 	{
 		
 	}
 	
-	public function execute(?e:IEvent):Void 
+	public function execute( ?request : Request ) : Void 
 	{
-		throw new VirtualMethodException("Override");
+		throw new VirtualMethodException( this + ".execute must be overridden" );
 	}
 	
-	public function getPayload():Array<Dynamic> 
+	public function getPayload() : Array<Dynamic> 
 	{
 		return null;
 	}
 	
-	public function getOwner():IModule 
+	public function getOwner() : IModule 
 	{
 		return this._owner;
 	}
 	
-	public function setOwner(owner:IModule):Void 
+	public function setOwner( owner : IModule ) : Void 
 	{
 		this._owner = owner;
 	}

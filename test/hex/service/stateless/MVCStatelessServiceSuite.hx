@@ -1,7 +1,5 @@
 package hex.service.stateless;
 
-import hex.service.stateless.http.HTTPSuite;
-
 /**
  * ...
  * @author Francis Bourre

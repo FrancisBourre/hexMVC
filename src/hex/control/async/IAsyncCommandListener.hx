@@ -1,16 +1,14 @@
 package hex.control.async;
 
-import hex.event.BasicEvent;
-
 /**
  * ...
  * @author Francis Bourre
  */
 interface IAsyncCommandListener
 {
-    function onAsyncCommandComplete( e : BasicEvent ) : Void;
+    function onAsyncCommandComplete( command : AsyncCommand ) : Void;
 
-    function onAsyncCommandFail( e : BasicEvent ) : Void;
+    function onAsyncCommandFail( command : AsyncCommand ) : Void;
 
-    function onAsyncCommandCancel( e : BasicEvent ) : Void;
+    function onAsyncCommandCancel( command : AsyncCommand ) : Void;
 }

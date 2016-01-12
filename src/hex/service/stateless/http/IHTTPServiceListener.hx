@@ -4,10 +4,10 @@ package hex.service.stateless.http;
  * @author Francis Bourre
  */
 
-interface IHTTPServiceListener<EventClass> 
+interface IHTTPServiceListener
 {
-	function onServiceComplete( e : EventClass ) : Void;
-	function onServiceFail( e : EventClass ) : Void;
-	function onServiceCancel( e : EventClass ) : Void;
-	function onServiceTimeout( e : EventClass ) : Void;
+	function onServiceComplete( service : HTTPService ) : Void;
+	function onServiceFail( service : HTTPService ) : Void;
+	function onServiceCancel( service : HTTPService ) : Void;
+	function onServiceTimeout( service : HTTPService ) : Void;
 } 
