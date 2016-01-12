@@ -1,7 +1,7 @@
 package hex.view.viewhelper;
 
 import hex.di.IDependencyInjector;
-import hex.event.LightweightClosureDispatcher;
+import hex.event.Dispatcher;
 import hex.module.IModule;
 
 /**
@@ -10,17 +10,17 @@ import hex.module.IModule;
  */
 class ViewHelperManager
 {
-	static private var _mInstances 	: Map<IModule, ViewHelperManager> 							= new Map<IModule, ViewHelperManager>();
-	static private var _ED 			: LightweightClosureDispatcher<MainViewHelperManagerEvent> 	= new LightweightClosureDispatcher<MainViewHelperManagerEvent>();
+	static private var _mInstances 	: Map<IModule, ViewHelperManager> 			= new Map<IModule, ViewHelperManager>();
+	static private var _DISPATCHER 	: Dispatcher<{}> 							= new Dispatcher<{}>();
 	
 	private var _owner 				: IModule;
-	private var _ed 				: LightweightClosureDispatcher<ViewHelperManagerEvent>;
+	private var _dispatcher 		: Dispatcher<{}>;
 	private var _viewHelpers 		: Array<IViewHelper>;
 	
 	public function new ( owner : IModule ) 
 	{
 		this._owner = owner;
-		this._ed = new LightweightClosureDispatcher<ViewHelperManagerEvent>();
+		this._dispatcher = new Dispatcher<{}>();
 		this._viewHelpers = [];
 	}
 	
@@ -61,7 +61,7 @@ class ViewHelperManager
 		{
 			var viewHelper : IViewHelper = this._viewHelpers[ len-i-1 ];
 			this._viewHelpers.splice( len-i-1, 1 );
-			viewHelper.removeEventListener( ViewHelperEvent.RELEASE, this._onViewHelperRelease );
+			viewHelper.removeHandler( ViewHelperMessage.RELEASE, this, this._onViewHelperRelease );
 			viewHelper.release();
 			this._notifyViewHelperRelease( viewHelper );
 		}
@@ -78,7 +78,7 @@ class ViewHelperManager
 			injector.mapToValue( clazz,  viewHelper );
 			viewHelper.setOwner( this._owner );
 			viewHelper.view = view;
-			viewHelper.addEventListener( ViewHelperEvent.RELEASE, this._onViewHelperRelease );
+			viewHelper.addHandler( ViewHelperMessage.RELEASE, this, this._onViewHelperRelease );
 			this._viewHelpers.push( viewHelper );
 		}
 
@@ -90,9 +90,8 @@ class ViewHelperManager
 		return this._viewHelpers.length;
 	}
 	
-	private function _onViewHelperRelease( event : ViewHelperEvent ) : Void
+	private function _onViewHelperRelease( viewHelper : IViewHelper ) : Void
 	{
-		var viewHelper : IViewHelper = event.getViewHelper();
 		this._notifyViewHelperRelease( viewHelper );
 
 		var index : Int = this._viewHelpers.indexOf( viewHelper );
@@ -107,24 +106,24 @@ class ViewHelperManager
 	 */
 	public function addListener( listener : IViewHelperManagerListener ) : Void
 	{
-		this._ed.addEventListener( ViewHelperManagerEvent.VIEW_HELPER_CREATION, listener.onViewHelperCreation );
-		this._ed.addEventListener( ViewHelperManagerEvent.VIEW_HELPER_RELEASE, listener.onViewHelperRelease );
+		this._dispatcher.addHandler( ViewHelperManagerMessage.VIEW_HELPER_CREATION, listener, listener.onViewHelperCreation );
+		this._dispatcher.addHandler( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, listener, listener.onViewHelperRelease );
 	}
 
 	public function removeListener( listener : IViewHelperManagerListener ) : Void
 	{
-		this._ed.removeEventListener( ViewHelperManagerEvent.VIEW_HELPER_CREATION, listener.onViewHelperCreation );
-		this._ed.removeEventListener( ViewHelperManagerEvent.VIEW_HELPER_RELEASE, listener.onViewHelperRelease );
+		this._dispatcher.removeHandler( ViewHelperManagerMessage.VIEW_HELPER_CREATION, listener, listener.onViewHelperCreation );
+		this._dispatcher.removeHandler( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, listener, listener.onViewHelperRelease );
 	}
 
 	private function _notifyViewHelperCreation( viewHelper : IViewHelper ) : Void
 	{
-		this._ed.dispatchEvent( new ViewHelperManagerEvent( ViewHelperManagerEvent.VIEW_HELPER_CREATION, this, viewHelper ) );
+		this._dispatcher.dispatch( ViewHelperManagerMessage.VIEW_HELPER_CREATION, [ viewHelper ] );
 	}
 
 	private function _notifyViewHelperRelease( viewHelper : IViewHelper ) : Void
 	{
-		this._ed.dispatchEvent( new ViewHelperManagerEvent( ViewHelperManagerEvent.VIEW_HELPER_RELEASE, this, viewHelper ) );
+		this._dispatcher.dispatch( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, [ viewHelper ] );
 	}
 	
 	/**
@@ -132,23 +131,23 @@ class ViewHelperManager
 	 */
 	static public function addGlobalListener( listener : IMainViewHelperManagerListener ) : Void
 	{
-		ViewHelperManager._ED.addEventListener( MainViewHelperManagerEvent.VIEW_HELPER_MANAGER_CREATION, listener.onViewHelperManagerCreation );
-		ViewHelperManager._ED.addEventListener( MainViewHelperManagerEvent.VIEW_HELPER_MANAGER_RELEASE, listener.onViewHelperManagerRelease );
+		ViewHelperManager._DISPATCHER.addHandler( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_CREATION, listener, listener.onViewHelperManagerCreation );
+		ViewHelperManager._DISPATCHER.addHandler( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_RELEASE, listener, listener.onViewHelperManagerRelease );
 	}
 
 	static public function removeGlobalListener( listener : IMainViewHelperManagerListener ) : Void
 	{
-		ViewHelperManager._ED.removeEventListener( MainViewHelperManagerEvent.VIEW_HELPER_MANAGER_CREATION, listener.onViewHelperManagerCreation );
-		ViewHelperManager._ED.removeEventListener( MainViewHelperManagerEvent.VIEW_HELPER_MANAGER_RELEASE, listener.onViewHelperManagerRelease );
+		ViewHelperManager._DISPATCHER.removeHandler( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_CREATION, listener, listener.onViewHelperManagerCreation );
+		ViewHelperManager._DISPATCHER.removeHandler( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_RELEASE, listener, listener.onViewHelperManagerRelease );
 	}
 
 	private static function notifyViewHelperManagerCreation( viewHelperManager : ViewHelperManager ) : Void
 	{
-		ViewHelperManager._ED.dispatchEvent( new MainViewHelperManagerEvent( MainViewHelperManagerEvent.VIEW_HELPER_MANAGER_CREATION, ViewHelperManager._ED, viewHelperManager ) );
+		ViewHelperManager._DISPATCHER.dispatch( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_CREATION, [ viewHelperManager ] );
 	}
 
 	private static function notifyViewHelperManagerRelease( viewHelperManager : ViewHelperManager ) : Void
 	{
-		ViewHelperManager._ED.dispatchEvent( new MainViewHelperManagerEvent( MainViewHelperManagerEvent.VIEW_HELPER_MANAGER_RELEASE, ViewHelperManager._ED, viewHelperManager ) );
+		ViewHelperManager._DISPATCHER.dispatch( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_RELEASE, [ viewHelperManager ] );
 	}
 }

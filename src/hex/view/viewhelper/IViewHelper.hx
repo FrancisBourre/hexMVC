@@ -1,5 +1,6 @@
 package hex.view.viewhelper;
 
+import hex.event.MessageType;
 import hex.module.IModule;
 
 /**
@@ -21,7 +22,7 @@ interface IViewHelper
 	
 	function release() : Void;
 	
-	function addEventListener( eventType : String, callback : ViewHelperEvent->Void ) : Void;
+	function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 	
-	function removeEventListener( eventType : String, callback : ViewHelperEvent->Void ) : Void;
+	function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 }

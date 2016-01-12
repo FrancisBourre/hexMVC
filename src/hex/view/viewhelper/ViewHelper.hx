@@ -1,9 +1,12 @@
 package hex.view.viewhelper;
 
+import hex.event.Dispatcher;
+import hex.event.IDispatcher;
 import hex.event.IEvent;
 import hex.event.IEventDispatcher;
 import hex.event.IEventListener;
 import hex.event.LightweightClosureDispatcher;
+import hex.event.MessageType;
 import hex.module.IModule;
 
 /**
@@ -16,9 +19,9 @@ class ViewHelper implements IViewHelper
 	public static var DEFAULT_VISIBLE:Bool = true;
 	
 	@inject
-	public var dispatcher 			: IEventDispatcher<IEventListener, IEvent>;
+	public var dispatcher 			: IDispatcher<{}>;
 	
-	private var _ed 				: LightweightClosureDispatcher<ViewHelperEvent>;
+	private var _dispatcher 		: Dispatcher<{}>;
 	private var _owner 				: IModule;
 	private var _view 				: IView;
 	private var _isVisible 			: Bool = ViewHelper.DEFAULT_VISIBLE;
@@ -28,7 +31,7 @@ class ViewHelper implements IViewHelper
 	
 	public function new ()
 	{
-		this._ed = new LightweightClosureDispatcher<ViewHelperEvent>();
+		this._dispatcher = new Dispatcher<{}>();
 	}
 	
 	private function _preInitialize() : Void
@@ -61,14 +64,14 @@ class ViewHelper implements IViewHelper
 
 		if ( this.view != null || view == null )
 		{
-			this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.REMOVE_VIEW, this, this._view ) );
+			this._dispatcher.dispatch( ViewHelperMessage.REMOVE_VIEW, [ this, this._view ] );
 		}
 			
 		this._view = view;
 		
 		if ( view != null )
 		{
-			this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.ATTACH_VIEW, this, this._view ) );
+			this._dispatcher.dispatch( ViewHelperMessage.ATTACH_VIEW, [ this, this._view ] );
 
 			if ( view.visible )
 			{
@@ -89,7 +92,7 @@ class ViewHelper implements IViewHelper
 	private function _fireInitialisation() : Void
 	{
 		this._initialize();
-		this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.INIT, this ) );
+		this._dispatcher.dispatch( ViewHelperMessage.INIT, [ this ] );
 	}
 	
 	public function getOwner() : IModule
@@ -148,18 +151,18 @@ class ViewHelper implements IViewHelper
 	
 	public function release() : Void 
 	{
-		this._ed.dispatchEvent( new ViewHelperEvent( ViewHelperEvent.RELEASE, this ) );
+		this._dispatcher.dispatch( ViewHelperMessage.RELEASE, [ this ] );
 		this._view = null;
-		this._ed.removeAllListeners();
+		this._dispatcher.removeAllListeners();
 	}
 	
-	public function addEventListener( eventType : String, callback : ViewHelperEvent->Void ) : Void 
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._ed.addEventListener( eventType, callback );
+		this._dispatcher.addHandler( messageType, scope, callback );
 	}
 	
-	public function removeEventListener( eventType : String, callback : ViewHelperEvent->Void ) : Void 
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._ed.removeEventListener( eventType, callback );
+		this._dispatcher.removeHandler( messageType, scope, callback );
 	}
 }
