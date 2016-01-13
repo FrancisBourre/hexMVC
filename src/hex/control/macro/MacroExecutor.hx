@@ -9,7 +9,7 @@ import hex.control.command.ICommandMapping;
 import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
-import hex.di.IDependencyInjector;
+import hex.di.IBasicInjector;
 import hex.error.IllegalStateException;
 import hex.module.IModule;
 
@@ -21,9 +21,8 @@ import hex.module.IModule;
 class MacroExecutor implements IMacroExecutor
 {
 	@inject
-	public var injector   					: IDependencyInjector;
+	public var injector   					: IBasicInjector;
 	
-
 	private var _commandIndex 				: Int;
 	private var _commandCalledCount 		: Int;
 	private var _asyncCommandListener 		: IAsyncCommandListener;
@@ -40,6 +39,12 @@ class MacroExecutor implements IMacroExecutor
 	
 	public function executeCommand( mapping : ICommandMapping, ?request : Request ) : ICommand
     {
+		var injector : IBasicInjector = mapping.getInjector();
+		if ( injector == null )
+		{
+			injector = this.injector;
+		}
+		
 		// Build payloads collection
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
 		if ( request != null )
@@ -50,14 +55,14 @@ class MacroExecutor implements IMacroExecutor
 		// Map payloads
         if ( payloads != null )
         {
-            PayloadUtil.mapPayload( payloads, this.injector );
+            PayloadUtil.mapPayload( payloads, injector );
         }
 
 		// Instantiate command
 		var command : ICommand = null;
-        if  ( !mapping.hasGuard || GuardUtil.guardsApprove( mapping.getGuards(), this.injector ) )
+        if  ( !mapping.hasGuard || GuardUtil.guardsApprove( mapping.getGuards(), injector ) )
         {
-            command = this.injector.getOrCreateNewInstance( mapping.getCommandClass() );
+            command = injector.getOrCreateNewInstance( mapping.getCommandClass() );
         }
 		else
 		{
@@ -69,15 +74,15 @@ class MacroExecutor implements IMacroExecutor
 		// Unmap payloads
         if ( payloads != null )
         {
-            PayloadUtil.unmapPayload( payloads, this.injector );
+            PayloadUtil.unmapPayload( payloads, injector );
         }
 
 		// Execute command
         if ( command != null )
         {
-			if ( this.injector.hasMapping( IModule ) )
+			if ( injector.hasMapping( IModule ) )
 			{
-				command.setOwner ( this.injector.getInstance( IModule ) );
+				command.setOwner ( injector.getInstance( IModule ) );
 			}
 
             var isAsync : Bool = Std.is( command, IAsyncCommand );

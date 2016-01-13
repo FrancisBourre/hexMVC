@@ -1,6 +1,6 @@
 package hex.control.payload;
 
-import hex.di.IDependencyInjector;
+import hex.di.IBasicInjector;
 import hex.error.PrivateConstructorException;
 
 /**
@@ -18,7 +18,7 @@ class PayloadUtil
 	 * Map payloads
 	 * @param	payload
 	 */
-    static public function mapPayload( payloads : Array<ExecutionPayload>, injector : IDependencyInjector ) : Void
+    static public function mapPayload( payloads : Array<ExecutionPayload>, injector : IBasicInjector ) : Void
     {
         for ( payload in payloads ) 
 		{
@@ -30,7 +30,7 @@ class PayloadUtil
 	 * Unmap payloads
 	 * @param	payloads
 	 */
-    static public function unmapPayload( payloads : Array<ExecutionPayload>, injector : IDependencyInjector ) : Void
+    static public function unmapPayload( payloads : Array<ExecutionPayload>, injector : IBasicInjector ) : Void
     {
         for ( payload in payloads ) 
 		{

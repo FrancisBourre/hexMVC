@@ -1,6 +1,6 @@
 package hex.control.guard;
 
-import hex.di.IDependencyInjector;
+import hex.di.IBasicInjector;
 import hex.error.PrivateConstructorException;
 
 /**
@@ -20,7 +20,7 @@ class GuardUtil
 	 * @param	injector
 	 * @return
 	 */
-    static public function guardsApprove( ?guards : Array<Dynamic>, ?injector : IDependencyInjector ) : Bool
+    static public function guardsApprove( ?guards : Array<Dynamic>, ?injector : IBasicInjector ) : Bool
     {
         if ( guards != null )
         {
