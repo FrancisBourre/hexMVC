@@ -110,7 +110,7 @@ class Module implements IModule
 	 * Sends an event outside of the module
 	 * @param	event
 	 */
-	public function dispatchPublicMessage( messageType : MessageType, data : Array<Dynamic> ) : Void
+	public function dispatchPublicMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
 		if ( this._domainDispatcher != null )
 		{
