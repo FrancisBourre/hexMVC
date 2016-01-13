@@ -40,8 +40,9 @@ class Module implements IModule
 	public function new()
 	{
 		this._injector = new Injector();
+		this._injector.mapToValue( IBasicInjector, this._injector );
 		this._injector.mapToValue( IDependencyInjector, this._injector );
-		this._injector.mapToValue( IModuleInjector, this._injector );
+		
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
 		//this._metaDataProvider 	= MetaDataProvider.getInstance( this._injector );
 		

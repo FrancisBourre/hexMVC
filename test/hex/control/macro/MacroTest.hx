@@ -217,7 +217,7 @@ class MacroTest
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method shoud have been called once" );
 	}
 	
-	@test( "Test sequence mode" )
+	@async( "Test sequence mode" )
 	public function testSequenceMode() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
@@ -231,27 +231,35 @@ class MacroTest
 		myMacro.add( MockCommand );
 		
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onTestSequenceModeComplete, [ myMacro ] ) );
 		myMacro.execute();
-		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
+		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
+	}
+	
+	private function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
+	{
+		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method should have been called" );
 	}
 	
 	@async( "Test add command after first have run" )
-	public function testAddCommandAfterFirstRun():Void
+	public function testAddCommandAfterFirstRun() : Void
 	{
 		var myMacro : MockMacroWithHandler = new MockMacroWithHandler();
 		var macroExecutor : MacroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 		
-		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this.onMacroWithHandlerComplete, [myMacro] ) );
+		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onMacroWithHandlerComplete, [ myMacro ] ) );
 		
 		myMacro.isInSequenceMode = true;
 		myMacro.preExecute();
+		
+		MockCommand.executeCallCount = 0;
 		myMacro.execute();
 		
 	}
 	
-	function onMacroWithHandlerComplete( command:AsyncCommand, myMacro:MockMacroWithHandler):Void
+	private function _onMacroWithHandlerComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
 	{
 		Assert.equals( 1, MockCommand.executeCallCount, "the MockCommand should be executed once when it's added during running" );
 	}
@@ -280,8 +288,6 @@ private class MockCommand implements ICommand
 	{
 		
 	}
-	
-	/* INTERFACE hex.control.command.ICommand */
 	
 	public function execute( ?request : Request ) : Void 
 	{
@@ -330,10 +336,10 @@ private class MockMacroWithHandler extends Macro
 {
 	override function _prepare():Void 
 	{
-		this.add( MockAsyncCommand ).withCompleteHandlers( new AsyncHandler(this, this.onCommandComplete) );
+		this.add( MockAsyncCommand ).withCompleteHandlers( new AsyncHandler( this, this.onCommandComplete ) );
 	}
 	
-	function onCommandComplete( command:AsyncCommand ):Void
+	function onCommandComplete( command:AsyncCommand ) : Void
 	{
 		this.add( MockCommand );
 	}
