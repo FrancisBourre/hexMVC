@@ -110,7 +110,7 @@ class Module implements IModule
 	 * Sends an event outside of the module
 	 * @param	event
 	 */
-	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
+	public function dispatchPublicMessage( messageType : MessageType, data : Array<Dynamic> ) : Void
 	{
 		if ( this._domainDispatcher != null )
 		{
@@ -188,7 +188,7 @@ class Module implements IModule
 	{
 		if ( this.isInitialized )
 		{
-			this.sendMessageFromDomain( ModuleMessage.INITIALIZED, [ this ] );
+			this.dispatchPublicMessage( ModuleMessage.INITIALIZED, [ this ] );
 		}
 		else
 		{
@@ -203,7 +203,7 @@ class Module implements IModule
 	{
 		if ( this.isReleased )
 		{
-			this.sendMessageFromDomain( ModuleMessage.RELEASED, [ this ] );
+			this.dispatchPublicMessage( ModuleMessage.RELEASED, [ this ] );
 		}
 		else
 		{

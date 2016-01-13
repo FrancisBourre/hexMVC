@@ -17,7 +17,7 @@ interface IModule
 
 	var isReleased( get, null ) : Bool;
 
-    function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void;
+    function dispatchPublicMessage( messageType : MessageType, data : Array<Dynamic> ) : Void;
 
     function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 
