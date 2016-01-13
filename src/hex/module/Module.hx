@@ -16,7 +16,6 @@ import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
-import hex.event.IEventDispatcher;
 import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.Stringifier;
@@ -48,7 +47,7 @@ class Module implements IModule
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
-		this._injector.mapToValue( IEventDispatcher, this._internalDispatcher );
+		this._injector.mapToValue( IDispatcher, this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 	}
