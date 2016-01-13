@@ -220,7 +220,7 @@ private class MockModule implements IModule
 		return false;
 	}
 	
-	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
+	public function dispatchPublicMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
 		
 	}

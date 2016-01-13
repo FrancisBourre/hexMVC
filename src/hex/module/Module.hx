@@ -16,7 +16,6 @@ import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
-import hex.event.IEventDispatcher;
 import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.Stringifier;
@@ -48,7 +47,7 @@ class Module implements IModule
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
-		this._injector.mapToValue( IEventDispatcher, this._internalDispatcher );
+		this._injector.mapToValue( IDispatcher, this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 	}
@@ -111,7 +110,7 @@ class Module implements IModule
 	 * Sends an event outside of the module
 	 * @param	event
 	 */
-	public function sendMessageFromDomain( messageType : MessageType, data : Array<Dynamic> ) : Void
+	public function dispatchPublicMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
 		if ( this._domainDispatcher != null )
 		{
@@ -135,7 +134,7 @@ class Module implements IModule
 		this._domainDispatcher.removeHandler( messageType, scope, callback );
 	}
 	
-	private function _dispatchToInternal( messageType : MessageType, data : Array<Dynamic> ) : Void
+	private function _dispatchPrivateMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
 		this._internalDispatcher.dispatch( messageType, data );
 	}
@@ -189,7 +188,7 @@ class Module implements IModule
 	{
 		if ( this.isInitialized )
 		{
-			this.sendMessageFromDomain( ModuleMessage.INITIALIZED, [ this ] );
+			this.dispatchPublicMessage( ModuleMessage.INITIALIZED, [ this ] );
 		}
 		else
 		{
@@ -204,7 +203,7 @@ class Module implements IModule
 	{
 		if ( this.isReleased )
 		{
-			this.sendMessageFromDomain( ModuleMessage.RELEASED, [ this ] );
+			this.dispatchPublicMessage( ModuleMessage.RELEASED, [ this ] );
 		}
 		else
 		{
