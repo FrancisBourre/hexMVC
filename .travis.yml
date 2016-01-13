@@ -24,14 +24,19 @@ addons:
       - mono-devel
       - mono-mcs
       # Flash
-      - libgd2-xpm
-      - ia32-libs
-      - ia32-libs-multiarch
+      - libcurl3:i386
+      - libglib2.0-0:i386
+      - libx11-6:i386
+      - libxext6:i386
+      - libxt6:i386
+      - libxcursor1:i386
+      - libnss3:i386
+      - libgtk2.0-0:i386
 
 install:
-  - git clone --recursive https://github.com/DoclerLabs/hexUnit.git ~/hexunit
-  - git clone --recursive https://github.com/DoclerLabs/hexCore.git ~/hexcore
-  - git clone --recursive https://github.com/DoclerLabs/hexInject.git ~/hexinject
+  - git clone --recursive https://github.com/aliokan/hexUnit.git dependencies/hexunit
+  - git clone --recursive https://github.com/DoclerLabs/hexCore.git dependencies/hexcore
+  - git clone --recursive https://github.com/DoclerLabs/hexInject.git dependencies/hexinject
   # os-specific config
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       export DISPLAY=:99.0;
@@ -53,9 +58,8 @@ install:
 script:
   - haxe build-js.hxml           && node bin/MainMVCTest.js
   - haxe build-flash.hxml -D fdb && haxe flash/run.hxml bin/MainMVCTest.swf
-  
+
 notifications:
   email:
     recipients:
-      - francis_bourre@me.com
-      - peterphonix@gmail.com
+      - laurent@geturl.net

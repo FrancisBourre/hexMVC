@@ -1,0 +1,8 @@
+.DS_Store
+
+# IntelliJ project files
+.idea
+
+dependencies
+bin
+flash/Flash \Player \Debugger.app
