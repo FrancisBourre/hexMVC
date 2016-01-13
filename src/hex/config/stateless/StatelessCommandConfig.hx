@@ -5,6 +5,7 @@ import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.IFrontController;
 import hex.error.VirtualMethodException;
+import hex.event.MessageType;
 
 /**
  * ...
@@ -35,8 +36,8 @@ class StatelessCommandConfig implements IStatelessConfig
 	 * @param	command 	The command class to be associated to event type
 	 * @return
 	 */
-	public function map( eventType : String, commandClass : Class<ICommand> ) : ICommandMapping
+	public function map( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping
 	{
-		return this.frontController.map( eventType, commandClass );
+		return this.frontController.map( messageType, commandClass );
 	}
 }

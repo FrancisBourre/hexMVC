@@ -6,8 +6,8 @@ package hex.service.stateless.http;
 
 interface IHTTPServiceListener
 {
-	function onServiceComplete( service : HTTPService ) : Void;
-	function onServiceFail( service : HTTPService ) : Void;
-	function onServiceCancel( service : HTTPService ) : Void;
-	function onServiceTimeout( service : HTTPService ) : Void;
+	function onServiceComplete( service : IHTTPService ) : Void;
+	function onServiceFail( service : IHTTPService ) : Void;
+	function onServiceCancel( service : IHTTPService ) : Void;
+	function onServiceTimeout( service : IHTTPService ) : Void;
 } 
