@@ -1,9 +1,9 @@
 -main MainMVCTest
 -cp src
 -cp test
--cp /home/travis/hexcore/src
--cp /home/travis/hexcore/test
--cp /home/travis/hexinject/src
--cp /home/travis/hexinject/test
--cp /home/travis/hexunit/src
--cp /home/travis/hexunit/test
+-cp dependencies/hexcore/src
+-cp dependencies/hexcore/test
+-cp dependencies/hexinject/src
+-cp dependencies/hexinject/test
+-cp dependencies/hexunit/src
+-cp dependencies/hexunit/test

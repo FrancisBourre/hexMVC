@@ -34,9 +34,9 @@ addons:
       - libgtk2.0-0:i386
 
 install:
-  - git clone --recursive https://github.com/DoclerLabs/hexUnit.git ~/hexunit
-  - git clone --recursive https://github.com/DoclerLabs/hexCore.git ~/hexcore
-  - git clone --recursive https://github.com/DoclerLabs/hexInject.git ~/hexinject
+  - git clone --recursive https://github.com/DoclerLabs/hexUnit.git dependencies/hexunit
+  - git clone --recursive https://github.com/DoclerLabs/hexCore.git dependencies/hexcore
+  - git clone --recursive https://github.com/DoclerLabs/hexInject.git dependencies/hexinject
   # os-specific config
   - if [ "${TRAVIS_OS_NAME}" = "linux" ]; then
       export DISPLAY=:99.0;
