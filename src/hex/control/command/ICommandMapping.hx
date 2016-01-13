@@ -3,6 +3,7 @@ package hex.control.command;
 import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
+import hex.di.IBasicInjector;
 
 /**
  * ...
@@ -99,6 +100,12 @@ interface ICommandMapping
      * A list of cancel callbacks
      */
     function withCancelHandlers( handler : AsyncHandler ) : ICommandMapping;
+	
+	
+	function setInjector( injector : IBasicInjector ) : Void;
+
+	
+	function getInjector() : IBasicInjector;
 
     /**
      * A list of mapping results
