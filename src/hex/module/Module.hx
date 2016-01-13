@@ -134,7 +134,7 @@ class Module implements IModule
 		this._domainDispatcher.removeHandler( messageType, scope, callback );
 	}
 	
-	private function _dispatchToInternal( messageType : MessageType, data : Array<Dynamic> ) : Void
+	private function _dispatchPrivateMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
 		this._internalDispatcher.dispatch( messageType, data );
 	}
