@@ -95,7 +95,7 @@ class ClassAdapter
 				}
 	
 				adapterInstance = aSyncCommand;
-				Reflect.callMethod( aSyncCommand, aSyncCommand.adapt, [rest] );
+				Reflect.callMethod( aSyncCommand, aSyncCommand.adapt, rest );
 				aSyncCommand.preExecute();
 				var handler : MacroAdapterStrategyHandler = new MacroAdapterStrategyHandler( callbackTarget, callbackMethod );
 				aSyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );	

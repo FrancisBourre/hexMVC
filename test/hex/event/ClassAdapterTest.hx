@@ -83,7 +83,7 @@ class ClassAdapterTest
 	{
 		var data0 : MockValueObject = new MockValueObject( "hola" );
 		var data1 : MockValueObject = new MockValueObject( "mundo" );
-		callbackAdapter( data0, data1 );
+		callbackAdapter( [ data0, data1 ] );
 	}
 	
 	private function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
