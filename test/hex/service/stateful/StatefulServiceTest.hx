@@ -56,7 +56,7 @@ class StatefulServiceTest
 		Assert.isFalse( this.service.inUse, "the inUse property should be false after _release called" );
 	}
 	
-	@test( "event subscription" )
+	@test( "Test event subscription" )
     public function testAddAndRemoveHandler() : Void
 	{
 		var listener : MockAsyncEventListener = new MockAsyncEventListener();
@@ -71,6 +71,23 @@ class StatefulServiceTest
 		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
 		
 		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should not happen after call removeHandler" );
+	}
+	
+	@test( "Test removeAllListeners" )
+    public function testRemoveAllListeners() : Void
+	{
+		var listener : MockAsyncEventListener = new MockAsyncEventListener();
+		
+		this.service.addHandler( MockMessage.ON_SAMPLE, listener, listener.onAddHandlerSuccess );
+		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
+		
+		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should happen after call dispatchEvent on service" );
+		Assert.equals( "test", listener.lastDataReceived, "dispatched event should be equal to the imput" );
+		
+		this.service.removeAllListeners( );
+		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
+		
+		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should not happen after call removeAllListeners" );
 	}
 	
 }
