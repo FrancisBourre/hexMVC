@@ -2,6 +2,7 @@ package hex.module.dependency;
 
 import hex.di.IDependencyInjector;
 import hex.error.PrivateConstructorException;
+import hex.log.Stringifier;
 import hex.module.IModule;
 
 /**
@@ -29,7 +30,7 @@ class RuntimeDependencyChecker
 
                 if ( !injector.hasMapping( dependency ) )
                 {
-                    throw new RuntimeDependencyException( "'" + dependency + "' class dependency is not available during '" + module + "' initialisation." );
+                    throw new RuntimeDependencyException( "'" + dependency + "' class dependency is not available during '" + Stringifier.stringify( module ) + "' initialisation." );
                 }
 
                 serviceDependencies.splice( len, 1 );
