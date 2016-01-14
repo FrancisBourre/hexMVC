@@ -1,6 +1,8 @@
 package hex.control.payload;
 
+import hex.error.IllegalArgumentException;
 import hex.error.NullPointerException;
+import hex.log.Stringifier;
 
 /**
  * ...
@@ -18,6 +20,10 @@ class ExecutionPayload
         {
             throw new NullPointerException( "ExecutionPayload data can't be null" );
         }
+		else if ( !Std.is( data, type ) )
+		{
+			throw new IllegalArgumentException( "ExecutionPayload data '" + data + "' should be an instance of type '" + type + "'" );
+		}
 
         this._data = data;
         this._type = type;
