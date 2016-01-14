@@ -233,11 +233,11 @@ class StatelessService extends AbstractService implements IStatelessService
 		this._ed.dispatch( StatelessServiceMessage.CANCEL, [this] );
 		this._release();
 	}
-
-	@:final 
-	public function removeAllListeners() : Void
+	
+	@:final
+	override public function removeAllListeners( ) : Void
 	{
-		this._ed.removeAllListeners();
+		this._ed.removeAllListeners( );
 	}
 	
 	//

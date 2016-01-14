@@ -16,4 +16,6 @@ interface IService
 	function getConfiguration() : ServiceConfiguration;
 
 	function setConfiguration( configuration : ServiceConfiguration ) : Void;
+	
+	function removeAllListeners():Void;
 }

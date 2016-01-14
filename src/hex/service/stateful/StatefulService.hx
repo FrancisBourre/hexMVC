@@ -65,6 +65,11 @@ class StatefulService extends AbstractService implements IStatefulService
 		this._dispatcher.removeHandler( messageType, scope, callback );
 	}
 	
+	override public function removeAllListeners( ):Void
+	{
+		this._dispatcher.removeAllListeners();
+	}
+	
 	private function _throwExecutionIllegalStateError( methodName : String ) : Bool
 	{
 		return this._throwIllegalStateError( methodName + "() failed. This service is already in use." );

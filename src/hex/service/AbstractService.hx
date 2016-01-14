@@ -43,6 +43,11 @@ class AbstractService implements IService
 		throw new VirtualMethodException( this + ".removeHandler must be overridden" );
 	}
 	
+	public function removeAllListeners( ):Void
+	{
+		throw new VirtualMethodException( this + ".removeAllListeners must be overridden" );
+	}
+	
 	public function release() : Void
 	{
 		throw new VirtualMethodException( this + ".release must be overridden" );
