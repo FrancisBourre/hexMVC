@@ -28,7 +28,7 @@ class DefaultHTTPServiceParameterFactory implements IHTTPServiceParameterFactory
 			
 			if ( !Reflect.isFunction( property ) && ( excludedParameters == null || excludedParameters.indexOf( parameter ) == -1 ) )
 			{
-				httpRequest.addParameter( parameter, property );
+				httpRequest.addParameter( parameter, property == null ? "" : property );
 			}
 		}
 		

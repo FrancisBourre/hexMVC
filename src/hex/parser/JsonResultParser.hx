@@ -19,12 +19,22 @@ class JsonResultParser<DataType> implements IParser
 	
 	public function parse( serializedContent : Dynamic, target : Dynamic = null) : Dynamic 
 	{
-		var jsonResult : Dynamic = Json.parse(serializedContent);
+		var jsonResult : Dynamic;
+		
+		try
+		{
+			jsonResult = Json.parse(serializedContent);
+		}
+		catch (error:Dynamic)
+		{
+			jsonResult = { };
+			Reflect.setProperty( jsonResult, this.dataProperty, { } );
+		}
 		
 		var serviceResultVO : ServiceResultVO<DataType> = new ServiceResultVO<DataType>();
 		
-		serviceResultVO.success = jsonResult.success;
-		serviceResultVO.errorCode = jsonResult.errorCode;
+		serviceResultVO.success = jsonResult.success == true ? true : false;
+		serviceResultVO.errorCode = Std.parseInt(jsonResult.errorCode);
 		
 		serviceResultVO.data = this._parseData( Reflect.getProperty( jsonResult, this.dataProperty ) );
 		
