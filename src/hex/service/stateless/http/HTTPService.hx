@@ -118,19 +118,17 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 
 	private function _onData( result : String ) : Void
 	{
-		trace("ONDATA", result);
 		this._onResultHandler( result );
 	}
 
 	private function _onError( msg : String ) : Void
 	{
-		trace("ONERROR", msg);
 		this._onErrorHandler( msg );
 	}
 	
 	private function _onStatus( status : Int ) : Void
 	{
-		trace( "_onStatus:", status );
+		
 	}
 
 	public function setURL( url : String ) : Void
