@@ -1,6 +1,8 @@
 package hex.control.payload;
 
 import hex.control.payload.ExecutionPayload;
+import hex.error.IllegalArgumentException;
+import hex.error.NullPointerException;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -33,6 +35,18 @@ class ExecutionPayloadTest
         Assert.equals( this._data, this._executionPayload.getData(), "data should be the same" );
         Assert.equals( IMockData, this._executionPayload.getType(), "type should be the same" );
         Assert.equals( "name", this._executionPayload.getName(), "name should be the same" );
+    }
+	
+	@test( "Test constructor null exception" )
+    public function testConstructorNullException() : Void
+    {
+        Assert.constructorCallThrows( NullPointerException, ExecutionPayload, [ null ], "constructor should throw NullPointerException" );
+    }
+	
+	@test( "Test constructor throws IllegalArgumentException" )
+    public function testConstructorThrowsIllegalArgumentException() : Void
+    {
+        Assert.constructorCallThrows( IllegalArgumentException, ExecutionPayload, [ this._data, String ], "constructor should throw IllegalArgumentException" );
     }
 	
 	@test( "Test overwriting type property" )

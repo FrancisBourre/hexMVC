@@ -1,25 +1,31 @@
 package hex.event;
 
+import hex.error.IllegalArgumentException;
+
 /**
  * ...
  * @author Francis Bourre
  */
 class EventProxy
 {
-	public var target 						: Dynamic;
-	public var method 						: Dynamic;
+	public var scope 						: Dynamic;
+	public var callback 					: Dynamic;
 	
-	public function new( target : Dynamic, method : Dynamic ) 
+	public function new( scope : Dynamic, method : Dynamic ) 
 	{
-		this.target 				= target;
-		this.method 				= method;
+		this.scope 				= scope;
+		this.callback 			= method;
 	}
 	
 	public function handleCallback( args : Array<Dynamic> ) : Void 
 	{
-		if ( this.target != null && this.method != null )
+		if ( this.scope != null && this.callback != null )
 		{
-			Reflect.callMethod( this.target, this.method, args );
+			Reflect.callMethod( this.scope, this.callback, args );
+		}
+		else
+		{
+			throw new IllegalArgumentException( "handleCallback call failed with method '" + callback  + " and scope '" + scope + "'" );
 		}
 	}
 }

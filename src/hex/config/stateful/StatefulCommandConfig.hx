@@ -5,6 +5,8 @@ import hex.control.command.ICommandMapping;
 import hex.control.IFrontController;
 import hex.di.IDependencyInjector;
 import hex.event.IDispatcher;
+import hex.event.MessageType;
+import hex.inject.errors.InjectorMissingMappingError;
 import hex.module.IModule;
 
 /**
@@ -27,16 +29,21 @@ class StatefulCommandConfig implements IStatefulConfig
 	public function configure( injector : IDependencyInjector, dispatcher : IDispatcher<{}>, module : IModule ) : Void
 	{
 		this._frontController = injector.getInstance( IFrontController );
+		
+		if ( this._frontController == null )
+		{
+			throw new InjectorMissingMappingError( "configure failed to retrieve IFrontController mapping" );
+		}
 	}
 	
 	/**
 	 * Pair event type to a command class for future calls.
-	 * @param	eventType 	The event type to bind to command class
-	 * @param	command 	The command class to be associated to event type
+	 * @param	messageType The messageType to bind to command class
+	 * @param	command 	The command class to be associated to this messageType
 	 * @return
 	 */
-	public function map( eventType : String, commandClass : Class<ICommand> ) : ICommandMapping
+	public function map( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping
 	{
-		return this._frontController.map( eventType, commandClass );
+		return this._frontController.map( messageType, commandClass );
 	}
 }
