@@ -131,8 +131,6 @@ class MetadataProvider implements IMetadataProvider
 					var o = Reflect.field( metadata, propertyName );
 					var metaDataName = Reflect.fields( o )[ 0 ];
 					var metaDataValue = Reflect.field( o, metaDataName )[ 0 ];
-					
-					trace( propertyName, metaDataName, metaDataValue );
 					properties.push( new PropertyMetaDataVO( propertyName, metaDataName, metaDataValue ) );
 				}
 				

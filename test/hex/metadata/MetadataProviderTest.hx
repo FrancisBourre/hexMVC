@@ -73,6 +73,19 @@ class MetadataProviderTest
 		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IMetadataParsable" );
 	}
 	
+	@test( "Test clear method" )
+	public function testClearMethod() : Void
+	{
+		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		
+		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
+		metaDataProvider.clear();
+		
+		metaDataProvider.parse( mockObjectWithMetaData );
+		Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
+	}
+	
 	private function getColorByName( name : String ) : Int
 	{
 		return this._colors.get( name );

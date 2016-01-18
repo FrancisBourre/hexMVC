@@ -163,6 +163,7 @@ class Module implements IModule
 			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
+			this._metaDataProvider.unregisterInjector( this._injector );
 			this._injector.destroyInstance( this );
 			this._injector.teardown();
 		}
