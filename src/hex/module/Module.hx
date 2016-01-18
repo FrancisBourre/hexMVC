@@ -19,7 +19,8 @@ import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.Stringifier;
-import hex.metadata.IMetaDataProvider;
+import hex.metadata.IMetadataProvider;
+import hex.metadata.MetadataProvider;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
@@ -35,7 +36,7 @@ class Module implements IModule
 	private var _internalDispatcher : IDispatcher<{}>;
 	private var _domainDispatcher 	: IDispatcher<{}>;
 	private var _injector 			: Injector;
-	private var _metaDataProvider 	: IMetaDataProvider;
+	private var _metaDataProvider 	: IMetadataProvider;
 
 	public function new()
 	{
@@ -44,7 +45,7 @@ class Module implements IModule
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
-		//this._metaDataProvider 	= MetaDataProvider.getInstance( this._injector );
+		this._metaDataProvider 	= MetadataProvider.getInstance( this._injector );
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );

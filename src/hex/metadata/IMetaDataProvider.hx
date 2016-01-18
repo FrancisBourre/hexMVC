@@ -5,13 +5,11 @@ import hex.inject.IInjector;
 /**
  * @author Francis Bourre
  */
-interface IMetaDataProvider 
+interface IMetadataProvider 
 {
-	function registerMetaData( metaDataName : String, providerMethod : Dynamic ) : Void;
+	function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void;
 	function clear() : Void;
-	function parse( object : Dynamic ) : Void;
-	function addProperty( metaDataName : String ) : Void;
-	function addProperties( metaDataNames : Array<String> ) : Void;
+	function parse( object : {} ) : Void;
 	function registerInjector( injector : IInjector ) : Void;
 	function unregisterInjector( injector : IInjector ) : Void;
 }
