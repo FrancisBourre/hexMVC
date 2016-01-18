@@ -1,4 +1,6 @@
 package hex.metadata;
+
+import hex.service.stateless.StatelessService;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -94,5 +96,44 @@ class MetadataProviderTest
 	private function getText( name : String ) : String
 	{
 		return this._text.get( name );
+	}
+	
+	@test( "Test parse service" )
+	public function testParseService() : Void
+	{
+		var service : MockStatelessService = new MockStatelessService();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		
+		metaDataProvider.parse( service );
+		//Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
+	}
+}
+
+private class MockStatelessService extends StatelessService
+{
+	public function new() 
+	{
+		super();
+	}
+	
+	@postConstruct
+	override public function createConfiguration() : Void
+	{
+		trace( "config created" );
+	}
+	
+	public function call_getRemoteArguments() : Array<Dynamic> 
+	{
+		return this._getRemoteArguments();
+	}
+	
+	public function call_reset() : Void 
+	{
+		this._reset();
+	}
+	
+	public function testSetResult( result : Dynamic ) : Void
+	{
+		this._setResult( result );
 	}
 }

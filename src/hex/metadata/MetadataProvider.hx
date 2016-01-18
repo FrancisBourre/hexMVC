@@ -129,9 +129,23 @@ class MetadataProvider implements IMetadataProvider
 				for ( propertyName in fields )
 				{
 					var o = Reflect.field( metadata, propertyName );
-					var metaDataName = Reflect.fields( o )[ 0 ];
-					var metaDataValue = Reflect.field( o, metaDataName )[ 0 ];
-					properties.push( new PropertyMetaDataVO( propertyName, metaDataName, metaDataValue ) );
+					if ( o != null )
+					{
+						var f = Reflect.fields( o );
+						if ( f != null )
+						{
+							var metaDataName = f[ 0 ];
+							if ( metaDataName != null )
+							{
+								var field = Reflect.field( o, metaDataName );
+								if ( field != null )
+								{
+									var metaDataValue = field[ 0 ];
+									properties.push( new PropertyMetaDataVO( propertyName, metaDataName, metaDataValue ) );
+								}
+							}
+						}
+					}
 				}
 				
 				MetadataProvider._META_DATA.put( classReference, classMetaDataVO );
