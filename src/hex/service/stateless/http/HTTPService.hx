@@ -1,7 +1,7 @@
 package hex.service.stateless.http;
 
 import haxe.Http;
-import hex.core.IMetaDataParsable;
+import hex.core.IMetadataParsable;
 import hex.log.Stringifier;
 import hex.service.stateless.AsyncStatelessService;
 
@@ -9,7 +9,7 @@ import hex.service.stateless.AsyncStatelessService;
  * ...
  * @author Francis Bourre
  */
-class HTTPService extends AsyncStatelessService implements IHTTPService implements IURLConfigurable implements IMetaDataParsable
+class HTTPService extends AsyncStatelessService implements IHTTPService implements IURLConfigurable implements IMetadataParsable
 {
 	private function new() 
 	{

@@ -1,7 +1,7 @@
 package hex.event;
 
 import hex.control.async.AsyncCommand;
-import hex.core.IMetaDataParsable;
+import hex.core.IMetadataParsable;
 import hex.metadata.MetadataProvider;
 import hex.util.ClassUtil;
 
@@ -89,7 +89,7 @@ class ClassAdapter
 					aSyncCommand = cast( Type.createInstance( adapterClass, []  ) );
 				}
 				
-				if ( Std.is( aSyncCommand, IMetaDataParsable ) )
+				if ( Std.is( aSyncCommand, IMetadataParsable ) )
 				{
 					MetadataProvider.getInstance().parse( aSyncCommand );
 				}
@@ -105,7 +105,7 @@ class ClassAdapter
 			}
 			else if ( adapterInstance != null )
 			{
-				if ( Std.is( adapterInstance, IMetaDataParsable ) )
+				if ( Std.is( adapterInstance, IMetadataParsable ) )
 				{
 					MetadataProvider.getInstance().parse( adapterInstance );
 				}

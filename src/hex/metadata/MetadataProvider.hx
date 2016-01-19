@@ -2,7 +2,7 @@ package hex.metadata;
 
 import haxe.rtti.Meta;
 import hex.collection.HashMap;
-import hex.core.IMetaDataParsable;
+import hex.core.IMetadataParsable;
 import hex.error.IllegalArgumentException;
 import hex.inject.IInjector;
 import hex.inject.InjectionEvent;
@@ -129,20 +129,17 @@ class MetadataProvider implements IMetadataProvider
 				for ( propertyName in fields )
 				{
 					var o = Reflect.field( metadata, propertyName );
-					if ( o != null )
+					var f = Reflect.fields( o );
+					if ( f != null )
 					{
-						var f = Reflect.fields( o );
-						if ( f != null )
+						var metaDataName = f[ 0 ];
+						if ( metaDataName != null )
 						{
-							var metaDataName = f[ 0 ];
-							if ( metaDataName != null )
+							var field = Reflect.field( o, metaDataName );
+							if ( field != null )
 							{
-								var field = Reflect.field( o, metaDataName );
-								if ( field != null )
-								{
-									var metaDataValue = field[ 0 ];
-									properties.push( new PropertyMetaDataVO( propertyName, metaDataName, metaDataValue ) );
-								}
+								var metaDataValue = field[ 0 ];
+								properties.push( new PropertyMetaDataVO( propertyName, metaDataName, metaDataValue ) );
 							}
 						}
 					}
@@ -157,17 +154,17 @@ class MetadataProvider implements IMetadataProvider
 	
 	public function registerInjector( injector : IInjector ) : Void
 	{
-		injector.addInjectionEventListener( InjectionEvent.POST_CONSTRUCT, _onPostconstruct );
+		injector.addInjectionEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
 	}
 
 	public function unregisterInjector( injector : IInjector ) : Void
 	{
-		injector.removeInjectionEventListener( InjectionEvent.POST_CONSTRUCT, _onPostconstruct );
+		injector.removeInjectionEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
 	}
 	
 	private function _onPostconstruct( event : InjectionEvent ) : Void
 	{
-		if ( Std.is( event.instance, IMetaDataParsable ) )
+		if ( Std.is( event.instance, IMetadataParsable ) )
 		{
 			this.parse( event.instance );
 		}

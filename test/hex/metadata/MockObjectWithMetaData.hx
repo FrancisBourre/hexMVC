@@ -1,13 +1,13 @@
 package hex.metadata;
 
-import hex.core.IMetaDataParsable;
+import hex.core.IMetadataParsable;
 
 /**
  * ...
  * @author Francis Bourre
  */
 @:rtti
-class MockObjectWithMetaData implements IMetaDataParsable
+class MockObjectWithMetaData implements IMetadataParsable
 {
 	@color( "white" )
 	public var colorTest : Int;

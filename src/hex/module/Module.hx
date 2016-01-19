@@ -172,11 +172,6 @@ class Module implements IModule
 			throw new IllegalStateException( this + ".release can't be called more than once. Check your code." );
 		}
 	}
-
-	/*public function registerInjectorUser( user : IInjectorUser ) : void
-	{
-		user.registerInjector( this._injector );
-	}*/
 	
 	@:allow( hex.ioc.locator.DomainListenerVOLocator )
 	public function getBasicInjector() : IBasicInjector
