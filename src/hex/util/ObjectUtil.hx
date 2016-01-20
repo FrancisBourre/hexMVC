@@ -32,6 +32,7 @@ class ObjectUtil
 					result = coreFactory.locate( member );
 					if ( members.length > 0 )
 					{
+						//TODO: check if it's really good? I don't think so - grosmar
 						break;
 						ObjectUtil.fastEvalFromTarget( target, toEval, coreFactory );
 					}
