@@ -25,15 +25,15 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 		this._timestamp = Date.now().getTime ();
 		this._createRequest();
 		super.call();
-		this._request.request( ( cast this._configuration ).requestMethod == HTTPRequestMethod.POST );
+		this._request.request( this._configuration.requestMethod == HTTPRequestMethod.POST );
 	}
 	
 	private function _createRequest() : Void
 	{
-		this._request = new Http( ( cast this._configuration ).serviceUrl );
+		this._request = new Http( this._configuration.serviceUrl );
 		
-		( cast this._configuration ).parameterFactory.setParameters( this._request, ( cast this._configuration ).parameters, _excludedParameters );
-		this.timeoutDuration = ( cast this.getConfiguration() ).serviceTimeout;
+		this._configuration.parameterFactory.setParameters( this._request, this._configuration.parameters, _excludedParameters );
+		this.timeoutDuration = this.getConfiguration().serviceTimeout;
 		
 		#if js
 			this._request.async 		= true; //TODO: check with flash
@@ -42,7 +42,7 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 		this._request.onError 		= this._onError;
 		this._request.onStatus 		= this._onStatus;
 		
-		var requestHeaders : Array<HTTPRequestHeader> = ( cast this._configuration ).requestHeaders;
+		var requestHeaders : Array<HTTPRequestHeader> = this._configuration.requestHeaders;
 		if ( requestHeaders != null )
 		{
 			for ( header in requestHeaders )
@@ -60,25 +60,25 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	public var url( get, null ) : String;
 	public function get_url() : String
 	{
-		return ( cast this._configuration ).serviceUrl;
+		return this._configuration.serviceUrl;
 	}
 	
 	public var method( get, null ) : HTTPRequestMethod;
 	public function get_method() : HTTPRequestMethod
 	{
-		return ( cast this._configuration ).requestMethod;
+		return this._configuration.requestMethod;
 	}
 	
 	public var dataFormat( get, null ) : String;
 	public function get_dataFormat() : String
 	{
-		return ( cast this._configuration ).dataFormat;
+		return this._configuration.dataFormat;
 	}
 	
 	public var timeout( get, null ) : UInt;
 	public function get_timeout() : UInt
 	{
-		return ( cast this._configuration ).serviceTimeout;
+		return this._configuration.serviceTimeout;
 	}
 
 	override public function release() : Void
@@ -97,17 +97,17 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 
 	public function setParameters( parameters : HTTPServiceParameters ) : Void
 	{
-		( cast this._configuration ).parameters = parameters;
+		this._configuration.parameters = parameters;
 	}
 
 	public function getParameters() : HTTPServiceParameters
 	{
-		return ( cast this._configuration ).parameters;
+		return this._configuration.parameters;
 	}
 
 	public function addHeader( header : HTTPRequestHeader ) : Void
 	{
-		( cast this._configuration ).requestHeaders.push( header );
+		this._configuration.requestHeaders.push( header );
 	}
 
 	override private function _getRemoteArguments() : Array<Dynamic>
@@ -133,7 +133,7 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 
 	public function setURL( url : String ) : Void
 	{
-		( cast this._configuration ).serviceUrl = url;
+		this._configuration.serviceUrl = url;
 	}
 	
 	/**
