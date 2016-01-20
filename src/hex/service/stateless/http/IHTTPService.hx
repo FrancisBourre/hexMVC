@@ -12,8 +12,6 @@ interface IHTTPService<ServiceConfigurationType:ServiceConfiguration> extends IA
 	var dataFormat( get, null ) : String;
 	var timeout( get, null ) : UInt;
 	function addHeader( header : HTTPRequestHeader ) : Void;
-	//function addHTTPServiceListener( listener : HTTPServiceListener<ServiceConcreteType> ) : Void;
-	//function removeHTTPServiceListener( listener : HTTPServiceListener<ServiceConcreteType> ) : Void;
-	//function addHTTPServiceListener( listener : IHTTPServiceListener ) : Void;
-	//function removeHTTPServiceListener( listener : IHTTPServiceListener ) : Void;
+	function addHTTPServiceListener( listener : IHTTPServiceListener<ServiceConfigurationType> ) : Void;
+	function removeHTTPServiceListener( listener : IHTTPServiceListener<ServiceConfigurationType> ) : Void;
 }
