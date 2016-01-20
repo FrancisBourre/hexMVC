@@ -6,6 +6,7 @@ import hex.control.async.IAsyncCommandListener;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
+import hex.log.Stringifier;
 import hex.module.IModule;
 
 /**
@@ -110,7 +111,7 @@ class AsyncCommand implements IAsyncCommand
 	@:final 
     private function _handleComplete() : Void
     {
-		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
+		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwIllegalStateError( '_handleComplete' );
         this._status = AsyncCommand.IS_COMPLETED;
         this._dispatcher.dispatch( AsyncCommandMessage.COMPLETE, [ this ] );
         this._release();
@@ -119,7 +120,7 @@ class AsyncCommand implements IAsyncCommand
 	@:final 
     private function _handleFail() : Void
     {
-		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
+		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwIllegalStateError( '_handleFail' );
         this._status = AsyncCommand.IS_FAILED;
         this._dispatcher.dispatch( AsyncCommandMessage.FAIL, [ this ] );
         this._release();
@@ -128,7 +129,7 @@ class AsyncCommand implements IAsyncCommand
 	@:final 
     private function _handleCancel() : Void
     {
-		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwCancellationIllegalStateError();
+		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwIllegalStateError( '_handleCancel' );
         this._status = AsyncCommand.IS_CANCELLED;
         this._dispatcher.dispatch( AsyncCommandMessage.CANCEL, [ this ] );
         this._release();
@@ -228,22 +229,22 @@ class AsyncCommand implements IAsyncCommand
         this._release();
         throw new IllegalStateException( msg );
     }
-
-    private function _throwCancellationIllegalStateError() : Bool
+	
+	private function _throwIllegalStateError( process : String ) : Bool
     {
         var msg : String = "";
 
         if ( isCancelled )
         {
-            msg = "'cancel' call failed. This command was already cancelled.";
+            msg = "'" + process + "' call failed in '" + Stringifier.stringify( this ) + "'. This command was already cancelled.";
         }
         else if ( hasCompleted )
         {
-            msg = "'cancel' call failed. This command was already completed.";
+            msg = "'" + process + "' call failed in '" + Stringifier.stringify( this ) + "'. This command was already completed.";
         }
         else if ( hasFailed )
         {
-            msg = "'cancel' call failed. This command has already failed.";
+            msg = "'" + process + "' call failed in '" + Stringifier.stringify( this ) + "'. This command has already failed.";
         }
 
         this._release();

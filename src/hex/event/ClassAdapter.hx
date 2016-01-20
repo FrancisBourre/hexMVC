@@ -133,6 +133,9 @@ private class MacroAdapterStrategyHandler
 	
 	public function onAsyncCommandComplete( command : AsyncCommand ) : Void
 	{
-		Reflect.callMethod( scope, callback, [command.getPayload()] );
+		if ( callback != null )
+		{
+			Reflect.callMethod( scope, callback, [command.getPayload()] );
+		}
 	}
 }
