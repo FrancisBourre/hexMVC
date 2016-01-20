@@ -8,7 +8,7 @@ import hex.service.ServiceConfiguration;
  * ...
  * @author Francis Bourre
  */
-class AsyncStatelessService extends StatelessService implements IAsyncStatelessService
+class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> extends StatelessService<ServiceConfigurationType> implements IAsyncStatelessService<ServiceConfigurationType>
 {
 	public static inline var HAS_TIMEOUT : String = "HAS_TIMEOUT";
 	
@@ -28,7 +28,7 @@ class AsyncStatelessService extends StatelessService implements IAsyncStatelessS
 		AsyncStatelessService._detainService( this );
 	}
 	
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	override public function setConfiguration( configuration : ServiceConfigurationType ) : Void
 	{
 		super.setConfiguration( configuration );
 		this.timeoutDuration = this._configuration.serviceTimeout;

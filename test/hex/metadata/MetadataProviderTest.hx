@@ -1,5 +1,6 @@
 package hex.metadata;
 
+import hex.service.ServiceConfiguration;
 import hex.service.stateless.StatelessService;
 import hex.unittest.assertion.Assert;
 
@@ -109,7 +110,7 @@ class MetadataProviderTest
 	}
 }
 
-private class MockStatelessService extends StatelessService
+private class MockStatelessService extends StatelessService<ServiceConfiguration>
 {
 	public function new() 
 	{

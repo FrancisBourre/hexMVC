@@ -1,13 +1,13 @@
 package hex.service.stateless.http;
 
 /**
+ * ...
  * @author Francis Bourre
  */
-
-interface IHTTPServiceListener
+interface IHTTPServiceListener<ServiceConfigurationType:ServiceConfiguration>
 {
-	function onServiceComplete( service : IHTTPService ) : Void;
-	function onServiceFail( service : IHTTPService ) : Void;
-	function onServiceCancel( service : IHTTPService ) : Void;
-	function onServiceTimeout( service : IHTTPService ) : Void;
-} 
+	function onServiceComplete( service : IHTTPService<ServiceConfigurationType> ) : Void;
+	function onServiceFail( service : IHTTPService<ServiceConfigurationType> ) : Void;
+	function onServiceCancel( service : IHTTPService<ServiceConfigurationType> ) : Void;
+	function onServiceTimeout( service : IHTTPService<ServiceConfigurationType> ) : Void;
+}

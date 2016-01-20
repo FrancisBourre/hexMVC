@@ -9,6 +9,7 @@ import hex.event.CompositeDispatcher;
 import hex.event.IDispatcher;
 import hex.module.IModule;
 import hex.service.IService;
+import hex.service.ServiceConfiguration;
 import hex.service.stateful.IStatefulService;
 
 /**
@@ -109,12 +110,12 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 		}
 	}
 	
-	public function addService( service : Class<IService>, value : Dynamic, ?mapName : String = "" ) : Bool
+	public function addService( service : Class<IService<ServiceConfiguration>>, value : Dynamic, ?mapName : String = "" ) : Bool
 	{
 		return this._registerService( service, new ServiceLocatorHelper( value, mapName ), mapName );
 	}
 	
-	private function _registerService( type : Class<IService>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
+	private function _registerService( type : Class<IService<ServiceConfiguration>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
 	{
 		var className : String = ( mapName != "" ? mapName + "#" : "" ) + Type.getClassName( type );
 		return this.register( className, service );

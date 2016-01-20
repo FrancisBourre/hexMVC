@@ -9,7 +9,7 @@ import hex.service.stateless.AsyncStatelessService;
  * ...
  * @author Francis Bourre
  */
-class HTTPService extends AsyncStatelessService implements IHTTPService implements IURLConfigurable implements IMetadataParsable
+class HTTPService<ServiceConfigurationType:ServiceConfiguration> extends AsyncStatelessService<ServiceConfigurationType> implements IHTTPService<ServiceConfigurationType> implements IURLConfigurable implements IMetadataParsable
 {
 	private function new() 
 	{
@@ -139,7 +139,7 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 	/**
      * Event handling
      */
-	public function addHTTPServiceListener( listener : IHTTPServiceListener ) : Void
+	public function addHTTPServiceListener( listener : IHTTPServiceListener<ServiceConfigurationType> ) : Void
 	{
 		this._ed.addHandler( StatelessServiceMessage.COMPLETE, listener, listener.onServiceComplete );
 		this._ed.addHandler( StatelessServiceMessage.FAIL, listener, listener.onServiceFail );
@@ -147,7 +147,7 @@ class HTTPService extends AsyncStatelessService implements IHTTPService implemen
 		this._ed.addHandler( AsyncStatelessServiceMessage.TIMEOUT, listener, listener.onServiceTimeout );
 	}
 
-	public function removeHTTPServiceListener( listener : IHTTPServiceListener ) : Void
+	public function removeHTTPServiceListener( listener : IHTTPServiceListener<ServiceConfigurationType> ) : Void
 	{
 		this._ed.removeHandler( StatelessServiceMessage.COMPLETE, listener, listener.onServiceComplete );
 		this._ed.removeHandler( StatelessServiceMessage.FAIL, listener, listener.onServiceFail );

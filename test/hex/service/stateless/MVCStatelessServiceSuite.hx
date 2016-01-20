@@ -1,4 +1,5 @@
 package hex.service.stateless;
+import hex.service.stateless.http.HTTPSuite;
 
 /**
  * ...
@@ -7,5 +8,5 @@ package hex.service.stateless;
 class MVCStatelessServiceSuite
 {
 	@suite("Stateless")
-    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest/*, HTTPSuite*/, StatelessServiceTest];
+    public var list : Array<Class<Dynamic>> = [AsyncStatelessServiceTest, HTTPSuite, StatelessServiceTest];
 }

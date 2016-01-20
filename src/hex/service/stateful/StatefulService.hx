@@ -12,7 +12,7 @@ import hex.service.stateful.IStatefulService;
  * ...
  * @author duke
  */
-class StatefulService extends AbstractService implements IStatefulService
+class StatefulService<ServiceConfigurationType:ServiceConfiguration> extends AbstractService<ServiceConfigurationType> implements IStatefulService<ServiceConfigurationType>
 {
 	private var _dispatcher				: Dispatcher<{}>;
 	private var _compositeDispatcher	: CompositeDispatcher;
@@ -34,7 +34,7 @@ class StatefulService extends AbstractService implements IStatefulService
 		return this._compositeDispatcher;
 	}
 	
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	override public function setConfiguration( configuration : ServiceConfigurationType ) : Void
 	{
 		this.inUse && this._throwExecutionIllegalStateError( "setConfiguration" );
         this._configuration = configuration;

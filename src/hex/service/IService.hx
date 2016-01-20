@@ -5,7 +5,7 @@ import hex.event.MessageType;
 /**
  * @author Francis Bourre
  */
-interface IService
+interface IService<ServiceConfigurationType:ServiceConfiguration>
 {
 	function createConfiguration() : Void;
 	
@@ -13,9 +13,9 @@ interface IService
 
 	function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 		
-	function getConfiguration() : ServiceConfiguration;
+	function getConfiguration() : ServiceConfigurationType;
 
-	function setConfiguration( configuration : ServiceConfiguration ) : Void;
+	function setConfiguration( configuration : ServiceConfigurationType ) : Void;
 	
-	function removeAllListeners():Void;
+	function removeAllListeners() : Void;
 }

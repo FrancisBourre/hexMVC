@@ -3,4 +3,4 @@ package hex.service;
 /**
  * @author Francis Bourre
  */
-typedef Service = IService;
+typedef Service = IService<ServiceConfiguration>;

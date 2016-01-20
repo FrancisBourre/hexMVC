@@ -5,7 +5,7 @@ import hex.event.CompositeDispatcher;
 /**
  * @author Francis Bourre
  */
-interface IStatefulService extends IService
+interface IStatefulService<ServiceConfigurationType:ServiceConfiguration> extends IService<ServiceConfigurationType>
 {
 	var inUse( get, null ) : Bool;
 	function getDispatcher() : CompositeDispatcher;

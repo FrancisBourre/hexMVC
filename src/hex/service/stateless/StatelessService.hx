@@ -15,7 +15,7 @@ import hex.service.stateless.StatelessServiceMessage;
  * ...
  * @author Francis Bourre
  */
-class StatelessService extends AbstractService implements IStatelessService
+class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends AbstractService<ServiceConfigurationType> implements IStatelessService<ServiceConfigurationType>
 {
 	public static inline var WAS_NEVER_USED     : String = "WAS_NEVER_USED";
     public static inline var IS_RUNNING         : String = "IS_RUNNING";
@@ -36,7 +36,7 @@ class StatelessService extends AbstractService implements IStatelessService
 		this._ed = new Dispatcher<{}>();
 	}
 
-	override public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	override public function setConfiguration( configuration : ServiceConfigurationType ) : Void
 	{
 		this.wasUsed && this._throwExecutionIllegalStateError( "setConfiguration" );
         this._configuration = configuration;

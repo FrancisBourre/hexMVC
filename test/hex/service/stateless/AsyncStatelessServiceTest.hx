@@ -286,7 +286,7 @@ private class MockParser implements IParser
 private class MockStatelessServiceListener
 {
 	public var lastMessageTypeReceived 					: MessageType;
-	public var lastServiceReceived 						: StatelessService;
+	public var lastServiceReceived 						: MockAsyncStatelessService;
 	public var onServiceCompleteCallCount 				: Int = 0;
 	public var onServiceFailCallCount 					: Int = 0;
 	public var onServiceCancelCallCount 				: Int = 0;
@@ -297,31 +297,31 @@ private class MockStatelessServiceListener
 		
 	}
 	
-	public function onServiceComplete( service : AsyncStatelessService ) : Void 
+	public function onServiceComplete( service : MockAsyncStatelessService ) : Void 
 	{
 		this.lastServiceReceived = service;
 		this.onServiceCompleteCallCount++;
 	}
 	
-	public function onServiceFail( service : AsyncStatelessService ) : Void 
+	public function onServiceFail( service : MockAsyncStatelessService ) : Void 
 	{
 		this.lastServiceReceived = service;
 		this.onServiceFailCallCount++;
 	}
 	
-	public function onServiceCancel( service : AsyncStatelessService ) : Void 
+	public function onServiceCancel( service : MockAsyncStatelessService ) : Void 
 	{
 		this.lastServiceReceived = service;
 		this.onServiceCancelCallCount++;
 	}
 	
-	public function onServiceTimeout( service : AsyncStatelessService ) : Void 
+	public function onServiceTimeout( service : MockAsyncStatelessService ) : Void 
 	{
 		this.lastServiceReceived = service;
 		this.onServiceTimeoutCallCount++;
 	}
 	
-	public function handleMessage( messageType : MessageType, service : StatelessService ) : Void 
+	public function handleMessage( messageType : MessageType, service : MockAsyncStatelessService ) : Void 
 	{
 		this.lastMessageTypeReceived 	= messageType;
 		this.lastServiceReceived 		= service;

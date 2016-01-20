@@ -6,7 +6,7 @@ import hex.service.stateless.StatelessService;
  * ...
  * @author Francis Bourre
  */
-class MockStatelessService extends StatelessService
+class MockStatelessService extends StatelessService<ServiceConfiguration>
 {
 	public function new() 
 	{

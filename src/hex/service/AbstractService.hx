@@ -8,16 +8,16 @@ import hex.service.ServiceConfiguration;
  * ...
  * @author Francis Bourre
  */
-class AbstractService implements IService
+class AbstractService<ServiceConfigurationType:ServiceConfiguration> implements IService<ServiceConfigurationType>
 {
-	private var _configuration : ServiceConfiguration;
+	private var _configuration : ServiceConfigurationType;
 	
 	private function new() 
 	{
 		
 	}
 
-	public function getConfiguration() : ServiceConfiguration
+	public function getConfiguration() : ServiceConfigurationType
 	{
 		return this._configuration;
 	}
@@ -28,7 +28,7 @@ class AbstractService implements IService
 		throw new VirtualMethodException( this + ".createConfiguration must be overridden" );
 	}
 	
-	public function setConfiguration( configuration : ServiceConfiguration ) : Void
+	public function setConfiguration( configuration : ServiceConfigurationType ) : Void
 	{
 		throw new VirtualMethodException( this + ".setConfiguration must be overridden" );
 	}

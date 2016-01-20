@@ -5,6 +5,7 @@ import hex.error.NoSuchElementException;
 import hex.event.Dispatcher;
 import hex.event.MessageType;
 import hex.MockDependencyInjector;
+import hex.service.ServiceConfiguration;
 import hex.service.stateful.IStatefulService;
 import hex.service.stateful.StatefulService;
 import hex.service.stateless.IStatelessService;
@@ -144,7 +145,7 @@ class ServiceLocatorTest
 	}
 }
 
-private class MockStatefulService extends StatefulService
+private class MockStatefulService extends StatefulService<ServiceConfiguration>
 {
 	public function new()
 	{
@@ -187,7 +188,7 @@ private class MockInjectorForMapToValueTest extends MockDependencyInjector
 
 private class MockServiceListener
 {
-	public var lastDataReceived 	: StatefulService;
+	public var lastDataReceived 	: MockStatefulService;
 	public var eventReceivedCount 	: Int = 0;
 	
 	public function new()
@@ -195,7 +196,7 @@ private class MockServiceListener
 		
 	}
 	
-	public function onTest( service : StatefulService ) : Void
+	public function onTest( service : MockStatefulService ) : Void
 	{
 		this.lastDataReceived = service;
 		this.eventReceivedCount++;

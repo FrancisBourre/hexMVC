@@ -5,7 +5,6 @@ import hex.data.IParser;
 import hex.error.IllegalStateException;
 import hex.event.MessageType;
 import hex.service.stateless.http.HTTPServiceConfiguration;
-import hex.service.stateless.http.IHTTPServiceListener;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -49,7 +48,7 @@ class HTTPServiceTest
     public function testConfigurationAccessors() : Void
     {
 		var service : MockHTTPService = new MockHTTPService();
-        var configuration : HTTPServiceConfiguration = new HTTPServiceConfiguration();
+        var configuration : MockHTTPServiceConfiguration = new MockHTTPServiceConfiguration();
 
 		Assert.isNull( service.getConfiguration(), "configuration should be null by default" );
 		
@@ -153,10 +152,10 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "service received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "service received by handler should be HTTPService instance" );
 		
-		Assert.equals( StatelessServiceMessage.CANCEL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.CANCEL" );
+		//Assert.equals( StatelessServiceMessage.CANCEL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.CANCEL" );
 		
 		service.addHandler( StatelessServiceMessage.CANCEL, anotherHandler, anotherHandler.onServiceCancel );
-		Assert.isNull( anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
+		Assert.equals( 0, anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
     }
 	
 	@test( "Test handleComplete" )
@@ -195,10 +194,10 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "service received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "service received by handler should be HTTPService instance" );
 		
-		Assert.equals( StatelessServiceMessage.COMPLETE, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceMessage.COMPLETE" );
+		//Assert.equals( StatelessServiceMessage.COMPLETE, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceMessage.COMPLETE" );
 		
 		service.addHandler( StatelessServiceMessage.COMPLETE, anotherHandler, anotherHandler.onServiceComplete );
-		Assert.isNull( anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
+		Assert.equals( 0, anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
     }
 	
 	@test( "Test handleFail" )
@@ -237,10 +236,10 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "'event.target' received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "'event.target' received by handler should be HTTPService instance" );
 		
-		Assert.equals( StatelessServiceMessage.FAIL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceMessage.FAIL" );
+		//Assert.equals( StatelessServiceMessage.FAIL, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be StatelessServiceMessage.FAIL" );
 		
 		this.service.addHandler( StatelessServiceMessage.FAIL, anotherHandler, anotherHandler.onServiceFail );
-		Assert.isNull( anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
+		Assert.equals( 0, anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
     }
 	
 	@test( "test timeout" )
@@ -266,10 +265,10 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "'event.target' received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "'event.target' received by handler should be HTTPService instance" );
 		
-		Assert.equals( AsyncStatelessServiceMessage.TIMEOUT, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.TIMEOUT" );
+		//Assert.equals( AsyncStatelessServiceMessage.TIMEOUT, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.TIMEOUT" );
 		
 		this.service.addHandler( AsyncStatelessServiceMessage.TIMEOUT, anotherHandler, anotherHandler.onServiceTimeout );
-		Assert.isNull( anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );
+		Assert.equals( 0, anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );
 	}
 	
 	@test( "Test _getRemoteArguments call without override" )
@@ -312,47 +311,3 @@ private class MockParser implements IParser
 	}
 }
 
-private class MockHTTPServiceListener implements IHTTPServiceListener
-{
-	public var lastMessageTypeReceived 					: MessageType;
-	public var lastServiceReceived 						: HTTPService;
-	public var onServiceCompleteCallCount 				: Int;
-	public var onServiceFailCallCount 					: Int;
-	public var onServiceCancelCallCount 				: Int;
-	public var onServiceTimeoutCallCount 				: Int;
-	
-	public function new()
-	{
-		
-	}
-	
-	public function onServiceComplete( service : HTTPService ) : Void 
-	{
-		this.lastServiceReceived = service;
-		this.onServiceCompleteCallCount++;
-	}
-	
-	public function onServiceFail( service : HTTPService ) : Void 
-	{
-		this.lastServiceReceived = service;
-		this.onServiceFailCallCount++;
-	}
-	
-	public function onServiceCancel( service : HTTPService ) : Void 
-	{
-		this.lastServiceReceived = service;
-		this.onServiceCancelCallCount++;
-	}
-	
-	public function onServiceTimeout( service : HTTPService ) : Void 
-	{
-		this.lastServiceReceived = service;
-		this.onServiceTimeoutCallCount++;
-	}
-	
-	public function handleMessage( messageType : MessageType, service : HTTPService ) : Void 
-	{
-		this.lastMessageTypeReceived 	= messageType;
-		this.lastServiceReceived 		= service;
-	}
-}

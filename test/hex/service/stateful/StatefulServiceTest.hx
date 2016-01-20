@@ -92,7 +92,7 @@ class StatefulServiceTest
 	
 }
 
-private class MockStatefulService extends StatefulService
+private class MockStatefulService extends StatefulService<ServiceConfiguration>
 {
 	public function new() 
 	{
