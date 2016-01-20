@@ -22,19 +22,19 @@ class ModelDispatcherAutoBuildMacro
 		{
 			switch ( field.kind ) 
 			{
-				default: {}
 				case FFun( func ) :
 				
-				var methodName  = field.name;
-				if ( methodName == "new" ) continue;
+					var methodName  = field.name;
+					if ( methodName == "new" ) continue;
 
-				var args = [for (arg in func.args) macro $i { arg.name } ];
-				
-				func.expr = macro 
-				{
-					for ( listener in this._listeners ) listener.$methodName( $a{args} );
-				};
-
+					var args = [for (arg in func.args) macro $i { arg.name } ];
+					
+					func.expr = macro 
+					{
+						for ( listener in this._listeners ) listener.$methodName( $a{args} );
+					};
+					
+				default : 
 			}
 		}
 
