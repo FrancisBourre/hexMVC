@@ -23,7 +23,6 @@ class CommandExecutor
     {
         this._injector  = injector;
         this._module    = module;
-        //MetaDataProvider.getInstance().registerInjector( this._injector );
     }
 
     public function executeCommand( mapping : ICommandMapping, ?request : Request, ?mappingRemoval : Void->ICommandMapping ) : Void
