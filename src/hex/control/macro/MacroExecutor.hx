@@ -10,6 +10,7 @@ import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
 import hex.di.IBasicInjector;
+import hex.di.IContextOwner;
 import hex.error.IllegalStateException;
 import hex.module.IModule;
 
@@ -39,8 +40,15 @@ class MacroExecutor implements IMacroExecutor
 	
 	public function executeCommand( mapping : ICommandMapping, ?request : Request ) : ICommand
     {
-		var injector : IBasicInjector = mapping.getInjector();
-		if ( injector == null )
+		// Set injector
+		var injector : IBasicInjector = null;
+		var contextOwner : IContextOwner = mapping.getContextOwner();
+		
+		if ( contextOwner != null )
+		{
+			injector = contextOwner.getBasicInjector();
+		}
+		else
 		{
 			injector = this.injector;
 		}

@@ -1,5 +1,6 @@
 package hex.module;
 
+import hex.di.IContextOwner;
 import hex.domain.Domain;
 import hex.event.MessageType;
 
@@ -7,7 +8,7 @@ import hex.event.MessageType;
  * ...
  * @author Francis Bourre
  */
-interface IModule
+interface IModule extends IContextOwner
 {
     function initialize() : Void;
 

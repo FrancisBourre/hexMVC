@@ -8,7 +8,6 @@ class MockHTTPServiceConfiguration extends HTTPServiceConfiguration
 {
 	public function new()
 	{
-		super();
+		super( "" );
 	}
-	
 }

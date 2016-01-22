@@ -1,7 +1,8 @@
 package hex.service.stateless.http;
 
 import haxe.Http;
-import hex.core.IMetadataParsable;
+import hex.core.IAnnotationParsable;
+import hex.error.NullPointerException;
 import hex.log.Stringifier;
 import hex.service.stateless.AsyncStatelessService;
 
@@ -9,7 +10,7 @@ import hex.service.stateless.AsyncStatelessService;
  * ...
  * @author Francis Bourre
  */
-class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends AsyncStatelessService<ServiceConfigurationType> implements IHTTPService<ServiceConfigurationType> implements IURLConfigurable implements IMetadataParsable
+class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends AsyncStatelessService<ServiceConfigurationType> implements IHTTPService<ServiceConfigurationType> implements IURLConfigurable implements IAnnotationParsable
 {
 	private function new() 
 	{
@@ -23,6 +24,12 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	override public function call() : Void
 	{
 		this._timestamp = Date.now().getTime ();
+		
+		if ( this._configuration.serviceUrl == null )
+		{
+			throw new NullPointerException( "._createRequest failed. ServiceConfiguration.serviceUrl shouldn't be null" );
+		}
+		
 		this._createRequest();
 		super.call();
 		this._request.request( this._configuration.requestMethod == HTTPRequestMethod.POST );

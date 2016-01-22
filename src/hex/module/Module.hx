@@ -19,8 +19,8 @@ import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.Stringifier;
-import hex.metadata.IMetadataProvider;
-import hex.metadata.MetadataProvider;
+import hex.metadata.AnnotationProvider;
+import hex.metadata.IAnnotationProvider;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
@@ -36,7 +36,7 @@ class Module implements IModule
 	private var _internalDispatcher : IDispatcher<{}>;
 	private var _domainDispatcher 	: IDispatcher<{}>;
 	private var _injector 			: Injector;
-	private var _metaDataProvider 	: IMetadataProvider;
+	private var _annotationProvider 	: IAnnotationProvider;
 
 	public function new()
 	{
@@ -45,7 +45,7 @@ class Module implements IModule
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
-		this._metaDataProvider 	= MetadataProvider.getInstance( this._injector );
+		this._annotationProvider 	= AnnotationProvider.getInstance( this._injector );
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
@@ -167,7 +167,7 @@ class Module implements IModule
 			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
-			this._metaDataProvider.unregisterInjector( this._injector );
+			this._annotationProvider.unregisterInjector( this._injector );
 			this._injector.destroyInstance( this );
 			this._injector.teardown();
 		}
@@ -177,7 +177,6 @@ class Module implements IModule
 		}
 	}
 	
-	@:allow( hex.ioc.locator.DomainListenerVOLocator )
 	public function getBasicInjector() : IBasicInjector
 	{
 		return this._injector;

@@ -7,6 +7,10 @@ import hex.event.MessageType;
 import hex.service.stateless.http.HTTPServiceConfiguration;
 import hex.unittest.assertion.Assert;
 
+#if js
+import js.Browser;
+#end
+
 /**
  * ...
  * @author Francis Bourre
@@ -67,8 +71,17 @@ class HTTPServiceTest
 		this.service.timeoutDuration = 200;
 		Assert.equals( 200, service.timeoutDuration, "'serviceTimeout' value should be 200" );
 		
+		#if js
+		if ( Browser.supported )
+		{
+		#end
+		
 		this.service.call();
 		Assert.setPropertyThrows( IllegalStateException, this.service, "timeoutDuration", 40, "'timeoutDuration' call should throw IllegalStateException" );
+		
+		#if js
+		}
+		#end
 	}
 	
 	@test( "test call" )
@@ -81,6 +94,11 @@ class HTTPServiceTest
 		Assert.isFalse( this.service.hasFailed, "'hasFailed' property should return false" );
 		Assert.isFalse( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
+		#if js
+		if ( Browser.supported )
+		{
+		#end
+		
 		service.call();
 		
 		Assert.isTrue( this.service.wasUsed, "'wasUsed' should return true" );
@@ -91,6 +109,10 @@ class HTTPServiceTest
 		Assert.isFalse( this.service.hasTimeout, "'hasTimeout' should return false" );
 		
 		Assert.methodCallThrows( IllegalStateException, this.service, this.service.call, [], "service called twice should throw IllegalStateException" );
+		
+		#if js
+		}
+		#end
 	}
 	
 	@test( "test release" )
@@ -256,6 +278,12 @@ class HTTPServiceTest
 		
 		Assert.isFalse( this.service.hasTimeout, "'hasTimeout' property should return false" );
 		this.service.timeoutDuration = 0;
+		
+		#if js
+		if ( Browser.supported )
+		{
+		#end
+		
 		this.service.call();
 		Assert.isTrue( this.service.hasTimeout, "'hasTimeout' property should return true" );
 		
@@ -269,6 +297,10 @@ class HTTPServiceTest
 		
 		this.service.addHandler( AsyncStatelessServiceMessage.TIMEOUT, anotherHandler, anotherHandler.onServiceTimeout );
 		Assert.equals( 0, anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );
+		
+		#if js
+		}
+		#end
 	}
 	
 	@test( "Test _getRemoteArguments call without override" )
@@ -280,6 +312,11 @@ class HTTPServiceTest
 	@test( "Test _reset call" )
     public function test_resetCall() : Void
     {
+		#if js
+		if ( Browser.supported )
+		{
+		#end
+		
 		this.service.call();
 		
 		Assert.isTrue( this.service.wasUsed, "'wasUsed' should return true" );
@@ -295,6 +332,10 @@ class HTTPServiceTest
 		Assert.isFalse( this.service.hasCompleted, "'hasCompleted' should return false" );
 		Assert.isFalse( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.isFalse( this.service.hasTimeout, "'hasTimeout' should return false" );
+		
+		#if js
+		}
+		#end
 	}
 }
 

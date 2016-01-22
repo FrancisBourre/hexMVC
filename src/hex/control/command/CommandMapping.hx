@@ -3,7 +3,7 @@ package hex.control.command;
 import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
-import hex.di.IBasicInjector;
+import hex.di.IContextOwner;
 
 /**
  * ...
@@ -15,7 +15,7 @@ class CommandMapping implements ICommandMapping
     private var _guards                     : Array<Dynamic>;
     private var _payloads                   : Array<ExecutionPayload>;
 	
-    private var _injector                   : IBasicInjector;
+    private var _contextOwner               : IContextOwner;
 	
     private var _completeHandlers          	: Array<AsyncHandler>;
     private var _cancelHandlers            	: Array<AsyncHandler>;
@@ -154,15 +154,18 @@ class CommandMapping implements ICommandMapping
         return this;
     }
 	
-	public function setInjector( injector : IBasicInjector ) : Void
+	public function setContextOwner( contextOwner : IContextOwner ) : Void
 	{
-		this._injector = injector;
+		this._contextOwner = contextOwner;
 	}
 	
-	public function getInjector() : IBasicInjector
+	public function getContextOwner() : IContextOwner
 	{
-		return this._injector;
+		return this._contextOwner;
 	}
 
-    //public function withMappingResults( results : Array<Dynamic> ) : ICommandMapping;
+    /*public function withMappingResults( results : Array<Dynamic> ) : ICommandMapping
+	{
+		return null;
+	}*/
 }

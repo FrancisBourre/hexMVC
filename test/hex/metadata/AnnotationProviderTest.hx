@@ -8,7 +8,7 @@ import hex.unittest.assertion.Assert;
  * ...
  * @author Francis Bourre
  */
-class MetadataProviderTest
+class AnnotationProviderTest
 {
 	private var _colors 	: Map<String, Int> 		= new Map();
 	private var _text 		: Map<String, String> 	= new Map();
@@ -25,19 +25,19 @@ class MetadataProviderTest
     {
         this._colors.remove( "white" );
 		this._text.remove( "welcome" );
-		MetadataProvider.getInstance().clear();
+		AnnotationProvider.getInstance().clear();
     }
 	
 	@test( "Test register before parsing" )
 	public function testRegisterBeforeParsing() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
-		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
+		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
-		metaDataProvider.registerMetaData( "language", this, this.getText );
+		annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		annotationProvider.registerMetaData( "language", this, this.getText );
 		
-		metaDataProvider.parse( mockObjectWithMetaData );
+		annotationProvider.parse( mockObjectWithMetaData );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -47,13 +47,13 @@ class MetadataProviderTest
 	@test( "Test register after parsing" )
 	public function testRegisterAfterParsing() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
-		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
+		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		metaDataProvider.parse( mockObjectWithMetaData );
+		annotationProvider.parse( mockObjectWithMetaData );
 		
-		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
-		metaDataProvider.registerMetaData( "language", this, this.getText );
+		annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		annotationProvider.registerMetaData( "language", this, this.getText );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -63,29 +63,29 @@ class MetadataProviderTest
 	@test( "Test with module" )
 	public function testWithModule() : Void
 	{
-		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 
-		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
-		metaDataProvider.registerMetaData( "language", this, this.getText );
+		annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		annotationProvider.registerMetaData( "language", this, this.getText );
 
-		var module : MockModuleForMetaDataProviding = new MockModuleForMetaDataProviding();
+		var module : MockModuleForAnnotationProviding = new MockModuleForAnnotationProviding();
 		module.initialize();
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
-		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IMetadataParsable" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
 	}
 	
 	@test( "Test clear method" )
 	public function testClearMethod() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
-		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
+		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
-		metaDataProvider.clear();
+		annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		annotationProvider.clear();
 		
-		metaDataProvider.parse( mockObjectWithMetaData );
+		annotationProvider.parse( mockObjectWithMetaData );
 		Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
 	}
 	
@@ -103,9 +103,9 @@ class MetadataProviderTest
 	public function testParseService() : Void
 	{
 		var service : MockStatelessService = new MockStatelessService();
-		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
+		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		metaDataProvider.parse( service );
+		annotationProvider.parse( service );
 		//Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
 	}
 }

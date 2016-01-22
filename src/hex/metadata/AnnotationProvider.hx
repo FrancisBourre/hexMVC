@@ -2,7 +2,7 @@ package hex.metadata;
 
 import haxe.rtti.Meta;
 import hex.collection.HashMap;
-import hex.core.IMetadataParsable;
+import hex.core.IAnnotationParsable;
 import hex.error.IllegalArgumentException;
 import hex.inject.IInjector;
 import hex.inject.InjectionEvent;
@@ -12,9 +12,9 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
-class MetadataProvider implements IMetadataProvider
+class AnnotationProvider implements IAnnotationProvider
 {
-	static private var _Instance 		: IMetadataProvider = null;
+	static private var _Instance 		: IAnnotationProvider = null;
 	static private var _META_DATA 		: HashMap<Class<Dynamic>, Dynamic> = new HashMap();
 	
 	private var _metadata 				: Map<String, ProviderHandler>;
@@ -26,19 +26,19 @@ class MetadataProvider implements IMetadataProvider
 		this._instances 			= new Map();
 	}
 	
-	static public function getInstance( injector : IInjector = null ) : IMetadataProvider
+	static public function getInstance( injector : IInjector = null ) : IAnnotationProvider
 	{
-		if ( MetadataProvider._Instance == null )
+		if ( AnnotationProvider._Instance == null )
 		{
-			MetadataProvider._Instance = new MetadataProvider();
+			AnnotationProvider._Instance = new AnnotationProvider();
 		}
 
 		if ( injector != null )
 		{
-			MetadataProvider._Instance.registerInjector( injector );
+			AnnotationProvider._Instance.registerInjector( injector );
 		}
 
-		return MetadataProvider._Instance;
+		return AnnotationProvider._Instance;
 	}
 	
 	public function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void 
@@ -115,9 +115,9 @@ class MetadataProvider implements IMetadataProvider
 		if ( classReference != null )
 		{
 			//try to get cache
-			if ( MetadataProvider._META_DATA.containsKey( classReference ) )
+			if ( AnnotationProvider._META_DATA.containsKey( classReference ) )
 			{
-				classMetaDataVO = MetadataProvider._META_DATA.get( classReference );
+				classMetaDataVO = AnnotationProvider._META_DATA.get( classReference );
 			}
 			else
 			{
@@ -145,7 +145,7 @@ class MetadataProvider implements IMetadataProvider
 					}
 				}
 				
-				MetadataProvider._META_DATA.put( classReference, classMetaDataVO );
+				AnnotationProvider._META_DATA.put( classReference, classMetaDataVO );
 			}
 		}
 		
@@ -164,7 +164,7 @@ class MetadataProvider implements IMetadataProvider
 	
 	private function _onPostconstruct( event : InjectionEvent ) : Void
 	{
-		if ( Std.is( event.instance, IMetadataParsable ) )
+		if ( Std.is( event.instance, IAnnotationParsable ) )
 		{
 			this.parse( event.instance );
 		}

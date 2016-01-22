@@ -4,6 +4,7 @@ import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IBasicInjector;
+import hex.di.IContextOwner;
 
 /**
  * ...
@@ -102,10 +103,9 @@ interface ICommandMapping
     function withCancelHandlers( handler : AsyncHandler ) : ICommandMapping;
 	
 	
-	function setInjector( injector : IBasicInjector ) : Void;
-
+	function setContextOwner( contextOwner : IContextOwner ) : Void;
 	
-	function getInjector() : IBasicInjector;
+	function getContextOwner() : IContextOwner;
 
     /**
      * A list of mapping results

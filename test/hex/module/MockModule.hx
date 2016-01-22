@@ -1,5 +1,6 @@
 package hex.module;
 
+import hex.di.IBasicInjector;
 import hex.domain.Domain;
 import hex.event.MessageType;
 import hex.module.IModule;
@@ -54,6 +55,11 @@ class MockModule implements IModule
 	}
 	
 	public function getDomain() : Domain 
+	{
+		return null;
+	}
+	
+	public function getBasicInjector() : IBasicInjector
 	{
 		return null;
 	}
