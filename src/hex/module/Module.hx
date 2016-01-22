@@ -19,7 +19,7 @@ import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.Stringifier;
-import hex.metadata.IMetadataProvider;
+import hex.metadata.IMetaProvider;
 import hex.metadata.MetadataProvider;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
@@ -36,7 +36,7 @@ class Module implements IModule
 	private var _internalDispatcher : IDispatcher<{}>;
 	private var _domainDispatcher 	: IDispatcher<{}>;
 	private var _injector 			: Injector;
-	private var _metaDataProvider 	: IMetadataProvider;
+	private var _metaDataProvider 	: IMetaProvider;
 
 	public function new()
 	{

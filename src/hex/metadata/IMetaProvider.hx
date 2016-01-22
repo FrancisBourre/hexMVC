@@ -5,7 +5,7 @@ import hex.inject.IInjector;
 /**
  * @author Francis Bourre
  */
-interface IMetadataProvider 
+interface IMetaProvider 
 {
 	function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void;
 	function clear() : Void;

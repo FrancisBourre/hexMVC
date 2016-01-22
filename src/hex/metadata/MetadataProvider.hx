@@ -12,9 +12,9 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
-class MetadataProvider implements IMetadataProvider
+class MetadataProvider implements IMetaProvider
 {
-	static private var _Instance 		: IMetadataProvider = null;
+	static private var _Instance 		: IMetaProvider = null;
 	static private var _META_DATA 		: HashMap<Class<Dynamic>, Dynamic> = new HashMap();
 	
 	private var _metadata 				: Map<String, ProviderHandler>;
@@ -26,7 +26,7 @@ class MetadataProvider implements IMetadataProvider
 		this._instances 			= new Map();
 	}
 	
-	static public function getInstance( injector : IInjector = null ) : IMetadataProvider
+	static public function getInstance( injector : IInjector = null ) : IMetaProvider
 	{
 		if ( MetadataProvider._Instance == null )
 		{
