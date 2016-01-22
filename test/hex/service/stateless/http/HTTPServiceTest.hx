@@ -309,6 +309,11 @@ class HTTPServiceTest
 	@test( "Test _reset call" )
     public function test_resetCall() : Void
     {
+		#if js
+		if ( Browser.supported )
+		{
+		#end
+		
 		this.service.call();
 		
 		Assert.isTrue( this.service.wasUsed, "'wasUsed' should return true" );
@@ -316,11 +321,6 @@ class HTTPServiceTest
 		Assert.isFalse( this.service.hasCompleted, "'hasCompleted' should return false" );
 		Assert.isFalse( this.service.isCancelled, "'isCancelled' should return false" );
 		Assert.isFalse( this.service.hasTimeout, "'hasTimeout' should return false" );
-		
-		#if js
-		if ( Browser.supported )
-		{
-		#end
 		
 		service.call_reset();
 		
