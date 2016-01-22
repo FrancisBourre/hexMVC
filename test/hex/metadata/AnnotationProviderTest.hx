@@ -31,7 +31,7 @@ class AnnotationProviderTest
 	@test( "Test register before parsing" )
 	public function testRegisterBeforeParsing() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
+		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.registerMetaData( "color", this, this.getColorByName );
@@ -47,7 +47,7 @@ class AnnotationProviderTest
 	@test( "Test register after parsing" )
 	public function testRegisterAfterParsing() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
+		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.parse( mockObjectWithMetaData );
@@ -68,18 +68,18 @@ class AnnotationProviderTest
 		annotationProvider.registerMetaData( "color", this, this.getColorByName );
 		annotationProvider.registerMetaData( "language", this, this.getText );
 
-		var module : MockModuleForMetaDataProviding = new MockModuleForMetaDataProviding();
+		var module : MockModuleForAnnotationProviding = new MockModuleForAnnotationProviding();
 		module.initialize();
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
-		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IMetadataParsable" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
 	}
 	
 	@test( "Test clear method" )
 	public function testClearMethod() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
+		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.registerMetaData( "color", this, this.getColorByName );

@@ -2,7 +2,7 @@ package hex.metadata;
 
 import haxe.rtti.Meta;
 import hex.collection.HashMap;
-import hex.core.IMetadataParsable;
+import hex.core.IAnnotationParsable;
 import hex.error.IllegalArgumentException;
 import hex.inject.IInjector;
 import hex.inject.InjectionEvent;
@@ -164,7 +164,7 @@ class AnnotationProvider implements IAnnotationProvider
 	
 	private function _onPostconstruct( event : InjectionEvent ) : Void
 	{
-		if ( Std.is( event.instance, IMetadataParsable ) )
+		if ( Std.is( event.instance, IAnnotationParsable ) )
 		{
 			this.parse( event.instance );
 		}

@@ -5,7 +5,7 @@ package hex.metadata;
  * @author Francis Bourre
  */
 @:rtti
-class MockWithoutIMetaDataParsableImplementation
+class MockWithoutIAnnotationParsableImplementation
 {
 	@language( "welcome" )
 	public var languageTest : String;
