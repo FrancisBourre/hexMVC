@@ -32,7 +32,7 @@ class MetadataProviderTest
 	public function testRegisterBeforeParsing() : Void
 	{
 		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
-		var metaDataProvider : IMetaProvider = MetadataProvider.getInstance();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
 		
 		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
 		metaDataProvider.registerMetaData( "language", this, this.getText );
@@ -48,7 +48,7 @@ class MetadataProviderTest
 	public function testRegisterAfterParsing() : Void
 	{
 		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
-		var metaDataProvider : IMetaProvider = MetadataProvider.getInstance();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
 		
 		metaDataProvider.parse( mockObjectWithMetaData );
 		
@@ -63,7 +63,7 @@ class MetadataProviderTest
 	@test( "Test with module" )
 	public function testWithModule() : Void
 	{
-		var metaDataProvider : IMetaProvider = MetadataProvider.getInstance();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
 
 		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
 		metaDataProvider.registerMetaData( "language", this, this.getText );
@@ -80,7 +80,7 @@ class MetadataProviderTest
 	public function testClearMethod() : Void
 	{
 		var mockObjectWithMetaData : MockObjectWithMetaData = new MockObjectWithMetaData();
-		var metaDataProvider : IMetaProvider = MetadataProvider.getInstance();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
 		
 		metaDataProvider.registerMetaData( "color", this, this.getColorByName );
 		metaDataProvider.clear();
@@ -103,7 +103,7 @@ class MetadataProviderTest
 	public function testParseService() : Void
 	{
 		var service : MockStatelessService = new MockStatelessService();
-		var metaDataProvider : IMetaProvider = MetadataProvider.getInstance();
+		var metaDataProvider : IMetadataProvider = MetadataProvider.getInstance();
 		
 		metaDataProvider.parse( service );
 		//Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
