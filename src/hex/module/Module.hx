@@ -159,7 +159,11 @@ class Module implements IModule
 			_fireReleaseEvent();
 
 			ViewHelperManager.release( this );
-			this._domainDispatcher.removeAllListeners();
+			
+			if ( this._domainDispatcher != null )
+			{
+				this._domainDispatcher.removeAllListeners();
+			}
 			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
