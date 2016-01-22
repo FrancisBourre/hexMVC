@@ -3,6 +3,7 @@ package hex.control;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.FrontController;
+import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.event.Dispatcher;
@@ -164,6 +165,11 @@ private class MockModule implements IModule
 	}
 	
 	public function getDomain() : Domain 
+	{
+		return null;
+	}
+	
+	public function getBasicInjector() : IBasicInjector
 	{
 		return null;
 	}

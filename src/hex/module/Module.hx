@@ -173,7 +173,6 @@ class Module implements IModule
 		}
 	}
 	
-	@:allow( hex.ioc.locator.DomainListenerVOLocator )
 	public function getBasicInjector() : IBasicInjector
 	{
 		return this._injector;
