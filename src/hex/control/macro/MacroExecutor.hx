@@ -21,7 +21,7 @@ import hex.module.IModule;
 @:rtti
 class MacroExecutor implements IMacroExecutor
 {
-	@inject
+	@Inject
 	public var injector   					: IBasicInjector;
 	
 	private var _commandIndex 				: Int;

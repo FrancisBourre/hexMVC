@@ -20,7 +20,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	private var _isAtomic 			: Bool = true;
     private var _isSequenceMode 	: Bool = true;
 	
-	@inject
+	@Inject
 	public var macroExecutor 		: IMacroExecutor;
 
 	public function new() 

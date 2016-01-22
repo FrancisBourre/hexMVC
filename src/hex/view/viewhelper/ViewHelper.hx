@@ -18,7 +18,7 @@ class ViewHelper implements IViewHelper
 {
 	public static var DEFAULT_VISIBLE:Bool = true;
 	
-	@inject
+	@Inject
 	public var dispatcher 			: IDispatcher<{}>;
 	
 	private var _dispatcher 		: Dispatcher<{}>;

@@ -14,7 +14,7 @@ import hex.event.MessageType;
 @:rtti
 class StatelessCommandConfig implements IStatelessConfig
 {
-	@inject
+	@Inject
 	private var frontController : IFrontController;
 
 	public function new() 

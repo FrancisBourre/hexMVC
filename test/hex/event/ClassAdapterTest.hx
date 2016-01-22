@@ -172,7 +172,7 @@ private class MockValueObject
 @:rtti
 private class MockAsyncCommand extends AsyncCommand
 {
-	@inject
+	@Inject
 	public var data : MockValueObject;
 	
 	override public function execute( ?request : Request ) : Void

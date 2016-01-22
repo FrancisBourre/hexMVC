@@ -10,7 +10,7 @@ import hex.error.VirtualMethodException;
 @:rtti
 class StatelessModelConfig implements IStatelessConfig
 {
-	@inject
+	@Inject
 	public var injector : IDependencyInjector;
 	
 	public function new() 
