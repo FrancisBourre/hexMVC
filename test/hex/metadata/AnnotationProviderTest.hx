@@ -13,14 +13,14 @@ class AnnotationProviderTest
 	private var _colors 	: Map<String, Int> 		= new Map();
 	private var _text 		: Map<String, String> 	= new Map();
 		
-	@setUp
+	@Before
     public function setUp() : Void
     {
         this._colors.set( "white", 0xFFFFFF );
 		this._text.set( "welcome", "Bienvenue" );
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._colors.remove( "white" );
@@ -28,7 +28,7 @@ class AnnotationProviderTest
 		AnnotationProvider.getInstance().clear();
     }
 	
-	@test( "Test register before parsing" )
+	@Test( "Test register before parsing" )
 	public function testRegisterBeforeParsing() : Void
 	{
 		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
@@ -44,7 +44,7 @@ class AnnotationProviderTest
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
-	@test( "Test register after parsing" )
+	@Test( "Test register after parsing" )
 	public function testRegisterAfterParsing() : Void
 	{
 		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
@@ -60,7 +60,7 @@ class AnnotationProviderTest
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
-	@test( "Test with module" )
+	@Test( "Test with module" )
 	public function testWithModule() : Void
 	{
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
@@ -76,7 +76,7 @@ class AnnotationProviderTest
 		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
 	}
 	
-	@test( "Test clear method" )
+	@Test( "Test clear method" )
 	public function testClearMethod() : Void
 	{
 		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
@@ -99,7 +99,7 @@ class AnnotationProviderTest
 		return this._text.get( name );
 	}
 	
-	@test( "Test parse service" )
+	@Test( "Test parse service" )
 	public function testParseService() : Void
 	{
 		var service : MockStatelessService = new MockStatelessService();

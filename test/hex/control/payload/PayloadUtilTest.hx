@@ -11,7 +11,7 @@ import hex.unittest.assertion.Assert;
  */
 class PayloadUtilTest
 {
-	@test( "Test mapping" )
+	@Test( "Test mapping" )
     public function testMapping() : Void
     {
 		var injector 					: MockDependencyInjectorForMapping 	= new MockDependencyInjectorForMapping();
@@ -31,7 +31,7 @@ class PayloadUtilTest
 									"'CommandExecutor.mapPayload' should map right values" );
     }
 	
-	@test( "Test unmapping" )
+	@Test( "Test unmapping" )
     public function testUnmapping() : Void
     {
 		var injector 					: MockDependencyInjectorForMapping 	= new MockDependencyInjectorForMapping();

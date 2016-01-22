@@ -11,7 +11,7 @@ class CallbackAdapterTest
 {
 	private var _callbackAdapter : CallbackAdapter;
 	
-	@test( "Test getCallbackAdapter" )
+	@Test( "Test getCallbackAdapter" )
     public function testGetCallbackAdapter() : Void
     {
 		this._callbackAdapter = new CallbackAdapter();

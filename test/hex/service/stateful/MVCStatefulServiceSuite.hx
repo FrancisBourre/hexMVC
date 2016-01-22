@@ -6,6 +6,6 @@ package hex.service.stateful;
  */
 class MVCStatefulServiceSuite
 {
-	@suite(" Stateful")
+	@Suite(" Stateful")
 	public var list : Array<Class<Dynamic>> = [StatefulServiceTest];
 }

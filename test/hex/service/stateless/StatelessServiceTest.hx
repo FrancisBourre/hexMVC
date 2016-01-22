@@ -15,19 +15,19 @@ class StatelessServiceTest
 {
 	public var service : MockStatelessService;
 	
-	@setUp
+	@Before
     public function setUp() : Void
     {
         this.service = new MockStatelessService();
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this.service = null;
     }
 	
-	@test( "Test 'getConfiguration' accessor" )
+	@Test( "Test 'getConfiguration' accessor" )
     public function testGetConfiguration() : Void
     {
         var configuration : ServiceConfiguration = new ServiceConfiguration();
@@ -38,14 +38,14 @@ class StatelessServiceTest
         Assert.equals( configuration, service.getConfiguration(), "configuration should be retrieved from getter" );
     }
 	
-	@test( "test result accessors" )
+	@Test( "test result accessors" )
 	public function testResult() : Void
 	{
 		this.service.testSetResult( "result" );
 		Assert.equals( "result", this.service.getResult(), "result getter should provide result setted value" );
 	}
 	
-	@test( "test result accessors with parser" )
+	@Test( "test result accessors with parser" )
 	public function testResultWithParser() : Void
 	{
 		this.service.setParser( new MockParser() );
@@ -53,7 +53,7 @@ class StatelessServiceTest
 		Assert.equals( 6, this.service.getResult(), "result getter should provide result parsed value" );
 	}
 	
-	@test( "test call" )
+	@Test( "test call" )
 	public function testCall() : Void
 	{
 		Assert.isFalse( this.service.wasUsed, "'wasUsed' should return false" );
@@ -72,7 +72,7 @@ class StatelessServiceTest
 		Assert.methodCallThrows( IllegalStateException, this.service, this.service.call, [], "service called twice should throw IllegalStateException" );
 	}
 	
-	@test( "test release" )
+	@Test( "test release" )
 	public function testRelease() : Void
 	{
 		Assert.isFalse( this.service.wasUsed, "'wasUsed' should return false" );
@@ -92,7 +92,7 @@ class StatelessServiceTest
 		Assert.methodCallThrows( IllegalStateException, this.service, this.service.call, [], "service should throw IllegalStateException when called after release" );
 	}
 	
-	@test( "Test handleCancel" )
+	@Test( "Test handleCancel" )
     public function testHandleCancel() : Void
     {
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
@@ -125,7 +125,7 @@ class StatelessServiceTest
 		Assert.equals( 0, anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@test( "Test handleComplete" )
+	@Test( "Test handleComplete" )
     public function testHandleComplete() : Void
     {
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
@@ -158,7 +158,7 @@ class StatelessServiceTest
 		Assert.equals( 0, anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@test( "Test handleFail" )
+	@Test( "Test handleFail" )
     public function testHandleFail() : Void
     {
 		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
@@ -191,13 +191,13 @@ class StatelessServiceTest
 		Assert.equals( 0, anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@test( "Test _getRemoteArguments call without override" )
+	@Test( "Test _getRemoteArguments call without override" )
     public function test_getRemoteArgumentsCall() : Void
     {
 		Assert.methodCallThrows( UnsupportedOperationException, this.service, this.service.call_getRemoteArguments, [], "'_getRemoteArguments' call should throw an exception" );
 	}
 	
-	@test( "Test _reset call" )
+	@Test( "Test _reset call" )
     public function test_resetCall() : Void
     {
 		this.service.call();

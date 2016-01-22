@@ -14,19 +14,19 @@ class StatefulServiceTest
 {
 	public var service : MockStatefulService;
 	
-	@setUp
+	@Before
     public function setUp() : Void
     {
         this.service = new MockStatefulService();
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this.service = null;
     }
 
-	@test( "Test 'setConfiguration' method" )
+	@Test( "Test 'setConfiguration' method" )
     public function testSetConfiguration() : Void
     {
 		var dummyConfig : ServiceConfiguration = new ServiceConfiguration();
@@ -42,7 +42,7 @@ class StatefulServiceTest
 		Assert.equals( dummyConfig, this.service.getConfiguration(), "should be able to call setConfiguration after _release called" );
 	}
 	
-	@test( "Test 'lock' and 'release' behavior" )
+	@Test( "Test 'lock' and 'release' behavior" )
     public function testLockAndRelease() : Void
     {
 		Assert.isFalse( this.service.inUse(), "the inUse property should be false by default" );
@@ -56,7 +56,7 @@ class StatefulServiceTest
 		Assert.isFalse( this.service.inUse(), "the inUse property should be false after _release called" );
 	}
 	
-	@test( "Test event subscription" )
+	@Test( "Test event subscription" )
     public function testAddAndRemoveHandler() : Void
 	{
 		var listener : MockAsyncEventListener = new MockAsyncEventListener();
@@ -73,7 +73,7 @@ class StatefulServiceTest
 		Assert.equals( 1, listener.addHandlerSuccessCount, "dispatch should not happen after call removeHandler" );
 	}
 	
-	@test( "Test removeAllListeners" )
+	@Test( "Test removeAllListeners" )
     public function testRemoveAllListeners() : Void
 	{
 		var listener : MockAsyncEventListener = new MockAsyncEventListener();

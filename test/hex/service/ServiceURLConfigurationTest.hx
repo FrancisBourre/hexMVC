@@ -9,7 +9,7 @@ import hex.unittest.assertion.Assert;
  */
 class ServiceURLConfigurationTest extends ServiceConfigurationTest
 {
-	@test( "Test 'serviceURL' parameter passed to constructor" )
+	@Test( "Test 'serviceURL' parameter passed to constructor" )
     public function testServiceURL() : Void
     {
         var serviceUrl : String = "url";

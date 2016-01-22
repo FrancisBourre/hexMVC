@@ -10,7 +10,7 @@ import hex.unittest.assertion.Assert;
  */
 class AbstractServiceTest
 {
-	@test( "Test 'getConfiguration' accessor" )
+	@Test( "Test 'getConfiguration' accessor" )
     public function testGetConfiguration() : Void
     {
         var configuration : ServiceConfiguration = new ServiceConfiguration();
@@ -22,7 +22,7 @@ class AbstractServiceTest
         Assert.equals( configuration, service.getConfiguration(), "configuration should be retrieved from getter" );
     }
 	
-	@test( "Test virtual methods" )
+	@Test( "Test virtual methods" )
     public function testVirtualMethods() : Void
     {
 		var service : MockService = new MockService();

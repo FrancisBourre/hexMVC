@@ -6,6 +6,6 @@ package hex.metadata;
  */
 class MVCMetadataSuite
 {
-	@suite( "Metadata" )
+	@Suite( "Metadata" )
     public var list : Array<Class<Dynamic>> = [AnnotationProviderTest];
 }

@@ -11,7 +11,7 @@ import hex.unittest.assertion.Assert;
  */
 class GuardUtilTest
 {
-	@test( "Test guard-class approval without injector" )
+	@Test( "Test guard-class approval without injector" )
     public function testGuardClassApproveWithoutInjector() : Void
     {
 		var guards : Array<Dynamic> = [ MockApproveGuard ];
@@ -23,7 +23,7 @@ class GuardUtilTest
         Assert.isFalse( isApproved, "'GuardUtil.guardsApprove' property should return false" );
     }
 	
-	@test( "Test guard-class approval with injector" )
+	@Test( "Test guard-class approval with injector" )
     public function testGuardClassApproveWithInjector() : Void
     {
 		var injector : IDependencyInjector = new MockDependencyInjectorForTestingGuard();

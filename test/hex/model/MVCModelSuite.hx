@@ -6,6 +6,6 @@ package hex.model;
  */
 class MVCModelSuite
 {
-	@suite( "Model" )
+	@Suite( "Model" )
     public var list : Array<Class<Dynamic>> = [ModelDispatcherTest];
 }

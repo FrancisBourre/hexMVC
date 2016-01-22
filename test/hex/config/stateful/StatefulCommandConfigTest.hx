@@ -19,14 +19,14 @@ import hex.unittest.assertion.Assert;
 class StatefulCommandConfigTest
 {
 
-	@test( "Test 'configure' throws 'InjectorMissingMappingError'" )
+	@Test( "Test 'configure' throws 'InjectorMissingMappingError'" )
     public function testConfigureThrowsInjectorMissingMappingError() : Void
     {
 		var config : StatefulCommandConfig = new StatefulCommandConfig();
         Assert.methodCallThrows( InjectorMissingMappingError, config, config.configure, [ new MockDependencyInjector(), new Dispatcher<{}>(), new MockModule() ], "constructor should throw IllegalArgumentException" );
     }
 	
-	@test( "Test 'map' behavior" )
+	@Test( "Test 'map' behavior" )
     public function testMapBehavior() : Void
     {
 		var controller : MockFrontController = new MockFrontController();

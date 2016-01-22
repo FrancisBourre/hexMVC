@@ -19,19 +19,19 @@ class AsyncCommandTest
 {
 	private var _asyncCommand : MockAsyncCommand;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
         this._asyncCommand = new MockAsyncCommand();
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._asyncCommand = null;
     }
 	
-	@test( "Test preExecute" )
+	@Test( "Test preExecute" )
     public function testCallPreExecuteTwice() : Void
     {
 		Assert.isFalse( this._asyncCommand.wasUsed, "'wasUsed' property should return false" );
@@ -43,13 +43,13 @@ class AsyncCommandTest
         Assert.methodCallThrows( IllegalStateException, this._asyncCommand, this._asyncCommand.preExecute,[], "AsyncCommand should throw IllegalStateException when calling preExecute method twice" );
     }
 	
-	@test( "Test get payload" )
+	@Test( "Test get payload" )
     public function testGetPayload() : Void
     {
 		Assert.isNull( this._asyncCommand.getPayload(), "'getPayload' should return null" );
     }
 	
-	@test( "Test owner" )
+	@Test( "Test owner" )
     public function testGetOwner() : Void
     {
 		Assert.isNull( this._asyncCommand.getOwner(), "'getOwner' should return null" );
@@ -59,14 +59,14 @@ class AsyncCommandTest
 		Assert.equals( module, this._asyncCommand.getOwner(), "'getOwner' should return defined owner" );
     }
 	
-	@test( "Test execute" )
+	@Test( "Test execute" )
     public function testExecute() : Void
     {
 		var asyncCommand : AsyncCommand = new AsyncCommand();
 		Assert.methodCallThrows( VirtualMethodException, asyncCommand, asyncCommand.execute, [], "'execute' should throw VirtualMethodException" );
     }
 	
-	@test( "Test cancel" )
+	@Test( "Test cancel" )
     public function testCancel() : Void
     {
 		var listener 		: MockAsyncCommandListener = new MockAsyncCommandListener();
@@ -92,7 +92,7 @@ class AsyncCommandTest
 		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
     }
 	
-	@test( "Test complete" )
+	@Test( "Test complete" )
     public function testComplete() : Void
     {
 		var listener 		: MockAsyncCommandListener = new MockAsyncCommandListener();
@@ -118,7 +118,7 @@ class AsyncCommandTest
 		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
 	}
 	
-	@test( "Test fail" )
+	@Test( "Test fail" )
     public function testFail() : Void
     {
 		var listener 		: MockAsyncCommandListener = new MockAsyncCommandListener();

@@ -9,6 +9,6 @@ import hex.service.stateless.MVCStatelessServiceSuite;
  */
 class MVCServiceSuite
 {
-	@suite( "Service" )
+	@Suite( "Service" )
     public var list : Array<Class<Dynamic>> = [MVCStatelessServiceSuite, MVCStatefulServiceSuite, AbstractServiceTest, ServiceConfigurationTest, ServiceURLConfigurationTest];
 }

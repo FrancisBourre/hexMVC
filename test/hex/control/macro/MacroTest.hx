@@ -30,7 +30,7 @@ class MacroTest
 	private var _macro 			: Macro;
 	private var _macroExecutor 	: MockMacroExecutor;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
         this._macro 					= new MockMacro();
@@ -39,14 +39,14 @@ class MacroTest
 		MockCommand.executeCallCount 	= 0;
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._macro 		= null;
 		this._macroExecutor = null;
     }
 	
-	@test( "Test atomic property" )
+	@Test( "Test atomic property" )
 	public function testIsAtomic() : Void
 	{
 		Assert.isTrue( this._macro.isAtomic, "'isAtomic' should return true" );
@@ -58,7 +58,7 @@ class MacroTest
 		Assert.isTrue( this._macro.isAtomic, "'isAtomic' should return true" );
 	}
 	
-	@test( "Test parallel and sequence modes" )
+	@Test( "Test parallel and sequence modes" )
 	public function testParallelAndSequenceModes() : Void
 	{
 		Assert.isTrue( this._macro.isInSequenceMode, "'isInSequenceMode' should return true" );
@@ -79,7 +79,7 @@ class MacroTest
 		Assert.isFalse( this._macro.isInParallelMode, "'isInParallelMode' should return false" );
 	}
 	
-	@test( "Test preExecute without overriding prepare" )
+	@Test( "Test preExecute without overriding prepare" )
 	public function testPreExecute() : Void
 	{
 		var myMacro : MockEmptyMacro = new MockEmptyMacro();
@@ -106,7 +106,7 @@ class MacroTest
         Assert.methodCallThrows( IllegalStateException, this._macro, this._macro.preExecute,[], "Macro should throw IllegalStateException when calling preExecute method twice" );
 	}
 	
-	@test( "Test addComand" )
+	@Test( "Test addComand" )
 	public function testAddCommand() : Void
 	{
 		this._macroExecutor.returnedMapping = new CommandMapping( MockCommand );
@@ -115,7 +115,7 @@ class MacroTest
 		Assert.equals( MockCommand, this._macroExecutor.lastCommandClassAdded, "command class should be passed to macroexecutor" );
 	}
 	
-	@test( "Test addMapping" )
+	@Test( "Test addMapping" )
 	public function testAddMapping() : Void
 	{
 		this._macroExecutor.returnedMapping = new CommandMapping( MockCommand );
@@ -126,7 +126,7 @@ class MacroTest
 		Assert.equals( mappingToAdd, this._macroExecutor.lastMappingAdded, "mapping added should be passed to macroexecutor" );
 	}
 	
-	@test( "Test execute empty macro" )
+	@Test( "Test execute empty macro" )
 	public function testExecuteEmptyMacro() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
@@ -144,7 +144,7 @@ class MacroTest
 		Assert.equals( anotherRequest, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
 	}
 	
-	@test( "Test execute triggers 'handleComplete'" )
+	@Test( "Test execute triggers 'handleComplete'" )
 	public function testExecuteTriggersHandleComplet() : Void
 	{
 		this._macroExecutor.hasNextCommandMappingReturnValue 	= false;
@@ -160,7 +160,7 @@ class MacroTest
 		Assert.isTrue( this._macro.hasCompleted, "'hasCompleted' property should return true" );
 	}
 	
-	@test( "Test with guards approved" )
+	@Test( "Test with guards approved" )
 	public function testWithGuardsApproved() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
@@ -182,7 +182,7 @@ class MacroTest
 		return true;
 	}
 	
-	@test( "Test with guards refused" )
+	@Test( "Test with guards refused" )
 	public function testWithGuardsRefused() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
@@ -199,7 +199,7 @@ class MacroTest
 		Assert.isFalse( myMacro.isCancelled, "'isCancelled' property should return false" );
 	}
 	
-	@test( "Test parallel mode" )
+	@Test( "Test parallel mode" )
 	public function testParallelMode() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
@@ -217,7 +217,7 @@ class MacroTest
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method shoud have been called once" );
 	}
 	
-	@async( "Test sequence mode" )
+	@Async( "Test sequence mode" )
 	public function testSequenceMode() : Void
 	{
 		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
@@ -241,7 +241,7 @@ class MacroTest
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method should have been called" );
 	}
 	
-	@async( "Test add command after first have run" )
+	@Async( "Test add command after first have run" )
 	public function testAddCommandAfterFirstRun() : Void
 	{
 		var myMacro : MockMacroWithHandler = new MockMacroWithHandler();

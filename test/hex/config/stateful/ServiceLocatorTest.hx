@@ -20,19 +20,19 @@ class ServiceLocatorTest
 {
 	private var _serviceLocator : ServiceLocator;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
         this._serviceLocator = new ServiceLocator();
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._serviceLocator = null;
     }
 	
-	@test( "Test configure with instance of not a stateful service" )
+	@Test( "Test configure with instance of not a stateful service" )
     public function testConfigureWithInstanceOfNotAStatefulService() : Void
     {
 		this._serviceLocator.addService( IStatelessService, new MockStatelessService(), "myServiceName" );
@@ -40,14 +40,14 @@ class ServiceLocatorTest
 		Assert.methodCallThrows( IllegalArgumentException, this._serviceLocator, this._serviceLocator.configure, [ injector, null, null ], "'getService' should throw IllegalArgumentException" );
 	}
 	
-	@test( "Test getService with stateless service unnamed" )
+	@Test( "Test getService with stateless service unnamed" )
     public function testGetServiceWithStatelessServiceUnnamed() : Void
     {
 		this._serviceLocator.addService( IStatelessService, MockStatelessService );
 		Assert.isInstanceOf( this._serviceLocator.getService( IStatelessService ), MockStatelessService, "'getService' should return an instance of 'MockStatelessService'" );
 	}
 	
-	@test( "Test getService with stateless service named" )
+	@Test( "Test getService with stateless service named" )
     public function testGetServiceWithStatelessServiceNamed() : Void
     {
 		this._serviceLocator.addService( IStatelessService, MockStatelessService, "myServiceName" );
@@ -55,7 +55,7 @@ class ServiceLocatorTest
 		Assert.methodCallThrows( NoSuchElementException, this._serviceLocator, this._serviceLocator.getService, [IStatelessService], "'getService' without service name should throw NoSuchElementException" );
 	}
 	
-	@test( "Test configure with stateless service unnnamed" )
+	@Test( "Test configure with stateless service unnnamed" )
     public function testConfigureWithStatelessServiceUnnamed() : Void
     {
 		this._serviceLocator.addService( IStatelessService, MockStatelessService );
@@ -67,7 +67,7 @@ class ServiceLocatorTest
 		Assert.equals( "", injector.name, "injector should map the service name" );
 	}
 	
-	@test( "Test configure with stateless service named" )
+	@Test( "Test configure with stateless service named" )
     public function testConfigureWithStatelessServiceNamed() : Void
     {
 		this._serviceLocator.addService( IStatelessService, MockStatelessService, "myServiceName" );
@@ -79,7 +79,7 @@ class ServiceLocatorTest
 		Assert.equals( "myServiceName", injector.name, "injector should map the service name" );
 	}
 	
-	@test( "Test getService with stateful service unnamed" )
+	@Test( "Test getService with stateful service unnamed" )
     public function testGetServiceWithStatefulServiceUnnamed() : Void
     {
 		var statefulService : MockStatefulService = new MockStatefulService();
@@ -87,7 +87,7 @@ class ServiceLocatorTest
 		Assert.equals( statefulService, this._serviceLocator.getService( IStatefulService ), "'getService' should return service added previously" );
 	}
 	
-	@test( "Test getService with stateful service named" )
+	@Test( "Test getService with stateful service named" )
     public function testGetServiceWithStatefulServiceNamed() : Void
     {
 		var statefulService : MockStatefulService = new MockStatefulService();
@@ -96,7 +96,7 @@ class ServiceLocatorTest
 		Assert.methodCallThrows( NoSuchElementException, this._serviceLocator, this._serviceLocator.getService, [IStatefulService], "'getService' without service name should throw NoSuchElementException" );
 	}
 	
-	@test( "Test configure with stateful service unnnamed" )
+	@Test( "Test configure with stateful service unnnamed" )
     public function testConfigureWithStatefulServiceUnnamed() : Void
     {
 		var dispatcher : Dispatcher<{}> = new Dispatcher();
@@ -120,7 +120,7 @@ class ServiceLocatorTest
 		Assert.equals( 1, listener.eventReceivedCount, "event should be received by sub-dispatcher listener once" );
 	}
 	
-	@test( "Test configure with stateful service named" )
+	@Test( "Test configure with stateful service named" )
     public function testConfigureWithStatefulServiceNamed() : Void
     {
 		var dispatcher : Dispatcher<{}> = new Dispatcher();

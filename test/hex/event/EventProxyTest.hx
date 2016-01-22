@@ -9,7 +9,7 @@ import hex.unittest.assertion.Assert;
  */
 class EventProxyTest
 {
-	@test( "Test EventProxy constructor" )
+	@Test( "Test EventProxy constructor" )
     public function testEventProxyconstructor() : Void
     {
 		var target : MockEventProxyTarget = new MockEventProxyTarget();
@@ -18,7 +18,7 @@ class EventProxyTest
 		Assert.equals( target.stubMethod, eventProxy.callback, "callback should be the same" );
 	}
 	
-	@test( "Test EventProxy handling callback" )
+	@Test( "Test EventProxy handling callback" )
     public function testEventProxyHandlingCallback() : Void
     {
 		var target : MockEventProxyTarget = new MockEventProxyTarget();

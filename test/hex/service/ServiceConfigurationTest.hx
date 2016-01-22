@@ -9,7 +9,7 @@ import hex.unittest.assertion.Assert;
  */
 class ServiceConfigurationTest
 {
-	@test( "Test 'serviceTimeout' default value from constructor" )
+	@Test( "Test 'serviceTimeout' default value from constructor" )
     public function testDefaultServiceTimeout() : Void
     {
         var serviceConfiguration : ServiceConfiguration = new ServiceConfiguration();
@@ -17,7 +17,7 @@ class ServiceConfigurationTest
         Assert.equals( 5000, serviceConfiguration.serviceTimeout, "'serviceTimeout' property value should be 5000 by default" );
     }
 	
-	@test( "Test 'serviceTimeout' parameter passed to constructor" )
+	@Test( "Test 'serviceTimeout' parameter passed to constructor" )
     public function testServiceTimeout() : Void
     {
         var serviceTimeout : UInt = 400;

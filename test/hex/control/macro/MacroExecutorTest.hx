@@ -29,7 +29,7 @@ class MacroExecutorTest
     private var _module     		: IModule;
     private var _mockMacro     		: MockMacroListener;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
 		this._injector 			= new MockDependencyInjectorForMapping();
@@ -41,7 +41,7 @@ class MacroExecutorTest
 		this._macroExecutor.injector = this._injector;
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
 		this._injector 			= null;
@@ -50,7 +50,7 @@ class MacroExecutorTest
         this._mockMacro 		= null;
     }
 	
-	@test( "Test subCommandIndex" )
+	@Test( "Test subCommandIndex" )
     public function testSubCommandIndex() : Void
     {
 		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
@@ -59,7 +59,7 @@ class MacroExecutorTest
 		Assert.equals( 1, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 1" );
 	}
 	
-	@test( "Test hasNextCommandMapping" )
+	@Test( "Test hasNextCommandMapping" )
     public function testHasNextCommandMapping() : Void
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
@@ -69,7 +69,7 @@ class MacroExecutorTest
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 	}
 	
-	@async( "Test hasRunEveryCommand" )
+	@Async( "Test hasRunEveryCommand" )
     public function testHasRunEveryCommand() : Void
     {
 		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
@@ -83,7 +83,7 @@ class MacroExecutorTest
 		Timer.delay( MethodRunner.asyncHandler( this._onTestHasRunEveryCommand ), 100 );
 	}
 	
-	@test( "Test executeNextCommand" )
+	@Test( "Test executeNextCommand" )
     public function testExecuteNextCommand() : Void
     {
 		this._macroExecutor.add( MockCommand );
@@ -94,7 +94,7 @@ class MacroExecutorTest
 		Assert.isInstanceOf( command, MockAsyncCommand, "command should be typed 'MockCommand'" );
 	}
 	
-	@test( "Test asyncCommandCalled" )
+	@Test( "Test asyncCommandCalled" )
     public function testAsyncCommandCalled() : Void
     {
 		Assert.methodCallThrows( IllegalStateException, this._macroExecutor, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
@@ -105,7 +105,7 @@ class MacroExecutorTest
 		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
 	}
 	
-	@test( "Test add" )
+	@Test( "Test add" )
     public function testAdd() : Void
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
@@ -117,7 +117,7 @@ class MacroExecutorTest
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 	}
 	
-	@test( "Test add mapping" )
+	@Test( "Test add mapping" )
     public function testAddMapping() : Void
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
@@ -130,7 +130,7 @@ class MacroExecutorTest
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 	}
 	
-	@test( "Test command execution" )
+	@Test( "Test command execution" )
     public function testExecuteCommand() : Void
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
@@ -194,7 +194,7 @@ class MacroExecutorTest
 									"'CommandExecutor.unmapPayload' should unmap right values" );
 	}
 	
-	@test( "Test command execution with approved guards" )
+	@Test( "Test command execution with approved guards" )
     public function testExecuteCommandWithApprovedGuards() : Void
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeApproved] );
@@ -203,7 +203,7 @@ class MacroExecutorTest
 		Assert.isInstanceOf( command, MockCommand, "'command' shouldbe typed 'MockCommand'" );
 	}
 	
-	@test( "Test command execution with refused guards" )
+	@Test( "Test command execution with refused guards" )
     public function testExecuteCommandWithRefusedGuards() : Void
     {
 		var failListener : MockMacroFailListener = new MockMacroFailListener();

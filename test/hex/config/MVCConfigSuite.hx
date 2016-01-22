@@ -8,6 +8,6 @@ import hex.config.stateful.MVCStatefulConfigSuite;
  */
 class MVCConfigSuite
 {
-	@suite("Config")
+	@Suite("Config")
     public var list : Array<Class<Dynamic>> = [MVCStatefulConfigSuite];
 }

@@ -16,25 +16,25 @@ class CommandMappingTest
 {
 	private var _commandMapping : CommandMapping;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
         this._commandMapping = new CommandMapping( MockCommand );
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._commandMapping = null;
     }
 	
-	@test( "Test getCommandClass" )
+	@Test( "Test getCommandClass" )
     public function testGetCommandClass() : Void
     {
         Assert.equals( MockCommand, this._commandMapping.getCommandClass(), "Command class should be the same" );
     }
 	
-	@test( "Test guards" )
+	@Test( "Test guards" )
     public function testGuards() : Void
     {
         Assert.isFalse( this._commandMapping.hasGuard, "hasGuard should return false" );
@@ -43,7 +43,7 @@ class CommandMappingTest
 		Assert.deepEquals( [1, 2, 3], this._commandMapping.getGuards(), "guards should be the same" );
     }
 	
-	@test( "Test isFiredOnce" )
+	@Test( "Test isFiredOnce" )
     public function testIsFireOnce() : Void
     {
         Assert.isFalse( this._commandMapping.isFiredOnce, "isFiredOnce should return false" );
@@ -51,7 +51,7 @@ class CommandMappingTest
 		Assert.isTrue( this._commandMapping.isFiredOnce, "isFiredOnce should return true" );
     }
 	
-	@test( "Test payloads" )
+	@Test( "Test payloads" )
     public function testPayloads() : Void
     {
         Assert.isFalse( this._commandMapping.hasPayload, "hasPayload should return false" );
@@ -65,7 +65,7 @@ class CommandMappingTest
 		Assert.deepEquals( [stringPayload0, stringPayload1, stringPayload2], this._commandMapping.getPayloads(), "payloads should be the same" );
     }
 	
-	@test( "Test complete handlers" )
+	@Test( "Test complete handlers" )
     public function testCompleteHandlers() : Void
     {
         Assert.isFalse( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return false" );
@@ -84,7 +84,7 @@ class CommandMappingTest
 		Assert.deepEquals( [completeHandler0, completeHandler1, completeHandler2], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
     }
 	
-	@test( "Test fail handlers" )
+	@Test( "Test fail handlers" )
     public function testFailHandlers() : Void
     {
         Assert.isFalse( this._commandMapping.hasFailHandler, "hasFailHandler should return false" );
@@ -102,7 +102,7 @@ class CommandMappingTest
 		Assert.deepEquals( [failHandler0, failHandler1, failHandler2], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
     }
 	
-	@test( "Test cancel handlers" )
+	@Test( "Test cancel handlers" )
     public function testCancelHandlers() : Void
     {
         Assert.isFalse( this._commandMapping.hasCancelHandler, "hasCancelHandler should return false" );

@@ -15,21 +15,21 @@ class ExecutionPayloadTest
 	private var _data 				: MockData;
 	private var _executionPayload 	: ExecutionPayload;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
         this._data 				= new MockData();
         this._executionPayload 	= new ExecutionPayload( this._data, IMockData, "name" );
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._data 				= null;
         this._executionPayload 	= null;
     }
 	
-	@test( "Test constructor" )
+	@Test( "Test constructor" )
     public function testConstructor() : Void
     {
         Assert.equals( this._data, this._executionPayload.getData(), "data should be the same" );
@@ -37,19 +37,19 @@ class ExecutionPayloadTest
         Assert.equals( "name", this._executionPayload.getName(), "name should be the same" );
     }
 	
-	@test( "Test constructor null exception" )
+	@Test( "Test constructor null exception" )
     public function testConstructorNullException() : Void
     {
         Assert.constructorCallThrows( NullPointerException, ExecutionPayload, [ null ], "constructor should throw NullPointerException" );
     }
 	
-	@test( "Test constructor throws IllegalArgumentException" )
+	@Test( "Test constructor throws IllegalArgumentException" )
     public function testConstructorThrowsIllegalArgumentException() : Void
     {
         Assert.constructorCallThrows( IllegalArgumentException, ExecutionPayload, [ this._data, String ], "constructor should throw IllegalArgumentException" );
     }
 	
-	@test( "Test overwriting type property" )
+	@Test( "Test overwriting type property" )
     public function testOverwritingType() : Void
     {
 		this._executionPayload.withClass( IMockType );
@@ -57,7 +57,7 @@ class ExecutionPayloadTest
         Assert.equals( IMockType, this._executionPayload.getType(), "type should be the same" );
     }
 	
-	@test( "Test overwriting name property" )
+	@Test( "Test overwriting name property" )
     public function testOverwritingName() : Void
     {
 		this._executionPayload.withName( "anotherName" );
@@ -65,7 +65,7 @@ class ExecutionPayloadTest
         Assert.equals( "anotherName", this._executionPayload.getName(), "name should be the same" );
     }
 	
-	@test( "Test passing no name parameter to constructor" )
+	@Test( "Test passing no name parameter to constructor" )
     public function testNoNameParameterToConstructor() : Void
     {
 		var executionPayload : ExecutionPayload = new ExecutionPayload( this._data, IMockData );

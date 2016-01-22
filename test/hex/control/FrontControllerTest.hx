@@ -24,7 +24,7 @@ class FrontControllerTest
 	
 	private var _frontcontroller 	: FrontController;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
 		this._dispatcher 		= new Dispatcher<{}>();
@@ -33,13 +33,13 @@ class FrontControllerTest
         this._frontcontroller 	= new FrontController( this._dispatcher, this._injector, this._module );
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._frontcontroller = null;
     }
 	
-	@test( "Test map" )
+	@Test( "Test map" )
     public function testMap() : Void
     {
 		var messageType : MessageType = new MessageType( "messageType" );
@@ -49,7 +49,7 @@ class FrontControllerTest
 		Assert.equals( commandMapping, this._frontcontroller.locate( messageType ), "command mapping should be associated to messageType" );
     }
 	
-	@test( "Test unmap" )
+	@Test( "Test unmap" )
     public function testUnmap() : Void
     {
 		var messageType : MessageType = new MessageType( "messageType" );
@@ -60,7 +60,7 @@ class FrontControllerTest
 		Assert.isFalse( this._frontcontroller.isRegisteredWithKey( messageType ), "messageType should not be registered anymore" );
     }
 	
-	@test( "Functional test of request handling" )
+	@Test( "Functional test of request handling" )
     public function testRequestHandling() : Void
     {
 		var messageType : MessageType = new MessageType( "messageType" );

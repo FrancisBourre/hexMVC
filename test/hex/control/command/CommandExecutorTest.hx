@@ -23,7 +23,7 @@ class CommandExecutorTest
     private var _injector     		: MockDependencyInjectorForMapping;
     private var _module     		: IModule;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
 		this._injector 			= new MockDependencyInjectorForMapping();
@@ -31,7 +31,7 @@ class CommandExecutorTest
         this._commandExecutor 	= new CommandExecutor( this._injector, _module );
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._injector 			= null;
@@ -39,7 +39,7 @@ class CommandExecutorTest
         this._commandExecutor 	= null;
     }
 	
-	@test( "Test command execution" )
+	@Test( "Test command execution" )
     public function textExcuteCommand() : Void
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );

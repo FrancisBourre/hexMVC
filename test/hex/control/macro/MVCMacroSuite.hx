@@ -6,6 +6,6 @@ package hex.control.macro;
  */
 class MVCMacroSuite
 {
-	@suite("Macro")
+	@Suite("Macro")
     public var list : Array<Class<Dynamic>> = [MacroExecutorTest, MacroTest];
 }

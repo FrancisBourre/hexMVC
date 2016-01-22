@@ -17,7 +17,7 @@ import hex.view.viewhelper.ViewHelperManager;
  */
 class ViewHelperManagerTest
 {
-	@test( "test getInstance" )
+	@Test( "test getInstance" )
 	public function testGetInstance() : Void 
 	{
 		var listener : MainViewHelperManagerListener = new MainViewHelperManagerListener();
@@ -35,7 +35,7 @@ class ViewHelperManagerTest
 		Assert.equals( module, viewHelperManager.getOwner(), "owner should be the same" );
 	}
 	
-	@test( "test release" )
+	@Test( "test release" )
 	public function testRelease() : Void 
 	{
 		var listener : MainViewHelperManagerListener = new MainViewHelperManagerListener();
@@ -56,7 +56,7 @@ class ViewHelperManagerTest
 		Assert.equals( 0, viewHelperManager.size(), "size should return 0" );
 	}
 	
-	@test( "test buildViewHelper" )
+	@Test( "test buildViewHelper" )
 	public function testBuildViewHelper() : Void 
 	{
 		var listener : ViewHelperManagerListener = new ViewHelperManagerListener();
@@ -101,7 +101,7 @@ class ViewHelperManagerTest
 		Assert.equals( anotherViewHelper, listener.lastViewHelper, "viewHelper should be the same" );
 	}
 	
-	@test( "test releaseViewHelper" )
+	@Test( "test releaseViewHelper" )
 	public function testReleaseViewHelpers() : Void 
 	{
 		var listener : ViewHelperManagerListener = new ViewHelperManagerListener();

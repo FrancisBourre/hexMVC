@@ -19,28 +19,28 @@ class HTTPServiceTest
 {
 	public var service : MockHTTPService;
 	
-	@setUp
+	@Before
     public function setUp() : Void
     {
         this.service = new MockHTTPService();
 		this.service.createConfiguration();
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
 		this.service.release();
         this.service = null;
     }
 	
-	@test( "test result accessors" )
+	@Test( "test result accessors" )
 	public function testResult() : Void
 	{
 		this.service.testSetResult( "result" );
 		Assert.equals( "result", this.service.getResult(), "result getter should provide result setted value" );
 	}
 	
-	@test( "test result accessors with parser" )
+	@Test( "test result accessors with parser" )
 	public function testResultWithParser() : Void
 	{
 		this.service.setParser( new MockParser() );
@@ -48,7 +48,7 @@ class HTTPServiceTest
 		Assert.equals( 6, this.service.getResult(), "result getter should provide result parsed value" );
 	}
 	
-	@test( "Test configuration accessors" )
+	@Test( "Test configuration accessors" )
     public function testConfigurationAccessors() : Void
     {
 		var service : MockHTTPService = new MockHTTPService();
@@ -64,7 +64,7 @@ class HTTPServiceTest
 		Assert.equals( 100, service.getConfiguration().serviceTimeout, "'serviceTimeout' value should be 100" );
     }
 	
-	@test( "Test timeoutDuration accessors" )
+	@Test( "Test timeoutDuration accessors" )
     public function testTimeoutDurationAccessors() : Void
     {
 		Assert.equals( 100, service.timeoutDuration, "'serviceTimeout' value should be 100" );
@@ -84,7 +84,7 @@ class HTTPServiceTest
 		#end
 	}
 	
-	@test( "test call" )
+	@Test( "test call" )
 	public function testCall() : Void
 	{
 		Assert.isFalse( this.service.wasUsed, "'wasUsed' should return false" );
@@ -115,7 +115,7 @@ class HTTPServiceTest
 		#end
 	}
 	
-	@test( "test release" )
+	@Test( "test release" )
 	public function testRelease() : Void
 	{
 		Assert.isFalse( this.service.wasUsed, "'wasUsed' should return false" );
@@ -137,7 +137,7 @@ class HTTPServiceTest
 		Assert.methodCallThrows( IllegalStateException, this.service, this.service.call, [], "service should throw IllegalStateException when called after release" );
 	}
 	
-	@test( "Test handleCancel" )
+	@Test( "Test handleCancel" )
     public function testHandleCancel() : Void
     {
 		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
@@ -180,7 +180,7 @@ class HTTPServiceTest
 		Assert.equals( 0, anotherHandler.onServiceCancelCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@test( "Test handleComplete" )
+	@Test( "Test handleComplete" )
     public function testHandleComplete() : Void
     {
 		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
@@ -222,7 +222,7 @@ class HTTPServiceTest
 		Assert.equals( 0, anotherHandler.onServiceCompleteCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@test( "Test handleFail" )
+	@Test( "Test handleFail" )
     public function testHandleFail() : Void
     {
 		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
@@ -264,7 +264,7 @@ class HTTPServiceTest
 		Assert.equals( 0, anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@test( "test timeout" )
+	@Test( "test timeout" )
 	public function testTimeout() : Void
 	{
 		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
@@ -303,13 +303,13 @@ class HTTPServiceTest
 		#end
 	}
 	
-	@test( "Test _getRemoteArguments call without override" )
+	@Test( "Test _getRemoteArguments call without override" )
     public function test_getRemoteArgumentsCall() : Void
     {
 		Assert.isInstanceOf( this.service.call_getRemoteArguments()[0], Http, "'_getRemoteArguments' call should return an array with HTTP instance" );
 	}
 	
-	@test( "Test _reset call" )
+	@Test( "Test _reset call" )
     public function test_resetCall() : Void
     {
 		#if js

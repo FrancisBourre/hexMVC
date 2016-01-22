@@ -6,7 +6,7 @@ package hex.control.payload;
  */
 class MVCPayloadSuite
 {
-	@suite("Payload")
+	@Suite("Payload")
     public var list : Array<Class<Dynamic>> = [ ExecutionPayloadTest, PayloadUtilTest ];
 	
 }

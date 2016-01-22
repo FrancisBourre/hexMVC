@@ -10,19 +10,19 @@ class ModelDispatcherTest
 {
 	private var _dispatcher : MockDispatcher;
 	
-	@setUp
+	@Before
 	public function setUp() : Void
 	{
 		this._dispatcher = new MockDispatcher();
 	}
 
-	@tearDown
+	@After
 	public function tearDown() : Void
 	{
 		this._dispatcher = null;
 	}
 	
-	@test( "test 'addListener' behavior" )
+	@Test( "test 'addListener' behavior" )
 	public function testAddListener() : Void
 	{
 		var listener = new MockListener();
@@ -44,7 +44,7 @@ class ModelDispatcherTest
 		Assert.equals( 1, listener.onSetNothingCallCount, "This method should not be called anymore" );
 	}
 	
-	@test( "test 'removeListener' behavior" )
+	@Test( "test 'removeListener' behavior" )
 	public function testRemoveListener() : Void
 	{
 		var listener = new MockListener();

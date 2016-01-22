@@ -16,7 +16,7 @@ class ClassAdapterTest
 	private var _classAdapter 	: ClassAdapter;
 	private var _scopeValue 	: Int;
 	
-	@test( "Test simple call to getCallbackAdapter" )
+	@Test( "Test simple call to getCallbackAdapter" )
     public function testSimpleCallToGetCallbackAdapter() : Void
     {
 		this._classAdapter = new ClassAdapter();
@@ -39,7 +39,7 @@ class ClassAdapterTest
 		Assert.equals( 4, i, "'getCallbackAdapter' should return 4" );
 	}
 	
-	@test( "Test call to getCallbackAdapter with factory" )
+	@Test( "Test call to getCallbackAdapter with factory" )
     public function testCallToGetCallbackAdapterWithFactory() : Void
     {
 		this._classAdapter = new ClassAdapter();
@@ -69,7 +69,7 @@ class ClassAdapterTest
 	}
 	
 	
-	@test( "Test call to getCallbackAdapter with MacroAdapterStrategy" )
+	@Test( "Test call to getCallbackAdapter with MacroAdapterStrategy" )
     public function testCallToGetCallbackAdapterWithAdapterMacro() : Void
     {
 		this._classAdapter = new ClassAdapter();

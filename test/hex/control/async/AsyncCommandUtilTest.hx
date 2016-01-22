@@ -14,7 +14,7 @@ import hex.unittest.assertion.Assert;
 class AsyncCommandUtilTest
 {
 
-	@test( "Test addListenersToAsyncCommand" )
+	@Test( "Test addListenersToAsyncCommand" )
     public function testAddListenersToAsyncCommand() : Void
     {
 		var listener0 		: ASyncCommandListener = new ASyncCommandListener();

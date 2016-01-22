@@ -12,19 +12,19 @@ class ModuleTest
 {
 	private var _module : MockModuleForTest;
 
-    @setUp
+    @Before
     public function setUp() : Void
     {
         this._module = new MockModuleForTest();
     }
 
-    @tearDown
+    @After
     public function tearDown() : Void
     {
         this._module = null;
     }
 	
-	@test( "Test _addStatefulConfigs protected method" )
+	@Test( "Test _addStatefulConfigs protected method" )
 	public function testAddStatefulConfig() : Void
 	{
 		

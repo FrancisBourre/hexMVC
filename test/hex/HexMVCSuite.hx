@@ -14,6 +14,6 @@ import hex.viewhelper.MVCViewHelperSuite;
  */
 class HexMVCSuite
 {
-	@suite( "HexMVC" )
+	@Suite( "HexMVC" )
     public var list : Array<Class<Dynamic>> = [MVCConfigSuite, MVCControlSuite, MVCEventSuite, MVCMetadataSuite, MVCModuleSuite, MVCServiceSuite, MVCViewHelperSuite];
 }
