@@ -6,7 +6,10 @@ import hex.error.IllegalStateException;
 import hex.event.MessageType;
 import hex.service.stateless.http.HTTPServiceConfiguration;
 import hex.unittest.assertion.Assert;
+
+#if js
 import js.Browser;
+#end
 
 /**
  * ...
