@@ -7,5 +7,5 @@ package hex.metadata;
 class MVCMetadataSuite
 {
 	@suite( "Metadata" )
-    public var list : Array<Class<Dynamic>> = [MetadataProviderTest];
+    public var list : Array<Class<Dynamic>> = [AnnotationProviderTest];
 }
