@@ -2,6 +2,7 @@ package hex.service.stateless.http;
 
 import haxe.Http;
 import hex.core.IAnnotationParsable;
+import hex.error.NullPointerException;
 import hex.log.Stringifier;
 import hex.service.stateless.AsyncStatelessService;
 
@@ -23,6 +24,12 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	override public function call() : Void
 	{
 		this._timestamp = Date.now().getTime ();
+		
+		if ( this._configuration.serviceUrl == null )
+		{
+			throw new NullPointerException( "._createRequest failed. ServiceConfiguration.serviceUrl shouldn't be null" );
+		}
+		
 		this._createRequest();
 		super.call();
 		this._request.request( this._configuration.requestMethod == HTTPRequestMethod.POST );
@@ -30,6 +37,8 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	
 	private function _createRequest() : Void
 	{
+		
+		
 		this._request = new Http( this._configuration.serviceUrl );
 		
 		this._configuration.parameterFactory.setParameters( this._request, this._configuration.parameters, _excludedParameters );
