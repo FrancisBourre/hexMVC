@@ -37,8 +37,6 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	
 	private function _createRequest() : Void
 	{
-		
-		
 		this._request = new Http( this._configuration.serviceUrl );
 		
 		this._configuration.parameterFactory.setParameters( this._request, this._configuration.parameters, _excludedParameters );
