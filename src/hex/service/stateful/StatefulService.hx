@@ -17,7 +17,7 @@ class StatefulService<ServiceConfigurationType:ServiceConfiguration> extends Abs
 	private var _dispatcher				: Dispatcher<{}>;
 	private var _compositeDispatcher	: CompositeDispatcher;
 	
-	@:isVar public var inUse( get, null ) : Bool = false;
+	private var _inUse 					: Bool = false;
 
 	public function new() 
 	{
@@ -36,23 +36,23 @@ class StatefulService<ServiceConfigurationType:ServiceConfiguration> extends Abs
 	
 	override public function setConfiguration( configuration : ServiceConfigurationType ) : Void
 	{
-		this.inUse && this._throwExecutionIllegalStateError( "setConfiguration" );
+		this._inUse && this._throwExecutionIllegalStateError( "setConfiguration" );
         this._configuration = configuration;
 	}
 	
 	private function _lock() : Void
 	{
-		this.inUse = true;
+		this._inUse = true;
 	}
 
 	private function _release() : Void
 	{
-		this.inUse = false;
+		this._inUse = false;
 	}
 
-	private function get_inUse() : Bool
+	public function inUse() : Bool
 	{
-		return this.inUse;
+		return this._inUse;
 	}
 	
 	override public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 

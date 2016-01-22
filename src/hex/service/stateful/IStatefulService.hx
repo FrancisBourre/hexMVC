@@ -7,6 +7,6 @@ import hex.event.CompositeDispatcher;
  */
 interface IStatefulService<ServiceConfigurationType:ServiceConfiguration> extends IService<ServiceConfigurationType>
 {
-	var inUse( get, null ) : Bool;
+	function inUse():Bool;
 	function getDispatcher() : CompositeDispatcher;
 }

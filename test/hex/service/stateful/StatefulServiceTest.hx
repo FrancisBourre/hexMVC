@@ -45,15 +45,15 @@ class StatefulServiceTest
 	@test( "Test 'lock' and 'release' behavior" )
     public function testLockAndRelease() : Void
     {
-		Assert.isFalse( this.service.inUse, "the inUse property should be false by default" );
+		Assert.isFalse( this.service.inUse(), "the inUse property should be false by default" );
 		
 		this.service.run();
 		
-		Assert.isTrue( this.service.inUse, "the inUse property should be true after _lock called" );
+		Assert.isTrue( this.service.inUse(), "the inUse property should be true after _lock called" );
 		
 		this.service.stop();
 		
-		Assert.isFalse( this.service.inUse, "the inUse property should be false after _release called" );
+		Assert.isFalse( this.service.inUse(), "the inUse property should be false after _release called" );
 	}
 	
 	@test( "Test event subscription" )
