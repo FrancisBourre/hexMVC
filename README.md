@@ -22,14 +22,14 @@ private class MModule extends Module
 	
 	override private function _getRuntimeDependencies() : IRuntimeDependencies
 	{
-		var rt : RuntimeDependencies = new RuntimeDependencies();
+		var rt = new RuntimeDependencies();
 		rt.addServiceDependencies( [IGitService] );
 		return rt;
 	}
 	
 	override public function _onInitialisation() : Void 
 	{
-		this.sendRequest( new PayloadEvent( "doSomething", this, [new ExecutionPayload( something, ISomething )] ) );
+		this._dispatchPrivateMessage( MessageTypeList.TEST, new Request( [new ExecutionPayload( something, ISomething )] ) );
 	}
 }
 ```
@@ -58,7 +58,7 @@ private class MStatefulCommandConfig extends StatefulCommandConfig
 	override public function configure( injector : IDependencyInjector ) : Void
 	{
 		super.configure( injector );
-		this.map( "test", TestCommand ).once().withGuards( MyGuardClass ).withCompleteHandlers([ function( e : AsyncCommandEvent ){ trace( e ); } ]);
+		this.map( MessageTypeList.TEST, TestCommand ).once().withGuards( MyGuardClass ).withCompleteHandlers([ function( e : AsyncCommandEvent ){ trace( e ); } ]);
 	}
 }
 ```
@@ -67,37 +67,37 @@ private class MStatefulCommandConfig extends StatefulCommandConfig
 ## Asynchronous command example with injections
 ```haxe
 @:rtti
-private class TestCommand extends AsyncCommand implements IHTTPServiceListener<GitServiceEvent>
+private class TestCommand extends AsyncCommand implements IHTTPServiceListener<GitServiceConfiguration>
 {
-	@inject
+	@Inject
     public var model : IMModel;
 	
-	@inject
+	@Inject
     public var service : IGitService;
 
-    override public function execute( ?e : IEvent ) : Void
+    override public function execute( ?request : Request ) : Void
     {
 		this.service.addHTTPServiceListener( this );
 		this.service.call();
     }
 	
-	public function onServiceTimeout( event : GitServiceEvent ) : Void 
+	public function onServiceTimeout( service : IHTTPService<GitServiceConfiguration> ) : Void 
 	{
 		this._handleFail();
 	}
 	
-	public function onServiceComplete( e : GitServiceEvent ) : Void 
+	public function onServiceComplete( service : IHTTPService<GitServiceConfiguration> ) : Void 
 	{
-		this.model.setValue( e.getData() );
+		this.model.setValue( service.getResult() );
 		this._handleComplete();
 	}
 	
-	public function onServiceFail( e : GitServiceEvent ) : Void 
+	public function onServiceFail( service : IHTTPService<GitServiceConfiguration> ) : Void 
 	{
 		this._handleFail();
 	}
 	
-	public function onServiceCancel( e : GitServiceEvent ) : Void 
+	public function onServiceCancel( service : IHTTPService<GitServiceConfiguration> ) : Void 
 	{
 		this._handleCancel();
 	}
