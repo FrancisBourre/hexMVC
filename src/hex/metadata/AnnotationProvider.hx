@@ -15,7 +15,7 @@ import hex.log.Stringifier;
 class AnnotationProvider implements IAnnotationProvider
 {
 	static var _Instance 		: IAnnotationProvider = null;
-	static var _META_DATA 		= new HashMap();
+	static var _META_DATA 		= new HashMap<Class<Dynamic>, ClassMetaDataVO>();
 	
 	var _metadata 				: Map<String, ProviderHandler>;
 	var _instances 				: Map<String, Array<InstanceVO>>;

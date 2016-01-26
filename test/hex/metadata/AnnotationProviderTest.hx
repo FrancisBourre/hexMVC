@@ -10,8 +10,8 @@ import hex.unittest.assertion.Assert;
  */
 class AnnotationProviderTest
 {
-	var _colors 	= new Map();
-	var _text 		= new Map();
+	var _colors 	= new Map<String, UInt>();
+	var _text 		= new Map<String, String>();
 		
 	@Before
     public function setUp() : Void

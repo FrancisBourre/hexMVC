@@ -73,7 +73,7 @@ private class MockHttpParameters extends HTTPServiceParameters
 
 private class MockHttp extends Http
 {
-	public var paramMap= new StringMap();
+	public var paramMap= new StringMap<String>();
 	
 	override public function addParameter(param:String, value:String):Http 
 	{
