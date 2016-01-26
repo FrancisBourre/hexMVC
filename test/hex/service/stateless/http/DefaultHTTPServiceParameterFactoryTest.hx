@@ -28,8 +28,8 @@ class DefaultHTTPServiceParameterFactoryTest
 	@Test("Test normal parameter passing")
 	public function testSetParameters( ):Void
 	{
-		var request= new MockHttp( "http://google.com" );
-		var params= new MockHttpParameters();
+		var request = new MockHttp( "http://google.com" );
+		var params = new MockHttpParameters();
 		this.factory.setParameters(request, params);
 		
 		Assert.equals( "green", request.paramMap.get("apple"), "the request should contain the apple param" );
@@ -39,8 +39,8 @@ class DefaultHTTPServiceParameterFactoryTest
 	@Test("Test mapping with excluded params")
 	public function testSetParameters_withExludedParams( ):Void
 	{
-		var request= new MockHttp( "http://google.com" );
-		var params= new MockHttpParameters();
+		var request = new MockHttp( "http://google.com" );
+		var params = new MockHttpParameters();
 		this.factory.setParameters(request, params, ["apple"]);
 		
 		Assert.equals( null, request.paramMap.get("apple"), "the request should NOT contain the apple param" );
@@ -50,8 +50,8 @@ class DefaultHTTPServiceParameterFactoryTest
 	@Test("Test if a null parameter converted to emty string")
 	public function testSetParameters_withNullParam( ):Void
 	{
-		var request= new MockHttp( "http://google.com" );
-		var params= new MockHttpParameters();
+		var request = new MockHttp( "http://google.com" );
+		var params = new MockHttpParameters();
 		params.hola = null;
 		this.factory.setParameters(request, params);
 		
@@ -73,7 +73,7 @@ private class MockHttpParameters extends HTTPServiceParameters
 
 private class MockHttp extends Http
 {
-	public var paramMap= new StringMap<String>();
+	public var paramMap = new StringMap<String>();
 	
 	override public function addParameter(param:String, value:String):Http 
 	{
