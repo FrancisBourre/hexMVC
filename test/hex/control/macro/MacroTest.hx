@@ -237,7 +237,7 @@ class MacroTest
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
 	}
 	
-	function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
+	function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : Macro ) : Void
 	{
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method should have been called" );
 	}
@@ -260,7 +260,7 @@ class MacroTest
 		
 	}
 	
-	function _onMacroWithHandlerComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
+	function _onMacroWithHandlerComplete( command : AsyncCommand, myMacro : Macro ) : Void
 	{
 		Assert.equals( 1, MockCommand.executeCallCount, "the MockCommand should be executed once when it's added during running" );
 	}

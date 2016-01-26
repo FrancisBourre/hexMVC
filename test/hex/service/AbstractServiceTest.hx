@@ -28,8 +28,8 @@ class AbstractServiceTest
 		var service = new MockService();
 		Assert.methodCallThrows( VirtualMethodException, service, service.createConfiguration, [], "'createConfiguration' call should throw an exception" );
 		Assert.methodCallThrows( VirtualMethodException, service, service.setConfiguration, [null], "'setConfiguration' call should throw an exception" );
-		Assert.methodCallThrows( VirtualMethodException, service, service.addHandler, [null, null], "'addHandler' call should throw an exception" );
-		Assert.methodCallThrows( VirtualMethodException, service, service.removeHandler, [null, null], "'method' removeHandler should throw an exception" );
+		Assert.methodCallThrows( VirtualMethodException, service, service.addHandler, [null, null, null], "'addHandler' call should throw an exception" );
+		Assert.methodCallThrows( VirtualMethodException, service, service.removeHandler, [null, null, null], "'method' removeHandler should throw an exception" );
 		Assert.methodCallThrows( VirtualMethodException, service, service.release, [], "'method' release should throw an exception" );
 	}
 }

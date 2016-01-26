@@ -77,7 +77,10 @@ class HTTPServiceTest
 		#end
 		
 		this.service.call();
+		
+		#if !flash
 		Assert.setPropertyThrows( IllegalStateException, this.service, "timeoutDuration", 40, "'timeoutDuration' call should throw IllegalStateException" );
+		#end
 		
 		#if js
 		}
