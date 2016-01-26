@@ -2,6 +2,7 @@ package hex.event;
 
 import hex.control.async.AsyncCommand;
 import hex.core.IAnnotationParsable;
+import hex.error.IllegalArgumentException;
 import hex.metadata.AnnotationProvider;
 import hex.util.ClassUtil;
 
@@ -89,6 +90,13 @@ class ClassAdapter
 					aSyncCommand = cast( Type.createInstance( adapterClass, []  ) );
 				}
 				
+				#if debug
+					if ( Std.is(aSyncCommand, IAdapterStrategy) == false )
+					{
+						throw new IllegalArgumentException("adapterInstance class should extend AdapterStrategy. Check if you passed the correct class");
+					}
+				#end
+				
 				if ( Std.is( aSyncCommand, IAnnotationParsable ) )
 				{
 					AnnotationProvider.getInstance().parse( aSyncCommand );
@@ -109,6 +117,13 @@ class ClassAdapter
 				{
 					AnnotationProvider.getInstance().parse( adapterInstance );
 				}
+				
+				#if debug
+					if ( Std.is(adapterInstance, IAdapterStrategy) == false )
+					{
+						throw new IllegalArgumentException("adapterInstance class should extend AdapterStrategy. Check if you passed the correct class");
+					}
+				#end
 				
 				result = Reflect.callMethod( adapterInstance, adapterInstance.adapt, [rest] );
 			}
