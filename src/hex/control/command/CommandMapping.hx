@@ -4,6 +4,8 @@ import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IContextOwner;
+import hex.event.Dispatcher;
+import hex.event.MessageType;
 
 /**
  * ...
@@ -20,6 +22,10 @@ class CommandMapping implements ICommandMapping
     private var _completeHandlers          	: Array<AsyncHandler>;
     private var _cancelHandlers            	: Array<AsyncHandler>;
     private var _failHandlers              	: Array<AsyncHandler>;
+	
+    private var _mappingResults             : Array<ICommandMapping>;
+	
+	private var _command 					: ICommand;
 
     public function new( commandClass : Class<ICommand> )
     {
@@ -164,8 +170,49 @@ class CommandMapping implements ICommandMapping
 		return this._contextOwner;
 	}
 
-    /*public function withMappingResults( results : Array<Dynamic> ) : ICommandMapping
+	@:isVar public var hasMappingResult( get, null ) : Bool;
+	function get_hasMappingResult() : Bool
 	{
-		return null;
-	}*/
+		return this._mappingResults != null;
+	}
+	
+    public function withMappingResults( mappingResults : Array<ICommandMapping> ) : ICommandMapping
+	{
+		if ( this._mappingResults == null )
+        {
+            this._mappingResults = [];
+        }
+		
+		this._mappingResults = this._mappingResults.concat( mappingResults );
+		return this;
+	}
+	
+	public function setLastCommandInstance( command : ICommand ) : Void
+	{
+		this._command = command;
+	}
+	
+	public function getPayloadResult() : Array<ExecutionPayload>
+    {
+		var payload : Array<ExecutionPayload> = [];
+		
+		if ( this._mappingResults != null )
+		{
+			for ( mapping in this._mappingResults )
+			{
+				var command : ICommand = cast ( mapping, CommandMapping )._command;
+				if ( command != null  )
+				{
+					var returnedExecutionPayload : Array<ExecutionPayload> = command.getReturnedExecutionPayload();
+					
+					if ( returnedExecutionPayload != null )
+					{
+						payload = payload.concat( command.getReturnedExecutionPayload() );
+					}
+				}
+			}
+		}
+		
+		return payload.length > 0 ? payload : null;
+    }
 }

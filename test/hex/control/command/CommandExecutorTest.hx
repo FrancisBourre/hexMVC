@@ -40,7 +40,7 @@ class CommandExecutorTest
     }
 	
 	@Test( "Test command execution" )
-    public function textExcuteCommand() : Void
+    public function textExecuteCommand() : Void
     {
 		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
 		
@@ -101,6 +101,53 @@ class CommandExecutorTest
 		Assert.deepEquals( 	[ [IMockType, "mockPayload"], [String, "stringPayload"], [IMockType, "anotherMockPayload"] ], 
 									this._injector.unmappedPayloads,
 									"'CommandExecutor.unmapPayload' should unmap right values" );
+	}
+	
+	@Test( "Test command execution with mapping results" )
+    public function textExecuteCommandWithMappingResults() : Void
+    {
+		var mapping : ICommandMapping = new CommandMapping( MockCommand );
+		var mappingWithMappingResults : ICommandMapping = new CommandMapping( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
+		
+		var request : Request = new Request();
+		this._commandExecutor.executeCommand( mapping, request );
+		this._commandExecutor.executeCommand( mappingWithMappingResults, request );
+		
+		Assert.deepEquals( 	[ ["s", String, ""] ], this._injector.mappedPayloads, "'CommandExecutor.mapPayload' should map right values" );
+	}
+}
+
+private class MockCommand extends BasicCommand
+{
+	public function new()
+	{
+		super();
+	}
+	
+	override public function execute( ?request : Request ) : Void 
+	{
+		
+	}
+	
+	override public function getReturnedExecutionPayload():Array<ExecutionPayload> 
+	{
+		return [ new ExecutionPayload( "s", String ) ];
+	}
+}
+
+private class MockCommandUsingMappingResults extends BasicCommand
+{
+	@Inject
+	public var value : String;
+	
+	public function new()
+	{
+		super();
+	}
+	
+	override public function execute( ?request : Request ) : Void 
+	{
+		
 	}
 }
 

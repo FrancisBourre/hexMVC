@@ -3,6 +3,7 @@ package hex.control;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.FrontController;
+import hex.control.payload.ExecutionPayload;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.domain.Domain;
@@ -104,7 +105,12 @@ private class MockCommand implements ICommand
 		MockCommand.requestParameter = request;
 	}
 	
-	public function getPayload() : Array<Dynamic> 
+	public function getResult() : Array<Dynamic> 
+	{
+		return null;
+	}
+	
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;
 	}

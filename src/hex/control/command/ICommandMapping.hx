@@ -106,9 +106,24 @@ interface ICommandMapping
 	function setContextOwner( contextOwner : IContextOwner ) : Void;
 	
 	function getContextOwner() : IContextOwner;
+	
+	/**
+     * A list of mapping results
+     */
+	var hasMappingResult( get, null ) : Bool;
 
     /**
      * A list of mapping results
      */
-    //function withMappingResults( results : Array<Dynamic> ) : ICommandMapping;
+	function withMappingResults( mappingResults : Array<ICommandMapping> ) : ICommandMapping;
+	
+	/**
+     * A list of payloads taken from mapping results
+     */
+	function getPayloadResult() : Array<ExecutionPayload>;
+	
+	/**
+     * Last command executed from this mapping
+     */
+	function setLastCommandInstance( command : ICommand ) : Void;
 }

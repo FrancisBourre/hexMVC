@@ -1,5 +1,6 @@
 package hex.control.command;
 
+import hex.control.payload.ExecutionPayload;
 import hex.module.IModule;
 
 /**
@@ -10,7 +11,9 @@ interface ICommand
 {
     function execute( ?e : Request ) : Void;
 
-    function getPayload() : Array<Dynamic>;
+    function getResult() : Array<Dynamic>;
+	
+	function getReturnedExecutionPayload() : Array<ExecutionPayload>;
 
     function getOwner() : IModule;
 

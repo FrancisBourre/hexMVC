@@ -119,6 +119,32 @@ class CommandMappingTest
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
 		Assert.deepEquals( [cancelHandler0, cancelHandler1, cancelHandler2], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
     }
+	
+	@Test( "Test mappingResults" )
+    public function testMappingResults() : Void
+    {
+        Assert.isFalse( this._commandMapping.hasMappingResult, "'hasMappingResult' should return false" );
+		
+		var mapping 		: CommandMapping = new CommandMapping( MockCommand );
+		var anotherMapping 	: CommandMapping = new CommandMapping( MockCommand );
+		
+		Assert.equals( this._commandMapping, this._commandMapping.withMappingResults( [ mapping, anotherMapping ] ), "CommandMapping returned should be the same" );
+		Assert.isTrue( this._commandMapping.hasMappingResult, "'hasMappingResult' should return true" );
+    }
+	
+	@Test( "Test setLastCommandInstance" )
+    public function testSetLastCommandInstance() : Void
+    {
+		Assert.isNull( this._commandMapping.getPayloadResult(), "'getPayloadResult' should return null" );
+		
+		var command : MockCommand = new MockCommand();
+		var mapping : CommandMapping = new CommandMapping( MockCommand );
+		this._commandMapping.withMappingResults( [mapping] );
+		Assert.isNull( this._commandMapping.getPayloadResult(), "'getPayloadResult' should return null" );
+		
+		mapping.setLastCommandInstance( command );
+		Assert.deepEquals( MockCommand.returnedExecutionPayload, this._commandMapping.getPayloadResult(), "'getPayloadResult' should return right payloads from last command instance" );
+	}
 }
 
 private class MockAsyncCommandListener
@@ -136,6 +162,7 @@ private class MockAsyncCommandListener
 
 private class MockCommand implements ICommand
 {
+	public static var returnedExecutionPayload : Array<ExecutionPayload> = [ new ExecutionPayload( "s", String ) ];
 	public function new()
 	{
 		
@@ -146,9 +173,14 @@ private class MockCommand implements ICommand
 		
 	}
 	
-	public function getPayload() : Array<Dynamic> 
+	public function getResult() : Array<Dynamic> 
 	{
 		return null;
+	}
+	
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
+	{
+		return MockCommand.returnedExecutionPayload;
 	}
 	
 	public function getOwner() : IModule 

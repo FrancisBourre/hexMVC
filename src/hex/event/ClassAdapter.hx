@@ -135,7 +135,7 @@ private class MacroAdapterStrategyHandler
 	{
 		if ( callback != null )
 		{
-			Reflect.callMethod( scope, callback, [command.getPayload()] );
+			Reflect.callMethod( scope, callback, [command.getResult()] );
 		}
 	}
 }

@@ -33,6 +33,12 @@ class CommandExecutor
 		{
 			payloads = payloads != null ? payloads.concat( request.getExecutionPayloads() ) : request.getExecutionPayloads();
 		}
+		
+		// Get payloads from mapping results
+		if ( mapping.hasMappingResult )
+		{
+			payloads = payloads != null ? payloads.concat( mapping.getPayloadResult() ) : mapping.getPayloadResult();
+		}
 
 		// Map payloads
         if ( payloads != null )
@@ -50,6 +56,7 @@ class CommandExecutor
             }
 
             command = this._injector.getOrCreateNewInstance( mapping.getCommandClass() );
+			mapping.setLastCommandInstance( command );
         }
 
 		// Unmap payloads
