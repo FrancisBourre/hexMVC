@@ -44,4 +44,8 @@ class BasicCommand implements ICommand
 		this._owner = owner;
 	}
 	
+	public function getExecuteMethod() : Dynamic
+	{
+		return this.execute;
+	}
 }

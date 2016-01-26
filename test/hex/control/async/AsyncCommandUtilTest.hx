@@ -176,6 +176,11 @@ private class MockAsyncCommand implements IAsyncCommand
     {
         return false;
     }
+	
+	public function getExecuteMethod() : Dynamic
+	{
+		return this.execute;
+	}
 }
 
 private class ASyncCommandListener implements IAsyncCommandListener

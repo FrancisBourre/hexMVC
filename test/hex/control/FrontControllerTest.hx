@@ -124,6 +124,11 @@ private class MockCommand implements ICommand
 	{
 		
 	}
+	
+	public function getExecuteMethod() : Dynamic
+	{
+		return this.execute;
+	}
 }
 
 private class MockModule implements IModule

@@ -80,7 +80,7 @@ class CommandExecutor
                 if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
             }
 
-            command.execute( request );
+			Reflect.callMethod( command, command.getExecuteMethod(), [ request ] );
         }
     }
 }

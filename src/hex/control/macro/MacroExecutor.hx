@@ -113,7 +113,8 @@ class MacroExecutor implements IMacroExecutor
                 this._runningAsyncCommandList.push( aSyncCommand );
             }
 
-            command.execute( request );
+			Reflect.callMethod( command, command.getExecuteMethod(), [ request ] );
+			
 			if ( !isAsync )
 			{
 				this._commandCalledCount++;
