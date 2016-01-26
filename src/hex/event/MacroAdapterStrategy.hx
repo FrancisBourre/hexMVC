@@ -10,7 +10,7 @@ class MacroAdapterStrategy extends Macro implements IAdapterStrategy
 {
 	private var _target 		: Dynamic;
 	private var _method 		: Dynamic;
-	private var _payload 		: Array<Dynamic>;
+	private var _result 		: Array<Dynamic>;
 		
 
 	public function new( target : Dynamic, method : Dynamic ) 
@@ -26,13 +26,8 @@ class MacroAdapterStrategy extends Macro implements IAdapterStrategy
 		return Reflect.callMethod( this._target, this._method, args );
 	}
 
-	override public function getPayload() : Array<Dynamic>
+	override public function getResult() : Array<Dynamic>
 	{
-		return this._payload;
-	}
-
-	public function setPayload( payload : Array<Dynamic> ) : Void
-	{
-		this._payload = payload;
+		return this._result;
 	}
 }

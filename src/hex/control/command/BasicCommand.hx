@@ -2,6 +2,7 @@ package hex.control.command;
 
 import hex.control.command.ICommand;
 import hex.control.Request;
+import hex.control.payload.ExecutionPayload;
 import hex.error.VirtualMethodException;
 import hex.module.IModule;
 
@@ -23,7 +24,12 @@ class BasicCommand implements ICommand
 		throw new VirtualMethodException( this + ".execute must be overridden" );
 	}
 	
-	public function getPayload() : Array<Dynamic> 
+	public function getResult() : Array<Dynamic> 
+	{
+		return null;
+	}
+	
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;
 	}

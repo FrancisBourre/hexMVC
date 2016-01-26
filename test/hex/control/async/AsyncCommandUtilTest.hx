@@ -4,6 +4,7 @@ import hex.control.async.AsyncCommandUtil;
 import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
+import hex.control.payload.ExecutionPayload;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -127,7 +128,11 @@ private class MockAsyncCommand implements IAsyncCommand
 		
 	}
 	
-	public function getPayload() : Array<Dynamic> 
+	public function getResult() : Array<Dynamic> 
+	{
+		return null;
+	}
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;
 	}

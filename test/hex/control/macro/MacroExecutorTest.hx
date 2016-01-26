@@ -4,6 +4,7 @@ import haxe.Timer;
 import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommandListener;
+import hex.control.command.BasicCommand;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
@@ -173,7 +174,6 @@ class MacroExecutorTest
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
-//		Assert.assertEquals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
 		Assert.equals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
 		
 		Assert.deepEquals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
@@ -213,7 +213,6 @@ class MacroExecutorTest
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
 		Assert.isNull( command, "'command' should be null" );
 		Assert.equals( 1, failListener.onAsyncCommandFailCallCount, "'onAsyncCommandFail' method should be called once" );
-		//Assert.assertIsType( failListener.failEvent, AsyncCommandEvent, "'onAsyncCommandFail' method should be called once" );
 	}
 	
 	public function thatWillBeApproved() : Bool
@@ -224,6 +223,53 @@ class MacroExecutorTest
 	public function thatWillBeRefused() : Bool
 	{
 		return false;
+	}
+	
+	@Test( "Test command execution with mapping results" )
+    public function textExecuteCommandWithMappingResults() : Void
+    {
+		var mapping : ICommandMapping = this._macroExecutor.add( MockCommandWithReturnedPayload );
+		var mappingWithMappingResults : ICommandMapping = this._macroExecutor.add( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
+		
+		var request : Request = new Request();
+		this._macroExecutor.executeCommand( mapping, request );
+		this._macroExecutor.executeCommand( mappingWithMappingResults, request );
+		
+		Assert.deepEquals( 	[ ["s", String, ""] ], this._injector.mappedPayloads, "'CommandExecutor.mapPayload' should map right values" );
+	}
+}
+
+private class MockCommandWithReturnedPayload extends BasicCommand
+{
+	public function new()
+	{
+		super();
+	}
+	
+	override public function execute( ?request : Request ) : Void 
+	{
+		
+	}
+	
+	override public function getReturnedExecutionPayload():Array<ExecutionPayload> 
+	{
+		return [ new ExecutionPayload( "s", String ) ];
+	}
+}
+
+private class MockCommandUsingMappingResults extends BasicCommand
+{
+	@Inject
+	public var value : String;
+	
+	public function new()
+	{
+		super();
+	}
+	
+	override public function execute( ?request : Request ) : Void 
+	{
+		
 	}
 }
 
@@ -293,7 +339,12 @@ private class MockCommand implements ICommand
 		
 	}
 	
-	public function getPayload() : Array<Dynamic> 
+	public function getResult() : Array<Dynamic> 
+	{
+		return null;
+	}
+	
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;
 	}

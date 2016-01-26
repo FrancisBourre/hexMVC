@@ -12,6 +12,7 @@ import hex.control.macro.IMacroExecutor;
 import hex.control.macro.Macro;
 import hex.control.macro.MacroExecutor;
 import hex.control.Request;
+import hex.control.payload.ExecutionPayload;
 import hex.error.IllegalStateException;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
@@ -241,7 +242,7 @@ class MacroTest
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method should have been called" );
 	}
 	
-	@Async( "Test add command after first have run" )
+	@Async( "Test add command after first run" )
 	public function testAddCommandAfterFirstRun() : Void
 	{
 		var myMacro : MockMacroWithHandler = new MockMacroWithHandler();
@@ -294,7 +295,12 @@ private class MockCommand implements ICommand
 		MockCommand.executeCallCount++;
 	}
 	
-	public function getPayload() : Array<Dynamic> 
+	public function getResult() : Array<Dynamic> 
+	{
+		return null;
+	}
+	
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;
 	}

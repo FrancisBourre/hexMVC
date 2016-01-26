@@ -59,6 +59,12 @@ class MacroExecutor implements IMacroExecutor
 		{
 			payloads = payloads != null ? payloads.concat( request.getExecutionPayloads() ) : request.getExecutionPayloads();
 		}
+		
+		// Get payloads from mapping results
+		if ( mapping.hasMappingResult )
+		{
+			payloads = payloads != null ? payloads.concat( mapping.getPayloadResult() ) : mapping.getPayloadResult();
+		}
 
 		// Map payloads
         if ( payloads != null )
@@ -71,6 +77,7 @@ class MacroExecutor implements IMacroExecutor
         if  ( !mapping.hasGuard || GuardUtil.guardsApprove( mapping.getGuards(), injector ) )
         {
             command = injector.getOrCreateNewInstance( mapping.getCommandClass() );
+			mapping.setLastCommandInstance( command );
         }
 		else
 		{

@@ -3,6 +3,7 @@ package hex.control.async;
 import hex.control.async.AsyncCommandMessage;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
+import hex.control.payload.ExecutionPayload;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
@@ -175,10 +176,14 @@ class AsyncCommand implements IAsyncCommand
         throw new VirtualMethodException( this + ".execute must be overridden" );
     }
 
-	public function getPayload() : Array<Dynamic>
+	public function getResult() : Array<Dynamic>
     {
         return null;
     }
+	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
+	{
+		return null;
+	}
 
     public function getOwner() : IModule
     {

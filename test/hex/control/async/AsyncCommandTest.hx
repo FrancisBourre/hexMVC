@@ -43,10 +43,10 @@ class AsyncCommandTest
         Assert.methodCallThrows( IllegalStateException, this._asyncCommand, this._asyncCommand.preExecute,[], "AsyncCommand should throw IllegalStateException when calling preExecute method twice" );
     }
 	
-	@Test( "Test get payload" )
-    public function testGetPayload() : Void
+	@Test( "Test get result" )
+    public function testGetResult() : Void
     {
-		Assert.isNull( this._asyncCommand.getPayload(), "'getPayload' should return null" );
+		Assert.isNull( this._asyncCommand.getResult(), "'getResult' should return null" );
     }
 	
 	@Test( "Test owner" )

@@ -153,7 +153,7 @@ private class MockMacroAdapterStrategy extends MacroAdapterStrategy
 		this.data1 = data1;
 	}
 	
-	override public function getPayload() : Array<Dynamic> 
+	override public function getResult() : Array<Dynamic> 
 	{
 		return [ this.data0, this.data1 ];
 	}
