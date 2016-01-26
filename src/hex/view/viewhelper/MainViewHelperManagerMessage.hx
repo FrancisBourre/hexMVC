@@ -11,7 +11,7 @@ class MainViewHelperManagerMessage
 	static public var VIEW_HELPER_MANAGER_CREATION 	: MessageType = new MessageType( "onViewHelperManagerCreation" );
 	static public var VIEW_HELPER_MANAGER_RELEASE 	: MessageType = new MessageType( "onViewHelperManagerRelease" );
 	
-	private function new() 
+	function new() 
 	{
 		
 	}

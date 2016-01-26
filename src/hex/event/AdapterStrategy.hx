@@ -6,10 +6,10 @@ package hex.event;
  */
 class AdapterStrategy implements IAdapterStrategy
 {
-	private var _target 		: Dynamic;
-	private var _method 		: Dynamic;
+	var _target 		: Dynamic;
+	var _method 		: Dynamic;
 	
-	private function new( target : Dynamic, method : Dynamic ) 
+	function new( target : Dynamic, method : Dynamic ) 
 	{
 		this._target = target;
 		this._method = method;

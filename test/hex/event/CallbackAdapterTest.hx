@@ -9,7 +9,7 @@ import hex.unittest.assertion.Assert;
  */
 class CallbackAdapterTest
 {
-	private var _callbackAdapter : CallbackAdapter;
+	var _callbackAdapter : CallbackAdapter;
 	
 	@Test( "Test getCallbackAdapter" )
     public function testGetCallbackAdapter() : Void
@@ -21,17 +21,17 @@ class CallbackAdapterTest
 		this.triggerCallbackAdapter( this._callbackAdapter.getCallbackAdapter() );
     }
 	
-	private function triggerCallbackAdapter( callbackAdapter : Dynamic ) : Void
+	function triggerCallbackAdapter( callbackAdapter : Dynamic ) : Void
 	{
 		callbackAdapter( "hello" );
 	}
 
-	private function simpleAdapter( s : String ) : Int
+	function simpleAdapter( s : String ) : Int
 	{
 		return 1;
 	}
 	
-	private function simpleCallbackTest( i : Int ) : Void
+	function simpleCallbackTest( i : Int ) : Void
 	{
 		Assert.equals( 1, i, "'getCallbackAdapter' should return 1" );
 	}

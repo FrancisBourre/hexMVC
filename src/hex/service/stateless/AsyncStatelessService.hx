@@ -12,10 +12,10 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 {
 	public static inline var HAS_TIMEOUT : String = "HAS_TIMEOUT";
 	
-	private var _timer 				: Timer;
-	private var _timeoutDuration 	: UInt;
+	var _timer 				: Timer;
+	var _timeoutDuration 	: UInt;
 	
-	private function new() 
+	function new() 
 	{
 		super();
 		this._timeoutDuration = 100;
@@ -48,7 +48,7 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 		return this._timeoutDuration;
 	}
 
-	private function set_timeoutDuration( duration : UInt ) : UInt
+	function set_timeoutDuration( duration : UInt ) : UInt
 	{
 		this.wasUsed && this._throwIllegalStateError( "timeoutDuration value can't be changed after service call" );
 		this._timeoutDuration = duration;
@@ -60,7 +60,7 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 	}
 
 	@:final 
-	override private function _reset() : Void
+	override function _reset() : Void
 	{
 		if ( this._timer != null )
 		{
@@ -73,19 +73,19 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 	/**
      * Memory handling
      */
-    static private var _POOL : HashMap<Dynamic, Bool> = new HashMap<Dynamic, Bool>();
+    static var _POOL : HashMap<Dynamic, Bool> = new HashMap<Dynamic, Bool>();
 
-    static private function _isServiceDetained( service : Dynamic ) : Bool
+    static function _isServiceDetained( service : Dynamic ) : Bool
     {
         return AsyncStatelessService._POOL.containsKey( service );
     }
 
-    static private function _detainService( service : Dynamic ) : Void
+    static function _detainService( service : Dynamic ) : Void
     {
         AsyncStatelessService._POOL.put( service, true );
     }
 
-    static private function _releaseService( service : Dynamic ) : Void
+    static function _releaseService( service : Dynamic ) : Void
     {
         if ( AsyncStatelessService._POOL.containsKey( service ) )
         {
@@ -94,7 +94,7 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
     }
 	
 	// private
-	private function _onTimeoutHandler() : Void
+	function _onTimeoutHandler() : Void
 	{
 		if ( this._timer != null )
 		{
@@ -105,7 +105,7 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 		this._status = AsyncStatelessService.HAS_TIMEOUT;
 	}
 
-	private function _startTimer() : Void
+	function _startTimer() : Void
 	{
 		if ( this.timeoutDuration > 0 ) 
 		{
@@ -118,7 +118,7 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 		}
 	}
 	
-	override private function _release() : Void
+	override function _release() : Void
 	{
 		if ( this._timer != null )
 		{

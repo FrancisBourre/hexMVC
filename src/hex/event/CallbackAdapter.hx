@@ -6,11 +6,11 @@ package hex.event;
  */
 class CallbackAdapter
 {
-	private var _callbackTarget 	: Dynamic;
-	private var _callbackMethod 	: Dynamic;
+	var _callbackTarget 	: Dynamic;
+	var _callbackMethod 	: Dynamic;
 	
-	private var _adapterTarget 		: Dynamic;
-	private var _adapterMethod 		: Dynamic;
+	var _adapterTarget 		: Dynamic;
+	var _adapterMethod 		: Dynamic;
 
 	public function new() 
 	{

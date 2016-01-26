@@ -16,7 +16,7 @@ import hex.module.IModule;
 @:rtti
 class StatefulCommandConfig implements IStatefulConfig
 {
-	private var _frontController : IFrontController;
+	var _frontController : IFrontController;
 	
 	public function new()
 	{

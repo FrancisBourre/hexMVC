@@ -10,9 +10,9 @@ import hex.log.Stringifier;
  */
 class ExecutionPayload
 {
-    private var _data : Dynamic;
-    private var _type : Class<Dynamic>;
-    private var _name : String;
+    var _data : Dynamic;
+    var _type : Class<Dynamic>;
+    var _name : String;
 
     public function new( data : Dynamic, type : Class<Dynamic>, name : String = "" )
     {

@@ -7,7 +7,7 @@ package hex.model;
 @:autoBuild( hex.model.ModelDispatcherAutoBuildMacro.build() )
 class ModelDispatcher<ListenerType:IModelListener> implements IModelDispatcher<ListenerType>
 {
-	private var _listeners : Array<ListenerType>;
+	var _listeners : Array<ListenerType>;
 	
 	public function new() 
 	{

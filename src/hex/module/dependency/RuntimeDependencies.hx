@@ -8,7 +8,7 @@ import hex.service.Service;
  */
 class RuntimeDependencies implements IRuntimeDependencies
 {
-	private var _serviceDependencies : Array<Class<Service>>;
+	var _serviceDependencies : Array<Class<Service>>;
 
 	public function new() 
 	{

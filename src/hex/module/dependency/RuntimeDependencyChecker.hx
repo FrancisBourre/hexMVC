@@ -12,7 +12,7 @@ import hex.module.IModule;
 class RuntimeDependencyChecker
 {
     /** @private */
-    private function new()
+    function new()
     {
         throw new PrivateConstructorException( "'RuntimeDependecyChecker' class can't be instantiated." );
     }

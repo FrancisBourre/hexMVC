@@ -10,7 +10,7 @@ class AsyncStatelessServiceMessage
 {
 	public static var TIMEOUT : MessageType = new MessageType( "onServiceTimeout" );
 	
-	private function new() 
+	function new() 
 	{
 		
 	}

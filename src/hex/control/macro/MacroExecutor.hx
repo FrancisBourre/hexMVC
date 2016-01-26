@@ -24,12 +24,12 @@ class MacroExecutor implements IMacroExecutor
 	@Inject
 	public var injector   					: IBasicInjector;
 	
-	private var _commandIndex 				: Int;
-	private var _commandCalledCount 		: Int;
-	private var _asyncCommandListener 		: IAsyncCommandListener;
-	private var _runningAsyncCommandList 	: Array<IAsyncCommand>;
+	var _commandIndex 				: Int;
+	var _commandCalledCount 		: Int;
+	var _asyncCommandListener 		: IAsyncCommandListener;
+	var _runningAsyncCommandList 	: Array<IAsyncCommand>;
 	
-	private var _commandMappingCollection  	: Array<ICommandMapping> = [];
+	var _commandMappingCollection  	: Array<ICommandMapping> = [];
 	
 	public function new()
 	{

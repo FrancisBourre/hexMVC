@@ -10,7 +10,7 @@ import hex.ioc.core.CoreFactory;
  */
 class ObjectUtil
 {
-	private function new() 
+	function new() 
 	{
 		
 	}

@@ -12,7 +12,7 @@ class ViewHelperMessage
 	static public var ATTACH_VIEW 	: MessageType = new MessageType( "onAttachView" );
 	static public var REMOVE_VIEW 	: MessageType = new MessageType( "onRemoveView" );
 	
-	private function new() 
+	function new() 
 	{
 		
 	}

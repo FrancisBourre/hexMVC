@@ -14,10 +14,10 @@ import hex.service.stateful.IStatefulService;
  */
 class StatefulService<ServiceConfigurationType:ServiceConfiguration> extends AbstractService<ServiceConfigurationType> implements IStatefulService<ServiceConfigurationType>
 {
-	private var _dispatcher				: Dispatcher<{}>;
-	private var _compositeDispatcher	: CompositeDispatcher;
+	var _dispatcher				: Dispatcher<{}>;
+	var _compositeDispatcher	: CompositeDispatcher;
 	
-	private var _inUse 					: Bool = false;
+	var _inUse 					: Bool = false;
 
 	public function new() 
 	{
@@ -40,12 +40,12 @@ class StatefulService<ServiceConfigurationType:ServiceConfiguration> extends Abs
         this._configuration = configuration;
 	}
 	
-	private function _lock() : Void
+	function _lock() : Void
 	{
 		this._inUse = true;
 	}
 
-	private function _release() : Void
+	function _release() : Void
 	{
 		this._inUse = false;
 	}
@@ -70,12 +70,12 @@ class StatefulService<ServiceConfigurationType:ServiceConfiguration> extends Abs
 		this._dispatcher.removeAllListeners();
 	}
 	
-	private function _throwExecutionIllegalStateError( methodName : String ) : Bool
+	function _throwExecutionIllegalStateError( methodName : String ) : Bool
 	{
 		return this._throwIllegalStateError( methodName + "() failed. This service is already in use." );
 	}
 	
-	private function _throwIllegalStateError( msg : String ) : Bool 
+	function _throwIllegalStateError( msg : String ) : Bool 
 	{
 		throw new IllegalStateException( msg );
 	}

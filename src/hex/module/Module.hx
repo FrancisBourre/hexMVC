@@ -33,10 +33,10 @@ import hex.view.viewhelper.ViewHelperManager;
  */
 class Module implements IModule
 {
-	private var _internalDispatcher : IDispatcher<{}>;
-	private var _domainDispatcher 	: IDispatcher<{}>;
-	private var _injector 			: Injector;
-	private var _annotationProvider 	: IAnnotationProvider;
+	var _internalDispatcher : IDispatcher<{}>;
+	var _domainDispatcher 	: IDispatcher<{}>;
+	var _injector 			: Injector;
+	var _annotationProvider 	: IAnnotationProvider;
 
 	public function new()
 	{
@@ -136,12 +136,12 @@ class Module implements IModule
 		this._domainDispatcher.removeHandler( messageType, scope, callback );
 	}
 	
-	private function _dispatchPrivateMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
+	function _dispatchPrivateMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
 		this._internalDispatcher.dispatch( messageType, data );
 	}
 
-	private function buildViewHelper( type : Class<IViewHelper>, view : IView ) : IViewHelper
+	function buildViewHelper( type : Class<IViewHelper>, view : IView ) : IViewHelper
 	{
 		return ViewHelperManager.getInstance( this ).buildViewHelper( this._injector, type, view );
 	}
@@ -185,7 +185,7 @@ class Module implements IModule
 	/**
 	 * Fire initialisation event
 	 */
-	private function _fireInitialisationEvent() : Void
+	function _fireInitialisationEvent() : Void
 	{
 		if ( this.isInitialized )
 		{
@@ -200,7 +200,7 @@ class Module implements IModule
 	/**
 	 * Fire release event
 	 */
-	private function _fireReleaseEvent() : Void
+	function _fireReleaseEvent() : Void
 	{
 		if ( this.isReleased )
 		{
@@ -215,7 +215,7 @@ class Module implements IModule
 	/**
 	 * Override and implement
 	 */
-	private function _onInitialisation() : Void
+	function _onInitialisation() : Void
 	{
 
 	}
@@ -223,7 +223,7 @@ class Module implements IModule
 	/**
 	 * Override and implement
 	 */
-	private function _onRelease() : Void
+	function _onRelease() : Void
 	{
 
 	}
@@ -232,7 +232,7 @@ class Module implements IModule
 	 * Accessor for dependecy injector
 	 * @return <code>IDependencyInjector</code> used by this module
 	 */
-	private function _getDependencyInjector() : IDependencyInjector
+	function _getDependencyInjector() : IDependencyInjector
 	{
 		return this._injector;
 	}
@@ -242,7 +242,7 @@ class Module implements IModule
 	 * checked before initialisation end
 	 * @return <code>IRuntimeDependencies</code> used by this module
 	 */
-	private function _getRuntimeDependencies() : IRuntimeDependencies
+	function _getRuntimeDependencies() : IRuntimeDependencies
 	{
 		throw new VirtualMethodException( Stringifier.stringify( this ) + ".checkDependencies is not implemented" );
 	}
@@ -251,7 +251,7 @@ class Module implements IModule
 	 * Check collection of injected dependencies
 	 * @param	dependencies
 	 */
-	private function _checkRuntimeDependencies( dependencies : IRuntimeDependencies ) : Void
+	function _checkRuntimeDependencies( dependencies : IRuntimeDependencies ) : Void
 	{
 		RuntimeDependencyChecker.check( this, this._injector, dependencies );
 	}
@@ -261,7 +261,7 @@ class Module implements IModule
 	 * need to be executed before initialisation's end
 	 * @param	configurations
 	 */
-	private function _addStatelessConfigClasses( configurations : Array<Class<IStatelessConfig>> ) : Void
+	function _addStatelessConfigClasses( configurations : Array<Class<IStatelessConfig>> ) : Void
 	{
 		var i : Int = configurations.length;
 		while ( --i > -1 )
@@ -277,7 +277,7 @@ class Module implements IModule
 	 * need to be executed before initialisation's end
 	 * @param	configurations
 	 */
-	private function _addStatefulConfigs( configurations : Array<IStatefulConfig> ) : Void
+	function _addStatefulConfigs( configurations : Array<IStatefulConfig> ) : Void
 	{
 		var i : Int = configurations.length;
 		while ( --i > -1 )
@@ -294,7 +294,7 @@ class Module implements IModule
 	 * Only use it before super() call in constructor if this module is not 
 	 * used in IoC architecture to allow module communication.
 	 */
-	private static function registerInternalDomain( module : IModule ) : Void
+	static function registerInternalDomain( module : IModule ) : Void
 	{
 		var key : String = Type.getClassName( Type.getClass( module ) ) + HashCodeFactory.getKey( module );
 		DomainExpert.getInstance().registerDomain( new Domain( key ) );

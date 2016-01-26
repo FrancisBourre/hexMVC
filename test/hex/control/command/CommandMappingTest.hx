@@ -14,7 +14,7 @@ import hex.unittest.assertion.Assert;
  */
 class CommandMappingTest
 {
-	private var _commandMapping : CommandMapping;
+	var _commandMapping : CommandMapping;
 
     @Before
     public function setUp() : Void

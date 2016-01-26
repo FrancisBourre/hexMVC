@@ -8,7 +8,7 @@ import hex.unittest.assertion.Assert;
  */
 class ModelDispatcherTest
 {
-	private var _dispatcher : MockDispatcher;
+	var _dispatcher : MockDispatcher;
 	
 	@Before
 	public function setUp() : Void

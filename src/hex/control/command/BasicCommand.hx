@@ -12,7 +12,7 @@ import hex.module.IModule;
  */
 class BasicCommand implements ICommand
 {
-	private var _owner : IModule;
+	var _owner : IModule;
 
 	public function new() 
 	{

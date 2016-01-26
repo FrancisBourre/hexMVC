@@ -12,8 +12,8 @@ import hex.unittest.assertion.Assert;
 class ExecutionPayloadTest
 {
 
-	private var _data 				: MockData;
-	private var _executionPayload 	: ExecutionPayload;
+	var _data 				: MockData;
+	var _executionPayload 	: ExecutionPayload;
 
     @Before
     public function setUp() : Void

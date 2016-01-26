@@ -28,8 +28,8 @@ import hex.unittest.runner.MethodRunner;
  */
 class MacroTest
 {
-	private var _macro 			: Macro;
-	private var _macroExecutor 	: MockMacroExecutor;
+	var _macro 			: Macro;
+	var _macroExecutor 	: MockMacroExecutor;
 
     @Before
     public function setUp() : Void
@@ -237,7 +237,7 @@ class MacroTest
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
 	}
 	
-	private function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
+	function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
 	{
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method should have been called" );
 	}
@@ -260,7 +260,7 @@ class MacroTest
 		
 	}
 	
-	private function _onMacroWithHandlerComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
+	function _onMacroWithHandlerComplete( command : AsyncCommand, myMacro : MockMacroWithHandler ) : Void
 	{
 		Assert.equals( 1, MockCommand.executeCallCount, "the MockCommand should be executed once when it's added during running" );
 	}
@@ -281,7 +281,7 @@ private class MockAsyncCommand extends AsyncCommand
 
 private class MockCommand implements ICommand
 {
-	private var _owner : IModule;
+	var _owner : IModule;
 	
 	static public var executeCallCount : Int = 0;
 	
@@ -323,7 +323,7 @@ private class MockEmptyMacro extends Macro
 
 private class MockEmptyMacroWithPrepareOverriden extends Macro
 {
-	override private function _prepare() : Void
+	override function _prepare() : Void
 	{
 		
 	}
@@ -331,7 +331,7 @@ private class MockEmptyMacroWithPrepareOverriden extends Macro
 
 private class MockMacro extends Macro
 {
-	override private function _prepare() : Void
+	override function _prepare() : Void
 	{
 		this.add( MockAsyncCommand );
 		this.add( MockCommand );

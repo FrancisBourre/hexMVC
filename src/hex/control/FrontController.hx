@@ -18,9 +18,9 @@ import hex.module.IModule;
 @:rtti
 class FrontController extends Locator<MessageType, ICommandMapping> implements IFrontController
 {
-    private var _module     		: IModule;
-    private var _injector   		: IDependencyInjector;
-    private var _facadeDispatcher 	: IDispatcher<{}>;
+    var _module     		: IModule;
+    var _injector   		: IDependencyInjector;
+    var _facadeDispatcher 	: IDispatcher<{}>;
 
     public function new( facadeDispatcher : IDispatcher<{}>, injector : IDependencyInjector, ?module : IModule )
     {

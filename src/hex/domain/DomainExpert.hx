@@ -11,11 +11,11 @@ import hex.module.IModule;
 @:final 
 class DomainExpert
 {
-	private var _registeredDomains 	: Map<UInt, Domain>;
-	private var _subscribedModules 	: Map<IModule, Domain>;
+	var _registeredDomains 	: Map<UInt, Domain>;
+	var _subscribedModules 	: Map<IModule, Domain>;
 	
-	static private var _Instance 	: DomainExpert = new DomainExpert();
-	static private var _DomainIndex : UInt = 0;
+	static var _Instance 	: DomainExpert = new DomainExpert();
+	static var _DomainIndex : UInt = 0;
 	
 	static public function getInstance() : DomainExpert
 	{

@@ -10,8 +10,8 @@ import hex.unittest.assertion.Assert;
  */
 class AnnotationProviderTest
 {
-	private var _colors 	: Map<String, Int> 		= new Map();
-	private var _text 		: Map<String, String> 	= new Map();
+	var _colors 	: Map<String, Int> 		= new Map();
+	var _text 		: Map<String, String> 	= new Map();
 		
 	@Before
     public function setUp() : Void
@@ -89,12 +89,12 @@ class AnnotationProviderTest
 		Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
 	}
 	
-	private function getColorByName( name : String ) : Int
+	function getColorByName( name : String ) : Int
 	{
 		return this._colors.get( name );
 	}
 
-	private function getText( name : String ) : String
+	function getText( name : String ) : String
 	{
 		return this._text.get( name );
 	}

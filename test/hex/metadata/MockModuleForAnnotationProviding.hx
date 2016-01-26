@@ -21,12 +21,12 @@ class MockModuleForAnnotationProviding extends Module
 		this._getDependencyInjector().mapToType( MockWithoutIAnnotationParsableImplementation, MockWithoutIAnnotationParsableImplementation );
 	}
 	
-	override private function _getRuntimeDependencies() : IRuntimeDependencies 
+	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		return return new RuntimeDependencies();
 	}
 	
-	override private function _onInitialisation() : Void 
+	override function _onInitialisation() : Void 
 	{
 		this.mockObjectWithMetaData 		= this._getDependencyInjector().getInstance( MockObjectWithAnnotation );
 		this.anotherMockObjectWithMetaData 	= this._getDependencyInjector().getInstance( MockWithoutIAnnotationParsableImplementation );

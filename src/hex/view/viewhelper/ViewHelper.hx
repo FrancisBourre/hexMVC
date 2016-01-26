@@ -21,12 +21,12 @@ class ViewHelper implements IViewHelper
 	@Inject
 	public var dispatcher 			: IDispatcher<{}>;
 	
-	private var _dispatcher 		: Dispatcher<{}>;
-	private var _owner 				: IModule;
-	private var _view 				: IView;
-	private var _isVisible 			: Bool = ViewHelper.DEFAULT_VISIBLE;
+	var _dispatcher 		: Dispatcher<{}>;
+	var _owner 				: IModule;
+	var _view 				: IView;
+	var _isVisible 			: Bool = ViewHelper.DEFAULT_VISIBLE;
 	
-	private var _isPreInitialized 	: Bool = false;
+	var _isPreInitialized 	: Bool = false;
 		
 	
 	public function new ()
@@ -34,17 +34,17 @@ class ViewHelper implements IViewHelper
 		this._dispatcher = new Dispatcher<{}>();
 	}
 	
-	private function _preInitialize() : Void
+	function _preInitialize() : Void
 	{
 		
 	}
 
-	private function _initialize() : Void
+	function _initialize() : Void
 	{
 
 	}
 	
-	private function _release() : Void
+	function _release() : Void
 	{
 
 	}
@@ -89,7 +89,7 @@ class ViewHelper implements IViewHelper
 		return this._view;
 	}
 	
-	private function _fireInitialisation() : Void
+	function _fireInitialisation() : Void
 	{
 		this._initialize();
 		this._dispatcher.dispatch( ViewHelperMessage.INIT, [ this ] );

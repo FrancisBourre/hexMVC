@@ -64,7 +64,7 @@ private class MockFrontController implements IFrontController
 
 private class MockInjectorWithFrontController implements IDependencyInjector
 {
-	private var _frontcontroller : IFrontController;
+	var _frontcontroller : IFrontController;
 	
 	public function new( frontcontroller : IFrontController ) 
 	{

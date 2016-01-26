@@ -22,9 +22,9 @@ class AsyncCommand implements IAsyncCommand
     public static inline var IS_FAILED          : String = "IS_FAILED";
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 
-    private var _status                         : String;
-    private var _dispatcher 					: Dispatcher<{}>;
-    private var _owner                          : IModule;
+    var _status                         : String;
+    var _dispatcher 					: Dispatcher<{}>;
+    var _owner                          : IModule;
 
     public function new()
     {
@@ -110,7 +110,7 @@ class AsyncCommand implements IAsyncCommand
     }
 
 	@:final 
-    private function _handleComplete() : Void
+    function _handleComplete() : Void
     {
 		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwIllegalStateError( '_handleComplete' );
         this._status = AsyncCommand.IS_COMPLETED;
@@ -119,7 +119,7 @@ class AsyncCommand implements IAsyncCommand
     }
 
 	@:final 
-    private function _handleFail() : Void
+    function _handleFail() : Void
     {
 		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwIllegalStateError( '_handleFail' );
         this._status = AsyncCommand.IS_FAILED;
@@ -128,7 +128,7 @@ class AsyncCommand implements IAsyncCommand
     }
 
 	@:final 
-    private function _handleCancel() : Void
+    function _handleCancel() : Void
     {
 		this.wasUsed && this._status != AsyncCommand.IS_RUNNING && this._throwIllegalStateError( '_handleCancel' );
         this._status = AsyncCommand.IS_CANCELLED;
@@ -201,12 +201,12 @@ class AsyncCommand implements IAsyncCommand
     /**
      * Private
      */
-    private function _removeAllListeners() : Void
+    function _removeAllListeners() : Void
     {
         this._dispatcher.removeAllListeners();
     }
 
-    private function _throwExecutionIllegalStateError() : Bool
+    function _throwExecutionIllegalStateError() : Bool
     {
         var msg : String = "";
 
@@ -235,7 +235,7 @@ class AsyncCommand implements IAsyncCommand
         throw new IllegalStateException( msg );
     }
 	
-	private function _throwIllegalStateError( process : String ) : Bool
+	function _throwIllegalStateError( process : String ) : Bool
     {
         var msg : String = "";
 
@@ -256,7 +256,7 @@ class AsyncCommand implements IAsyncCommand
         throw new IllegalStateException( msg );
     }
 
-    private function _release() : Void
+    function _release() : Void
     {
         this._removeAllListeners();
         AsyncCommand.release( this );
@@ -265,19 +265,19 @@ class AsyncCommand implements IAsyncCommand
     /**
      * Memory handling
      */
-    static private var _POOL : Map<AsyncCommand, Bool> = new Map<AsyncCommand, Bool>();
+    static var _POOL : Map<AsyncCommand, Bool> = new Map<AsyncCommand, Bool>();
 
-    static private function isDetained( aSynCommand : AsyncCommand ) : Bool
+    static function isDetained( aSynCommand : AsyncCommand ) : Bool
     {
         return AsyncCommand._POOL.exists( aSynCommand );
     }
 
-    static private function detain( aSynCommand : AsyncCommand ) : Void
+    static function detain( aSynCommand : AsyncCommand ) : Void
     {
         AsyncCommand._POOL.set( aSynCommand, true );
     }
 
-    static private function release( aSynCommand : AsyncCommand ) : Void
+    static function release( aSynCommand : AsyncCommand ) : Void
     {
         if ( AsyncCommand._POOL.exists( aSynCommand ) )
         {

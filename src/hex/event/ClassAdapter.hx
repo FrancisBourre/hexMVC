@@ -12,14 +12,14 @@ import hex.util.ClassUtil;
  */
 class ClassAdapter
 {
-	private var _callbackTarget 	: Dynamic;
-	private var _callbackMethod 	: Dynamic;
+	var _callbackTarget 	: Dynamic;
+	var _callbackMethod 	: Dynamic;
 	
-	private var _adapterClass 		: Class<IAdapterStrategy>;
-	private var _adapterInstance	: IAdapterStrategy;
+	var _adapterClass 		: Class<IAdapterStrategy>;
+	var _adapterInstance	: IAdapterStrategy;
 	
-	private var _factoryTarget 		: Dynamic;
-	private var _factoryMethod 		: Dynamic;
+	var _factoryTarget 		: Dynamic;
+	var _factoryMethod 		: Dynamic;
 	
 	public function new() 
 	{

@@ -12,14 +12,14 @@ import hex.service.stateless.AsyncStatelessService;
  */
 class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends AsyncStatelessService<ServiceConfigurationType> implements IHTTPService<ServiceConfigurationType> implements IURLConfigurable implements IAnnotationParsable
 {
-	private function new() 
+	function new() 
 	{
 		super();
 	}
 	
-	private var _request 			: Http;
-	private var _excludedParameters : Array<String>;
-	private var _timestamp 			: Float;
+	var _request 			: Http;
+	var _excludedParameters : Array<String>;
+	var _timestamp 			: Float;
 
 	override public function call() : Void
 	{
@@ -35,7 +35,7 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 		this._request.request( this._configuration.requestMethod == HTTPRequestMethod.POST );
 	}
 	
-	private function _createRequest() : Void
+	function _createRequest() : Void
 	{
 		this._request = new Http( this._configuration.serviceUrl );
 		
@@ -117,23 +117,23 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 		this._configuration.requestHeaders.push( header );
 	}
 
-	override private function _getRemoteArguments() : Array<Dynamic>
+	override function _getRemoteArguments() : Array<Dynamic>
 	{
 		this._createRequest();
 		return [ this._request ];
 	}
 
-	private function _onData( result : String ) : Void
+	function _onData( result : String ) : Void
 	{
 		this._onResultHandler( result );
 	}
 
-	private function _onError( msg : String ) : Void
+	function _onError( msg : String ) : Void
 	{
 		this._onErrorHandler( msg );
 	}
 	
-	private function _onStatus( status : Int ) : Void
+	function _onStatus( status : Int ) : Void
 	{
 		
 	}

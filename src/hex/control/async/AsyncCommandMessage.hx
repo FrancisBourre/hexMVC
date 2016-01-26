@@ -12,7 +12,7 @@ class AsyncCommandMessage
     public static var FAIL           : MessageType = new MessageType( "onAsyncCommandFail" );
     public static var CANCEL         : MessageType = new MessageType( "onAsyncCommandCancel" );
 
-	private function new() 
+	function new() 
 	{
 		
 	}

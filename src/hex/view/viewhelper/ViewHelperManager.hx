@@ -10,12 +10,12 @@ import hex.module.IModule;
  */
 class ViewHelperManager
 {
-	static private var _mInstances 	: Map<IModule, ViewHelperManager> 			= new Map<IModule, ViewHelperManager>();
-	static private var _DISPATCHER 	: Dispatcher<{}> 							= new Dispatcher<{}>();
+	static var _mInstances 	: Map<IModule, ViewHelperManager> 			= new Map<IModule, ViewHelperManager>();
+	static var _DISPATCHER 	: Dispatcher<{}> 							= new Dispatcher<{}>();
 	
-	private var _owner 				: IModule;
-	private var _dispatcher 		: Dispatcher<{}>;
-	private var _viewHelpers 		: Array<IViewHelper>;
+	var _owner 				: IModule;
+	var _dispatcher 		: Dispatcher<{}>;
+	var _viewHelpers 		: Array<IViewHelper>;
 	
 	public function new ( owner : IModule ) 
 	{
@@ -90,7 +90,7 @@ class ViewHelperManager
 		return this._viewHelpers.length;
 	}
 	
-	private function _onViewHelperRelease( viewHelper : IViewHelper ) : Void
+	function _onViewHelperRelease( viewHelper : IViewHelper ) : Void
 	{
 		this._notifyViewHelperRelease( viewHelper );
 
@@ -116,12 +116,12 @@ class ViewHelperManager
 		this._dispatcher.removeHandler( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, listener, listener.onViewHelperRelease );
 	}
 
-	private function _notifyViewHelperCreation( viewHelper : IViewHelper ) : Void
+	function _notifyViewHelperCreation( viewHelper : IViewHelper ) : Void
 	{
 		this._dispatcher.dispatch( ViewHelperManagerMessage.VIEW_HELPER_CREATION, [ viewHelper ] );
 	}
 
-	private function _notifyViewHelperRelease( viewHelper : IViewHelper ) : Void
+	function _notifyViewHelperRelease( viewHelper : IViewHelper ) : Void
 	{
 		this._dispatcher.dispatch( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, [ viewHelper ] );
 	}
@@ -141,12 +141,12 @@ class ViewHelperManager
 		ViewHelperManager._DISPATCHER.removeHandler( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_RELEASE, listener, listener.onViewHelperManagerRelease );
 	}
 
-	private static function notifyViewHelperManagerCreation( viewHelperManager : ViewHelperManager ) : Void
+	static function notifyViewHelperManagerCreation( viewHelperManager : ViewHelperManager ) : Void
 	{
 		ViewHelperManager._DISPATCHER.dispatch( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_CREATION, [ viewHelperManager ] );
 	}
 
-	private static function notifyViewHelperManagerRelease( viewHelperManager : ViewHelperManager ) : Void
+	static function notifyViewHelperManagerRelease( viewHelperManager : ViewHelperManager ) : Void
 	{
 		ViewHelperManager._DISPATCHER.dispatch( MainViewHelperManagerMessage.VIEW_HELPER_MANAGER_RELEASE, [ viewHelperManager ] );
 	}

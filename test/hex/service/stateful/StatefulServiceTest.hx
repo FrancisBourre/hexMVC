@@ -116,7 +116,7 @@ private class MockMessage
 {
 	public static var ON_SAMPLE : MessageType = new MessageType( "onSample" );
 	
-	private function new ()
+	function new ()
 	{
 
 	}

@@ -15,7 +15,7 @@ import hex.event.MessageType;
 class StatelessCommandConfig implements IStatelessConfig
 {
 	@Inject
-	private var frontController : IFrontController;
+	var frontController : IFrontController;
 
 	public function new() 
 	{

@@ -10,7 +10,7 @@ import hex.event.IDispatcher;
  */
 class ModuleTest
 {
-	private var _module : MockModuleForTest;
+	var _module : MockModuleForTest;
 
     @Before
     public function setUp() : Void

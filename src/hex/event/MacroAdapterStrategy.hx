@@ -8,9 +8,9 @@ import hex.control.macro.Macro;
  */
 class MacroAdapterStrategy extends Macro implements IAdapterStrategy
 {
-	private var _target 		: Dynamic;
-	private var _method 		: Dynamic;
-	private var _result 		: Array<Dynamic>;
+	var _target 		: Dynamic;
+	var _method 		: Dynamic;
+	var _result 		: Array<Dynamic>;
 		
 
 	public function new( target : Dynamic, method : Dynamic ) 

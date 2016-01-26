@@ -23,14 +23,14 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
     public static inline var IS_FAILED          : String = "IS_FAILED";
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 	
-	private var _ed            					: IDispatcher<{}>;
+	var _ed            					: IDispatcher<{}>;
 	
-	private var _result                     	: Dynamic;
-    private var _rawResult                		: Dynamic;
-	private var _parser                    		: IParser;
-    private var _status                     	: String = StatelessService.WAS_NEVER_USED;
+	var _result                     	: Dynamic;
+    var _rawResult                		: Dynamic;
+	var _parser                    		: IParser;
+    var _status                     	: String = StatelessService.WAS_NEVER_USED;
 	
-	private function new() 
+	function new() 
 	{
 		super();
 		this._ed = new Dispatcher<{}>();
@@ -110,7 +110,7 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
         return this._status == StatelessService.IS_CANCELLED;
     }
 	
-	private function _throwExecutionIllegalStateError( methodName : String ) : Bool
+	function _throwExecutionIllegalStateError( methodName : String ) : Bool
 	{
 		var msg : String = "";
 
@@ -135,7 +135,7 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
 		return this._throwIllegalStateError( msg );
 	}
 	
-	private function _throwCancellationIllegalStateError() : Bool
+	function _throwCancellationIllegalStateError() : Bool
 	{
 		var msg : String = "";
 
@@ -156,19 +156,19 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
 		return this._throwIllegalStateError( msg );
 	}
 
-	private function _throwIllegalStateError( msg : String ) : Bool 
+	function _throwIllegalStateError( msg : String ) : Bool 
 	{
 		throw new IllegalStateException( msg );
 	}
 
-	private function _release() : Void
+	function _release() : Void
 	{
 		this.removeAllListeners();
 		this._result = null;
 		this._parser = null;
 	}
 	
-	private function _onResultHandler( result : Dynamic ) : Void
+	function _onResultHandler( result : Dynamic ) : Void
 	{
 		if ( this._status == StatelessService.IS_RUNNING )
 		{
@@ -177,7 +177,7 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
 		}
 	}
 
-	private function _onErrorHandler( result : Dynamic ) : Void
+	function _onErrorHandler( result : Dynamic ) : Void
 	{
 		this._rawResult = null;
 		this._result = null;
@@ -190,7 +190,7 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
 		return this._result;
 	}
 	
-	private function _setResult( response : Dynamic ) : Dynamic
+	function _setResult( response : Dynamic ) : Dynamic
 	{
 		this._rawResult = response;
 		this._result = this._parser != null ? this._parser.parse( this._rawResult ) : this._rawResult;
@@ -241,12 +241,12 @@ class StatelessService<ServiceConfigurationType:ServiceConfiguration> extends Ab
 	}
 	
 	//
-	private function _getRemoteArguments() : Array<Dynamic>
+	function _getRemoteArguments() : Array<Dynamic>
 	{
 		throw new UnsupportedOperationException( this + ".getRemoteArguments is unsupported." );
 	}
 
-	private function _reset() : Void
+	function _reset() : Void
 	{
 		this._status = StatelessService.WAS_NEVER_USED;
 	}

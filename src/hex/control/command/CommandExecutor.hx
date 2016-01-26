@@ -16,8 +16,8 @@ import Std;
  */
 class CommandExecutor
 {
-    private var _injector   : IDependencyInjector;
-    private var _module     : IModule;
+    var _injector   : IDependencyInjector;
+    var _module     : IModule;
 
     public function new ( injector : IDependencyInjector, ?module : IModule )
     {

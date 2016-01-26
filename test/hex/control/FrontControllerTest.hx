@@ -19,11 +19,11 @@ import hex.unittest.assertion.Assert;
  */
 class FrontControllerTest
 {
-	private var _dispatcher 		: IDispatcher<{}>;
-    private var _injector   		: MockDependencyInjector;
-	private var _module     		: MockModule;
+	var _dispatcher 		: IDispatcher<{}>;
+    var _injector   		: MockDependencyInjector;
+	var _module     		: MockModule;
 	
-	private var _frontcontroller 	: FrontController;
+	var _frontcontroller 	: FrontController;
 
     @Before
     public function setUp() : Void

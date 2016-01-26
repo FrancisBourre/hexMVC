@@ -41,7 +41,7 @@ class JsonResultParser<DataType> implements IParser
 		return serviceResultVO;
 	}
 	
-	private function _parseData( data : Dynamic ) : DataType
+	function _parseData( data : Dynamic ) : DataType
 	{
 		return data;
 	}

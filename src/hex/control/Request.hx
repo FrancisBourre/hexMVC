@@ -8,7 +8,7 @@ import hex.control.payload.ExecutionPayload;
  */
 class Request
 {
-	private var _executionPayloads : Array<ExecutionPayload>;
+	var _executionPayloads : Array<ExecutionPayload>;
 	
 	public function new( ?executionPayloads : Array<ExecutionPayload> ) 
 	{

@@ -14,13 +14,13 @@ import hex.log.Stringifier;
  */
 class AnnotationProvider implements IAnnotationProvider
 {
-	static private var _Instance 		: IAnnotationProvider = null;
-	static private var _META_DATA 		: HashMap<Class<Dynamic>, Dynamic> = new HashMap();
+	static var _Instance 		: IAnnotationProvider = null;
+	static var _META_DATA 		: HashMap<Class<Dynamic>, Dynamic> = new HashMap();
 	
-	private var _metadata 				: Map<String, ProviderHandler>;
-	private var _instances 				: Map<String, Array<InstanceVO>>;
+	var _metadata 				: Map<String, ProviderHandler>;
+	var _instances 				: Map<String, Array<InstanceVO>>;
 
-	private function new() 
+	function new() 
 	{
 		this._metadata 				= new Map();
 		this._instances 			= new Map();
@@ -105,7 +105,7 @@ class AnnotationProvider implements IAnnotationProvider
 		}
 	}
 	
-	private function _parse( object : {} ) : ClassMetaDataVO
+	function _parse( object : {} ) : ClassMetaDataVO
 	{
 		var classMetaDataVO : ClassMetaDataVO = null;
 		
@@ -162,7 +162,7 @@ class AnnotationProvider implements IAnnotationProvider
 		injector.removeInjectionEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
 	}
 	
-	private function _onPostconstruct( event : InjectionEvent ) : Void
+	function _onPostconstruct( event : InjectionEvent ) : Void
 	{
 		if ( Std.is( event.instance, IAnnotationParsable ) )
 		{

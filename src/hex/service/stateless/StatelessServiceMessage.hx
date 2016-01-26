@@ -12,7 +12,7 @@ class StatelessServiceMessage
     public static var FAIL 			: MessageType = new MessageType( "onServiceFail" );
     public static var CANCEL         : MessageType = new MessageType( "onServiceCancel" );
 	
-	private function new() 
+	function new() 
 	{
 		
 	}

@@ -16,9 +16,9 @@ import hex.log.Stringifier;
 @:rtti
 class Macro extends AsyncCommand implements IAsyncCommandListener
 {
-	private var _request 			: Request;
-	private var _isAtomic 			: Bool = true;
-    private var _isSequenceMode 	: Bool = true;
+	var _request 			: Request;
+	var _isAtomic 			: Bool = true;
+    var _isSequenceMode 	: Bool = true;
 	
 	@Inject
 	public var macroExecutor 		: IMacroExecutor;
@@ -31,7 +31,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		this.isInSequenceMode 	= true;
 	}
 	
-	private function _prepare() : Void
+	function _prepare() : Void
 	{
 		throw new VirtualMethodException( this + ".execute must be overridden" );
 	}
@@ -69,7 +69,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		return this.macroExecutor.addMapping( mapping );
 	}
 	
-	private function _executeCommand() : Void
+	function _executeCommand() : Void
 	{
 		var command : ICommand = this.macroExecutor.executeNextCommand( this._request );
 		
@@ -84,7 +84,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 		}
 	}
 	
-	private function _executeNextCommand() : Void
+	function _executeNextCommand() : Void
 	{
 		if ( this.macroExecutor.hasNextCommandMapping )
 		{

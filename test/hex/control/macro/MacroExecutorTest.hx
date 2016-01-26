@@ -25,10 +25,10 @@ import hex.unittest.runner.MethodRunner;
  */
 class MacroExecutorTest
 {
-	private var _macroExecutor 		: MacroExecutor;
-    private var _injector     		: MockDependencyInjectorForMapping;
-    private var _module     		: IModule;
-    private var _mockMacro     		: MockMacroListener;
+	var _macroExecutor 		: MacroExecutor;
+    var _injector     		: MockDependencyInjectorForMapping;
+    var _module     		: IModule;
+    var _mockMacro     		: MockMacroListener;
 
     @Before
     public function setUp() : Void
@@ -101,7 +101,7 @@ class MacroExecutorTest
 		Assert.methodCallThrows( IllegalStateException, this._macroExecutor, this._macroExecutor.asyncCommandCalled, [ new AsyncCommand() ], "asyncCommandCalled should throw IllegalStateException" );
 	}
 	
-	private function _onTestHasRunEveryCommand() : Void
+	function _onTestHasRunEveryCommand() : Void
 	{
 		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
 	}
@@ -327,7 +327,7 @@ private class MockAsyncCommand extends AsyncCommand
 
 private class MockCommand implements ICommand
 {
-	private var _owner : IModule;
+	var _owner : IModule;
 	
 	public function new()
 	{
@@ -374,7 +374,7 @@ private class MockMacroFailListener extends ASyncCommandListener
 
 private class MockMacroListener extends ASyncCommandListener
 {
-	private var _macroExecutor : IMacroExecutor;
+	var _macroExecutor : IMacroExecutor;
 	
 	public function new( macroExecutor : IMacroExecutor )
 	{

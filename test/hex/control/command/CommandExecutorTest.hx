@@ -19,9 +19,9 @@ import hex.unittest.assertion.Assert;
  */
 class CommandExecutorTest
 {
-	private var _commandExecutor   	: CommandExecutor;
-    private var _injector     		: MockDependencyInjectorForMapping;
-    private var _module     		: IModule;
+	var _commandExecutor   	: CommandExecutor;
+    var _injector     		: MockDependencyInjectorForMapping;
+    var _module     		: IModule;
 
     @Before
     public function setUp() : Void

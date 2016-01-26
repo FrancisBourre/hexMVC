@@ -13,19 +13,19 @@ import hex.event.MessageType;
  */
 class CommandMapping implements ICommandMapping
 {
-    private var _commandClass               : Class<ICommand>;
-    private var _guards                     : Array<Dynamic>;
-    private var _payloads                   : Array<ExecutionPayload>;
+    var _commandClass               : Class<ICommand>;
+    var _guards                     : Array<Dynamic>;
+    var _payloads                   : Array<ExecutionPayload>;
 	
-    private var _contextOwner               : IContextOwner;
+    var _contextOwner               : IContextOwner;
 	
-    private var _completeHandlers          	: Array<AsyncHandler>;
-    private var _cancelHandlers            	: Array<AsyncHandler>;
-    private var _failHandlers              	: Array<AsyncHandler>;
+    var _completeHandlers          	: Array<AsyncHandler>;
+    var _cancelHandlers            	: Array<AsyncHandler>;
+    var _failHandlers              	: Array<AsyncHandler>;
 	
-    private var _mappingResults             : Array<ICommandMapping>;
+    var _mappingResults             : Array<ICommandMapping>;
 	
-	private var _command 					: ICommand;
+	var _command 					: ICommand;
 
     public function new( commandClass : Class<ICommand> )
     {

@@ -10,9 +10,9 @@ import hex.service.ServiceConfiguration;
  */
 class AbstractService<ServiceConfigurationType:ServiceConfiguration> implements IService<ServiceConfigurationType>
 {
-	private var _configuration : ServiceConfigurationType;
+	var _configuration : ServiceConfigurationType;
 	
-	private function new() 
+	function new() 
 	{
 		
 	}

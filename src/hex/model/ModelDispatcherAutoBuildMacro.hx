@@ -9,7 +9,7 @@ import haxe.macro.Expr.Field;
  */
 class ModelDispatcherAutoBuildMacro
 {
-	private function new()
+	function new()
 	{
 		
 	}

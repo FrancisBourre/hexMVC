@@ -18,7 +18,7 @@ import hex.unittest.assertion.Assert;
  */
 class ServiceLocatorTest
 {
-	private var _serviceLocator : ServiceLocator;
+	var _serviceLocator : ServiceLocator;
 
     @Before
     public function setUp() : Void

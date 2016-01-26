@@ -115,7 +115,7 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 		return this._registerService( service, new ServiceLocatorHelper( value, mapName ), mapName );
 	}
 	
-	private function _registerService( type : Class<IService<ServiceConfiguration>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
+	function _registerService( type : Class<IService<ServiceConfiguration>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
 	{
 		var className : String = ( mapName != "" ? mapName + "#" : "" ) + Type.getClassName( type );
 		return this.register( className, service );

@@ -17,7 +17,7 @@ import hex.unittest.assertion.Assert;
  */
 class AsyncCommandTest
 {
-	private var _asyncCommand : MockAsyncCommand;
+	var _asyncCommand : MockAsyncCommand;
 
     @Before
     public function setUp() : Void

@@ -13,8 +13,8 @@ import hex.unittest.assertion.Assert;
  */
 class ClassAdapterTest
 {
-	private var _classAdapter 	: ClassAdapter;
-	private var _scopeValue 	: Int;
+	var _classAdapter 	: ClassAdapter;
+	var _scopeValue 	: Int;
 	
 	@Test( "Test simple call to getCallbackAdapter" )
     public function testSimpleCallToGetCallbackAdapter() : Void
@@ -26,12 +26,12 @@ class ClassAdapterTest
 		this.triggerCallbackAdapter( this._classAdapter.getCallbackAdapter() );
     }
 	
-	private function triggerCallbackAdapter( callbackAdapter : Dynamic ) : Void
+	function triggerCallbackAdapter( callbackAdapter : Dynamic ) : Void
 	{
 		callbackAdapter( "hello", 4 );
 	}
 	
-	private function simpleCallbackTest( s1 : String, i1 : Int, s : String, i : Int ) : Void
+	function simpleCallbackTest( s1 : String, i1 : Int, s : String, i : Int ) : Void
 	{
 		Assert.equals( "test", s1, "'getCallbackAdapter' should return 'test'" );
 		Assert.equals( 1, i1, "'getCallbackAdapter' should return 1" );
@@ -50,17 +50,17 @@ class ClassAdapterTest
 		this.triggerCallbackAdapterWithFactory( this._classAdapter.getCallbackAdapter() );
 	}
 	
-	private function factoryForAdapterClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
+	function factoryForAdapterClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
 	{
 		return cast Type.createInstance( adapterClass, [this._scopeValue] );
 	}
 	
-	private function triggerCallbackAdapterWithFactory( callbackAdapter : Dynamic ) : Void
+	function triggerCallbackAdapterWithFactory( callbackAdapter : Dynamic ) : Void
 	{
 		callbackAdapter( "mundo", 6 );
 	}
 	
-	private function factoryCallbackTest( s1 : String, i1 : Int, s : String, i : Int ) : Void
+	function factoryCallbackTest( s1 : String, i1 : Int, s : String, i : Int ) : Void
 	{
 		Assert.equals( "test3", s1, "'getCallbackAdapter' should return 'test3'" );
 		Assert.equals( 4, i1, "'getCallbackAdapter' should return 4" );
@@ -79,14 +79,14 @@ class ClassAdapterTest
 		this.triggerCallbackAdapterWithMacro( this._classAdapter.getCallbackAdapter() );
 	}
 	
-	private function triggerCallbackAdapterWithMacro( callbackAdapter : Dynamic ) : Void
+	function triggerCallbackAdapterWithMacro( callbackAdapter : Dynamic ) : Void
 	{
 		var data0 : MockValueObject = new MockValueObject( "hola" );
 		var data1 : MockValueObject = new MockValueObject( "mundo" );
 		callbackAdapter( [ data0, data1 ] );
 	}
 	
-	private function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
+	function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
 	{
 		var m : MacroAdapterStrategy = cast Type.createInstance( adapterClass, [] );
 		var me : MacroExecutor = new MacroExecutor();
@@ -95,7 +95,7 @@ class ClassAdapterTest
 		return m;
 	}
 	
-	private function macroCallbackTest( args : Array<MockValueObject> ) : Void
+	function macroCallbackTest( args : Array<MockValueObject> ) : Void
 	{
 		Assert.equals( "hola!", args[ 0 ].value, "'getCallbackAdapter' should return 'hola'" );
 		Assert.equals( "mundo!", args[ 1 ].value, "'getCallbackAdapter' should return 'mundo'" );
@@ -118,7 +118,7 @@ private class MockAdapterClass implements IAdapterStrategy
 
 private class MockAdapterClassForFactory implements IAdapterStrategy
 {
-	private var _value : Int;
+	var _value : Int;
 	
 	public function new( value : Int )
 	{
@@ -133,15 +133,15 @@ private class MockAdapterClassForFactory implements IAdapterStrategy
 
 private class MockMacroAdapterStrategy extends MacroAdapterStrategy
 {
-	private var data0 : MockValueObject;
-	private var data1 : MockValueObject;
+	var data0 : MockValueObject;
+	var data1 : MockValueObject;
 	
 	public function new()
 	{
 		super( this, this.onAdapt );
 	}
 	
-	override private function _prepare() : Void
+	override function _prepare() : Void
 	{
 		this.add( MockAsyncCommand ).withPayloads( [new ExecutionPayload( data0, MockValueObject )] );
 		this.add( MockAsyncCommand ).withPayloads( [new ExecutionPayload( data1, MockValueObject )] );
