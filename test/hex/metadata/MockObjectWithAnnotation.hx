@@ -10,7 +10,7 @@ import hex.core.IAnnotationParsable;
 class MockObjectWithAnnotation implements IAnnotationParsable
 {
 	@color( "white" )
-	public var colorTest : Int;
+	public var colorTest : Int = 0;
 
 	@language( "welcome" )
 	public var languageTest : String;

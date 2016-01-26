@@ -86,7 +86,7 @@ class AnnotationProviderTest
 		annotationProvider.clear();
 		
 		annotationProvider.parse( mockObjectWithMetaData );
-		Assert.isNull( mockObjectWithMetaData.colorTest, "property should be null" );
+		Assert.equals( 0, mockObjectWithMetaData.colorTest, "property should be set to 0 default value" );
 	}
 	
 	function getColorByName( name : String ) : Int

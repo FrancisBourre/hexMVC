@@ -49,7 +49,7 @@ class CallbackAdapter
 
 			if ( adapterTarget != null && adapterMethod != null )
 			{
-				result = Reflect.callMethod( adapterTarget, adapterMethod, null );
+				result = Reflect.callMethod( adapterTarget, adapterMethod, rest );
 			}
 
 			Reflect.callMethod( callbackTarget, callbackMethod, [result] );

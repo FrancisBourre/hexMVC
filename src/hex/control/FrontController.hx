@@ -47,7 +47,7 @@ class FrontController extends Locator<MessageType, ICommandMapping> implements I
         return commandMapping;
     }
 
-    public function handleMessage( messageType : MessageType, request : Request ) : Void
+    public function handleMessage( messageType : MessageType, ?request : Request ) : Void
     {
         if ( this.isRegisteredWithKey( messageType ) )
         {

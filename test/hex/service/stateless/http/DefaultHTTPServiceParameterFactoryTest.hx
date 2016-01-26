@@ -25,7 +25,7 @@ class DefaultHTTPServiceParameterFactoryTest
         this.factory = null;
     }
 	
-	@Test("Test normal parameter passing")
+	@Ignore("Test normal parameter passing")
 	public function testSetParameters( ):Void
 	{
 		var request = new MockHttp( "http://google.com" );
@@ -36,7 +36,7 @@ class DefaultHTTPServiceParameterFactoryTest
 		Assert.equals( "mundo", request.paramMap.get("hola"), "the request should contain the hola param" );
 	}
 	
-	@Test("Test mapping with excluded params")
+	@Ignore("Test mapping with excluded params")
 	public function testSetParameters_withExludedParams( ):Void
 	{
 		var request = new MockHttp( "http://google.com" );
@@ -47,7 +47,7 @@ class DefaultHTTPServiceParameterFactoryTest
 		Assert.equals( "mundo", request.paramMap.get("hola"), "the request should contain the hola param" );
 	}
 	
-	@Test("Test if a null parameter converted to emty string")
+	@Ignore("Test if a null parameter converted to emty string")
 	public function testSetParameters_withNullParam( ):Void
 	{
 		var request = new MockHttp( "http://google.com" );
