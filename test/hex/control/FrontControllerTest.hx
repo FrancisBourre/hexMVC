@@ -43,7 +43,7 @@ class FrontControllerTest
 	@Test( "Test map" )
     public function testMap() : Void
     {
-		var messageType : MessageType = new MessageType( "messageType" );
+		var messageType = new MessageType( "messageType" );
 		var commandMapping : ICommandMapping = this._frontcontroller.map( messageType, MockCommand );
 		Assert.equals( MockCommand, commandMapping.getCommandClass(), "Command class should be the same" );
 		Assert.isTrue( this._frontcontroller.isRegisteredWithKey( messageType ), "messageType should be registered" );
@@ -53,7 +53,7 @@ class FrontControllerTest
 	@Test( "Test unmap" )
     public function testUnmap() : Void
     {
-		var messageType : MessageType = new MessageType( "messageType" );
+		var messageType = new MessageType( "messageType" );
 		var commandMapping0 : ICommandMapping = this._frontcontroller.map( messageType, MockCommand );
 		var commandMapping1 : ICommandMapping = this._frontcontroller.unmap( messageType );
 		
@@ -64,8 +64,8 @@ class FrontControllerTest
 	@Test( "Functional test of request handling" )
     public function testRequestHandling() : Void
     {
-		var messageType : MessageType = new MessageType( "messageType" );
-		var request : Request = new Request();
+		var messageType = new MessageType( "messageType" );
+		var request = new Request();
 		this._frontcontroller.map( messageType, MockCommand );
 		
 		this._dispatcher.dispatch( messageType, [request] );
@@ -73,8 +73,8 @@ class FrontControllerTest
 		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
 		Assert.equals( request, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 		
-		var anotherMessageType : MessageType = new MessageType( "anotherMessageType" );
-		var anotherRequest : Request = new Request();
+		var anotherMessageType = new MessageType( "anotherMessageType" );
+		var anotherRequest = new Request();
 		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
 		
 		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );

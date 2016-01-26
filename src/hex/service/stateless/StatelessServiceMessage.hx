@@ -8,9 +8,9 @@ import hex.event.MessageType;
  */
 class StatelessServiceMessage
 {
-	public static var COMPLETE       : MessageType = new MessageType( "onServiceComplete" );
-    public static var FAIL 			: MessageType = new MessageType( "onServiceFail" );
-    public static var CANCEL         : MessageType = new MessageType( "onServiceCancel" );
+	public static var COMPLETE       = new MessageType( "onServiceComplete" );
+    public static var FAIL 			= new MessageType( "onServiceFail" );
+    public static var CANCEL         = new MessageType( "onServiceCancel" );
 	
 	function new() 
 	{

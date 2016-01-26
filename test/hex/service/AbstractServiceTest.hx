@@ -13,8 +13,8 @@ class AbstractServiceTest
 	@Test( "Test 'getConfiguration' accessor" )
     public function testGetConfiguration() : Void
     {
-        var configuration : ServiceConfiguration = new ServiceConfiguration();
-        var service : MockServiceWithConfigurationSetter = new MockServiceWithConfigurationSetter();
+        var configuration = new ServiceConfiguration();
+        var service = new MockServiceWithConfigurationSetter();
 		
 		Assert.isNull( service.getConfiguration(), "configuration should be null by default" );
 		
@@ -25,7 +25,7 @@ class AbstractServiceTest
 	@Test( "Test virtual methods" )
     public function testVirtualMethods() : Void
     {
-		var service : MockService = new MockService();
+		var service = new MockService();
 		Assert.methodCallThrows( VirtualMethodException, service, service.createConfiguration, [], "'createConfiguration' call should throw an exception" );
 		Assert.methodCallThrows( VirtualMethodException, service, service.setConfiguration, [null], "'setConfiguration' call should throw an exception" );
 		Assert.methodCallThrows( VirtualMethodException, service, service.addHandler, [null, null], "'addHandler' call should throw an exception" );

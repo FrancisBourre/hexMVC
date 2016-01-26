@@ -36,7 +36,7 @@ class ServiceLocatorTest
     public function testConfigureWithInstanceOfNotAStatefulService() : Void
     {
 		this._serviceLocator.addService( IStatelessService, new MockStatelessService(), "myServiceName" );
-		var injector : MockInjectorForMapToTypeTest = new MockInjectorForMapToTypeTest();
+		var injector = new MockInjectorForMapToTypeTest();
 		Assert.methodCallThrows( IllegalArgumentException, this._serviceLocator, this._serviceLocator.configure, [ injector, null, null ], "'getService' should throw IllegalArgumentException" );
 	}
 	
@@ -59,7 +59,7 @@ class ServiceLocatorTest
     public function testConfigureWithStatelessServiceUnnamed() : Void
     {
 		this._serviceLocator.addService( IStatelessService, MockStatelessService );
-		var injector : MockInjectorForMapToTypeTest = new MockInjectorForMapToTypeTest();
+		var injector = new MockInjectorForMapToTypeTest();
 		this._serviceLocator.configure( injector, null, null );
 		
 		Assert.equals( IStatelessService, injector.clazz, "injector should map the class" );
@@ -71,7 +71,7 @@ class ServiceLocatorTest
     public function testConfigureWithStatelessServiceNamed() : Void
     {
 		this._serviceLocator.addService( IStatelessService, MockStatelessService, "myServiceName" );
-		var injector : MockInjectorForMapToTypeTest = new MockInjectorForMapToTypeTest();
+		var injector = new MockInjectorForMapToTypeTest();
 		this._serviceLocator.configure( injector, null, null );
 		
 		Assert.equals( IStatelessService, injector.clazz, "injector should map the service class" );
@@ -82,7 +82,7 @@ class ServiceLocatorTest
 	@Test( "Test getService with stateful service unnamed" )
     public function testGetServiceWithStatefulServiceUnnamed() : Void
     {
-		var statefulService : MockStatefulService = new MockStatefulService();
+		var statefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService );
 		Assert.equals( statefulService, this._serviceLocator.getService( IStatefulService ), "'getService' should return service added previously" );
 	}
@@ -90,7 +90,7 @@ class ServiceLocatorTest
 	@Test( "Test getService with stateful service named" )
     public function testGetServiceWithStatefulServiceNamed() : Void
     {
-		var statefulService : MockStatefulService = new MockStatefulService();
+		var statefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService, "myServiceName" );
 		Assert.equals( statefulService, this._serviceLocator.getService( IStatefulService, "myServiceName" ), "'getService' should return service added previously" );
 		Assert.methodCallThrows( NoSuchElementException, this._serviceLocator, this._serviceLocator.getService, [IStatefulService], "'getService' without service name should throw NoSuchElementException" );
@@ -99,21 +99,21 @@ class ServiceLocatorTest
 	@Test( "Test configure with stateful service unnnamed" )
     public function testConfigureWithStatefulServiceUnnamed() : Void
     {
-		var dispatcher : Dispatcher<{}> = new Dispatcher();
+		var dispatcher = new Dispatcher();
 		
-		var statefulService : MockStatefulService = new MockStatefulService();
+		var statefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService );
-		var injector : MockInjectorForMapToValueTest = new MockInjectorForMapToValueTest();
+		var injector = new MockInjectorForMapToValueTest();
 		this._serviceLocator.configure( injector, dispatcher, null );
 		
 		Assert.equals( IStatefulService, injector.clazz, "injector should map the class" );
 		Assert.equals( statefulService, injector.value, "injector should map the service instance" );
 		Assert.equals( "", injector.name, "injector should map the service name" );
 		
-		var mt : MessageType = new MessageType( "test" );
-		var listener : MockServiceListener = new MockServiceListener();
+		var mt = new MessageType( "test" );
+		var listener = new MockServiceListener();
 		dispatcher.addHandler( mt, listener, listener.onTest );
-		//var event : ServiceEvent = new ServiceEvent( "test", statefulService );
+		//var event = new ServiceEvent( "test", statefulService );
 		statefulService.dispatch( mt, [statefulService] );
 		
 		Assert.equals( statefulService, listener.lastDataReceived, "event should be received by sub-dispatcher listener" );
@@ -123,21 +123,21 @@ class ServiceLocatorTest
 	@Test( "Test configure with stateful service named" )
     public function testConfigureWithStatefulServiceNamed() : Void
     {
-		var dispatcher : Dispatcher<{}> = new Dispatcher();
+		var dispatcher = new Dispatcher();
 		
-		var statefulService : MockStatefulService = new MockStatefulService();
+		var statefulService = new MockStatefulService();
 		this._serviceLocator.addService( IStatefulService, statefulService, "myServiceName" );
-		var injector : MockInjectorForMapToValueTest = new MockInjectorForMapToValueTest();
+		var injector = new MockInjectorForMapToValueTest();
 		this._serviceLocator.configure( injector, dispatcher, null );
 		
 		Assert.equals( IStatefulService, injector.clazz, "injector should map the class" );
 		Assert.equals( statefulService, injector.value, "injector should map the service instance" );
 		Assert.equals( "myServiceName", injector.name, "injector should map the service name" );
 		
-		var mt : MessageType = new MessageType( "test" );
-		var listener : MockServiceListener = new MockServiceListener();
+		var mt = new MessageType( "test" );
+		var listener = new MockServiceListener();
 		dispatcher.addHandler( mt, listener, listener.onTest );
-		//var event : ServiceEvent = new ServiceEvent( "test", statefulService );
+		//var event = new ServiceEvent( "test", statefulService );
 		statefulService.dispatch( mt, [statefulService] );
 		
 		Assert.equals( statefulService, listener.lastDataReceived, "event should be received by sub-dispatcher listener" );

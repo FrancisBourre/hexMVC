@@ -12,8 +12,8 @@ class EventProxyTest
 	@Test( "Test EventProxy constructor" )
     public function testEventProxyconstructor() : Void
     {
-		var target : MockEventProxyTarget = new MockEventProxyTarget();
-		var eventProxy : EventProxy = new EventProxy( target, target.stubMethod );
+		var target = new MockEventProxyTarget();
+		var eventProxy = new EventProxy( target, target.stubMethod );
 		Assert.equals( target, eventProxy.scope, "scope should be the same" );
 		Assert.equals( target.stubMethod, eventProxy.callback, "callback should be the same" );
 	}
@@ -21,8 +21,8 @@ class EventProxyTest
 	@Test( "Test EventProxy handling callback" )
     public function testEventProxyHandlingCallback() : Void
     {
-		var target : MockEventProxyTarget = new MockEventProxyTarget();
-		var eventProxy : EventProxy = new EventProxy( target, target.stubMethod );
+		var target = new MockEventProxyTarget();
+		var eventProxy = new EventProxy( target, target.stubMethod );
 		var parameters : Array<MockParameter> = [ new MockParameter(), new MockParameter() ];
 		eventProxy.handleCallback( parameters );
 		Assert.deepEquals( parameters, target.parameters, "parameters should be the same" );

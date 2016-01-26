@@ -265,7 +265,7 @@ class AsyncCommand implements IAsyncCommand
     /**
      * Memory handling
      */
-    static var _POOL : Map<AsyncCommand, Bool> = new Map<AsyncCommand, Bool>();
+    static var _POOL = new Map<AsyncCommand, Bool>();
 
     static function isDetained( aSynCommand : AsyncCommand ) : Bool
     {

@@ -68,7 +68,7 @@ class ExecutionPayloadTest
 	@Test( "Test passing no name parameter to constructor" )
     public function testNoNameParameterToConstructor() : Void
     {
-		var executionPayload : ExecutionPayload = new ExecutionPayload( this._data, IMockData );
+		var executionPayload = new ExecutionPayload( this._data, IMockData );
         Assert.equals( "", executionPayload.getName(), "name should be empty String" );
     }
 }

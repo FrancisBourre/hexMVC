@@ -56,9 +56,9 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasPayload, "hasPayload should return false" );
 		
-		var stringPayload0 	: ExecutionPayload 	= new ExecutionPayload( "test0", String, "stringPayload0" );
-		var stringPayload1 	: ExecutionPayload 	= new ExecutionPayload( "test1", String, "stringPayload1" );
-		var stringPayload2 	: ExecutionPayload 	= new ExecutionPayload( "test2", String, "stringPayload2" );
+		var stringPayload0 	= new ExecutionPayload( "test0", String, "stringPayload0" );
+		var stringPayload1 	= new ExecutionPayload( "test1", String, "stringPayload1" );
+		var stringPayload2 	= new ExecutionPayload( "test2", String, "stringPayload2" );
 		this._commandMapping.withPayloads( [stringPayload0, stringPayload1, stringPayload2] );
 		
 		Assert.isTrue( this._commandMapping.hasPayload, "hasPayload should return true" );
@@ -70,13 +70,13 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return false" );
 		
-		var listener0 : MockAsyncCommandListener = new MockAsyncCommandListener();
-		var listener1 : MockAsyncCommandListener = new MockAsyncCommandListener();
-		var listener2 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener0 = new MockAsyncCommandListener();
+		var listener1 = new MockAsyncCommandListener();
+		var listener2 = new MockAsyncCommandListener();
 		
-		var completeHandler0 	: AsyncHandler 	= new AsyncHandler( listener0, listener0.handler );
-		var completeHandler1 	: AsyncHandler 	= new AsyncHandler( listener1, listener1.handler );
-		var completeHandler2 	: AsyncHandler 	= new AsyncHandler( listener2, listener2.handler );
+		var completeHandler0 	= new AsyncHandler( listener0, listener0.handler );
+		var completeHandler1 	= new AsyncHandler( listener1, listener1.handler );
+		var completeHandler2 	= new AsyncHandler( listener2, listener2.handler );
 		
 		this._commandMapping.withCompleteHandlers( completeHandler0 ).withCompleteHandlers( completeHandler1 ).withCompleteHandlers( completeHandler2 );
 		
@@ -89,13 +89,13 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasFailHandler, "hasFailHandler should return false" );
 		
-		var listener0 : MockAsyncCommandListener = new MockAsyncCommandListener();
-		var listener1 : MockAsyncCommandListener = new MockAsyncCommandListener();
-		var listener2 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener0 = new MockAsyncCommandListener();
+		var listener1 = new MockAsyncCommandListener();
+		var listener2 = new MockAsyncCommandListener();
 		
-		var failHandler0 	: AsyncHandler 	= new AsyncHandler( listener0, listener0.handler );
-		var failHandler1 	: AsyncHandler 	= new AsyncHandler( listener1, listener1.handler );
-		var failHandler2 	: AsyncHandler 	= new AsyncHandler( listener2, listener2.handler );
+		var failHandler0 	= new AsyncHandler( listener0, listener0.handler );
+		var failHandler1 	= new AsyncHandler( listener1, listener1.handler );
+		var failHandler2 	= new AsyncHandler( listener2, listener2.handler );
 		this._commandMapping.withFailHandlers( failHandler0 ).withFailHandlers( failHandler1 ).withFailHandlers( failHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasFailHandler, "hasFailHandler should return true" );
@@ -107,13 +107,13 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasCancelHandler, "hasCancelHandler should return false" );
 		
-		var listener0 : MockAsyncCommandListener = new MockAsyncCommandListener();
-		var listener1 : MockAsyncCommandListener = new MockAsyncCommandListener();
-		var listener2 : MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener0 = new MockAsyncCommandListener();
+		var listener1 = new MockAsyncCommandListener();
+		var listener2 = new MockAsyncCommandListener();
 		
-		var cancelHandler0 	: AsyncHandler 	= new AsyncHandler( listener0, listener0.handler );
-		var cancelHandler1 	: AsyncHandler 	= new AsyncHandler( listener1, listener1.handler );
-		var cancelHandler2 	: AsyncHandler 	= new AsyncHandler( listener2, listener2.handler );
+		var cancelHandler0 	= new AsyncHandler( listener0, listener0.handler );
+		var cancelHandler1 	= new AsyncHandler( listener1, listener1.handler );
+		var cancelHandler2 	= new AsyncHandler( listener2, listener2.handler );
 		this._commandMapping.withCancelHandlers( cancelHandler0 ).withCancelHandlers( cancelHandler1 ).withCancelHandlers( cancelHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
@@ -125,8 +125,8 @@ class CommandMappingTest
     {
         Assert.isFalse( this._commandMapping.hasMappingResult, "'hasMappingResult' should return false" );
 		
-		var mapping 		: CommandMapping = new CommandMapping( MockCommand );
-		var anotherMapping 	: CommandMapping = new CommandMapping( MockCommand );
+		var mapping 		= new CommandMapping( MockCommand );
+		var anotherMapping 	= new CommandMapping( MockCommand );
 		
 		Assert.equals( this._commandMapping, this._commandMapping.withMappingResults( [ mapping, anotherMapping ] ), "CommandMapping returned should be the same" );
 		Assert.isTrue( this._commandMapping.hasMappingResult, "'hasMappingResult' should return true" );
@@ -137,8 +137,8 @@ class CommandMappingTest
     {
 		Assert.isNull( this._commandMapping.getPayloadResult(), "'getPayloadResult' should return null" );
 		
-		var command : MockCommand = new MockCommand();
-		var mapping : CommandMapping = new CommandMapping( MockCommand );
+		var command = new MockCommand();
+		var mapping = new CommandMapping( MockCommand );
 		this._commandMapping.withMappingResults( [mapping] );
 		Assert.isNull( this._commandMapping.getPayloadResult(), "'getPayloadResult' should return null" );
 		

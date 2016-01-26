@@ -14,14 +14,14 @@ class PayloadUtilTest
 	@Test( "Test mapping" )
     public function testMapping() : Void
     {
-		var injector 					: MockDependencyInjectorForMapping 	= new MockDependencyInjectorForMapping();
+		var injector 					= new MockDependencyInjectorForMapping();
 		
-		var mockImplementation 			: MockImplementation 				= new MockImplementation( "mockImplementation" );
-		var anotherMockImplementation 	: MockImplementation 				= new MockImplementation( "anotherMockImplementation" );
+		var mockImplementation 			= new MockImplementation( "mockImplementation" );
+		var anotherMockImplementation 	= new MockImplementation( "anotherMockImplementation" );
 		
-		var mockPayload 				: ExecutionPayload 					= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
-		var stringPayload 				: ExecutionPayload 					= new ExecutionPayload( "test", String, "stringPayload" );
-		var anotherMockPayload 			: ExecutionPayload 					= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
+		var mockPayload 				= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
+		var stringPayload 				= new ExecutionPayload( "test", String, "stringPayload" );
+		var anotherMockPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
 		
 		var payloads 					: Array<ExecutionPayload> 	= [ mockPayload, stringPayload, anotherMockPayload ];
 		PayloadUtil.mapPayload( payloads, injector );
@@ -34,14 +34,14 @@ class PayloadUtilTest
 	@Test( "Test unmapping" )
     public function testUnmapping() : Void
     {
-		var injector 					: MockDependencyInjectorForMapping 	= new MockDependencyInjectorForMapping();
+		var injector 					= new MockDependencyInjectorForMapping();
 		
-		var mockImplementation 			: MockImplementation 				= new MockImplementation( "mockImplementation" );
-		var anotherMockImplementation 	: MockImplementation 				= new MockImplementation( "anotherMockImplementation" );
+		var mockImplementation 			= new MockImplementation( "mockImplementation" );
+		var anotherMockImplementation 	= new MockImplementation( "anotherMockImplementation" );
 		
-		var mockPayload 				: ExecutionPayload 					= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
-		var stringPayload 				: ExecutionPayload 					= new ExecutionPayload( "test", String, "stringPayload" );
-		var anotherMockPayload 			: ExecutionPayload 					= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
+		var mockPayload 				= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
+		var stringPayload 				= new ExecutionPayload( "test", String, "stringPayload" );
+		var anotherMockPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
 		
 		var payloads 					: Array<ExecutionPayload> 	= [ mockPayload, stringPayload, anotherMockPayload ];
 		PayloadUtil.unmapPayload( payloads, injector );

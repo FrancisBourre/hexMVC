@@ -30,7 +30,7 @@ class StatelessServiceTest
 	@Test( "Test 'getConfiguration' accessor" )
     public function testGetConfiguration() : Void
     {
-        var configuration : ServiceConfiguration = new ServiceConfiguration();
+        var configuration = new ServiceConfiguration();
 
 		Assert.isNull( this.service.getConfiguration(), "configuration should be null by default" );
 		
@@ -95,8 +95,8 @@ class StatelessServiceTest
 	@Test( "Test handleCancel" )
     public function testHandleCancel() : Void
     {
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( StatelessServiceMessage.CANCEL, handler, handler.onServiceCancel );
 		
@@ -128,8 +128,8 @@ class StatelessServiceTest
 	@Test( "Test handleComplete" )
     public function testHandleComplete() : Void
     {
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( StatelessServiceMessage.COMPLETE, handler, handler.onServiceComplete );
 		
@@ -161,8 +161,8 @@ class StatelessServiceTest
 	@Test( "Test handleFail" )
     public function testHandleFail() : Void
     {
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( StatelessServiceMessage.FAIL, handler, handler.onServiceFail );
 		

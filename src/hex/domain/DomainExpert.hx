@@ -14,7 +14,7 @@ class DomainExpert
 	var _registeredDomains 	: Map<UInt, Domain>;
 	var _subscribedModules 	: Map<IModule, Domain>;
 	
-	static var _Instance 	: DomainExpert = new DomainExpert();
+	static var _Instance 	= new DomainExpert();
 	static var _DomainIndex : UInt = 0;
 	
 	static public function getInstance() : DomainExpert

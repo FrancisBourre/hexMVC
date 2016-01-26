@@ -12,7 +12,7 @@ import hex.event.IDispatcher;
  */
 class ApplicationDomainDispatcher extends DomainDispatcher<{}> implements IApplicationDomainDispatcher
 {
-	static var _Instance : ApplicationDomainDispatcher = new ApplicationDomainDispatcher();
+	static var _Instance = new ApplicationDomainDispatcher();
 
 	function new() 
 	{

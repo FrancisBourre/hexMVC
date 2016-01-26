@@ -15,7 +15,7 @@ import hex.log.Stringifier;
 class AnnotationProvider implements IAnnotationProvider
 {
 	static var _Instance 		: IAnnotationProvider = null;
-	static var _META_DATA 		: HashMap<Class<Dynamic>, Dynamic> = new HashMap();
+	static var _META_DATA 		= new HashMap();
 	
 	var _metadata 				: Map<String, ProviderHandler>;
 	var _instances 				: Map<String, Array<InstanceVO>>;
@@ -45,7 +45,7 @@ class AnnotationProvider implements IAnnotationProvider
 	{
 		if ( !this._metadata.exists( metaDataName ) )
 		{
-			var providerHandler : ProviderHandler = new ProviderHandler( scope, providerMethod );
+			var providerHandler = new ProviderHandler( scope, providerMethod );
 			this._metadata.set( metaDataName, providerHandler );
 			
 			var voCollection : Array<InstanceVO> = this._instances.get( metaDataName );
@@ -91,7 +91,7 @@ class AnnotationProvider implements IAnnotationProvider
 				}
 				else
 				{
-					var instanceVO : InstanceVO = new InstanceVO( instance, property.propertyName, property.metaDataName, property.metaDataValue );
+					var instanceVO = new InstanceVO( instance, property.propertyName, property.metaDataName, property.metaDataValue );
 					if ( this._instances.exists( metaDataName ) )
 					{
 						this._instances.get( metaDataName ).push( instanceVO );

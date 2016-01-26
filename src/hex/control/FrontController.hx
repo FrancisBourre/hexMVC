@@ -35,7 +35,7 @@ class FrontController extends Locator<MessageType, ICommandMapping> implements I
 
     public function map( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping
     {
-        var commandMapping : ICommandMapping = new CommandMapping( commandClass );
+        var commandMapping = new CommandMapping( commandClass );
         this.register( messageType, commandMapping );
         return commandMapping;
     }
@@ -52,7 +52,7 @@ class FrontController extends Locator<MessageType, ICommandMapping> implements I
         if ( this.isRegisteredWithKey( messageType ) )
         {
             var commandMapping : ICommandMapping    = this.locate( messageType );
-            var commandExecutor : CommandExecutor   = new CommandExecutor( this._injector, this._module );
+            var commandExecutor = new CommandExecutor( this._injector, this._module );
 
             var mappingRemoval : Void->ICommandMapping  = null;
             if ( commandMapping.isFiredOnce )

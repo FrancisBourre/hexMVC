@@ -10,8 +10,8 @@ import hex.unittest.assertion.Assert;
  */
 class AnnotationProviderTest
 {
-	var _colors 	: Map<String, Int> 		= new Map();
-	var _text 		: Map<String, String> 	= new Map();
+	var _colors 	= new Map();
+	var _text 		= new Map();
 		
 	@Before
     public function setUp() : Void
@@ -31,7 +31,7 @@ class AnnotationProviderTest
 	@Test( "Test register before parsing" )
 	public function testRegisterBeforeParsing() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
+		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.registerMetaData( "color", this, this.getColorByName );
@@ -47,7 +47,7 @@ class AnnotationProviderTest
 	@Test( "Test register after parsing" )
 	public function testRegisterAfterParsing() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
+		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.parse( mockObjectWithMetaData );
@@ -68,7 +68,7 @@ class AnnotationProviderTest
 		annotationProvider.registerMetaData( "color", this, this.getColorByName );
 		annotationProvider.registerMetaData( "language", this, this.getText );
 
-		var module : MockModuleForAnnotationProviding = new MockModuleForAnnotationProviding();
+		var module = new MockModuleForAnnotationProviding();
 		module.initialize();
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
@@ -79,7 +79,7 @@ class AnnotationProviderTest
 	@Test( "Test clear method" )
 	public function testClearMethod() : Void
 	{
-		var mockObjectWithMetaData : MockObjectWithAnnotation = new MockObjectWithAnnotation();
+		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.registerMetaData( "color", this, this.getColorByName );
@@ -102,7 +102,7 @@ class AnnotationProviderTest
 	@Test( "Test parse service" )
 	public function testParseService() : Void
 	{
-		var service : MockStatelessService = new MockStatelessService();
+		var service = new MockStatelessService();
 		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
 		annotationProvider.parse( service );

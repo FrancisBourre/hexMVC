@@ -148,7 +148,7 @@ class MacroExecutor implements IMacroExecutor
 
 	public function add( commandClass : Class<ICommand> ) : ICommandMapping
 	{
-		var mapping : ICommandMapping = new CommandMapping( commandClass );
+		var mapping = new CommandMapping( commandClass );
 		this._commandMappingCollection.push( mapping );
 		return mapping;
 	}

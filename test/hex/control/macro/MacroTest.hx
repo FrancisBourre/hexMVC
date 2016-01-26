@@ -83,7 +83,7 @@ class MacroTest
 	@Test( "Test preExecute without overriding prepare" )
 	public function testPreExecute() : Void
 	{
-		var myMacro : MockEmptyMacro = new MockEmptyMacro();
+		var myMacro = new MockEmptyMacro();
 		
 		Assert.isFalse( myMacro.wasUsed, "'wasUsed' property should return false" );
 		Assert.isFalse( myMacro.isRunning, "'isRunning' property should return false" );
@@ -121,7 +121,7 @@ class MacroTest
 	{
 		this._macroExecutor.returnedMapping = new CommandMapping( MockCommand );
 		
-		var mappingToAdd : CommandMapping = new CommandMapping( MockCommand );
+		var mappingToAdd = new CommandMapping( MockCommand );
 		var commandMapping : ICommandMapping = this._macro.addMapping( mappingToAdd );
 		Assert.equals( this._macroExecutor.returnedMapping, commandMapping, "command mapping should be returned when mapping is added" );
 		Assert.equals( mappingToAdd, this._macroExecutor.lastMappingAdded, "mapping added should be passed to macroexecutor" );
@@ -130,17 +130,17 @@ class MacroTest
 	@Test( "Test execute empty macro" )
 	public function testExecuteEmptyMacro() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
+		var myMacro = new MockEmptyMacroWithPrepareOverriden();
 		myMacro.macroExecutor = this._macroExecutor;
 		
 		Assert.methodCallThrows( IllegalStateException, myMacro, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
 		myMacro.preExecute();
 		
-		var request : Request = new Request();
+		var request = new Request();
 		myMacro.execute( request );
 		Assert.equals( request, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
 		
-		var anotherRequest : Request = new Request();
+		var anotherRequest = new Request();
 		myMacro.execute( anotherRequest );
 		Assert.equals( anotherRequest, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
 	}
@@ -164,8 +164,8 @@ class MacroTest
 	@Test( "Test with guards approved" )
 	public function testWithGuardsApproved() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
-		var macroExecutor : MacroExecutor = new MacroExecutor();
+		var myMacro = new MockEmptyMacroWithPrepareOverriden();
+		var macroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 
@@ -186,8 +186,8 @@ class MacroTest
 	@Test( "Test with guards refused" )
 	public function testWithGuardsRefused() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
-		var macroExecutor : MacroExecutor = new MacroExecutor();
+		var myMacro = new MockEmptyMacroWithPrepareOverriden();
+		var macroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 
@@ -203,8 +203,8 @@ class MacroTest
 	@Test( "Test parallel mode" )
 	public function testParallelMode() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
-		var macroExecutor : MacroExecutor = new MacroExecutor();
+		var myMacro = new MockEmptyMacroWithPrepareOverriden();
+		var macroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 		
@@ -221,8 +221,8 @@ class MacroTest
 	@Async( "Test sequence mode" )
 	public function testSequenceMode() : Void
 	{
-		var myMacro : MockEmptyMacroWithPrepareOverriden = new MockEmptyMacroWithPrepareOverriden();
-		var macroExecutor : MacroExecutor = new MacroExecutor();
+		var myMacro = new MockEmptyMacroWithPrepareOverriden();
+		var macroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 		
@@ -245,8 +245,8 @@ class MacroTest
 	@Async( "Test add command after first run" )
 	public function testAddCommandAfterFirstRun() : Void
 	{
-		var myMacro : MockMacroWithHandler = new MockMacroWithHandler();
-		var macroExecutor : MacroExecutor = new MacroExecutor();
+		var myMacro = new MockMacroWithHandler();
+		var macroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 		

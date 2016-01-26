@@ -18,11 +18,11 @@ class AsyncCommandUtilTest
 	@Test( "Test addListenersToAsyncCommand" )
     public function testAddListenersToAsyncCommand() : Void
     {
-		var listener0 		: ASyncCommandListener = new ASyncCommandListener();
-		var listener1 		: ASyncCommandListener = new ASyncCommandListener();
-		var listener2 		: ASyncCommandListener = new ASyncCommandListener();
+		var listener0 		= new ASyncCommandListener();
+		var listener1 		= new ASyncCommandListener();
+		var listener2 		= new ASyncCommandListener();
 		
-		var mockAsyncCommandForTestingListeners : MockAsyncCommandForTestingListeners = new MockAsyncCommandForTestingListeners();
+		var mockAsyncCommandForTestingListeners = new MockAsyncCommandForTestingListeners();
 		var listeners : Array<AsyncHandler> = [ new AsyncHandler( listener0, listener0.onAsyncCommandComplete ), 
 												new AsyncHandler( listener1, listener1.onAsyncCommandFail), 
 												new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) ];

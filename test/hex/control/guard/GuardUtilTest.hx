@@ -26,7 +26,7 @@ class GuardUtilTest
 	@Test( "Test guard-class approval with injector" )
     public function testGuardClassApproveWithInjector() : Void
     {
-		var injector : IDependencyInjector = new MockDependencyInjectorForTestingGuard();
+		var injector = new MockDependencyInjectorForTestingGuard();
 		
 		var guards 		: Array<Dynamic> 	= [ MockApproveGuard ];
         var isApproved 	: Bool 				= GuardUtil.guardsApprove( guards, injector );

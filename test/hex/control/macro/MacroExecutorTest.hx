@@ -123,7 +123,7 @@ class MacroExecutorTest
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 		
-		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommand );
+		var commandMapping = new CommandMapping( MockAsyncCommand );
 		var returnedCommandMapping : ICommandMapping = this._macroExecutor.addMapping( commandMapping );
 		Assert.equals( commandMapping, returnedCommandMapping, "'addMapping' should return ethe same command mapping" );
 		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
@@ -134,11 +134,11 @@ class MacroExecutorTest
 	@Test( "Test command execution" )
     public function testExecuteCommand() : Void
     {
-		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
+		var commandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
 		
-		var listener0 			: ASyncCommandListener 				= new ASyncCommandListener();
-		var listener1 			: ASyncCommandListener 				= new ASyncCommandListener();
-		var listener2 			: ASyncCommandListener 				= new ASyncCommandListener();
+		var listener0 			= new ASyncCommandListener();
+		var listener1 			= new ASyncCommandListener();
+		var listener2 			= new ASyncCommandListener();
 		
 		var completeHandlers 	: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandComplete, listener1.onAsyncCommandComplete, listener2.onAsyncCommandComplete];
 		var failHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
@@ -156,16 +156,16 @@ class MacroExecutorTest
 						.withCancelHandlers( new AsyncHandler( listener1, listener1.onAsyncCommandCancel ) )
 						.withCancelHandlers( new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) );
 		
-		var mockImplementation 	: MockImplementation 				= new MockImplementation( "mockImplementation" );
-		var mockPayload 		: ExecutionPayload 					= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
+		var mockImplementation 	= new MockImplementation( "mockImplementation" );
+		var mockPayload 		= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
 		commandMapping.withPayloads( [mockPayload] );
 		
-		var stringPayload 				: ExecutionPayload 			= new ExecutionPayload( "test", String, "stringPayload" );
-		var anotherMockImplementation 	: MockImplementation 		= new MockImplementation( "anotherMockImplementation" );
-		var anotherMockPayload 			: ExecutionPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
+		var stringPayload 				= new ExecutionPayload( "test", String, "stringPayload" );
+		var anotherMockImplementation 	= new MockImplementation( "anotherMockImplementation" );
+		var anotherMockPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
 		var payloads 					: Array<ExecutionPayload> 	= [ stringPayload, anotherMockPayload ];
 		
-		var request : Request = new Request( payloads );
+		var request = new Request( payloads );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping, request );
 		
 		Assert.isNotNull( command, "'command' should not be null" );
@@ -197,7 +197,7 @@ class MacroExecutorTest
 	@Test( "Test command execution with approved guards" )
     public function testExecuteCommandWithApprovedGuards() : Void
     {
-		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeApproved] );
+		var commandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeApproved] );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
 		Assert.isNotNull( command, "'command' should not be null" );
 		Assert.isInstanceOf( command, MockCommand, "'command' shouldbe typed 'MockCommand'" );
@@ -206,10 +206,10 @@ class MacroExecutorTest
 	@Test( "Test command execution with refused guards" )
     public function testExecuteCommandWithRefusedGuards() : Void
     {
-		var failListener : MockMacroFailListener = new MockMacroFailListener();
+		var failListener = new MockMacroFailListener();
 		this._macroExecutor.setAsyncCommandListener( failListener );
 		
-		var commandMapping : ICommandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeRefused] );
+		var commandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeRefused] );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
 		Assert.isNull( command, "'command' should be null" );
 		Assert.equals( 1, failListener.onAsyncCommandFailCallCount, "'onAsyncCommandFail' method should be called once" );
@@ -231,7 +231,7 @@ class MacroExecutorTest
 		var mapping : ICommandMapping = this._macroExecutor.add( MockCommandWithReturnedPayload );
 		var mappingWithMappingResults : ICommandMapping = this._macroExecutor.add( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
 		
-		var request : Request = new Request();
+		var request = new Request();
 		this._macroExecutor.executeCommand( mapping, request );
 		this._macroExecutor.executeCommand( mappingWithMappingResults, request );
 		

@@ -42,11 +42,11 @@ class CommandExecutorTest
 	@Test( "Test command execution" )
     public function textExecuteCommand() : Void
     {
-		var commandMapping : ICommandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
+		var commandMapping = new CommandMapping( MockAsyncCommandForTestingExecution );
 		
-		var listener0 			: ASyncCommandListener 				= new ASyncCommandListener();
-		var listener1 			: ASyncCommandListener 				= new ASyncCommandListener();
-		var listener2 			: ASyncCommandListener 				= new ASyncCommandListener();
+		var listener0 			= new ASyncCommandListener();
+		var listener1 			= new ASyncCommandListener();
+		var listener2 			= new ASyncCommandListener();
 		
 		var completeHandlers 	: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandComplete, listener1.onAsyncCommandComplete, listener2.onAsyncCommandComplete];
 		var failHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
@@ -64,18 +64,18 @@ class CommandExecutorTest
 						.withCancelHandlers( new AsyncHandler( listener1, listener1.onAsyncCommandCancel ) )
 						.withCancelHandlers( new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) );
 		
-		var mockImplementation 	: MockImplementation 				= new MockImplementation( "mockImplementation" );
-		var mockPayload 		: ExecutionPayload 					= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
+		var mockImplementation 	= new MockImplementation( "mockImplementation" );
+		var mockPayload 		= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
 		commandMapping.withPayloads( [mockPayload] );
 		
-		var stringPayload 				: ExecutionPayload 			= new ExecutionPayload( "test", String, "stringPayload" );
-		var anotherMockImplementation 	: MockImplementation 		= new MockImplementation( "anotherMockImplementation" );
-		var anotherMockPayload 			: ExecutionPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
+		var stringPayload 				= new ExecutionPayload( "test", String, "stringPayload" );
+		var anotherMockImplementation 	= new MockImplementation( "anotherMockImplementation" );
+		var anotherMockPayload 			= new ExecutionPayload( anotherMockImplementation, IMockType, "anotherMockPayload" );
 		var payloads 					: Array<ExecutionPayload> 	= [ stringPayload, anotherMockPayload ];
 		
-		var mockForTriggeringUnmap : MockForTriggeringUnmap = new MockForTriggeringUnmap( commandMapping );
-		//var event : PayloadEvent = new PayloadEvent( "eventType", this._module, payloads );
-		var request : Request = new Request( payloads );
+		var mockForTriggeringUnmap = new MockForTriggeringUnmap( commandMapping );
+		//var event = new PayloadEvent( "eventType", this._module, payloads );
+		var request = new Request( payloads );
 		this._commandExecutor.executeCommand( commandMapping, request, mockForTriggeringUnmap.unmap );
 		
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
@@ -106,10 +106,10 @@ class CommandExecutorTest
 	@Test( "Test command execution with mapping results" )
     public function textExecuteCommandWithMappingResults() : Void
     {
-		var mapping : ICommandMapping = new CommandMapping( MockCommand );
-		var mappingWithMappingResults : ICommandMapping = new CommandMapping( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
+		var mapping = new CommandMapping( MockCommand );
+		var mappingWithMappingResults = new CommandMapping( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
 		
-		var request : Request = new Request();
+		var request = new Request();
 		this._commandExecutor.executeCommand( mapping, request );
 		this._commandExecutor.executeCommand( mappingWithMappingResults, request );
 		

@@ -22,19 +22,19 @@ class StatefulCommandConfigTest
 	@Test( "Test 'configure' throws 'InjectorMissingMappingError'" )
     public function testConfigureThrowsInjectorMissingMappingError() : Void
     {
-		var config : StatefulCommandConfig = new StatefulCommandConfig();
+		var config = new StatefulCommandConfig();
         Assert.methodCallThrows( InjectorMissingMappingError, config, config.configure, [ new MockDependencyInjector(), new Dispatcher<{}>(), new MockModule() ], "constructor should throw IllegalArgumentException" );
     }
 	
 	@Test( "Test 'map' behavior" )
     public function testMapBehavior() : Void
     {
-		var controller : MockFrontController = new MockFrontController();
-		var injector : MockInjectorWithFrontController = new MockInjectorWithFrontController( controller );
-		var config : StatefulCommandConfig = new StatefulCommandConfig();
+		var controller = new MockFrontController();
+		var injector = new MockInjectorWithFrontController( controller );
+		var config = new StatefulCommandConfig();
 		config.configure( injector, new Dispatcher<{}>(), new MockModule() );
 		
-		var messageType : MessageType = new MessageType( "test" );
+		var messageType = new MessageType( "test" );
 		config.map( messageType, BasicCommand );
 		
         Assert.deepEquals( [ messageType, BasicCommand ], controller.mapParameters, "parameters should be the same" );

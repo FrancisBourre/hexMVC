@@ -73,7 +73,7 @@ class AsyncStatelessService<ServiceConfigurationType:ServiceConfiguration> exten
 	/**
      * Memory handling
      */
-    static var _POOL : HashMap<Dynamic, Bool> = new HashMap<Dynamic, Bool>();
+    static var _POOL = new HashMap<Dynamic, Bool>();
 
     static function _isServiceDetained( service : Dynamic ) : Bool
     {

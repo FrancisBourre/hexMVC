@@ -7,10 +7,10 @@ import hex.event.MessageType;
  */
 class ViewHelperMessage
 {
-	static public var INIT 			: MessageType = new MessageType( "onInit" );
-	static public var RELEASE 		: MessageType = new MessageType( "onRelease" );
-	static public var ATTACH_VIEW 	: MessageType = new MessageType( "onAttachView" );
-	static public var REMOVE_VIEW 	: MessageType = new MessageType( "onRemoveView" );
+	static public var INIT 			= new MessageType( "onInit" );
+	static public var RELEASE 		= new MessageType( "onRelease" );
+	static public var ATTACH_VIEW 	= new MessageType( "onAttachView" );
+	static public var REMOVE_VIEW 	= new MessageType( "onRemoveView" );
 	
 	function new() 
 	{

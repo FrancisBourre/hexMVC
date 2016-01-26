@@ -10,8 +10,8 @@ import hex.module.IModule;
  */
 class ViewHelperManager
 {
-	static var _mInstances 	: Map<IModule, ViewHelperManager> 			= new Map<IModule, ViewHelperManager>();
-	static var _DISPATCHER 	: Dispatcher<{}> 							= new Dispatcher<{}>();
+	static var _mInstances 	= new Map<IModule, ViewHelperManager>();
+	static var _DISPATCHER 	= new Dispatcher<{}>();
 	
 	var _owner 				: IModule;
 	var _dispatcher 		: Dispatcher<{}>;

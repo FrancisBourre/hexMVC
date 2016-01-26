@@ -54,7 +54,7 @@ class AsyncCommandTest
     {
 		Assert.isNull( this._asyncCommand.getOwner(), "'getOwner' should return null" );
 		
-		var module : MockModule = new MockModule();
+		var module = new MockModule();
 		this._asyncCommand.setOwner( module );
 		Assert.equals( module, this._asyncCommand.getOwner(), "'getOwner' should return defined owner" );
     }
@@ -62,16 +62,16 @@ class AsyncCommandTest
 	@Test( "Test execute" )
     public function testExecute() : Void
     {
-		var asyncCommand : AsyncCommand = new AsyncCommand();
+		var asyncCommand = new AsyncCommand();
 		Assert.methodCallThrows( VirtualMethodException, asyncCommand, asyncCommand.execute, [], "'execute' should throw VirtualMethodException" );
     }
 	
 	@Test( "Test cancel" )
     public function testCancel() : Void
     {
-		var listener 		: MockAsyncCommandListener = new MockAsyncCommandListener();
-		var handler 		: MockAsyncCommandListener = new MockAsyncCommandListener();
-		var anotherHandler 	: MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener 		= new MockAsyncCommandListener();
+		var handler 		= new MockAsyncCommandListener();
+		var anotherHandler 	= new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
 		this._asyncCommand.addCancelHandler( handler, handler.onAsyncCommandCancel );
@@ -95,9 +95,9 @@ class AsyncCommandTest
 	@Test( "Test complete" )
     public function testComplete() : Void
     {
-		var listener 		: MockAsyncCommandListener = new MockAsyncCommandListener();
-		var handler 		: MockAsyncCommandListener = new MockAsyncCommandListener();
-		var anotherHandler 	: MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener 		= new MockAsyncCommandListener();
+		var handler 		= new MockAsyncCommandListener();
+		var anotherHandler 	= new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
 		this._asyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );
@@ -121,9 +121,9 @@ class AsyncCommandTest
 	@Test( "Test fail" )
     public function testFail() : Void
     {
-		var listener 		: MockAsyncCommandListener = new MockAsyncCommandListener();
-		var handler 		: MockAsyncCommandListener = new MockAsyncCommandListener();
-		var anotherHandler 	: MockAsyncCommandListener = new MockAsyncCommandListener();
+		var listener 		= new MockAsyncCommandListener();
+		var handler 		= new MockAsyncCommandListener();
+		var anotherHandler 	= new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
 		this._asyncCommand.addFailHandler( handler, handler.onAsyncCommandFail );

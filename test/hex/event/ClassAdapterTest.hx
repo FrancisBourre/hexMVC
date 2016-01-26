@@ -81,15 +81,15 @@ class ClassAdapterTest
 	
 	function triggerCallbackAdapterWithMacro( callbackAdapter : Dynamic ) : Void
 	{
-		var data0 : MockValueObject = new MockValueObject( "hola" );
-		var data1 : MockValueObject = new MockValueObject( "mundo" );
+		var data0 = new MockValueObject( "hola" );
+		var data1 = new MockValueObject( "mundo" );
 		callbackAdapter( [ data0, data1 ] );
 	}
 	
 	function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
 	{
 		var m : MacroAdapterStrategy = cast Type.createInstance( adapterClass, [] );
-		var me : MacroExecutor = new MacroExecutor();
+		var me = new MacroExecutor();
 		me.injector = new Injector();
 		m.macroExecutor = me;
 		return m;

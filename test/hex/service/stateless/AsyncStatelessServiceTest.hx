@@ -46,7 +46,7 @@ class AsyncStatelessServiceTest
 	@Test( "Test configuration accessors" )
     public function testConfigurationAccessors() : Void
     {
-        var configuration : ServiceConfiguration = new ServiceConfiguration();
+        var configuration = new ServiceConfiguration();
 
 		Assert.isNull( this.service.getConfiguration(), "configuration should be null by default" );
 		
@@ -118,8 +118,8 @@ class AsyncStatelessServiceTest
 	@Test( "Test handleCancel" )
     public function testHandleCancel() : Void
     {
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( StatelessServiceMessage.CANCEL, handler, handler.onServiceCancel );
 		
@@ -154,8 +154,8 @@ class AsyncStatelessServiceTest
 	@Test( "Test handleComplete" )
     public function testHandleComplete() : Void
     {
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( StatelessServiceMessage.COMPLETE, handler, handler.onServiceComplete );
 		
@@ -189,8 +189,8 @@ class AsyncStatelessServiceTest
 	@Test( "Test handleFail" )
     public function testHandleFail() : Void
     {
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( StatelessServiceMessage.FAIL, handler, handler.onServiceFail );
 		
@@ -224,8 +224,8 @@ class AsyncStatelessServiceTest
 	@Test( "test timeout" )
 	public function testTimeout() : Void
 	{
-		var handler 		: MockStatelessServiceListener = new MockStatelessServiceListener();
-		var anotherHandler 	: MockStatelessServiceListener = new MockStatelessServiceListener();
+		var handler 		= new MockStatelessServiceListener();
+		var anotherHandler 	= new MockStatelessServiceListener();
 		
 		this.service.addHandler( AsyncStatelessServiceMessage.TIMEOUT, handler, handler.onServiceTimeout );
 		

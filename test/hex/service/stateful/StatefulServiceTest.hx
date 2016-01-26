@@ -29,7 +29,7 @@ class StatefulServiceTest
 	@Test( "Test 'setConfiguration' method" )
     public function testSetConfiguration() : Void
     {
-		var dummyConfig : ServiceConfiguration = new ServiceConfiguration();
+		var dummyConfig = new ServiceConfiguration();
 		this.service.setConfiguration( dummyConfig );
 		
 		Assert.equals( dummyConfig, this.service.getConfiguration(), "setted configuration should be returned" );
@@ -59,7 +59,7 @@ class StatefulServiceTest
 	@Test( "Test event subscription" )
     public function testAddAndRemoveHandler() : Void
 	{
-		var listener : MockAsyncEventListener = new MockAsyncEventListener();
+		var listener = new MockAsyncEventListener();
 		
 		this.service.addHandler( MockMessage.ON_SAMPLE, listener, listener.onAddHandlerSuccess );
 		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
@@ -76,7 +76,7 @@ class StatefulServiceTest
 	@Test( "Test removeAllListeners" )
     public function testRemoveAllListeners() : Void
 	{
-		var listener : MockAsyncEventListener = new MockAsyncEventListener();
+		var listener = new MockAsyncEventListener();
 		
 		this.service.addHandler( MockMessage.ON_SAMPLE, listener, listener.onAddHandlerSuccess );
 		this.service.getDispatcher().dispatch( MockMessage.ON_SAMPLE, [ "test" ] );
@@ -114,7 +114,7 @@ private class MockStatefulService extends StatefulService<ServiceConfiguration>
 
 private class MockMessage
 {
-	public static var ON_SAMPLE : MessageType = new MessageType( "onSample" );
+	public static var ON_SAMPLE = new MessageType( "onSample" );
 	
 	function new ()
 	{

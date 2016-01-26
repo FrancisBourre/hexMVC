@@ -12,7 +12,7 @@ class ServiceConfigurationTest
 	@Test( "Test 'serviceTimeout' default value from constructor" )
     public function testDefaultServiceTimeout() : Void
     {
-        var serviceConfiguration : ServiceConfiguration = new ServiceConfiguration();
+        var serviceConfiguration = new ServiceConfiguration();
 
         Assert.equals( 5000, serviceConfiguration.serviceTimeout, "'serviceTimeout' property value should be 5000 by default" );
     }
@@ -21,7 +21,7 @@ class ServiceConfigurationTest
     public function testServiceTimeout() : Void
     {
         var serviceTimeout : UInt = 400;
-        var serviceConfiguration : ServiceConfiguration = new ServiceConfiguration( serviceTimeout );
+        var serviceConfiguration = new ServiceConfiguration( serviceTimeout );
 
         Assert.equals( serviceTimeout, serviceConfiguration.serviceTimeout, "'serviceTimeout' property should be the same passed to constructor" );
     }

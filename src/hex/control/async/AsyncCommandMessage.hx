@@ -8,9 +8,9 @@ import hex.event.MessageType;
  */
 class AsyncCommandMessage
 {
-	public static var COMPLETE       : MessageType = new MessageType( "onAsyncCommandComplete" );
-    public static var FAIL           : MessageType = new MessageType( "onAsyncCommandFail" );
-    public static var CANCEL         : MessageType = new MessageType( "onAsyncCommandCancel" );
+	public static var COMPLETE       = new MessageType( "onAsyncCommandComplete" );
+    public static var FAIL           = new MessageType( "onAsyncCommandFail" );
+    public static var CANCEL         = new MessageType( "onAsyncCommandCancel" );
 
 	function new() 
 	{

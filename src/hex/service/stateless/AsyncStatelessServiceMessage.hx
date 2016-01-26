@@ -8,7 +8,7 @@ import hex.event.MessageType;
  */
 class AsyncStatelessServiceMessage
 {
-	public static var TIMEOUT : MessageType = new MessageType( "onServiceTimeout" );
+	public static var TIMEOUT = new MessageType( "onServiceTimeout" );
 	
 	function new() 
 	{

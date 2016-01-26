@@ -31,7 +31,7 @@ class JsonResultParser<DataType> implements IParser
 			Reflect.setProperty( jsonResult, this.dataProperty, { } );
 		}
 		
-		var serviceResultVO : ServiceResultVO<DataType> = new ServiceResultVO<DataType>();
+		var serviceResultVO = new ServiceResultVO<DataType>();
 		
 		serviceResultVO.success = jsonResult.success == true ? true : false;
 		serviceResultVO.errorCode = Std.parseInt(jsonResult.errorCode);

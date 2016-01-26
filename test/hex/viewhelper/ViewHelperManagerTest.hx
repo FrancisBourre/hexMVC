@@ -20,10 +20,10 @@ class ViewHelperManagerTest
 	@Test( "test getInstance" )
 	public function testGetInstance() : Void 
 	{
-		var listener : MainViewHelperManagerListener = new MainViewHelperManagerListener();
+		var listener = new MainViewHelperManagerListener();
 		ViewHelperManager.addGlobalListener( listener );
 		
-		var module : IModule = new MockModule();
+		var module = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
 		Assert.isNotNull( viewHelperManager, "viewHelperManager shouldn't be null" );
 		Assert.equals( 1, listener.onViewHelperManagerCreationCallbackCount, "creation event should be dispatched once" );
@@ -38,10 +38,10 @@ class ViewHelperManagerTest
 	@Test( "test release" )
 	public function testRelease() : Void 
 	{
-		var listener : MainViewHelperManagerListener = new MainViewHelperManagerListener();
+		var listener = new MainViewHelperManagerListener();
 		ViewHelperManager.addGlobalListener( listener );
 		
-		var module : IModule = new MockModule();
+		var module = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
 		var viewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
 		Assert.equals( 1, viewHelperManager.size(), "size should return 1" );
@@ -59,9 +59,9 @@ class ViewHelperManagerTest
 	@Test( "test buildViewHelper" )
 	public function testBuildViewHelper() : Void 
 	{
-		var listener : ViewHelperManagerListener = new ViewHelperManagerListener();
+		var listener = new ViewHelperManagerListener();
 		
-		var module : IModule = new MockModule();
+		var module = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
 		
 		viewHelperManager.addListener( listener );
@@ -104,9 +104,9 @@ class ViewHelperManagerTest
 	@Test( "test releaseViewHelper" )
 	public function testReleaseViewHelpers() : Void 
 	{
-		var listener : ViewHelperManagerListener = new ViewHelperManagerListener();
+		var listener = new ViewHelperManagerListener();
 		
-		var module : IModule = new MockModule();
+		var module = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
 		
 		viewHelperManager.addListener( listener );

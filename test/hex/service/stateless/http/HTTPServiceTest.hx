@@ -51,8 +51,8 @@ class HTTPServiceTest
 	@Test( "Test configuration accessors" )
     public function testConfigurationAccessors() : Void
     {
-		var service : MockHTTPService = new MockHTTPService();
-        var configuration : MockHTTPServiceConfiguration = new MockHTTPServiceConfiguration();
+		var service = new MockHTTPService();
+        var configuration = new MockHTTPServiceConfiguration();
 
 		Assert.isNull( service.getConfiguration(), "configuration should be null by default" );
 		
@@ -140,10 +140,10 @@ class HTTPServiceTest
 	@Test( "Test handleCancel" )
     public function testHandleCancel() : Void
     {
-		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var handler 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherHandler 	: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherListener : MockHTTPServiceListener = new MockHTTPServiceListener();
+		var listener 		= new MockHTTPServiceListener();
+		var handler 		= new MockHTTPServiceListener();
+		var anotherHandler 	= new MockHTTPServiceListener();
+		var anotherListener = new MockHTTPServiceListener();
 		
 		this.service.addHTTPServiceListener( listener );
 		this.service.addHTTPServiceListener( anotherListener );
@@ -183,10 +183,10 @@ class HTTPServiceTest
 	@Test( "Test handleComplete" )
     public function testHandleComplete() : Void
     {
-		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var handler 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherHandler 	: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherListener : MockHTTPServiceListener = new MockHTTPServiceListener();
+		var listener 		= new MockHTTPServiceListener();
+		var handler 		= new MockHTTPServiceListener();
+		var anotherHandler 	= new MockHTTPServiceListener();
+		var anotherListener = new MockHTTPServiceListener();
 		
 		this.service.addHTTPServiceListener( listener );
 		this.service.addHTTPServiceListener( anotherListener );
@@ -225,10 +225,10 @@ class HTTPServiceTest
 	@Test( "Test handleFail" )
     public function testHandleFail() : Void
     {
-		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var handler 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherHandler 	: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherListener : MockHTTPServiceListener = new MockHTTPServiceListener();
+		var listener 		= new MockHTTPServiceListener();
+		var handler 		= new MockHTTPServiceListener();
+		var anotherHandler 	= new MockHTTPServiceListener();
+		var anotherListener = new MockHTTPServiceListener();
 		
 		this.service.addHTTPServiceListener( listener );
 		this.service.addHTTPServiceListener( anotherListener );
@@ -267,10 +267,10 @@ class HTTPServiceTest
 	@Test( "test timeout" )
 	public function testTimeout() : Void
 	{
-		var listener 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var handler 		: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherHandler 	: MockHTTPServiceListener = new MockHTTPServiceListener();
-		var anotherListener : MockHTTPServiceListener = new MockHTTPServiceListener();
+		var listener 		= new MockHTTPServiceListener();
+		var handler 		= new MockHTTPServiceListener();
+		var anotherHandler 	= new MockHTTPServiceListener();
+		var anotherListener = new MockHTTPServiceListener();
 		
 		this.service.addHTTPServiceListener( listener );
 		this.service.addHTTPServiceListener( anotherListener );

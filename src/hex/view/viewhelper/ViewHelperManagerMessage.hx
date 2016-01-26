@@ -8,8 +8,8 @@ import hex.event.MessageType;
  */
 class ViewHelperManagerMessage
 {
-	static public var VIEW_HELPER_CREATION 	: MessageType = new MessageType( "onViewHelperCreation" );
-	static public var VIEW_HELPER_RELEASE 	: MessageType = new MessageType( "onViewHelperRelease" );
+	static public var VIEW_HELPER_CREATION 	= new MessageType( "onViewHelperCreation" );
+	static public var VIEW_HELPER_RELEASE 	= new MessageType( "onViewHelperRelease" );
 	
 	function new() 
 	{
