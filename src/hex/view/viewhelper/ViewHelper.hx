@@ -75,7 +75,10 @@ class ViewHelper implements IViewHelper
 
 			if ( view.visible )
 			{
-				view.visible = this._isVisible;
+				if ( view.visible != this._isVisible )
+				{
+					view.visible = this._isVisible;
+				}
 			}
 			else
 			{
