@@ -16,11 +16,12 @@ class DefaultHTTPServiceParameterFactory implements IHTTPServiceParameterFactory
 
 	public function setParameters( httpRequest : Http, parameters : HTTPServiceParameters, ?excludedParameters : Array<String> ) : Http 
 	{
-		var fieldList 		: Array<String> = Reflect.fields( parameters );
+		var fieldList 		: Array<String> = Type.getInstanceFields( Type.getClass(parameters) );
 		var fieldListLength : UInt = fieldList.length;
 		var parameter 		: String;
 		var property 		: Dynamic;
 		
+		trace(parameters, fieldList );
 		for ( i in 0...fieldListLength ) 
 		{
 			parameter = fieldList[ i ];
