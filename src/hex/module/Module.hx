@@ -12,6 +12,7 @@ import hex.di.IDependencyInjector;
 import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
+import hex.domain.DomainUtil;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
@@ -33,9 +34,9 @@ import hex.view.viewhelper.ViewHelperManager;
  */
 class Module implements IModule
 {
-	var _internalDispatcher : IDispatcher<{}>;
-	var _domainDispatcher 	: IDispatcher<{}>;
-	var _injector 			: Injector;
+	var _internalDispatcher 	: IDispatcher<{}>;
+	var _domainDispatcher 		: IDispatcher<{}>;
+	var _injector 				: Injector;
 	var _annotationProvider 	: IAnnotationProvider;
 
 	public function new()
@@ -45,7 +46,7 @@ class Module implements IModule
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
-		this._annotationProvider 	= AnnotationProvider.getInstance( this._injector );
+		this._annotationProvider = AnnotationProvider.getInstance( this._injector );
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
@@ -118,6 +119,10 @@ class Module implements IModule
 		{
 			this._domainDispatcher.dispatch( messageType, data );
 		}
+		else
+		{
+			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
+		}
 	}
 	
 	/**
@@ -125,7 +130,14 @@ class Module implements IModule
 	 */
 	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._domainDispatcher.addHandler( messageType, scope, callback );
+		if ( this._domainDispatcher != null )
+		{
+			this._domainDispatcher.addHandler( messageType, scope, callback );
+		}
+		else
+		{
+			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
+		}
 	}
 
 	/**
@@ -133,7 +145,14 @@ class Module implements IModule
 	 */
 	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._domainDispatcher.removeHandler( messageType, scope, callback );
+		if ( this._domainDispatcher != null )
+		{
+			this._domainDispatcher.removeHandler( messageType, scope, callback );
+		}
+		else
+		{
+			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
+		}
 	}
 	
 	function _dispatchPrivateMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
@@ -156,7 +175,7 @@ class Module implements IModule
 		{
 			this.isReleased = true;
 			this._onRelease();
-			_fireReleaseEvent();
+			this._fireReleaseEvent();
 
 			ViewHelperManager.release( this );
 			
@@ -164,6 +183,7 @@ class Module implements IModule
 			{
 				this._domainDispatcher.removeAllListeners();
 			}
+			
 			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
@@ -185,6 +205,7 @@ class Module implements IModule
 	/**
 	 * Fire initialisation event
 	 */
+	@:final
 	function _fireInitialisationEvent() : Void
 	{
 		if ( this.isInitialized )
@@ -200,6 +221,7 @@ class Module implements IModule
 	/**
 	 * Fire release event
 	 */
+	@:final
 	function _fireReleaseEvent() : Void
 	{
 		if ( this.isReleased )
@@ -263,12 +285,10 @@ class Module implements IModule
 	 */
 	function _addStatelessConfigClasses( configurations : Array<Class<IStatelessConfig>> ) : Void
 	{
-		var i : Int = configurations.length;
-		while ( --i > -1 )
+		for ( configurationClass in configurations )
 		{
-			var configurationClass : Class<IStatelessConfig> = configurations[ i ];
-			var configClassInstance : IStatelessConfig = this._injector.instantiateUnmapped( configurationClass );
-			configClassInstance.configure();
+			var config : IStatelessConfig = this._injector.instantiateUnmapped( configurationClass );
+			config.configure();
 		}
 	}
 	
@@ -279,14 +299,9 @@ class Module implements IModule
 	 */
 	function _addStatefulConfigs( configurations : Array<IStatefulConfig> ) : Void
 	{
-		var i : Int = configurations.length;
-		while ( --i > -1 )
+		for ( configuration in configurations )
 		{
-			var configuration : IStatefulConfig = configurations[ i ];
-			if ( configuration != null )
-			{
-				configuration.configure( this._injector, this._internalDispatcher, this );
-			}
+			configuration.configure( this._injector, this._internalDispatcher, this );
 		}
 	}
 	
@@ -297,6 +312,6 @@ class Module implements IModule
 	static function registerInternalDomain( module : IModule ) : Void
 	{
 		var key : String = Type.getClassName( Type.getClass( module ) ) + HashCodeFactory.getKey( module );
-		DomainExpert.getInstance().registerDomain( new Domain( key ) );
+		DomainExpert.getInstance().registerDomain( DomainUtil.getDomain( key, Domain ) );
 	}
 }

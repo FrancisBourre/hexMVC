@@ -42,8 +42,7 @@ class DomainExpert
 			}
 			else
 			{
-				this._subscribedModules.set( module, NoDomain.DOMAIN );
-				return NoDomain.DOMAIN;
+				return null;
 			}
 		}
 		else

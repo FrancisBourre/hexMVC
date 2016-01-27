@@ -23,17 +23,12 @@ class RuntimeDependencyChecker
         {
             var serviceDependencies : Array<Class<Dynamic>> = dependencies.getServiceDependencies();
 
-            var len : Int = serviceDependencies.length;
-            while ( --len > -1 )
+            for ( dependency in serviceDependencies )
             {
-                var dependency : Class<Dynamic> = serviceDependencies[ len ];
-
                 if ( !injector.hasMapping( dependency ) )
                 {
                     throw new RuntimeDependencyException( "'" + dependency + "' class dependency is not available during '" + Stringifier.stringify( module ) + "' initialisation." );
                 }
-
-                serviceDependencies.splice( len, 1 );
             }
         }
 
