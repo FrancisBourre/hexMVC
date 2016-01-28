@@ -64,11 +64,7 @@ class Module implements IModule
 		if ( !this.isInitialized )
 		{
 			this._onInitialisation();
-
-			#if debug
-				this._checkRuntimeDependencies( this._getRuntimeDependencies() );
-			#end
-
+			this._checkRuntimeDependencies( this._getRuntimeDependencies() );
 			this.isInitialized = true;
 			this._fireInitialisationEvent();
 		}
