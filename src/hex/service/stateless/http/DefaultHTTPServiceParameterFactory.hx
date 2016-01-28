@@ -21,7 +21,6 @@ class DefaultHTTPServiceParameterFactory implements IHTTPServiceParameterFactory
 		var parameter 		: String;
 		var property 		: Dynamic;
 		
-		trace(parameters, fieldList );
 		for ( i in 0...fieldListLength ) 
 		{
 			parameter = fieldList[ i ];
