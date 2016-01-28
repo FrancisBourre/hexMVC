@@ -22,7 +22,7 @@ import hex.module.IModule;
 class MacroExecutor implements IMacroExecutor
 {
 	@Inject
-	public var injector   					: IBasicInjector;
+	public var injector   			: IBasicInjector;
 	
 	var _commandIndex 				: Int;
 	var _commandCalledCount 		: Int;
@@ -124,8 +124,8 @@ class MacroExecutor implements IMacroExecutor
 		return command;
     }
 	
-	@:isVar public var subCommandIndex( get, null ) : Int;
-	public function get_subCommandIndex() : Int 
+	@:isVar public var commandIndex( get, null ) : Int;
+	public function get_commandIndex() : Int 
 	{
 		return this._commandIndex;
 	}
