@@ -22,7 +22,7 @@ interface IMacroExecutor
 	
 	var hasRunEveryCommand( get, null ) : Bool;
 
-	var subCommandIndex( get, null ) : Int;
+	var commandIndex( get, null ) : Int;
 
 	function addMapping( mapping : ICommandMapping ) : ICommandMapping;
 }

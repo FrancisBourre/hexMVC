@@ -19,6 +19,8 @@ import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.inject.Injector;
+import hex.log.DomainLogger;
+import hex.log.ILogger;
 import hex.log.Stringifier;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
@@ -38,6 +40,7 @@ class Module implements IModule
 	var _domainDispatcher 		: IDispatcher<{}>;
 	var _injector 				: Injector;
 	var _annotationProvider 	: IAnnotationProvider;
+	var _logger 				: ILogger;
 
 	public function new()
 	{
@@ -53,6 +56,8 @@ class Module implements IModule
 		this._injector.mapToValue( IDispatcher, this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
+		
+		this._logger = new DomainLogger( this.getDomain() );
 	}
 			
 	/**
@@ -64,11 +69,7 @@ class Module implements IModule
 		if ( !this.isInitialized )
 		{
 			this._onInitialisation();
-
-			#if debug
-				this._checkRuntimeDependencies( this._getRuntimeDependencies() );
-			#end
-
+			this._checkRuntimeDependencies( this._getRuntimeDependencies() );
 			this.isInitialized = true;
 			this._fireInitialisationEvent();
 		}
@@ -190,6 +191,8 @@ class Module implements IModule
 			this._annotationProvider.unregisterInjector( this._injector );
 			this._injector.destroyInstance( this );
 			this._injector.teardown();
+			
+			this._logger = null;
 		}
 		else
 		{
@@ -200,6 +203,11 @@ class Module implements IModule
 	public function getBasicInjector() : IBasicInjector
 	{
 		return this._injector;
+	}
+	
+	public function getLogger() : ILogger
+	{
+		return this._logger;
 	}
 	
 	/**

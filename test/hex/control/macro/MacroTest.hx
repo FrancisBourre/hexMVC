@@ -408,8 +408,8 @@ private class MockMacroExecutor implements IMacroExecutor
 		return this.hasRunEveryCommandReturnValue;
 	}
 	
-	public var subCommandIndex( get, null ) : Int;
-	function get_subCommandIndex() : Int 
+	public var commandIndex( get, null ) : Int;
+	function get_commandIndex() : Int 
 	{
 		return 0;
 	}

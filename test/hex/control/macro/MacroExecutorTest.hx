@@ -15,6 +15,7 @@ import hex.control.Request;
 import hex.error.IllegalStateException;
 import hex.MockDependencyInjector;
 import hex.module.IModule;
+import hex.module.MockModule;
 import hex.module.Module;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -34,7 +35,7 @@ class MacroExecutorTest
     public function setUp() : Void
     {
 		this._injector 			= new MockDependencyInjectorForMapping();
-		this._module 			= new Module();
+		this._module 			= new MockModule();
         this._macroExecutor 	= new MacroExecutor();
         this._mockMacro 		= new MockMacroListener( this._macroExecutor );
 		this._macroExecutor.setAsyncCommandListener( this._mockMacro );
@@ -51,13 +52,13 @@ class MacroExecutorTest
         this._mockMacro 		= null;
     }
 	
-	@Test( "Test subCommandIndex" )
-    public function testSubCommandIndex() : Void
+	@Test( "Test commandIndex" )
+    public function testCommandIndex() : Void
     {
-		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.equals( 0, this._macroExecutor.commandIndex, "'commandIndex' should return 0" );
 		this._macroExecutor.add( MockAsyncCommand );
 		this._macroExecutor.executeNextCommand();
-		Assert.equals( 1, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 1" );
+		Assert.equals( 1, this._macroExecutor.commandIndex, "'commandIndex' should return 1" );
 	}
 	
 	@Test( "Test hasNextCommandMapping" )
@@ -113,7 +114,7 @@ class MacroExecutorTest
 		
 		var commandMapping : ICommandMapping = this._macroExecutor.add( MockAsyncCommand );
 		Assert.equals( MockAsyncCommand, commandMapping.getCommandClass(), "'add' should return expected mapping with right same command class" );
-		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.equals( 0, this._macroExecutor.commandIndex, "'commandIndex' should return 0" );
 		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 	}
@@ -126,7 +127,7 @@ class MacroExecutorTest
 		var commandMapping = new CommandMapping( MockAsyncCommand );
 		var returnedCommandMapping : ICommandMapping = this._macroExecutor.addMapping( commandMapping );
 		Assert.equals( commandMapping, returnedCommandMapping, "'addMapping' should return ethe same command mapping" );
-		Assert.equals( 0, this._macroExecutor.subCommandIndex, "'subCommandIndex' should return 0" );
+		Assert.equals( 0, this._macroExecutor.commandIndex, "'commandIndex' should return 0" );
 		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 	}

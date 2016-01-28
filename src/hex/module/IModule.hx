@@ -3,6 +3,7 @@ package hex.module;
 import hex.di.IContextOwner;
 import hex.domain.Domain;
 import hex.event.MessageType;
+import hex.log.ILogger;
 
 /**
  * ...
@@ -25,4 +26,6 @@ interface IModule extends IContextOwner
     function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
 	
 	function getDomain() : Domain;
+	
+	function getLogger() : ILogger;
 }

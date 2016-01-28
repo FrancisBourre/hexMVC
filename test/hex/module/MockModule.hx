@@ -3,6 +3,7 @@ package hex.module;
 import hex.di.IBasicInjector;
 import hex.domain.Domain;
 import hex.event.MessageType;
+import hex.log.ILogger;
 import hex.module.IModule;
 
 /**
@@ -60,6 +61,11 @@ class MockModule implements IModule
 	}
 	
 	public function getBasicInjector() : IBasicInjector
+	{
+		return null;
+	}
+	
+	public function getLogger() : ILogger
 	{
 		return null;
 	}
