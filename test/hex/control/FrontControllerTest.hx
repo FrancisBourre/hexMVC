@@ -10,6 +10,7 @@ import hex.domain.Domain;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
+import hex.log.ILogger;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -181,6 +182,11 @@ private class MockModule implements IModule
 	}
 	
 	public function getBasicInjector() : IBasicInjector
+	{
+		return null;
+	}
+	
+	public function getLogger() : ILogger
 	{
 		return null;
 	}

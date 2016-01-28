@@ -15,6 +15,7 @@ import hex.control.Request;
 import hex.error.IllegalStateException;
 import hex.MockDependencyInjector;
 import hex.module.IModule;
+import hex.module.MockModule;
 import hex.module.Module;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -34,7 +35,7 @@ class MacroExecutorTest
     public function setUp() : Void
     {
 		this._injector 			= new MockDependencyInjectorForMapping();
-		this._module 			= new Module();
+		this._module 			= new MockModule();
         this._macroExecutor 	= new MacroExecutor();
         this._mockMacro 		= new MockMacroListener( this._macroExecutor );
 		this._macroExecutor.setAsyncCommandListener( this._mockMacro );

@@ -9,6 +9,7 @@ import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.inject.Injector;
+import hex.log.ILogger;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.dependency.IRuntimeDependencies;
@@ -58,7 +59,7 @@ class ModuleTest
 	@Test( "Test runtime dependencies" )
 	public function testRuntimeDependencies() : Void
 	{
-		var module : Module = new Module();
+		var module : MockModuleForTestingVirtualException = new MockModuleForTestingVirtualException();
 		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
 		
 		var anotherModule : MockModuleForTestingRuntimeDependencies = new MockModuleForTestingRuntimeDependencies();
@@ -71,7 +72,7 @@ class ModuleTest
 	@Test( "Test getBasicInjector behavior" )
 	public function testGetBasicInjector() : Void
 	{
-		var module : Module = new Module();
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
 		Assert.isNotNull( module.getBasicInjector(), "injector shouldn't be null" );
 	}
 	
@@ -91,6 +92,7 @@ class ModuleTest
 		
 		Assert.isInstanceOf( module.getPrivateDispatcher(), Dispatcher,  "private dispatcher should not be null" );
 		Assert.isInstanceOf( module.getPublicDispatcher(), Dispatcher,  "public dispatcher should not be null" );
+		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
 		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
@@ -113,9 +115,29 @@ class ModuleTest
 		Assert.isTrue( module.getPrivateDispatcher().isEmpty(),  "all listeners should have been removed" );
 		Assert.isTrue( module.getPublicDispatcher().isEmpty(),  "all listeners should have been removed" );
 		Assert.isNull( DomainExpert.getInstance().getDomainFor( module ), "domain should be null" );
+		Assert.isNull( module.getLogger(), "logger should be null" );
 		
 		Assert.methodCallThrows( IllegalStateException, module, module.release, [], "'release' called twice should throw 'IllegalStateException'" );
 		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
+	}
+}
+
+private class MockModuleForTestigInjector extends Module
+{
+	public function new()
+	{
+		Module.registerInternalDomain( this );
+		super();
+
+	}
+}
+
+private class MockModuleForTestingVirtualException extends Module
+{
+	public function new()
+	{
+		Module.registerInternalDomain( this );
+		super();
 	}
 }
 
@@ -254,6 +276,7 @@ private class MockModuleForTestingStatelessConfig extends Module
 	
 	public function new( ?statelessConfigClass : Class<IStatelessConfig> )
 	{
+		Module.registerInternalDomain( this );
 		super();
 		
 		this._addStatelessConfigClasses( [ statelessConfigClass ] );
@@ -285,6 +308,8 @@ private class MockModuleForTestingStateFulConfig extends Module
 	
 	public function new( ?statefulConfig : IStatefulConfig )
 	{
+		Module.registerInternalDomain( this );
+		
 		super();
 		
 		this._addStatefulConfigs( [statefulConfig] );

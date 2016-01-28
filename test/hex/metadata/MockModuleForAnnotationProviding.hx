@@ -15,6 +15,8 @@ class MockModuleForAnnotationProviding extends Module
 		
 	public function new() 
 	{
+		Module.registerInternalDomain( this );
+		
 		super();
 		
 		this._getDependencyInjector().mapToType( MockObjectWithAnnotation, MockObjectWithAnnotation );

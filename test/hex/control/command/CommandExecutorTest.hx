@@ -10,6 +10,7 @@ import hex.control.payload.ExecutionPayload;
 import hex.control.Request;
 import hex.MockDependencyInjector;
 import hex.module.IModule;
+import hex.module.MockModule;
 import hex.module.Module;
 import hex.unittest.assertion.Assert;
 
@@ -27,7 +28,7 @@ class CommandExecutorTest
     public function setUp() : Void
     {
 		this._injector 			= new MockDependencyInjectorForMapping();
-		this._module 			= new Module();
+		this._module 			= new MockModule();
         this._commandExecutor 	= new CommandExecutor( this._injector, _module );
     }
 

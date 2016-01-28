@@ -8,6 +8,7 @@ import hex.domain.Domain;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.MessageType;
+import hex.log.ILogger;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -242,6 +243,11 @@ private class MockModule implements IModule
 	}
 	
 	public function getBasicInjector() : IBasicInjector
+	{
+		return null;
+	}
+	
+	public function getLogger() : ILogger
 	{
 		return null;
 	}
