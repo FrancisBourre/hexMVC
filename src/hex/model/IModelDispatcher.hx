@@ -3,7 +3,7 @@ package hex.model;
 /**
  * @author Francis Bourre
  */
-interface IModelDispatcher<ListenerType:IModelListener>
+interface IModelDispatcher<ListenerType>
 {
 	function addListener( listener : ListenerType ) : Bool;
 
