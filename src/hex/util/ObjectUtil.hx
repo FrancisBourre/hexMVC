@@ -30,12 +30,6 @@ class ObjectUtil
 				if ( Std.is( target, ApplicationContext ) && coreFactory.isRegisteredWithKey( member ) )
 				{
 					result = coreFactory.locate( member );
-					if ( members.length > 0 )
-					{
-						//TODO: check if it's really good? I don't think so - grosmar
-						break;
-						ObjectUtil.fastEvalFromTarget( target, toEval, coreFactory );
-					}
 				}
 				#if js
 				else if ( Std.is( target, js.html.Element ) )

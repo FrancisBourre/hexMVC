@@ -25,6 +25,11 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	{
 		this._timestamp = Date.now().getTime ();
 		
+		if ( this._configuration == null )
+		{
+			throw new NullPointerException( "ServiceConfiguration shouldn't be null" );
+		}
+		
 		if ( this._configuration.serviceUrl == null )
 		{
 			throw new NullPointerException( "._createRequest failed. ServiceConfiguration.serviceUrl shouldn't be null" );
