@@ -11,7 +11,6 @@ import hex.event.IDispatcher;
 import hex.module.IModule;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
-import hex.service.monitor.IServiceMonitor;
 import hex.service.stateful.IStatefulService;
 
 /**
