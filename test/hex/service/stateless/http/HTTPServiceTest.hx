@@ -3,6 +3,7 @@ package hex.service.stateless.http;
 import haxe.Http;
 import hex.data.IParser;
 import hex.error.IllegalStateException;
+import hex.error.NullPointerException;
 import hex.event.MessageType;
 import hex.service.stateless.http.HTTPServiceConfiguration;
 import hex.unittest.assertion.Assert;
@@ -116,6 +117,19 @@ class HTTPServiceTest
 		#if js
 		}
 		#end
+	}
+	
+	@Test()
+	public function testErrorThrownWithServiceCall() : Void
+	{
+		var service = new MockHTTPService();
+		Assert.methodCallThrows( NullPointerException, service, service.call, [], "service call without configuration should throw 'NullPointerException'" );
+		
+		var configuration = new MockHTTPServiceConfiguration();
+		configuration.serviceUrl = null;
+		
+		service.setConfiguration( configuration );
+		Assert.methodCallThrows( NullPointerException, service, service.call, [], "service call without serviceUrl should throw 'NullPointerException'" );
 	}
 	
 	@Test( "test release" )

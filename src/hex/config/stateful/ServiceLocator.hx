@@ -102,7 +102,6 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 					injector.mapToValue( serviceClassKey, service );
 				}
 			}
-
 			else
 			{
 				throw new IllegalArgumentException( "Mapping failed on '" + service + "' This instance is not a stateful service nor a service class." );
