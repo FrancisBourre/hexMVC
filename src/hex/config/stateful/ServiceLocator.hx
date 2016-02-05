@@ -1,5 +1,6 @@
 package hex.config.stateful;
 
+import hex.collection.HashMap;
 import hex.collection.Locator;
 import hex.collection.LocatorMessage;
 import hex.di.IDependencyInjector;
@@ -10,6 +11,7 @@ import hex.event.IDispatcher;
 import hex.module.IModule;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
+import hex.service.monitor.IServiceMonitor;
 import hex.service.stateful.IStatefulService;
 
 /**
@@ -18,6 +20,8 @@ import hex.service.stateful.IStatefulService;
  */
 class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IStatefulConfig
 {
+	var _mapping = new HashMap<Class<Dynamic>, Dynamic>();
+	
 	public function new() 
 	{
 		super();
@@ -58,7 +62,7 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 		var keys = this.keys();
         for ( className in keys )
         {
-			var separatorIndex 	: Int 					= className.indexOf("#");
+			var separatorIndex 	: Int = className.indexOf("#");
 			var serviceClassKey : Class<Dynamic>;
 
 			if ( separatorIndex != -1 )
@@ -83,7 +87,6 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 				{
 					injector.mapToType( serviceClassKey, service );
 				}
-
 			}
 			else if ( Std.is( service, IStatefulService ) )
 			{
@@ -106,12 +109,19 @@ class ServiceLocator extends Locator<String, ServiceLocatorHelper> implements IS
 			{
 				throw new IllegalArgumentException( "Mapping failed on '" + service + "' This instance is not a stateful service nor a service class." );
 			}
+			
+			this._mapping.put( serviceClassKey, service );
 		}
 	}
 	
 	public function addService( service : Class<IService<ServiceConfiguration>>, value : Dynamic, ?mapName : String = "" ) : Bool
 	{
 		return this._registerService( service, new ServiceLocatorHelper( value, mapName ), mapName );
+	}
+	
+	public function getMapping() : HashMap<Class<Dynamic>, Dynamic>
+	{
+		return this._mapping;
 	}
 	
 	function _registerService( type : Class<IService<ServiceConfiguration>>, service : ServiceLocatorHelper, ?mapName : String = "" ) : Bool
