@@ -1,6 +1,7 @@
 package hex.service.monitor.http;
 
 import haxe.Timer;
+import hex.error.NullPointerException;
 import hex.inject.Injector;
 import hex.service.stateless.http.HTTPServiceConfiguration;
 import hex.service.stateless.http.IHTTPService;
@@ -31,7 +32,11 @@ class BasicHTTPServiceErrorStrategyTest
 		injector.mapToType( AnotherMockHTTPService, AnotherMockHTTPService );
 		
 		MockHTTPService.serviceCallCount = 0;
+		MockHTTPService.errorThrown = null;
+		
 		AnotherMockHTTPService.serviceCallCount = 0;
+		AnotherMockHTTPService.errorThrown = null;
+		
 		var service : IHTTPService<HTTPServiceConfiguration> = injector.getOrCreateNewInstance( MockHTTPService );
 		var anotherService : IHTTPService<HTTPServiceConfiguration> = injector.getOrCreateNewInstance( AnotherMockHTTPService );
 		service.call();
@@ -42,7 +47,10 @@ class BasicHTTPServiceErrorStrategyTest
 	
 	function _onCompleteTest() : Void
 	{
-		Assert.equals( 4, MockHTTPService.serviceCallCount, "service should have been called 3 times. One normal and 3 retry calls." );
-		Assert.equals( 7, AnotherMockHTTPService.serviceCallCount, "service should have been called 7 times. One normal and 6 retry calls." );
+		Assert.equals( 4, MockHTTPService.serviceCallCount, "service should have been called 3 times. One normal and 3 retry calls" );
+		Assert.isInstanceOf( MockHTTPService.errorThrown, NullPointerException, "Error thrown after retries should be an instance of 'NullPointerException'" );
+		
+		Assert.equals( 7, AnotherMockHTTPService.serviceCallCount, "service should have been called 7 times. One normal and 6 retry calls" );
+		Assert.isInstanceOf( AnotherMockHTTPService.errorThrown, NullPointerException, "Error thrown after retries should be an instance of 'NullPointerException'" );
 	}
 }

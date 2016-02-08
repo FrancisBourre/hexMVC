@@ -11,7 +11,8 @@ import hex.service.stateless.http.HTTPServiceConfiguration;
 @:rtti
 class MockHTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends HTTPService<ServiceConfigurationType>
 {
-	public static var serviceCallCount : UInt = 0;
+	public static var serviceCallCount 	: UInt 		= 0;
+	public static var errorThrown 		: Exception = null;
 	
 	@Inject
 	public var serviceMonitor : IServiceMonitor;
@@ -45,7 +46,7 @@ class MockHTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends
 		{
 			if ( !this.serviceMonitor.handleError( this, new MockHTTPServiceException( e.message ) ) )
 			{
-				throw e;
+				MockHTTPService.errorThrown = e;
 			}
 		}
 	}

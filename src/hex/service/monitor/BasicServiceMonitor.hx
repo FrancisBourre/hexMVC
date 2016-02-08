@@ -27,7 +27,7 @@ class BasicServiceMonitor extends StatefulService<ServiceConfiguration> implemen
 	}
 	
 	public function handleError<ServiceType:Service>( service : ServiceType, error : Exception ) : Bool
-	{trace("@handleError");
+	{
 		var serviceMonitorStrategy : IServiceMonitorStrategy<ServiceType> = null;
 		
 		var serviceClasses : Array<Class<Dynamic>> = ClassUtil.getInheritanceChainFrom( service );
@@ -36,7 +36,6 @@ class BasicServiceMonitor extends StatefulService<ServiceConfiguration> implemen
 			if ( this._map.containsKey( serviceClass ) )
 			{
 				serviceMonitorStrategy = this._map.get( serviceClass );
-				trace( "#####", Stringifier.stringify( serviceMonitorStrategy ) + HashCodeFactory.getKey( serviceMonitorStrategy ) );
 				break;
 			}
 		}
@@ -51,13 +50,13 @@ class BasicServiceMonitor extends StatefulService<ServiceConfiguration> implemen
 	}
 	
 	public function mapStrategy<ServiceType:Service>( serviceClass : Class<ServiceType>, strategy : IServiceMonitorStrategy<ServiceType> ) : Bool
-	{trace( "map:", Type.getClassName( serviceClass ) );
+	{
 		if ( !this._map.containsKey( serviceClass ) )
 		{
 			this._map.put( serviceClass, strategy );
 			return true;
 		}
-		trace( "mapStrategy failed with '" +  Stringifier.stringify( serviceClass ) + "'. this class was already mapped." );
+
 		throw new IllegalArgumentException( "mapStrategy failed with '" +  Stringifier.stringify( serviceClass ) + "'. this class was already mapped." );
 	}
 	
