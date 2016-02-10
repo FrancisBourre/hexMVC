@@ -126,7 +126,6 @@ private class MockModuleForTestigInjector extends Module
 {
 	public function new()
 	{
-		Module.registerInternalDomain( this );
 		super();
 
 	}
@@ -136,7 +135,6 @@ private class MockModuleForTestingVirtualException extends Module
 {
 	public function new()
 	{
-		Module.registerInternalDomain( this );
 		super();
 	}
 }
@@ -172,7 +170,6 @@ private class MockModuleForTestingInitialisation extends Module
 	
 	public function new()
 	{
-		Module.registerInternalDomain( this );
 		super();
 	}
 	
@@ -204,7 +201,6 @@ private class MockModuleForTestingRelease extends Module
 	
 	public function new()
 	{
-		Module.registerInternalDomain( this );
 		super();
 	}
 	
@@ -238,7 +234,6 @@ private class MockModuleForTestingConstructor extends Module
 	
 	public function new()
 	{
-		Module.registerInternalDomain( this );
 		super();
 
 		this.injector 			= this._injector;
@@ -252,7 +247,6 @@ private class MockModuleForTestingRuntimeDependencies extends Module
 {
 	public function new()
 	{
-		Module.registerInternalDomain( this );
 		super();
 	}
 	
@@ -276,7 +270,6 @@ private class MockModuleForTestingStatelessConfig extends Module
 	
 	public function new( ?statelessConfigClass : Class<IStatelessConfig> )
 	{
-		Module.registerInternalDomain( this );
 		super();
 		
 		this._addStatelessConfigClasses( [ statelessConfigClass ] );
@@ -308,8 +301,6 @@ private class MockModuleForTestingStateFulConfig extends Module
 	
 	public function new( ?statefulConfig : IStatefulConfig )
 	{
-		Module.registerInternalDomain( this );
-		
 		super();
 		
 		this._addStatefulConfigs( [statefulConfig] );

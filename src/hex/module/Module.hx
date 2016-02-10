@@ -312,14 +312,4 @@ class Module implements IModule
 			configuration.configure( this._injector, this._internalDispatcher, this );
 		}
 	}
-	
-	/**
-	 * Only use it before super() call in constructor if this module is not 
-	 * used in IoC architecture to allow module communication.
-	 */
-	static function registerInternalDomain( module : IModule ) : Void
-	{
-		var key : String = Type.getClassName( Type.getClass( module ) ) + HashCodeFactory.getKey( module );
-		DomainExpert.getInstance().registerDomain( DomainUtil.getDomain( key, Domain ) );
-	}
 }
