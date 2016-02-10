@@ -92,11 +92,14 @@ class HTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends Asy
 	{
 		if ( this._request != null )
 		{
-			this._request.onData 	= null;
+			if ( this._status == StatelessService.WAS_NEVER_USED )
+			{
+				this._request.cancel();
+			}
+
+			/*this._request.onData 	= null;
 			this._request.onError 	= null;
-			this._request.onStatus 	= null;
-			
-			this._request.cancel();
+			this._request.onStatus 	= null;*/
 		}
 
 		super.release();
