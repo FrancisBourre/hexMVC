@@ -26,6 +26,11 @@ class BasicServiceMonitor extends StatefulService<ServiceConfiguration> implemen
 		this._map = new HashMap();
 	}
 	
+	override public function createConfiguration():Void 
+	{
+		
+	}
+	
 	public function handleError<ServiceType:Service>( service : ServiceType, error : Exception ) : Bool
 	{
 		var serviceMonitorStrategy : IServiceMonitorStrategy<ServiceType> = null;
