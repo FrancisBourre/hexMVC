@@ -310,8 +310,6 @@ class HTTPServiceTest
 		Assert.equals( this.service, listener.lastServiceReceived, "'event.target' received by listener should be HTTPService instance" );
 		Assert.equals( this.service, handler.lastServiceReceived, "'event.target' received by handler should be HTTPService instance" );
 		
-		//Assert.equals( AsyncStatelessServiceMessage.TIMEOUT, anotherListener.lastMessageTypeReceived, "'event.type' received by listener should be AsyncStatelessServiceMessage.TIMEOUT" );
-		
 		this.service.addHandler( AsyncStatelessServiceMessage.TIMEOUT, anotherHandler, anotherHandler.onServiceTimeout );
 		Assert.equals( 0, anotherHandler.onServiceTimeoutCallCount, "'post-handler' callback should not be triggered" );
 		
