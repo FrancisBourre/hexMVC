@@ -1,0 +1,28 @@
+{
+  "name": "hexmvc",
+  "version": "1.0.0",
+  "description": "hexMVC is a powerful MVC+S framework",
+  
+  "directories": {
+    "src": "src",
+	"test": "test" 
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DoclerLabs/hexMVC.git"
+  },
+  "keywords": [
+    "haxe",
+    "mvc",
+    "hexmachina"
+  ],
+  "author": "DoclerLabs",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DoclerLabs/hexMVC/issues"
+  },
+  "homepage": "https://github.com/DoclerLabs/hexMVC#readme"
+}
