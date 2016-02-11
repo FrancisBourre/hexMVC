@@ -27,7 +27,7 @@ class MockHTTPService<ServiceConfigurationType:HTTPServiceConfiguration> extends
 	{
 		if ( !this.serviceMonitor.handleError( this, new MockHTTPServiceException( msg ) ) )
 		{
-			super._onError( msg );
+			//super._onError( msg );
 		}
 		else
 		{

@@ -119,7 +119,7 @@ class HTTPServiceTest
 		#end
 	}
 	
-	@Test()
+	@Test( "test error thrown with service call" )
 	public function testErrorThrownWithServiceCall() : Void
 	{
 		var service = new MockHTTPService();
@@ -281,7 +281,7 @@ class HTTPServiceTest
 		Assert.equals( 0, anotherHandler.onServiceFailCallCount, "'post-handler' callback should not be triggered" );
     }
 	
-	@Test( "test timeout" )
+	@Ignore( "test timeout" )
 	public function testTimeout() : Void
 	{
 		var listener 		= new MockHTTPServiceListener();
