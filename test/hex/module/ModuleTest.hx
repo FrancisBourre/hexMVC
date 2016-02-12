@@ -8,16 +8,17 @@ import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
+import hex.event.MessageType;
 import hex.inject.Injector;
 import hex.log.ILogger;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
+import hex.module.IModule;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyException;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
-import hex.service.stateless.StatelessService;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -65,7 +66,7 @@ class ModuleTest
 		var anotherModule : MockModuleForTestingRuntimeDependencies = new MockModuleForTestingRuntimeDependencies();
 		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
 		
-		anotherModule.mapServiceClass( StatelessService );
+		anotherModule.mapServiceClass( MockService );
 		anotherModule.initialize();
 	}
 	
@@ -326,5 +327,38 @@ private class MockStatefulConfig implements IStatefulConfig
 		this.injector 		= injector;
 		this.dispatcher 	= dispatcher;
 		this.module 		= module;
+	}
+}
+
+private class MockService implements IService<ServiceConfiguration>
+{
+	public function createConfiguration() : Void 
+	{
+		
+	}
+	
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 
+	{
+		
+	}
+	
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 
+	{
+		
+	}
+	
+	public function getConfiguration() : ServiceConfiguration 
+	{
+		return null;
+	}
+	
+	public function setConfiguration( configuration : ServiceConfiguration ) : Void 
+	{
+		
+	}
+	
+	public function removeAllListeners() : Void 
+	{
+		
 	}
 }

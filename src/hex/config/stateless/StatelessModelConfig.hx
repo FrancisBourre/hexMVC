@@ -1,5 +1,6 @@
 package hex.config.stateless;
 
+import hex.config.stateless.IStatelessConfig;
 import hex.di.IDependencyInjector;
 import hex.error.VirtualMethodException;
 

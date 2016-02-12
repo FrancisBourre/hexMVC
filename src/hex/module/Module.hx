@@ -24,6 +24,7 @@ import hex.log.ILogger;
 import hex.log.Stringifier;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
+import hex.module.IModule;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;

@@ -1,5 +1,6 @@
 package hex.model;
 
+import hex.model.ModelDispatcher;
 import hex.unittest.assertion.Assert;
 
 /**

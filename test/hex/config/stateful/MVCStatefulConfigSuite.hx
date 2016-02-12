@@ -7,5 +7,5 @@ package hex.config.stateful;
 class MVCStatefulConfigSuite
 {
 	@Suite( "Stateful" )
-    public var list : Array<Class<Dynamic>> = [ ServiceLocatorTest, StatefulCommandConfigTest ];
+    public var list : Array<Class<Dynamic>> = [ StatefulCommandConfigTest ];
 }

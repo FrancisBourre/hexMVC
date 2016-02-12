@@ -1,5 +1,6 @@
 package hex.config.stateful;
 
+import hex.config.stateful.IStatefulConfig;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.IFrontController;
