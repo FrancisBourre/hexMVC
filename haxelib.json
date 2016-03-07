@@ -1,0 +1,16 @@
+{
+  "name": "hexmvc",
+  "license": "MIT",
+  "classPath": "src",
+  "tags": ["hexmachina", "mvc", "oop"],
+  "description": "hexMVC is a powerful MVC+S framework",
+  "contributors": ["doclerlabs"],
+  "releasenote": "First release. Still alpha testing",
+  "version": "0.1.0",
+  "url": "https://github.com/DoclerLabs/hexMVC",
+  "dependencies": 
+  {
+	"hexcore": "",
+	"hexinject": ""
+  }
+}
