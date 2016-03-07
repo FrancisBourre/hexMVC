@@ -10,7 +10,7 @@
   "url": "https://github.com/DoclerLabs/hexMVC",
   "dependencies": 
   {
-	"hexcore": "",
-	"hexinject": ""
+	"hexcore": "git:https://github.com/DoclerLabs/hexCore.git",
+	"hexinject": "git:https://github.com/DoclerLabs/hexInject.git"
   }
 }
