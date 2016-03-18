@@ -28,6 +28,7 @@
   
   "devDependencies": {
     "hexcore": "git+https://github.com/DoclerLabs/hexCore.git#master",
+    "hexannotation": "git+https://github.com/DoclerLabs/hexAnnotation.git#master",
     "hexspeedinject": "git+https://github.com/DoclerLabs/hexSpeedInject.git#master",
     "hexunit": "git+https://github.com/DoclerLabs/hexUnit.git#master"
   }

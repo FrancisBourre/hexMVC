@@ -6,6 +6,7 @@ hexMVC is a powerful MVC+S framework
 ## Dependencies
 
 * [hexCore](https://github.com/DoclerLabs/hexCore)
+* [hexAnnotation](https://github.com/DoclerLabs/hexAnnotation)
 * [hexSpeedInject](https://github.com/DoclerLabs/hexSpeedInject)
 	
 	
