@@ -1,5 +1,6 @@
 package hex.control.macro;
 
+import hex.di.ISpeedInjectorContainer;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
@@ -18,8 +19,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-@:rtti
-class MacroExecutor implements IMacroExecutor
+class MacroExecutor implements IMacroExecutor implements ISpeedInjectorContainer
 {
 	@Inject
 	public var injector   			: IBasicInjector;
@@ -43,7 +43,7 @@ class MacroExecutor implements IMacroExecutor
 		// Set injector
 		var injector : IBasicInjector = null;
 		var contextOwner : IContextOwner = mapping.getContextOwner();
-		
+
 		if ( contextOwner != null )
 		{
 			injector = contextOwner.getBasicInjector();
@@ -52,7 +52,7 @@ class MacroExecutor implements IMacroExecutor
 		{
 			injector = this.injector;
 		}
-		
+
 		// Build payloads collection
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
 		if ( request != null )

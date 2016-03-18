@@ -20,7 +20,7 @@ addons:
 install:
   - git clone --recursive https://github.com/DoclerLabs/hexUnit.git ./hexunit
   - git clone --recursive https://github.com/DoclerLabs/hexCore.git ./hexcore
-  - git clone --recursive https://github.com/DoclerLabs/hexInject.git ./hexinject
+  - git clone --recursive https://github.com/DoclerLabs/hexSpeedInject.git ./hexspeedinject
   - export DISPLAY=:99.0;
   - export AUDIODEV=null;
   - haxe flash/install.hxml

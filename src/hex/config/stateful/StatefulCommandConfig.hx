@@ -1,5 +1,6 @@
 package hex.config.stateful;
 
+import hex.di.error.MissingMappingException;
 import hex.config.stateful.IStatefulConfig;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
@@ -7,7 +8,6 @@ import hex.control.IFrontController;
 import hex.di.IDependencyInjector;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
-import hex.inject.errors.InjectorMissingMappingError;
 import hex.module.IModule;
 
 /**
@@ -33,7 +33,7 @@ class StatefulCommandConfig implements IStatefulConfig
 		
 		if ( this._frontController == null )
 		{
-			throw new InjectorMissingMappingError( "configure failed to retrieve IFrontController mapping" );
+			throw new MissingMappingException( "configure failed to retrieve IFrontController mapping" );
 		}
 	}
 	

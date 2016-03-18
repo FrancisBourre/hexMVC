@@ -4,8 +4,8 @@ package hex.metadata;
  * ...
  * @author Francis Bourre
  */
-@:rtti
-class MockWithoutIAnnotationParsableImplementation
+import hex.di.ISpeedInjectorContainer;
+class MockWithoutIAnnotationParsableImplementation implements ISpeedInjectorContainer
 {
 	@language( "welcome" )
 	public var languageTest : String;

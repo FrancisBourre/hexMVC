@@ -1,5 +1,7 @@
 package hex.config.stateful;
 
+import hex.di.error.MissingMappingException;
+import hex.di.InjectionEvent;
 import hex.control.command.BasicCommand;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
@@ -7,8 +9,6 @@ import hex.control.IFrontController;
 import hex.di.IDependencyInjector;
 import hex.event.Dispatcher;
 import hex.event.MessageType;
-import hex.inject.errors.InjectorMissingMappingError;
-import hex.MockDependencyInjector;
 import hex.module.MockModule;
 import hex.unittest.assertion.Assert;
 
@@ -23,7 +23,7 @@ class StatefulCommandConfigTest
     public function testConfigureThrowsInjectorMissingMappingError() : Void
     {
 		var config = new StatefulCommandConfig();
-        Assert.methodCallThrows( InjectorMissingMappingError, config, config.configure, [ new MockDependencyInjector(), new Dispatcher<{}>(), new MockModule() ], "constructor should throw IllegalArgumentException" );
+        Assert.methodCallThrows( MissingMappingException, config, config.configure, [ new MockDependencyInjector(), new Dispatcher<{}>(), new MockModule() ], "constructor should throw IllegalArgumentException" );
     }
 	
 	@Test( "Test 'map' behavior" )
@@ -129,5 +129,15 @@ private class MockInjectorWithFrontController implements IDependencyInjector
 	public function unmap( type : Class<Dynamic>, name : String = '' ) : Void 
 	{
 		
+	}
+
+	public function addEventListener( eventType : String, callback : InjectionEvent->Void ) : Bool
+	{
+		return null;
+	}
+
+	public function removeEventListener( eventType : String, callback : InjectionEvent->Void ) : Bool
+	{
+		return null;
 	}
 }

@@ -1,11 +1,11 @@
 package hex.metadata;
 
+import hex.di.IDependencyInjector;
 import haxe.rtti.Meta;
 import hex.collection.HashMap;
 import hex.core.IAnnotationParsable;
 import hex.error.IllegalArgumentException;
-import hex.inject.IInjector;
-import hex.inject.InjectionEvent;
+import hex.di.InjectionEvent;
 import hex.log.Stringifier;
 
 /**
@@ -26,7 +26,7 @@ class AnnotationProvider implements IAnnotationProvider
 		this._instances 			= new Map();
 	}
 	
-	static public function getInstance( injector : IInjector = null ) : IAnnotationProvider
+	static public function getInstance( injector : IDependencyInjector = null ) : IAnnotationProvider
 	{
 		if ( AnnotationProvider._Instance == null )
 		{
@@ -152,14 +152,14 @@ class AnnotationProvider implements IAnnotationProvider
 		return classMetaDataVO;
 	}
 	
-	public function registerInjector( injector : IInjector ) : Void
+	public function registerInjector( injector : IDependencyInjector ) : Void
 	{
-		injector.addInjectionEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
+		injector.addEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
 	}
 
-	public function unregisterInjector( injector : IInjector ) : Void
+	public function unregisterInjector( injector : IDependencyInjector ) : Void
 	{
-		injector.removeInjectionEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
+		injector.removeEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
 	}
 	
 	function _onPostconstruct( event : InjectionEvent ) : Void

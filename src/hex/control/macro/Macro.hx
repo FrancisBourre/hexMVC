@@ -1,5 +1,6 @@
 package hex.control.macro;
 
+import hex.di.ISpeedInjectorContainer;
 import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
@@ -13,8 +14,7 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
-@:rtti
-class Macro extends AsyncCommand implements IAsyncCommandListener
+class Macro extends AsyncCommand implements IAsyncCommandListener implements ISpeedInjectorContainer
 {
 	var _request 			: Request;
 	var _isAtomic 			: Bool = true;

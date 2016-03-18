@@ -1,10 +1,11 @@
 package hex.event;
 
+import hex.di.ISpeedInjectorContainer;
+import hex.di.SpeedInjector;
 import hex.control.async.AsyncCommand;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
 import hex.control.Request;
-import hex.inject.Injector;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -90,7 +91,7 @@ class ClassAdapterTest
 	{
 		var m : MacroAdapterStrategy = cast Type.createInstance( adapterClass, [] );
 		var me = new MacroExecutor();
-		me.injector = new Injector();
+		me.injector = new SpeedInjector();
 		m.macroExecutor = me;
 		return m;
 	}
@@ -169,8 +170,7 @@ private class MockValueObject
 	}
 }
 
-@:rtti
-private class MockAsyncCommand extends AsyncCommand
+private class MockAsyncCommand extends AsyncCommand implements ISpeedInjectorContainer
 {
 	@Inject
 	public var data : MockValueObject;

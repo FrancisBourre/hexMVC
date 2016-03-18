@@ -1,5 +1,6 @@
 package hex.module;
 
+import hex.di.SpeedInjector;
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.control.FrontController;
@@ -18,7 +19,6 @@ import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
-import hex.inject.Injector;
 import hex.log.DomainLogger;
 import hex.log.ILogger;
 import hex.log.Stringifier;
@@ -39,13 +39,13 @@ class Module implements IModule
 {
 	var _internalDispatcher 	: IDispatcher<{}>;
 	var _domainDispatcher 		: IDispatcher<{}>;
-	var _injector 				: Injector;
+	var _injector 				: SpeedInjector;
 	var _annotationProvider 	: IAnnotationProvider;
 	var _logger 				: ILogger;
 
 	public function new()
 	{
-		this._injector = new Injector();
+		this._injector = new SpeedInjector();
 		this._injector.mapToValue( IBasicInjector, this._injector );
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
