@@ -2,14 +2,14 @@ package hex.config.stateless;
 
 import hex.config.stateless.IStatelessConfig;
 import hex.di.IDependencyInjector;
+import hex.di.ISpeedInjectorContainer;
 import hex.error.VirtualMethodException;
 
 /**
  * ...
  * @author Francis Bourre
  */
-@:rtti
-class StatelessModelConfig implements IStatelessConfig
+class StatelessModelConfig implements IStatelessConfig implements ISpeedInjectorContainer
 {
 	@Inject
 	public var injector : IDependencyInjector;

@@ -1,5 +1,6 @@
 package hex.config.stateful;
 
+import hex.di.ISpeedInjectorContainer;
 import hex.di.error.MissingMappingException;
 import hex.config.stateful.IStatefulConfig;
 import hex.control.command.ICommand;
@@ -14,8 +15,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-@:rtti
-class StatefulCommandConfig implements IStatefulConfig
+class StatefulCommandConfig implements IStatefulConfig implements ISpeedInjectorContainer
 {
 	var _frontController : IFrontController;
 	

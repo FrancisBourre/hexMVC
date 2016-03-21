@@ -4,6 +4,7 @@ import hex.config.stateless.IStatelessConfig;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.IFrontController;
+import hex.di.ISpeedInjectorContainer;
 import hex.error.VirtualMethodException;
 import hex.event.MessageType;
 
@@ -11,8 +12,7 @@ import hex.event.MessageType;
  * ...
  * @author Francis Bourre
  */
-@:rtti
-class StatelessCommandConfig implements IStatelessConfig
+class StatelessCommandConfig implements IStatelessConfig implements ISpeedInjectorContainer
 {
 	@Inject
 	var frontController : IFrontController;
