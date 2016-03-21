@@ -50,7 +50,8 @@ class Module implements IModule
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
 		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
-		this._annotationProvider = AnnotationProvider.getInstance( this._injector );
+		this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain() );
+		this._annotationProvider.registerInjector( this._injector );
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );

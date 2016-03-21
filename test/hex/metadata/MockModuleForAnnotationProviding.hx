@@ -21,6 +21,11 @@ class MockModuleForAnnotationProviding extends Module
 		this._getDependencyInjector().mapToType( MockWithoutIAnnotationParsableImplementation, MockWithoutIAnnotationParsableImplementation );
 	}
 	
+	public function getAnnotationProvider() : AnnotationProvider
+	{
+		return cast this._annotationProvider;
+	}
+	
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		return return new RuntimeDependencies();

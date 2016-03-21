@@ -8,12 +8,14 @@ import hex.unittest.assertion.Assert;
  */
 class AnnotationProviderTest
 {
-	var _colors 	= new Map<String, UInt>();
-	var _text 		= new Map<String, String>();
+	var _annotationProvider = new AnnotationProvider();
+	var _colors 			= new Map<String, UInt>();
+	var _text 				= new Map<String, String>();
 		
 	@Before
     public function setUp() : Void
     {
+		this._annotationProvider = new AnnotationProvider();
         this._colors.set( "white", 0xFFFFFF );
 		this._text.set( "welcome", "Bienvenue" );
     }
@@ -23,19 +25,18 @@ class AnnotationProviderTest
     {
         this._colors.remove( "white" );
 		this._text.remove( "welcome" );
-		AnnotationProvider.getInstance().clear();
+		this._annotationProvider.clear();
     }
 	
 	@Test( "Test register before parsing" )
 	public function testRegisterBeforeParsing() : Void
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
-		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this, this.getText );
 		
-		annotationProvider.parse( mockObjectWithMetaData );
+		this._annotationProvider.parse( mockObjectWithMetaData );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -46,12 +47,11 @@ class AnnotationProviderTest
 	public function testRegisterAfterParsing() : Void
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
-		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		annotationProvider.parse( mockObjectWithMetaData );
+		this._annotationProvider.parse( mockObjectWithMetaData );
 		
-		annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this, this.getText );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -61,12 +61,12 @@ class AnnotationProviderTest
 	@Test( "Test with module" )
 	public function testWithModule() : Void
 	{
-		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
-
-		annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		annotationProvider.registerMetaData( "language", this, this.getText );
-
 		var module = new MockModuleForAnnotationProviding();
+		this._annotationProvider = module.getAnnotationProvider();
+		
+		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this, this.getText );
+		
 		module.initialize();
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
@@ -78,12 +78,11 @@ class AnnotationProviderTest
 	public function testClearMethod() : Void
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
-		var annotationProvider : IAnnotationProvider = AnnotationProvider.getInstance();
 		
-		annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		annotationProvider.clear();
+		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		this._annotationProvider.clear();
 		
-		annotationProvider.parse( mockObjectWithMetaData );
+		this._annotationProvider.parse( mockObjectWithMetaData );
 		Assert.equals( 0, mockObjectWithMetaData.colorTest, "property should be set to 0 default value" );
 	}
 	

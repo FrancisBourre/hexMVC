@@ -1,11 +1,12 @@
 package hex.metadata;
 
-import hex.di.IDependencyInjector;
 import haxe.rtti.Meta;
 import hex.collection.HashMap;
 import hex.core.IAnnotationParsable;
-import hex.error.IllegalArgumentException;
+import hex.di.IDependencyInjector;
 import hex.di.InjectionEvent;
+import hex.domain.Domain;
+import hex.error.IllegalArgumentException;
 import hex.log.Stringifier;
 
 /**
@@ -14,31 +15,36 @@ import hex.log.Stringifier;
  */
 class AnnotationProvider implements IAnnotationProvider
 {
-	static var _Instance 		: IAnnotationProvider = null;
+	static var _Instance 		: IAnnotationProvider = new AnnotationProvider();
+	static var _Domains			= new Map<Domain, IAnnotationProvider>();
 	static var _META_DATA 		= new HashMap<Class<Dynamic>, ClassMetaDataVO>();
 	
 	var _metadata 				: Map<String, ProviderHandler>;
 	var _instances 				: Map<String, Array<InstanceVO>>;
 
-	function new() 
+	public function new() 
 	{
 		this._metadata 				= new Map();
 		this._instances 			= new Map();
 	}
 	
-	static public function getInstance( injector : IDependencyInjector = null ) : IAnnotationProvider
+	static public function registerToDomain( annotationProvider : IAnnotationProvider, domain : Domain ) : Bool
 	{
-		if ( AnnotationProvider._Instance == null )
+		if ( AnnotationProvider._Domains.exists( domain ) )
 		{
-			AnnotationProvider._Instance = new AnnotationProvider();
+			return false;
 		}
-
-		if ( injector != null )
+		else
 		{
-			AnnotationProvider._Instance.registerInjector( injector );
+			AnnotationProvider._Domains.set( domain, annotationProvider );
+			return true;
 		}
-
-		return AnnotationProvider._Instance;
+		
+	}
+	
+	static public function getAnnotationProvider( domain : Domain ) : IAnnotationProvider
+	{
+		return AnnotationProvider._Domains.exists( domain ) ? AnnotationProvider._Domains.get( domain ) : AnnotationProvider._Instance;
 	}
 	
 	public function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void 

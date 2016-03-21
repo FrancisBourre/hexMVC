@@ -3,7 +3,7 @@ package hex.event;
 import hex.control.async.AsyncCommand;
 import hex.core.IAnnotationParsable;
 import hex.error.IllegalArgumentException;
-import hex.metadata.AnnotationProvider;
+import hex.metadata.IAnnotationProvider;
 import hex.util.ClassUtil;
 
 /**
@@ -12,6 +12,8 @@ import hex.util.ClassUtil;
  */
 class ClassAdapter
 {
+	var _annotationProvider : IAnnotationProvider;
+	
 	var _callbackTarget 	: Dynamic;
 	var _callbackMethod 	: Dynamic;
 	
@@ -43,8 +45,15 @@ class ClassAdapter
 		this._factoryMethod = factoryMethod;
 	}
 	
+	public function setAnnotationProvider( annotationProvider : IAnnotationProvider ) : Void
+	{
+		this._annotationProvider = annotationProvider;
+	}
+	
 	public function getCallbackAdapter() : Dynamic
 	{
+		var annotationProvider 			: IAnnotationProvider 	= this._annotationProvider;
+		
 		var callbackTarget 				: Dynamic 				= this._callbackTarget;
 		var callbackMethod 				: Dynamic 				= this._callbackMethod;
 		
@@ -99,7 +108,7 @@ class ClassAdapter
 				
 				if ( Std.is( aSyncCommand, IAnnotationParsable ) )
 				{
-					AnnotationProvider.getInstance().parse( aSyncCommand );
+					annotationProvider.parse( aSyncCommand );
 				}
 	
 				adapterInstance = aSyncCommand;
@@ -115,7 +124,7 @@ class ClassAdapter
 			{
 				if ( Std.is( adapterInstance, IAnnotationParsable ) )
 				{
-					AnnotationProvider.getInstance().parse( adapterInstance );
+					annotationProvider.parse( adapterInstance );
 				}
 				
 				#if debug
