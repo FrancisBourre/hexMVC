@@ -15,7 +15,6 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-@:rtti
 class FrontController extends Locator<MessageType, ICommandMapping> implements IFrontController
 {
     var _module     		: IModule;

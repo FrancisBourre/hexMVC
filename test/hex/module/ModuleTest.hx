@@ -277,7 +277,6 @@ private class MockModuleForTestingStatelessConfig extends Module
 	}
 }
 
-@:rtti
 private class MockStatelessConfig implements IStatelessConfig
 {
 	static public var wasInstantiated 		: Int = 0;
