@@ -1,6 +1,6 @@
 package hex.view.viewhelper;
 
-import hex.di.ISpeedInjectorContainer;
+import hex.di.IInjectorContainer;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
@@ -10,7 +10,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-class ViewHelper implements IViewHelper implements ISpeedInjectorContainer
+class ViewHelper implements IViewHelper implements IInjectorContainer
 {
 	public static var DEFAULT_VISIBLE:Bool = true;
 	

@@ -1,13 +1,13 @@
 package hex.metadata;
 
-import hex.di.ISpeedInjectorContainer;
 import hex.core.IAnnotationParsable;
+import hex.di.IInjectorContainer;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class MockObjectWithAnnotation implements IAnnotationParsable implements ISpeedInjectorContainer
+class MockObjectWithAnnotation implements IAnnotationParsable implements IInjectorContainer
 {
 	@color( "white" )
 	public var colorTest : Int = 0;

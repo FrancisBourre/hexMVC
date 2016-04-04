@@ -7,7 +7,7 @@ hexMVC is a powerful MVC+S framework
 
 * [hexCore](https://github.com/DoclerLabs/hexCore)
 * [hexAnnotation](https://github.com/DoclerLabs/hexAnnotation)
-* [hexSpeedInject](https://github.com/DoclerLabs/hexSpeedInject)
+* [hexInject](https://github.com/DoclerLabs/hexInject)
 	
 	
 ## Module example with service locator
@@ -67,7 +67,7 @@ private class MStatefulCommandConfig extends StatefulCommandConfig
 
 ## Asynchronous command example with injections
 ```haxe
-private class TestCommand extends AsyncCommand implements IHTTPServiceListener<GitServiceConfiguration> implements ISpeedInjectorContainer
+private class TestCommand extends AsyncCommand implements IHTTPServiceListener<GitServiceConfiguration> implements IInjectorContainer
 {
 	@Inject
     public var model : IMModel;

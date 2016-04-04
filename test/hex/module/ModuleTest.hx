@@ -1,9 +1,9 @@
 package hex.module;
 
-import hex.di.SpeedInjector;
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.di.IDependencyInjector;
+import hex.di.Injector;
 import hex.domain.DomainExpert;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
@@ -31,7 +31,7 @@ class ModuleTest
 	public function testconstructor() : Void
 	{
 		var module : MockModuleForTestingConstructor = new MockModuleForTestingConstructor();
-		Assert.isInstanceOf( module.injector, SpeedInjector, "injector shouldn't be null" );
+		Assert.isInstanceOf( module.injector, Injector, "injector shouldn't be null" );
 		Assert.isInstanceOf( module.dispatcher, Dispatcher, "dispatcher shouldn't be null" );
 		Assert.isInstanceOf( module.domainDispatcher, IDispatcher, "domainDispatcher shouldn't be null" );
 		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
@@ -228,7 +228,7 @@ private class MockModuleForTestingRelease extends Module
 
 private class MockModuleForTestingConstructor extends Module
 {
-	public var injector 			: SpeedInjector;
+	public var injector 			: Injector;
 	public var dispatcher 			: IDispatcher<{}>;
 	public var domainDispatcher		: IDispatcher<{}>;
 	public var annotationProvider	: IAnnotationProvider;
@@ -266,7 +266,7 @@ private class MockModuleForTestingRuntimeDependencies extends Module
 
 private class MockModuleForTestingStatelessConfig extends Module
 {
-	public var injector 	: SpeedInjector;
+	public var injector 	: Injector;
 	public var dispatcher 	: IDispatcher<{}>;
 	
 	public function new( ?statelessConfigClass : Class<IStatelessConfig> )
@@ -296,7 +296,7 @@ private class MockStatelessConfig implements IStatelessConfig
 
 private class MockModuleForTestingStateFulConfig extends Module
 {
-	public var injector 	: SpeedInjector;
+	public var injector 	: Injector;
 	public var dispatcher 	: IDispatcher<{}>;
 	
 	public function new( ?statefulConfig : IStatefulConfig )

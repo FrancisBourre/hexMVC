@@ -1,10 +1,10 @@
 package hex.config.stateless;
 
 import hex.config.stateless.IStatelessConfig;
+import hex.control.IFrontController;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
-import hex.control.IFrontController;
-import hex.di.ISpeedInjectorContainer;
+import hex.di.IInjectorContainer;
 import hex.error.VirtualMethodException;
 import hex.event.MessageType;
 
@@ -12,7 +12,7 @@ import hex.event.MessageType;
  * ...
  * @author Francis Bourre
  */
-class StatelessCommandConfig implements IStatelessConfig implements ISpeedInjectorContainer
+class StatelessCommandConfig implements IStatelessConfig implements IInjectorContainer
 {
 	@Inject
 	var frontController : IFrontController;

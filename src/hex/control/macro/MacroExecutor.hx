@@ -1,6 +1,5 @@
 package hex.control.macro;
 
-import hex.di.ISpeedInjectorContainer;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
@@ -12,6 +11,7 @@ import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
 import hex.di.IBasicInjector;
 import hex.di.IContextOwner;
+import hex.di.IInjectorContainer;
 import hex.error.IllegalStateException;
 import hex.module.IModule;
 
@@ -19,7 +19,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-class MacroExecutor implements IMacroExecutor implements ISpeedInjectorContainer
+class MacroExecutor implements IMacroExecutor implements IInjectorContainer
 {
 	@Inject
 	public var injector   			: IBasicInjector;

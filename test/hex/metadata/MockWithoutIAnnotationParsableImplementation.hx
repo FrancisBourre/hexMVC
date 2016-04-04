@@ -1,11 +1,11 @@
 package hex.metadata;
 
+import hex.di.IInjectorContainer;
 /**
  * ...
  * @author Francis Bourre
  */
-import hex.di.ISpeedInjectorContainer;
-class MockWithoutIAnnotationParsableImplementation implements ISpeedInjectorContainer
+class MockWithoutIAnnotationParsableImplementation implements IInjectorContainer
 {
 	@language( "welcome" )
 	public var languageTest : String;

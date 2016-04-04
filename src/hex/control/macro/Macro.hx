@@ -1,11 +1,11 @@
 package hex.control.macro;
 
-import hex.di.ISpeedInjectorContainer;
 import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
+import hex.di.IInjectorContainer;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
 import hex.log.Stringifier;
@@ -14,7 +14,7 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
-class Macro extends AsyncCommand implements IAsyncCommandListener implements ISpeedInjectorContainer
+class Macro extends AsyncCommand implements IAsyncCommandListener implements IInjectorContainer
 {
 	var _request 			: Request;
 	var _isAtomic 			: Bool = true;
