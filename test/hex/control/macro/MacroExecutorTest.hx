@@ -330,6 +330,8 @@ private class MockCommand implements ICommand
 {
 	var _owner : IModule;
 	
+	public var executeMethodName( default, null ) : String = "execute";
+	
 	public function new()
 	{
 		
@@ -358,11 +360,6 @@ private class MockCommand implements ICommand
 	public function setOwner( owner : IModule ) : Void 
 	{
 		this._owner = owner;
-	}
-	
-	public function getExecuteMethod() : Dynamic
-	{
-		return this.execute;
 	}
 }
 

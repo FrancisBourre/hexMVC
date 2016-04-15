@@ -53,6 +53,8 @@ private class MockAsyncCommandForTestingListeners extends MockAsyncCommand
 
 private class MockAsyncCommand implements IAsyncCommand
 {
+	public var executeMethodName( default, null ) : String = "execute";
+	
 	public function new()
 	{
 		
@@ -176,11 +178,6 @@ private class MockAsyncCommand implements IAsyncCommand
     {
         return false;
     }
-	
-	public function getExecuteMethod() : Dynamic
-	{
-		return this.execute;
-	}
 }
 
 private class ASyncCommandListener implements IAsyncCommandListener

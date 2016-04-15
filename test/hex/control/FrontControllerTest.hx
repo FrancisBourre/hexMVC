@@ -95,6 +95,7 @@ private class MockCommand implements ICommand
 {
 	public static var executeCallCount 				: Int = 0;
 	public static var requestParameter 				: Request;
+	public var executeMethodName( default, null ) 	: String = "execute";
 	
 	public function new()
 	{
@@ -125,11 +126,6 @@ private class MockCommand implements ICommand
 	public function setOwner( owner : IModule ) : Void 
 	{
 		
-	}
-	
-	public function getExecuteMethod() : Dynamic
-	{
-		return this.execute;
 	}
 }
 

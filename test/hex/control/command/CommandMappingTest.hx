@@ -163,6 +163,9 @@ private class MockAsyncCommandListener
 private class MockCommand implements ICommand
 {
 	public static var returnedExecutionPayload : Array<ExecutionPayload> = [ new ExecutionPayload( "s", String ) ];
+	
+	public var executeMethodName( default, null ) : String = "execute";
+	
 	public function new()
 	{
 		
@@ -191,10 +194,5 @@ private class MockCommand implements ICommand
 	public function setOwner( owner : IModule ) : Void 
 	{
 		
-	}
-	
-	public function getExecuteMethod() : Dynamic
-	{
-		return this.execute;
 	}
 }

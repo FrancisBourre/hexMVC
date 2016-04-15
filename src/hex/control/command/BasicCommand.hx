@@ -13,6 +13,8 @@ import hex.module.IModule;
 class BasicCommand implements ICommand
 {
 	var _owner : IModule;
+	
+	public var executeMethodName( default, null ) : String = "execute";
 
 	public function new() 
 	{
@@ -42,10 +44,5 @@ class BasicCommand implements ICommand
 	public function setOwner( owner : IModule ) : Void 
 	{
 		this._owner = owner;
-	}
-	
-	public function getExecuteMethod() : Dynamic
-	{
-		return this.execute;
 	}
 }

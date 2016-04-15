@@ -25,6 +25,8 @@ class AsyncCommand implements IAsyncCommand
     var _status                         : String;
     var _dispatcher 					: Dispatcher<{}>;
     var _owner                          : IModule;
+	
+	public var executeMethodName( default, null ) : String = "execute";
 
     public function new()
     {
@@ -197,11 +199,6 @@ class AsyncCommand implements IAsyncCommand
             this._owner = owner;
         }
     }
-	
-	public function getExecuteMethod() : Dynamic
-	{
-		return this.execute;
-	}
 
     /**
      * Private

@@ -9,9 +9,7 @@ import hex.module.IModule;
  */
 interface ICommand
 {
-    //function execute( ?e : Request ) : Void;
-
-	function getExecuteMethod() : Dynamic;
+	var executeMethodName( default, null ) : String;
 
     function getResult() : Array<Dynamic>;
 	
