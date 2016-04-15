@@ -247,7 +247,7 @@ private class MockCommandWithReturnedPayload extends BasicCommand
 		super();
 	}
 	
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}
@@ -268,7 +268,7 @@ private class MockCommandUsingMappingResults extends BasicCommand
 		super();
 	}
 	
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}
@@ -320,7 +320,7 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		Timer.delay( this._handleComplete, 50 );
 	}

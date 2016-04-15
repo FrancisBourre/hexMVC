@@ -60,12 +60,12 @@ class AsyncCommandTest
 		Assert.equals( module, this._asyncCommand.getOwner(), "'getOwner' should return defined owner" );
     }
 	
-	@Test( "Test execute" )
+	/*@Test( "Test execute" )
     public function testExecute() : Void
     {
 		var asyncCommand = new AsyncCommand();
 		Assert.methodCallThrows( VirtualMethodException, asyncCommand, asyncCommand.execute, [], "'execute' should throw VirtualMethodException" );
-    }
+    }*/
 	
 	@Test( "Test cancel" )
     public function testCancel() : Void
@@ -148,7 +148,7 @@ class AsyncCommandTest
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?request : Request ) : Void
+	public function execute( ?request : Request ) : Void
 	{
 		this._handleComplete();
 	}

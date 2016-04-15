@@ -273,7 +273,7 @@ class MacroTest
 
 private class MockAsyncCommand extends AsyncCommand
 {
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		Timer.delay( this._handleComplete, 50 );
 	}

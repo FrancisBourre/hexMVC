@@ -175,7 +175,7 @@ private class MockAsyncCommand extends AsyncCommand implements IInjectorContaine
 	@Inject
 	public var data : MockValueObject;
 	
-	override public function execute( ?request : Request ) : Void
+	public function execute( ?request : Request ) : Void
     {
 		this.data.value += "!";
 		this._handleComplete();

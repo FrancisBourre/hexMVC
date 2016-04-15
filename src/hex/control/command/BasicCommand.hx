@@ -18,12 +18,6 @@ class BasicCommand implements ICommand
 
 	public function new() 
 	{
-		
-	}
-	
-	public function execute( ?request : Request ) : Void 
-	{
-		throw new VirtualMethodException( this + ".execute must be overridden" );
 	}
 	
 	public function getResult() : Array<Dynamic> 

@@ -125,7 +125,7 @@ private class MockCommand extends BasicCommand
 		super();
 	}
 	
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}
@@ -146,7 +146,7 @@ private class MockCommandUsingMappingResults extends BasicCommand
 		super();
 	}
 	
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		
 	}
@@ -191,7 +191,7 @@ private class MockAsyncCommandForTestingExecution extends AsyncCommand
 		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
 	}
 	
-	override public function execute( ?request : Request ) : Void 
+	public function execute( ?request : Request ) : Void 
 	{
 		MockAsyncCommandForTestingExecution.executeCallCount++;
 		MockAsyncCommandForTestingExecution.request = request;
