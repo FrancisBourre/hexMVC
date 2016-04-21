@@ -14,7 +14,7 @@ class Controller implements IController
 	
 	public function new( /*injector : IDependencyInjector, ?module : IModule*/ ) 
 	{
-		this._injector 				= injector;
-        this._module 				= module;
+		//this._injector 				= injector;
+        //this._module 				= module;
 	}
 }

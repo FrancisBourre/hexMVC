@@ -38,8 +38,8 @@ class ControllerTest
 private class MockController extends Controller implements IMockController
 {
 	@CommandClass( "hex.control.MockCommandClass" )
-	@FireOnce( true )
-	@MethodName( "doSomething" )
+	//@FireOnce( true )
+	//@MethodName( "doSomething" )
 	public function print( text : String ) : Void { }
 
 	public function sum( a : Int, b : Int ) : Int 

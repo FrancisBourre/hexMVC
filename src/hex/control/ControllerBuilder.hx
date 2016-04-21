@@ -20,12 +20,12 @@ class ControllerBuilder
 		var fields = Context.getBuildFields();
 		
 		//parse annotations
-		fields = hex.annotation.AnnotationReader.parseMetadata( "hex.control.IController", [ "CommandClass", "FireOnce", "MethodName" ], true );
+		/*fields =*/ hex.annotation.AnnotationReader.parseMetadata( "hex.control.IController", [ "CommandClass", "FireOnce", "MethodName" ], true );
 		
 		//get data result
 		var data = hex.annotation.AnnotationReader._static_classes[ hex.annotation.AnnotationReader._static_classes.length - 1 ];
 		
-		trace( data.methods. );
+		trace( data.methods );
 		
 		/*
 		annotationDatas	: Array<AnnotationData>,
@@ -48,8 +48,6 @@ class ControllerBuilder
 						m.set( m.name, m.params );
 					}
 					*/
-					
-					
 					
 					for ( m in field.meta )
 					{
