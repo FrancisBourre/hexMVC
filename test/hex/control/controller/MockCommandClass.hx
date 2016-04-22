@@ -1,4 +1,4 @@
-package hex.control;
+package hex.control.controller;
 
 import hex.control.command.BasicCommand;
 

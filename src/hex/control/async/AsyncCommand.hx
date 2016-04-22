@@ -177,6 +177,7 @@ class AsyncCommand implements IAsyncCommand
     {
         return null;
     }
+	
 	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;

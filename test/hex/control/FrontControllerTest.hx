@@ -24,7 +24,6 @@ class FrontControllerTest
 	var _dispatcher 		: IDispatcher<{}>;
     var _injector   		: MockDependencyInjector;
 	var _module     		: MockModule;
-	
 	var _frontcontroller 	: FrontController;
 
     @Before
@@ -39,7 +38,10 @@ class FrontControllerTest
     @After
     public function tearDown() : Void
     {
-        this._frontcontroller = null;
+		this._dispatcher 		= null;
+		this._injector 			= null;
+		this._module 			= null;
+        this._frontcontroller 	= null;
     }
 	
 	@Test( "Test map" )

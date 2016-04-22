@@ -1,4 +1,4 @@
-package hex.control;
+package hex.control.controller;
 
 /**
  * @author Francis Bourre
