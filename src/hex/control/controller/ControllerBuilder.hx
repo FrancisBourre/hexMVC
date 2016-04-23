@@ -3,6 +3,7 @@ package hex.control.controller;
 import haxe.macro.Context;
 import haxe.macro.Expr.Field;
 import haxe.macro.Expr.TypePath;
+import hex.annotation.MethodAnnotationData;
 
 /**
  * ...
@@ -34,12 +35,8 @@ class ControllerBuilder
 		
 		for ( method in data.methods )
 		{
-			var commandClassMeta = method.annotationDatas.filter( function ( v ) { return v.annotationName == "CommandClass"; } );
-			if ( commandClassMeta.length > 0 )
-			{
-				//tMap.set( method.methodName, getTypePath( commandClassName ) );
-				tMap.set( method.methodName, commandClassMeta[ 0 ].annotationKeys[ 0 ] );
-			}
+			tMap.set( method.methodName, getAnnotation( method, "CommandClass" ) );
+			trace( getAnnotation( method, "FireMessageType" ) );
 		}
 		
 		for ( field in fields ) 
@@ -51,22 +48,28 @@ class ControllerBuilder
 					var methodName  = field.name;
 					if ( tMap.exists( methodName ) )
 					{
-						var tp = getFieldExpression( tMap.get( methodName ) );
-						var args = [for (arg in func.args) macro $i { arg.name } ];
-
-						func.expr = macro 
+						var commandClassName : String = tMap.get( methodName );
+						
+						if ( commandClassName != null )
 						{
-							var command = this._injector.getOrCreateNewInstance( $p { tp } );
-							
-							var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
-							if ( isAsync )
+							var tp = getFieldExpression( commandClassName );
+							var args = [for (arg in func.args) macro $i { arg.name } ];
+
+							func.expr = macro 
 							{
-								command.preExecute();
-							}
-							
-							Reflect.callMethod( command, Reflect.field( command, command.executeMethodName ), $a { args } );
-							return new $responderTypePath();
-						};
+								var command = this._injector.getOrCreateNewInstance( $p { tp } );
+								
+								var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
+								if ( isAsync )
+								{
+									command.preExecute();
+								}
+								
+								Reflect.callMethod( command, Reflect.field( command, command.executeMethodName ), $a { args } );
+								return new $responderTypePath();
+							};
+						}
+						
 					}
 					
 				default : 
@@ -74,6 +77,19 @@ class ControllerBuilder
 		}
 
 		return fields;
+	}
+
+	static function getAnnotation( method : MethodAnnotationData, annotationName : String )
+	{
+		var meta = method.annotationDatas.filter( function ( v ) { return v.annotationName == annotationName; } );
+		if ( meta.length > 0 )
+		{
+			return meta[ 0 ].annotationKeys[ 0 ];
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	static function getTypePath( className : String ) : TypePath

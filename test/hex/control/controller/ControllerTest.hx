@@ -54,7 +54,7 @@ class ControllerTest
 private class MockController extends Controller implements IMockController
 {
 	@CommandClass( "hex.control.controller.MockCommandClass" )
-	@FireMessageType( hex.ioc.assembler.ApplicationAssemblerMessage.MODULES_INITIALIZED )
+	@FireMessageType( "hex.ioc.assembler.ApplicationAssemblerMessage.MODULES_INITIALIZED" )
 	@ExecuteMethodName( "doSomething" )
 	@ExecuteOnce( true )
 	public function print( text : String ) : IControllerResponder { }
