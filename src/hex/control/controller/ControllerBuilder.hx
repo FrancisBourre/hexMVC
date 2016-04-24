@@ -36,7 +36,7 @@ class ControllerBuilder
 		for ( method in data.methods )
 		{
 			tMap.set( method.methodName, getAnnotation( method, "CommandClass" ) );
-			trace( getAnnotation( method, "FireMessageType" ) );
+			//trace( getAnnotation( method, "FireMessageType" ) );
 		}
 		
 		for ( field in fields ) 
