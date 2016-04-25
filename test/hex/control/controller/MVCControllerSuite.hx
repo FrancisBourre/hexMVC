@@ -4,8 +4,8 @@ package hex.control.controller;
  * ...
  * @author Francis Bourre
  */
-class ControllerSuite
+class MVCControllerSuite
 {
-	@Suite("Controller")
+	@Suite( "Controller" )
     public var list : Array<Class<Dynamic>> = [ ControllerTest ];
 }
