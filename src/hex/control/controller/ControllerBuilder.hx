@@ -2,8 +2,8 @@ package hex.control.controller;
 
 import haxe.macro.Context;
 import haxe.macro.Expr.Field;
-import haxe.macro.Expr.TypePath;
 import hex.annotation.MethodAnnotationData;
+import hex.util.MacroUtil;
 
 /**
  * ...
@@ -21,7 +21,7 @@ class ControllerBuilder
 		var fields = Context.getBuildFields();
 		
 		//parse annotations
-		fields = hex.annotation.AnnotationReader.parseMetadata( "hex.control.controller.IController", [ "CommandClass", "FireMessageType", "ExecuteMethodName", "ExecuteOnce" ], true );
+		fields = hex.annotation.AnnotationReader.parseMetadata( "hex.control.controller.IController", [ "CommandClass", "FireMessageType", "ExecuteOnce" ], true );
 		
 		//get data result
 		var data = hex.annotation.AnnotationReader._static_classes[ hex.annotation.AnnotationReader._static_classes.length - 1 ];
@@ -31,7 +31,7 @@ class ControllerBuilder
 		var tMap : Map<String, String> = new Map();
 		
 		//Create responder
-		var responderTypePath = getTypePath( Type.getClassName( ControllerResponder ) );
+		var responderTypePath = MacroUtil.getTypePath( Type.getClassName( ControllerResponder ) );
 		
 		for ( method in data.methods )
 		{
@@ -52,7 +52,7 @@ class ControllerBuilder
 						
 						if ( commandClassName != null )
 						{
-							var tp = getFieldExpression( commandClassName );
+							var tp = MacroUtil.getPack( commandClassName );
 							var args = [for (arg in func.args) macro $i { arg.name } ];
 
 							func.expr = macro 
@@ -69,7 +69,6 @@ class ControllerBuilder
 								return new $responderTypePath();
 							};
 						}
-						
 					}
 					
 				default : 
@@ -90,20 +89,5 @@ class ControllerBuilder
 		{
 			return null;
 		}
-	}
-	
-	static function getTypePath( className : String ) : TypePath
-	{
-		Context.getType( className );
-		var pack = className.split( "." );
-		var className = pack[ pack.length -1 ];
-		pack.splice( pack.length - 1, 1 );
-		return { pack: pack, name: className };
-	}
-	
-	static function getFieldExpression( className : String )
-	{
-		Context.getType( className );
-		return className.split( "." );
 	}
 }
