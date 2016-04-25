@@ -4,6 +4,7 @@ import hex.control.command.ICommand;
 import hex.control.Request;
 import hex.control.payload.ExecutionPayload;
 import hex.error.VirtualMethodException;
+import hex.log.ILogger;
 import hex.module.IModule;
 
 /**
@@ -28,6 +29,11 @@ class BasicCommand implements ICommand
 	public function getReturnedExecutionPayload() : Array<ExecutionPayload>
 	{
 		return null;
+	}
+	
+	public function getLogger() : ILogger 
+	{
+		return this._owner.getLogger();
 	}
 	
 	public function getOwner() : IModule 

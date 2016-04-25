@@ -5,6 +5,7 @@ import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.payload.ExecutionPayload;
+import hex.log.ILogger;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -58,6 +59,11 @@ private class MockAsyncCommand implements IAsyncCommand
 	public function new()
 	{
 		
+	}
+	
+	public function getLogger() : ILogger
+	{
+		return this.getOwner().getLogger();
 	}
 	
 	public function preExecute() : Void 

@@ -7,6 +7,7 @@ import hex.control.payload.ExecutionPayload;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
+import hex.log.ILogger;
 import hex.log.Stringifier;
 import hex.module.IModule;
 
@@ -33,6 +34,11 @@ class AsyncCommand implements IAsyncCommand
         this._status 			= AsyncCommand.WAS_NEVER_USED;
         this._dispatcher        = new Dispatcher<{}>();
     }
+	
+	public function getLogger() : ILogger
+	{
+		return this._owner.getLogger();
+	}
 
     public function preExecute() :  Void
     {

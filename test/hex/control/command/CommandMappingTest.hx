@@ -5,6 +5,7 @@ import hex.control.async.AsyncHandler;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
+import hex.log.ILogger;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -169,6 +170,11 @@ private class MockCommand implements ICommand
 	public function new()
 	{
 		
+	}
+	
+	public function getLogger() : ILogger
+	{
+		return this.getOwner().getLogger();
 	}
 	
 	public function execute( ?request : Request ) : Void 

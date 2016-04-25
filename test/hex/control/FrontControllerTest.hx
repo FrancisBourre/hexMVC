@@ -104,6 +104,11 @@ private class MockCommand implements ICommand
 		
 	}
 	
+	public function getLogger() : ILogger
+	{
+		return this.getOwner().getLogger();
+	}
+	
 	public function execute( ?request : Request ) : Void 
 	{
 		MockCommand.executeCallCount++;

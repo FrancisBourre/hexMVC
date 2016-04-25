@@ -14,6 +14,7 @@ import hex.control.payload.ExecutionPayload;
 import hex.control.Request;
 import hex.error.IllegalStateException;
 import hex.MockDependencyInjector;
+import hex.log.ILogger;
 import hex.module.IModule;
 import hex.module.MockModule;
 import hex.module.Module;
@@ -335,6 +336,11 @@ private class MockCommand implements ICommand
 	public function new()
 	{
 		
+	}
+	
+	public function getLogger() : ILogger
+	{
+		return this.getOwner().getLogger();
 	}
 
 	public function execute( ?request : Request ) : Void 
