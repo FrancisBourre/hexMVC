@@ -17,8 +17,9 @@ class ClassAdapter
 	var _callbackTarget 	: Dynamic;
 	var _callbackMethod 	: Dynamic;
 	
-	var _adapterClass 		: Class<IAdapterStrategy>;
-	var _adapterInstance	: IAdapterStrategy;
+	var _adapterClass 		: Class<Dynamic>;
+	var _adapterInstance	: Dynamic;
+	var _adapterMethodName	: String;
 	
 	var _factoryTarget 		: Dynamic;
 	var _factoryMethod 		: Dynamic;
@@ -34,9 +35,10 @@ class ClassAdapter
 		this._callbackMethod = callbackMethod;
 	}
 
-	public function setAdapterClass( adapterClass : Class<IAdapterStrategy> ) : Void
+	public function setAdapterClass( adapterClass : Class<Dynamic>, adapterMethodName : String = "adapt" ) : Void
 	{
 		this._adapterClass = adapterClass;
+		this._adapterMethodName = adapterMethodName;
 	}
 	
 	public function setFactoryMethod( factoryTarget : Dynamic, factoryMethod : Dynamic ) : Void
@@ -59,6 +61,7 @@ class ClassAdapter
 		
 		var adapterInstance 			: IAdapterStrategy 		= null;
 		var adapterClass 				: Class<Dynamic> 		= null;
+		var adapterMethodName 			: String 				= this._adapterMethodName;
 		
 		var factoryTarget 				: Dynamic 				= null;
 		var factoryMethod 				: Dynamic 				= null;
@@ -100,9 +103,9 @@ class ClassAdapter
 				}
 				
 				#if debug
-					if ( Std.is(aSyncCommand, IAdapterStrategy) == false )
+					if ( !Std.is( aSyncCommand, IAdapterStrategy ) )
 					{
-						throw new IllegalArgumentException("adapterInstance class should extend AdapterStrategy. Check if you passed the correct class");
+						throw new IllegalArgumentException( "adapterInstance class should extend AdapterStrategy. Check if you passed the correct class" );
 					}
 				#end
 				
@@ -127,16 +130,16 @@ class ClassAdapter
 					annotationProvider.parse( adapterInstance );
 				}
 				
-				#if debug
-					if ( Std.is(adapterInstance, IAdapterStrategy) == false )
+				/*#if debug
+					if ( !Std.is( adapterInstance, IAdapterStrategy ) )
 					{
 						throw new IllegalArgumentException("adapterInstance class should extend AdapterStrategy. Check if you passed the correct class");
 					}
-				#end
-				
-				result = Reflect.callMethod( adapterInstance, adapterInstance.adapt, [rest] );
-			}
+				#end*/
 
+				result = adapterMethodName == "adapt" ? Reflect.callMethod( adapterInstance, adapterInstance.adapt, rest ) : Reflect.callMethod( adapterInstance, Reflect.field( adapterInstance, adapterMethodName ), rest );
+			}
+			
 			Reflect.callMethod( callbackTarget, callbackMethod, Std.is( result, Array ) ? result : [result] );
 		}
 		

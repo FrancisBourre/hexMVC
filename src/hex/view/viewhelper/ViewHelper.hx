@@ -15,7 +15,7 @@ class ViewHelper implements IViewHelper implements IInjectorContainer
 	public static var DEFAULT_VISIBLE:Bool = true;
 	
 	@Inject
-	public var dispatcher 			: IDispatcher<{}>;
+	public var dispatcher 	: IDispatcher<{}>;
 	
 	var _dispatcher 		: Dispatcher<{}>;
 	var _owner 				: IModule;

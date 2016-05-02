@@ -23,14 +23,17 @@ class ClassAdapterTest
 		this._classAdapter = new ClassAdapter();
 		this._classAdapter.setCallBackMethod( this, this.simpleCallbackTest );
 		this._classAdapter.setAdapterClass( MockAdapterClass );
-		
-		this.triggerCallbackAdapter( this._classAdapter.getCallbackAdapter() );
+		this._classAdapter.getCallbackAdapter()( "hello", 4 );
     }
 	
-	function triggerCallbackAdapter( callbackAdapter : Dynamic ) : Void
-	{
-		callbackAdapter( "hello", 4 );
-	}
+	@Test( "Test simple call to getCallbackAdapter with custom method name" )
+    public function testSimpleCallToGetCallbackAdapterWithCustomMethodName() : Void
+    {
+		this._classAdapter = new ClassAdapter();
+		this._classAdapter.setCallBackMethod( this, this.simpleCallbackTest );
+		this._classAdapter.setAdapterClass( MockAdapterClassWithCustomMethodName, "adaptThis" );
+		this._classAdapter.getCallbackAdapter()( "hello", 4 );
+    }
 	
 	function simpleCallbackTest( s1 : String, i1 : Int, s : String, i : Int ) : Void
 	{
@@ -48,17 +51,12 @@ class ClassAdapterTest
 		this._classAdapter.setAdapterClass( MockAdapterClassForFactory );
 		this._classAdapter.setFactoryMethod( this, this.factoryForAdapterClass );
 		this._scopeValue = 3;
-		this.triggerCallbackAdapterWithFactory( this._classAdapter.getCallbackAdapter() );
+		this._classAdapter.getCallbackAdapter()( "mundo", 6 );
 	}
 	
 	function factoryForAdapterClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
 	{
 		return cast Type.createInstance( adapterClass, [this._scopeValue] );
-	}
-	
-	function triggerCallbackAdapterWithFactory( callbackAdapter : Dynamic ) : Void
-	{
-		callbackAdapter( "mundo", 6 );
 	}
 	
 	function factoryCallbackTest( s1 : String, i1 : Int, s : String, i : Int ) : Void
@@ -69,7 +67,6 @@ class ClassAdapterTest
 		Assert.equals( 9, i, "'getCallbackAdapter' should return 9" );
 	}
 	
-	
 	@Test( "Test call to getCallbackAdapter with MacroAdapterStrategy" )
     public function testCallToGetCallbackAdapterWithAdapterMacro() : Void
     {
@@ -77,14 +74,7 @@ class ClassAdapterTest
 		this._classAdapter.setCallBackMethod( this, this.macroCallbackTest );
 		this._classAdapter.setAdapterClass( MockMacroAdapterStrategy );
 		this._classAdapter.setFactoryMethod( this, this.factoryForMacroClass );
-		this.triggerCallbackAdapterWithMacro( this._classAdapter.getCallbackAdapter() );
-	}
-	
-	function triggerCallbackAdapterWithMacro( callbackAdapter : Dynamic ) : Void
-	{
-		var data0 = new MockValueObject( "hola" );
-		var data1 = new MockValueObject( "mundo" );
-		callbackAdapter( [ data0, data1 ] );
+		this._classAdapter.getCallbackAdapter()( [ new MockValueObject( "hola" ), new MockValueObject( "mundo" ) ] );
 	}
 	
 	function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
@@ -101,23 +91,35 @@ class ClassAdapterTest
 		Assert.equals( "hola!", args[ 0 ].value, "'getCallbackAdapter' should return 'hola'" );
 		Assert.equals( "mundo!", args[ 1 ].value, "'getCallbackAdapter' should return 'mundo'" );
 	}
-	
 }
 
-private class MockAdapterClass implements IAdapterStrategy
+private class MockAdapterClass
 {
 	public function new()
 	{
 		
 	}
 
-	public function adapt( args : Array<Dynamic> ) : Array<Dynamic> 
+	public function adapt( s : String, i : Int ) : Array<Dynamic> 
 	{
-		return ["test", 1, args[0], args[1] ];
+		return [ "test", 1, s, i ];
 	}
 }
 
-private class MockAdapterClassForFactory implements IAdapterStrategy
+private class MockAdapterClassWithCustomMethodName
+{
+	public function new()
+	{
+		
+	}
+
+	public function adaptThis( s : String, i : Int ) : Array<Dynamic> 
+	{
+		return [ "test", 1, s, i ];
+	}
+}
+
+private class MockAdapterClassForFactory
 {
 	var _value : Int;
 	
@@ -126,9 +128,9 @@ private class MockAdapterClassForFactory implements IAdapterStrategy
 		this._value = value;
 	}
 
-	public function adapt( args : Array<Dynamic> ) : Array<Dynamic> 
+	public function adapt( s : String, i : Int ) : Array<Dynamic> 
 	{
-		return ["test" +this._value, 1 +this._value, args[0] +this._value, args[1] +this._value ];
+		return ["test" +this._value, 1 +this._value, s + this._value, i + this._value ];
 	}
 }
 
