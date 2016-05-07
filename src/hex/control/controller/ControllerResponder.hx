@@ -6,7 +6,7 @@ import hex.control.async.AsyncCommand;
  * ...
  * @author Francis Bourre
  */
-class ControllerResponder implements IControllerResponder
+class ControllerResponder implements IObservable
 {
 	var _asyncCommand : AsyncCommand;
 

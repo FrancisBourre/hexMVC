@@ -24,9 +24,11 @@ class ControllerTest
     @Before
     public function setUp() : Void
     {
-		this._injector 			= new MockDependencyInjector();
-		this._module 			= new MockModule();
-        this._controller 		= new MockController( this._injector, this._module );
+		this._injector 				= new MockDependencyInjector();
+		this._module 				= new MockModule();
+        this._controller 			= new MockController();
+		this._controller.injector 	= this._injector;
+		this._controller.module =	 this._module;
     }
 
     @After
@@ -56,7 +58,7 @@ private class MockController extends Controller implements IMockController
 	@CommandClass( "hex.control.controller.MockCommandClass" )
 	@FireMessageType( "hex.ioc.assembler.ApplicationAssemblerMessage.MODULES_INITIALIZED" )
 	@ExecuteOnce( true )
-	public function print( text : String ) : IControllerResponder { }
+	public function print( text : String ) : IObservable { }
 
 	public function sum( a : Int, b : Int ) : Int 
 	{ 
@@ -66,7 +68,7 @@ private class MockController extends Controller implements IMockController
 
 private interface IMockController extends IController
 {
-	function print( text : String ) : IControllerResponder;
+	function print( text : String ) : IObservable;
 	function sum( a : Int, b : Int ) : Int ;
 }
 

@@ -32,7 +32,7 @@ class ControllerBuilder
 		
 		//Create responder
 		var responderTypePath = MacroUtil.getTypePath( Type.getClassName( ControllerResponder ) );
-		
+
 		for ( method in data.methods )
 		{
 			tMap.set( method.methodName, getAnnotation( method, "CommandClass" ) );
@@ -53,11 +53,12 @@ class ControllerBuilder
 						if ( commandClassName != null )
 						{
 							var tp = MacroUtil.getPack( commandClassName );
+
 							var args = [for (arg in func.args) macro $i { arg.name } ];
 
 							func.expr = macro 
 							{
-								var command = this._injector.getOrCreateNewInstance( $p { tp } );
+								var command = this.injector.getOrCreateNewInstance( $p { tp } );
 								
 								var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
 								if ( isAsync )

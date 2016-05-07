@@ -1,9 +1,9 @@
 package hex.control.controller;
+
 /**
  * @author Francis Bourre
  */
-
-interface IControllerResponder 
+interface IObservable 
 {
-	function getResult() : Dynamic;
+	
 }
