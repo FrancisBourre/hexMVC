@@ -3,6 +3,7 @@ package hex.control.controller;
 import haxe.macro.Context;
 import haxe.macro.Expr.Field;
 import hex.annotation.MethodAnnotationData;
+import hex.control.async.AsyncCommand;
 import hex.util.MacroUtil;
 
 /**
@@ -55,6 +56,12 @@ class ControllerBuilder
 							var tp = MacroUtil.getPack( commandClassName );
 
 							var args = [for (arg in func.args) macro $i { arg.name } ];
+							
+							switch ( func.ret )
+							{
+								case TPath( p ): 
+								default: null;
+							}
 
 							func.expr = macro 
 							{
@@ -63,7 +70,7 @@ class ControllerBuilder
 								var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
 								if ( isAsync )
 								{
-									command.preExecute();
+									cast ( command, hex.control.async.IAsyncCommand ).preExecute();
 								}
 								
 								Reflect.callMethod( command, Reflect.field( command, command.executeMethodName ), $a { args } );

@@ -1,6 +1,7 @@
 package hex.control.controller;
 
 import hex.control.async.AsyncCommand;
+import hex.control.async.IAsyncCommand;
 
 /**
  * ...
@@ -8,14 +9,14 @@ import hex.control.async.AsyncCommand;
  */
 class ControllerResponder implements IObservable
 {
-	var _asyncCommand : AsyncCommand;
+	var _asyncCommand : IAsyncCommand;
 
-	public function new( ?asyncCommand : AsyncCommand ) 
+	public function new( ?asyncCommand : IAsyncCommand ) 
 	{
 		this._asyncCommand = asyncCommand;
 	}
 	
-	public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+	/*public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
 	{
 		if ( this._asyncCommand.hasCompleted )
         {
@@ -69,5 +70,5 @@ class ControllerResponder implements IObservable
 	public function getResult() : Dynamic 
 	{
 		return null;
-	}
+	}*/
 }
