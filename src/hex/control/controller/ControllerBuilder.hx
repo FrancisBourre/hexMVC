@@ -4,6 +4,7 @@ import haxe.macro.Context;
 import haxe.macro.Expr.Field;
 import hex.annotation.MethodAnnotationData;
 import hex.control.async.AsyncCommand;
+import hex.module.IModule;
 import hex.util.MacroUtil;
 
 /**
@@ -19,6 +20,8 @@ class ControllerBuilder
 	
 	macro static public function build() : Array<Field> 
 	{
+		var modulePack = MacroUtil.getPack( Type.getClassName( IModule ) );
+		
 		var fields = Context.getBuildFields();
 		
 		//parse annotations
@@ -66,6 +69,7 @@ class ControllerBuilder
 							func.expr = macro 
 							{
 								var command = this.injector.getOrCreateNewInstance( $p { tp } );
+								command.setOwner( this.injector.getInstance( $p { modulePack } ) );
 								
 								var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
 								if ( isAsync )
