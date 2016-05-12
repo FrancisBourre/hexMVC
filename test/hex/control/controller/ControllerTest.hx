@@ -63,7 +63,7 @@ private class MockController extends Controller implements IMockController
 	@CommandClass( "hex.control.controller.MockCommandClass" )
 	@FireMessageType( "hex.ioc.assembler.ApplicationAssemblerMessage.MODULES_INITIALIZED" )
 	@ExecuteOnce( true )
-	public function print( text : String ) : IObservable { }
+	public function print( text : String ) : ICompletable { }
 
 	public function sum( a : Int, b : Int ) : Int 
 	{ 
@@ -73,7 +73,7 @@ private class MockController extends Controller implements IMockController
 
 private interface IMockController extends IController
 {
-	function print( text : String ) : IObservable;
+	function print( text : String ) : ICompletable;
 	function sum( a : Int, b : Int ) : Int ;
 }
 

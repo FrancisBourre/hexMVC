@@ -336,14 +336,14 @@ private class MockService implements IService<ServiceConfiguration>
 		
 	}
 	
-	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Bool 
 	{
-		
+		return false;
 	}
 	
-	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void 
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Bool 
 	{
-		
+		return false;
 	}
 	
 	public function getConfiguration() : ServiceConfiguration 

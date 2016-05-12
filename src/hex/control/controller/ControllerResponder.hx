@@ -7,7 +7,7 @@ import hex.control.async.IAsyncCommand;
  * ...
  * @author Francis Bourre
  */
-class ControllerResponder implements IObservable
+class ControllerResponder implements ICompletable
 {
 	var _asyncCommand : IAsyncCommand;
 
