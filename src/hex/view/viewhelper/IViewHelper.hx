@@ -1,6 +1,7 @@
 package hex.view.viewhelper;
 
 import hex.event.MessageType;
+import hex.log.ILogger;
 import hex.module.IModule;
 
 /**
@@ -13,6 +14,8 @@ interface IViewHelper
 	function getOwner() : IModule;
 	
 	function setOwner( owner : IModule ) : Void;
+	
+	function getLogger() : ILogger;
 	
 	function show() : Void;
 	

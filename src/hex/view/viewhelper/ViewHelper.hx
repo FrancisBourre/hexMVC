@@ -4,6 +4,7 @@ import hex.di.IInjectorContainer;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
+import hex.log.ILogger;
 import hex.module.IModule;
 
 /**
@@ -97,6 +98,11 @@ class ViewHelper implements IViewHelper implements IInjectorContainer
 	public function getOwner() : IModule
 	{
 		return this._owner;
+	}
+	
+	public function getLogger() : ILogger 
+	{
+		return this._owner.getLogger();
 	}
 	
 	public function setOwner( owner : IModule ) : Void 
