@@ -67,17 +67,17 @@ class ControllerBuilder
 
 							func.expr = macro 
 							{
-								var command = this.injector.getOrCreateNewInstance( $p { tp } );
-								command.setOwner( this.injector.getInstance( $p { modulePack } ) );
+								var action = this.injector.getOrCreateNewInstance( $p { tp } );
+								action.setOwner( this.injector.getInstance( $p { modulePack } ) );
 								
-								var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
+								/*var isAsync = Std.is( command, hex.control.async.IAsyncCommand );
 								if ( isAsync )
 								{
 									cast ( command, hex.control.async.IAsyncCommand ).preExecute();
-								}
+								}*/
 								
-								Reflect.callMethod( command, Reflect.field( command, command.executeMethodName ), $a { args } );
-								return new $responderTypePath();
+								Reflect.callMethod( action, Reflect.field( action, action.executeMethodName ), $a { args } );
+								return new $responderTypePath( action );
 							};
 						}
 					}
