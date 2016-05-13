@@ -28,7 +28,7 @@ class ControllerTest
 		this._module 				= new MockModule();
         this._controller 			= new MockController();
 		this._controller.injector 	= this._injector;
-		this._controller.module =	 this._module;
+		this._controller.module 	= this._module;
     }
 
     @After
@@ -43,7 +43,7 @@ class ControllerTest
 	public function testControllerCallWithMapping() : Void
 	{
 		this._controller.print( "hola mundo" );
-		Assert.equals( "hola mundo", MockCommandClass.lastExecuteParam, "" );
+		Assert.equals( "hola mundo", MockActionClass.lastExecuteParam, "" );
 	}
 	
 	@Test( "test controller call without mapping" )
@@ -60,10 +60,10 @@ private class MockController extends Controller implements IMockController
 		super();
 	}
 	
-	@CommandClass( "hex.control.controller.MockCommandClass" )
+	@CommandClass( "hex.control.controller.MockActionClass" )
 	@FireMessageType( "hex.ioc.assembler.ApplicationAssemblerMessage.MODULES_INITIALIZED" )
 	@ExecuteOnce( true )
-	public function print( text : String ) : ICompletable { }
+	public function print( text : String ) : ICompletable<String> { }
 
 	public function sum( a : Int, b : Int ) : Int 
 	{ 
@@ -73,7 +73,7 @@ private class MockController extends Controller implements IMockController
 
 private interface IMockController extends IController
 {
-	function print( text : String ) : ICompletable;
+	function print( text : String ) : ICompletable<String>;
 	function sum( a : Int, b : Int ) : Int ;
 }
 

@@ -31,7 +31,6 @@ class ControllerBuilder
 		var data = hex.annotation.AnnotationReader._static_classes[ hex.annotation.AnnotationReader._static_classes.length - 1 ];
 		
 		//Create command class map
-		//var tMap : Map<String, TypePath> = new Map();
 		var tMap : Map<String, String> = new Map();
 		
 		//Create responder
