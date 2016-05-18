@@ -24,5 +24,4 @@ class Model<DispatcherType:IModelDispatcher<ListenerType>, ListenerType:IModelLi
 	{
 		this.dispatcher.removeListener( listener );
 	}
-	
 }
