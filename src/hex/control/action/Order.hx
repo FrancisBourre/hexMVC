@@ -9,7 +9,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-class Action<ResultType> implements ICompletable<ResultType>
+class Order<ResultType> implements ICompletable<ResultType>
 {
 	var _owner 			: IModule;
 	var _result 		: ResultType;

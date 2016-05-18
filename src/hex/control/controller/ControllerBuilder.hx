@@ -13,6 +13,8 @@ import hex.util.MacroUtil;
  */
 class ControllerBuilder
 {
+	public static inline var ClassAnnotation : String = "Class";
+	
 	function new()
 	{
 		
@@ -25,7 +27,7 @@ class ControllerBuilder
 		var fields = Context.getBuildFields();
 		
 		//parse annotations
-		fields = hex.annotation.AnnotationReader.parseMetadata( "hex.control.controller.IController", [ "CommandClass", "FireMessageType", "ExecuteOnce" ], true );
+		fields = hex.annotation.AnnotationReader.parseMetadata( "hex.control.controller.IController", [ ClassAnnotation ], true );
 		
 		//get data result
 		var data = hex.annotation.AnnotationReader._static_classes[ hex.annotation.AnnotationReader._static_classes.length - 1 ];
@@ -38,7 +40,7 @@ class ControllerBuilder
 
 		for ( method in data.methods )
 		{
-			tMap.set( method.methodName, getAnnotation( method, "CommandClass" ) );
+			tMap.set( method.methodName, getAnnotation( method, ClassAnnotation ) );
 			//trace( getAnnotation( method, "FireMessageType" ) );
 		}
 		

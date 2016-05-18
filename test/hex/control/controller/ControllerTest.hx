@@ -1,5 +1,6 @@
 package hex.control.controller;
 
+import haxe.Timer;
 import hex.control.controller.Controller;
 import hex.control.controller.IController;
 import hex.di.IBasicInjector;
@@ -10,6 +11,7 @@ import hex.event.MessageType;
 import hex.log.ILogger;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
+import hex.unittest.runner.MethodRunner;
 
 /**
  * ...
@@ -39,11 +41,27 @@ class ControllerTest
         this._controller 		= null;
     }
 	
-	@Test( "test controller call with mapping" )
-	public function testControllerCallWithMapping() : Void
+	@Test( "test controller call with mapping and without parameters" )
+	public function testControllerCallWithMappingAndWithoutParameters() : Void
 	{
-		this._controller.print( "hola mundo" );
-		Assert.equals( "hola mundo", MockActionClass.lastExecuteParam, "" );
+		MockOrderClassWithoutParameters.callCount = 0;
+		
+		this._controller.print();
+		Assert.equals( 1, MockOrderClassWithoutParameters.callCount, "" );
+	}
+	
+	@Async( "test controller call with mapping and parameters" )
+	public function testControllerCallWithMappingAndParameters() : Void
+	{
+		MockOrderClassWithoutParameters.callCount = 0;
+		this._controller.say( "hola mundo", this ).onComplete( MethodRunner.asyncHandler( this._onTestComplete ) );
+	}
+	
+	function _onTestComplete( message : String ) : Void
+	{
+		Assert.equals( 1, MockOrderClassWithParameters.callCount, "" );
+		Assert.equals( "hola mundo", message, "" );
+		Assert.equals( this, MockOrderClassWithParameters.sender, "" );
 	}
 	
 	@Test( "test controller call without mapping" )
@@ -60,10 +78,11 @@ private class MockController extends Controller implements IMockController
 		super();
 	}
 	
-	@CommandClass( "hex.control.controller.MockActionClass" )
-	@FireMessageType( "hex.ioc.assembler.ApplicationAssemblerMessage.MODULES_INITIALIZED" )
-	@ExecuteOnce( true )
-	public function print( text : String ) : ICompletable<String> { }
+	@Class( "hex.control.controller.MockOrderClassWithoutParameters" )
+	public function print() : ICompletable<Void> { }
+	
+	@Class( "hex.control.controller.MockOrderClassWithParameters" )
+	public function say( text : String, sender : ControllerTest ) : ICompletable<String> { }
 
 	public function sum( a : Int, b : Int ) : Int 
 	{ 
@@ -73,7 +92,8 @@ private class MockController extends Controller implements IMockController
 
 private interface IMockController extends IController
 {
-	function print( text : String ) : ICompletable<String>;
+	function print() : ICompletable<Void>;
+	function say( text : String, sender : ControllerTest ) : ICompletable<String>;
 	function sum( a : Int, b : Int ) : Int ;
 }
 
