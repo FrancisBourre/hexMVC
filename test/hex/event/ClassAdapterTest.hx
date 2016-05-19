@@ -54,7 +54,7 @@ class ClassAdapterTest
 		this._classAdapter.getCallbackAdapter()( "mundo", 6 );
 	}
 	
-	function factoryForAdapterClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy
+	function factoryForAdapterClass( adapterClass : Class<Dynamic> ) : Dynamic
 	{
 		return cast Type.createInstance( adapterClass, [this._scopeValue] );
 	}

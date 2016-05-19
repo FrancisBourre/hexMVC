@@ -59,7 +59,7 @@ class ClassAdapter
 		var callbackTarget 				: Dynamic 				= this._callbackTarget;
 		var callbackMethod 				: Dynamic 				= this._callbackMethod;
 		
-		var adapterInstance 			: IAdapterStrategy 		= null;
+		var adapterInstance 			: Dynamic 				= null;
 		var adapterClass 				: Class<Dynamic> 		= null;
 		var adapterMethodName 			: String 				= this._adapterMethodName;
 		

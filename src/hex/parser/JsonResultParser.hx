@@ -8,7 +8,7 @@ import hex.service.ServiceResultVO;
  * ...
  * @author duke
  */
-class JsonResultParser<DataType> implements IParser
+class JsonResultParser<ResultType> implements IParser<ResultType>
 {
 	public var dataProperty:String = "data";
 
@@ -17,13 +17,13 @@ class JsonResultParser<DataType> implements IParser
 		
 	}
 	
-	public function parse( serializedContent : Dynamic, target : Dynamic = null) : Dynamic 
+	public function parse( serializedContent : Dynamic, target : Dynamic = null) : ResultType 
 	{
 		var jsonResult : Dynamic;
 		
 		try
 		{
-			jsonResult = Json.parse(serializedContent);
+			jsonResult = Json.parse( serializedContent );
 		}
 		catch (error:Dynamic)
 		{
@@ -31,18 +31,13 @@ class JsonResultParser<DataType> implements IParser
 			Reflect.setProperty( jsonResult, this.dataProperty, { } );
 		}
 		
-		var serviceResultVO = new ServiceResultVO<DataType>();
+		var serviceResultVO = new ServiceResultVO<ResultType>();
 		
 		serviceResultVO.success = jsonResult.success == true ? true : false;
 		serviceResultVO.errorCode = Std.parseInt(jsonResult.errorCode);
 		
-		serviceResultVO.data = this._parseData( Reflect.getProperty( jsonResult, this.dataProperty ) );
+		serviceResultVO.data = Reflect.getProperty( jsonResult, this.dataProperty );
 		
 		return serviceResultVO;
-	}
-	
-	function _parseData( data : Dynamic ) : DataType
-	{
-		return data;
 	}
 }
