@@ -19,11 +19,11 @@ class RuntimeDependencyChecker
 
     static public function check( module : IModule, injector : IDependencyInjector, dependencies : IRuntimeDependencies ) : Void
     {
-        if ( dependencies.hasServiceDependencies() )
+        if ( dependencies.hasMappedDependencies() )
         {
-            var serviceDependencies : Array<Class<Dynamic>> = dependencies.getServiceDependencies();
+            var mappedDependencies : Array<Class<Dynamic>> = dependencies.getMappedDependencies();
 
-            for ( dependency in serviceDependencies )
+            for ( dependency in mappedDependencies )
             {
                 if ( !injector.hasMapping( dependency ) )
                 {

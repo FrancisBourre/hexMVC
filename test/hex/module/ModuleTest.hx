@@ -259,7 +259,7 @@ private class MockModuleForTestingRuntimeDependencies extends Module
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		var rd : RuntimeDependencies = new RuntimeDependencies();
-		rd.addServiceDependencies( [IService]);
+		rd.addMappedDependencies( [IService]);
 		return rd;
 	}
 }

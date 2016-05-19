@@ -1,37 +1,35 @@
 package hex.module.dependency;
 
-import hex.service.Service;
-
 /**
  * ...
  * @author Francis Bourre
  */
 class RuntimeDependencies implements IRuntimeDependencies
 {
-	var _serviceDependencies : Array<Class<Service>>;
+	var _mappedDependencies : Array<Class<Dynamic>>;
 
 	public function new() 
 	{
 		
 	}
 	
-	public function addServiceDependencies( serviceDependencies : Array<Class<Service>> ) : Void
+	public function addMappedDependencies( serviceDependencies : Array<Class<Dynamic>> ) : Void
 	{
-		if ( this._serviceDependencies == null )
+		if ( this._mappedDependencies == null )
 		{
-			this._serviceDependencies = new Array<Class<Service>>();
+			this._mappedDependencies = new Array<Class<Dynamic>>();
 		}
 		
-		this._serviceDependencies = this._serviceDependencies.concat( serviceDependencies );
+		this._mappedDependencies = this._mappedDependencies.concat( serviceDependencies );
 	}
 
-	public function getServiceDependencies() : Array<Class<Service>>
+	public function getMappedDependencies() : Array<Class<Dynamic>>
 	{
-		return this._serviceDependencies;
+		return this._mappedDependencies;
 	}
 
-	public function hasServiceDependencies() : Bool
+	public function hasMappedDependencies() : Bool
 	{
-		return this._serviceDependencies != null;
+		return this._mappedDependencies != null;
 	}
 }

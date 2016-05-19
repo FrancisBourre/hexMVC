@@ -1,13 +1,11 @@
 package hex.module.dependency;
 
-import hex.service.Service;
-
 /**
  * @author Francis Bourre
  */
 interface IRuntimeDependencies
 {
-    function hasServiceDependencies() : Bool;
-    function addServiceDependencies( serviceDependencies : Array<Class<Service>> ) : Void;
-    function getServiceDependencies() : Array<Class<Service>>;
+    function hasMappedDependencies() : Bool;
+    function addMappedDependencies( serviceDependencies : Array<Class<Dynamic>> ) : Void;
+    function getMappedDependencies() : Array<Class<Dynamic>>;
 }
