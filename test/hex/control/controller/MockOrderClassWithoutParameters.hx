@@ -1,6 +1,6 @@
 package hex.control.controller;
 
-import hex.control.action.Order;
+import hex.control.order.Order;
 
 /**
  * ...

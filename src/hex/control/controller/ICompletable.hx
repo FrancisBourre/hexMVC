@@ -5,5 +5,6 @@ package hex.control.controller;
  */
 interface ICompletable<ResultType>
 {
-	function onComplete( result : ResultType->Void ) : ICompletable<ResultType>;
+	function onComplete( callback : ResultType->Void ) : ICompletable<ResultType>;
+	function onFail( callback : String->Void ) : ICompletable<ResultType>;
 }

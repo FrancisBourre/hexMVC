@@ -1,7 +1,7 @@
 package hex.control.controller;
 
 import haxe.Timer;
-import hex.control.action.Order;
+import hex.control.order.Order;
 
 /**
  * ...

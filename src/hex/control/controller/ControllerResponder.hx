@@ -18,4 +18,10 @@ class ControllerResponder<ResultType> implements ICompletable<ResultType>
 		this._asyncCommand.onComplete( callback );
 		return this;
 	}
+	
+	public function onFail( callback : String->Void ) : ICompletable<ResultType>
+	{
+		this._asyncCommand.onFail( callback );
+		return this;
+	}
 }
