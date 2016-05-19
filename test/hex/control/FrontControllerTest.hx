@@ -230,7 +230,7 @@ private class MockDependencyInjector implements IDependencyInjector
 	
 	public function getOrCreateNewInstance<T>( type : Class<Dynamic> ) : T 
 	{
-		return Type.createInstance( MockCommand, [] );
+		return cast Type.createInstance( MockCommand, [] );
 	}
 	
 	public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic 
