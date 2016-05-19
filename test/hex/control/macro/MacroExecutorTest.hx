@@ -447,7 +447,7 @@ private class MockDependencyInjectorForMapping extends MockDependencyInjector
 		this.unmappedPayloads.push( [ type, name ] );
 	}
 	
-	override public function getOrCreateNewInstance( type : Class<Dynamic> ) : Dynamic 
+	override public function getOrCreateNewInstance<T>( type : Class<Dynamic> ) : T 
 	{
 		this.getOrCreateNewInstanceCallCount++;
 		this.getOrCreateNewInstanceCallParameter = type;

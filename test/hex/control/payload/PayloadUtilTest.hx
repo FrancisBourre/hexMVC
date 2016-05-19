@@ -126,7 +126,7 @@ private class MockDependencyInjector implements IDependencyInjector
 		return null;
 	}
 	
-	public function getOrCreateNewInstance( type : Class<Dynamic> ) : Dynamic 
+	public function getOrCreateNewInstance<T>( type : Class<Dynamic> ) : T 
 	{
 		return null;
 	}

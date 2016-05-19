@@ -96,7 +96,7 @@ private class MockInjectorWithFrontController implements IDependencyInjector
 		return cast this._frontcontroller;
 	}
 	
-	public function getOrCreateNewInstance( type : Class<Dynamic> ) : Dynamic 
+	public function getOrCreateNewInstance<T>( type : Class<Dynamic> ) : T 
 	{
 		return Type.createInstance( type, [] );
 	}
