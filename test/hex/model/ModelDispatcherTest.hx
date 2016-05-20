@@ -68,7 +68,7 @@ class ModelDispatcherTest
 	}
 }
 
-private interface IMockListener extends IModelListener
+private interface IMockListener
 {
 	function onSetSomething( s : String, i : Int ) : Void;
 	function onSetNothing() : Void;
