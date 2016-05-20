@@ -1,13 +1,10 @@
 package hex.model;
 
-import hex.model.IModelListener;
-
 /**
  * @author duke
  */
-interface IModelRO<ListenerType : IModelListener>
+interface IModelRO<ListenerType:{}>
 {
 	function addListener( listener : ListenerType ) : Void;
-	
 	function removeListener( listener : ListenerType ) : Void;
 }
