@@ -251,7 +251,7 @@ private class MockModuleForTestingRuntimeDependencies extends Module
 		super();
 	}
 	
-	public function mapServiceClass( serviceClass : Class<IService<ServiceConfiguration>> ) : Void
+	public function mapServiceClass( serviceClass : Class<IService> ) : Void
 	{
 		this._injector.mapToType( IService, serviceClass );
 	}
@@ -329,7 +329,7 @@ private class MockStatefulConfig implements IStatefulConfig
 	}
 }
 
-private class MockService implements IService<ServiceConfiguration>
+private class MockService implements IService
 {
 	public function createConfiguration() : Void 
 	{
