@@ -8,8 +8,10 @@ import hex.view.IView;
 import hex.view.viewhelper.IMainViewHelperManagerListener;
 import hex.view.viewhelper.IViewHelper;
 import hex.view.viewhelper.IViewHelperManagerListener;
+import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelper;
 import hex.view.viewhelper.ViewHelperManager;
+import hex.view.viewhelper.ViewHelperTypedef;
 
 /**
  * ...
@@ -43,7 +45,7 @@ class ViewHelperManagerTest
 		
 		var module = new MockModule();
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
-		var viewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
+		var viewHelper : IViewHelperTypedef = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
 		Assert.equals( 1, viewHelperManager.size(), "size should return 1" );
 		ViewHelperManager.release( module );
 		Assert.equals( 0, viewHelperManager.size(), "size should return 0" );
@@ -66,7 +68,7 @@ class ViewHelperManagerTest
 		
 		viewHelperManager.addListener( listener );
 		
-		var viewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
+		var viewHelper : IViewHelperTypedef = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
 		Assert.isNotNull( viewHelper, "viewHelper shouldn't be null" );
 		Assert.isInstanceOf( viewHelper, ViewHelper, "viewHelper should be an instance of ViewHelper" );
 		Assert.equals( module, viewHelper.getOwner(), "owner should be the same" );
@@ -76,7 +78,7 @@ class ViewHelperManagerTest
 		Assert.equals( 1, listener.onViewHelperCreationCallbackCount, "creation event should be dispatched once" );
 		Assert.equals( viewHelper, listener.lastViewHelper, "viewHelper should be the same" );
 		
-		var anotherViewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
+		var anotherViewHelper : IViewHelperTypedef = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
 		Assert.isNotNull( anotherViewHelper, "viewHelper shouldn't be null" );
 		Assert.isInstanceOf( anotherViewHelper, ViewHelper, "viewHelper should be an instance of ViewHelper" );
 		Assert.equals( module, anotherViewHelper.getOwner(), "owner should be the same" );
@@ -110,8 +112,8 @@ class ViewHelperManagerTest
 		var viewHelperManager : ViewHelperManager = ViewHelperManager.getInstance( module );
 		
 		viewHelperManager.addListener( listener );
-		var viewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
-		var anotherViewHelper : IViewHelper = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
+		var viewHelper : IViewHelperTypedef = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
+		var anotherViewHelper : IViewHelperTypedef = viewHelperManager.buildViewHelper( new MockDependencyInjector(), ViewHelper, new MockView() );
 		
 		viewHelperManager.releaseAllViewHelpers();
 		
@@ -127,7 +129,7 @@ private class ViewHelperManagerListener implements IViewHelperManagerListener
 	public var onViewHelperCreationCallbackCount 	: Int;
 	public var onViewHelperReleaseCallbackCount 	: Int;
 	
-	public var lastViewHelper 						: ViewHelper;
+	public var lastViewHelper 						: ViewHelperTypedef;
 	
 	public function new()
 	{
@@ -135,13 +137,13 @@ private class ViewHelperManagerListener implements IViewHelperManagerListener
 		this.onViewHelperReleaseCallbackCount 	= 0;
 	}
 	
-	public function onViewHelperCreation( viewHelper : ViewHelper ) : Void 
+	public function onViewHelperCreation( viewHelper : ViewHelperTypedef ) : Void 
 	{
 		this.onViewHelperCreationCallbackCount++;
 		this.lastViewHelper = viewHelper;
 	}
 	
-	public function onViewHelperRelease( viewHelper : ViewHelper ) : Void 
+	public function onViewHelperRelease( viewHelper : ViewHelperTypedef ) : Void 
 	{
 		this.onViewHelperReleaseCallbackCount++;
 		this.lastViewHelper = viewHelper;

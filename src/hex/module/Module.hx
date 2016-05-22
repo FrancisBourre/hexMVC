@@ -27,6 +27,7 @@ import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
 import hex.view.viewhelper.IViewHelper;
+import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelperManager;
 
 /**
@@ -161,7 +162,7 @@ class Module implements IModule
 		this._internalDispatcher.dispatch( messageType, data );
 	}
 
-	function buildViewHelper( type : Class<IViewHelper>, view : IView ) : IViewHelper
+	function buildViewHelper( type : Class<IViewHelperTypedef>, view : IView ) : IViewHelperTypedef
 	{
 		return ViewHelperManager.getInstance( this ).buildViewHelper( this._injector, type, view );
 	}

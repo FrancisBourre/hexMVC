@@ -5,7 +5,7 @@ package hex.view.viewhelper;
  */
 interface IViewHelperManagerListener 
 {
-	function onViewHelperCreation( viewHelper : ViewHelper ) : Void;
+	function onViewHelperCreation( viewHelper : ViewHelperTypedef ) : Void;
 	
-	function onViewHelperRelease( viewHelper : ViewHelper ) : Void;
+	function onViewHelperRelease( viewHelper : ViewHelperTypedef ) : Void;
 }

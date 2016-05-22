@@ -15,7 +15,7 @@ class ViewHelperManager
 	
 	var _owner 				: IModule;
 	var _dispatcher 		: Dispatcher<{}>;
-	var _viewHelpers 		: Array<IViewHelper>;
+	var _viewHelpers 		: Array<IViewHelperTypedef>;
 	
 	public function new ( owner : IModule ) 
 	{
@@ -59,7 +59,7 @@ class ViewHelperManager
 
 		for ( i in 0...len )
 		{
-			var viewHelper : IViewHelper = this._viewHelpers[ len-i-1 ];
+			var viewHelper : IViewHelperTypedef = this._viewHelpers[ len-i-1 ];
 			this._viewHelpers.splice( len-i-1, 1 );
 			viewHelper.removeHandler( ViewHelperMessage.RELEASE, this, this._onViewHelperRelease );
 			viewHelper.release();
@@ -67,9 +67,9 @@ class ViewHelperManager
 		}
 	}
 	
-	public function buildViewHelper( injector : IDependencyInjector, clazz : Class<IViewHelper>, view : IView ) : IViewHelper
+	public function buildViewHelper( injector : IDependencyInjector, clazz : Class<IViewHelperTypedef>, view : IView ) : IViewHelperTypedef
 	{
-		var viewHelper : IViewHelper = injector.instantiateUnmapped( clazz );
+		var viewHelper : IViewHelperTypedef = injector.instantiateUnmapped( clazz );
 
 		if ( viewHelper != null )
 		{
@@ -90,7 +90,7 @@ class ViewHelperManager
 		return this._viewHelpers.length;
 	}
 	
-	function _onViewHelperRelease( viewHelper : IViewHelper ) : Void
+	function _onViewHelperRelease( viewHelper : IViewHelperTypedef ) : Void
 	{
 		this._notifyViewHelperRelease( viewHelper );
 
@@ -116,12 +116,12 @@ class ViewHelperManager
 		this._dispatcher.removeHandler( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, listener, listener.onViewHelperRelease );
 	}
 
-	function _notifyViewHelperCreation( viewHelper : IViewHelper ) : Void
+	function _notifyViewHelperCreation( viewHelper : IViewHelperTypedef ) : Void
 	{
 		this._dispatcher.dispatch( ViewHelperManagerMessage.VIEW_HELPER_CREATION, [ viewHelper ] );
 	}
 
-	function _notifyViewHelperRelease( viewHelper : IViewHelper ) : Void
+	function _notifyViewHelperRelease( viewHelper : IViewHelperTypedef ) : Void
 	{
 		this._dispatcher.dispatch( ViewHelperManagerMessage.VIEW_HELPER_RELEASE, [ viewHelper ] );
 	}

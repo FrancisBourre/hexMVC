@@ -7,9 +7,9 @@ import hex.module.IModule;
 /**
  * @author Francis Bourre
  */
-interface IViewHelper 
+interface IViewHelper<ViewType:IView>  
 {
-	var view( get, set ) : IView;
+	var view( get, set ) : ViewType;
 	
 	function getOwner() : IModule;
 	

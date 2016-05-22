@@ -11,16 +11,16 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-class ViewHelper implements IViewHelper implements IInjectorContainer
+class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IInjectorContainer
 {
-	public static var DEFAULT_VISIBLE:Bool = true;
+	public static var DEFAULT_VISIBLE : Bool = true;
 	
 	@Inject
 	public var dispatcher 	: IDispatcher<{}>;
 	
 	var _dispatcher 		: Dispatcher<{}>;
 	var _owner 				: IModule;
-	var _view 				: IView;
+	var _view 				: ViewType;
 	var _isVisible 			: Bool = ViewHelper.DEFAULT_VISIBLE;
 	
 	var _isPreInitialized 	: Bool = false;
@@ -46,13 +46,13 @@ class ViewHelper implements IViewHelper implements IInjectorContainer
 
 	}
 	
-	public var view( get, set ) : IView;
-	public function get_view() : IView 
+	public var view( get, set ) : ViewType;
+	public function get_view() : ViewType 
 	{
 		return this._view;
 	}
 	
-	public function set_view( view : IView ) : IView 
+	public function set_view( view : ViewType ) : ViewType 
 	{
 		if ( !this._isPreInitialized )
 		{
