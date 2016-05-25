@@ -26,7 +26,6 @@ import hex.module.IModule;
 import hex.module.dependency.IRuntimeDependencies;
 import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
-import hex.view.viewhelper.IViewHelper;
 import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelperManager;
 
@@ -201,7 +200,7 @@ class Module implements IModule
 		}
 	}
 	
-	public function getBasicInjector() : IBasicInjector
+	public function getInjector() : IDependencyInjector
 	{
 		return this._injector;
 	}

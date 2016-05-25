@@ -1,9 +1,7 @@
 package hex.control.controller;
 
-import haxe.Timer;
 import hex.control.controller.Controller;
 import hex.control.controller.IController;
-import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.InjectionEvent;
 import hex.domain.Domain;
@@ -146,7 +144,7 @@ private class MockModule implements IModule
 		return null;
 	}
 	
-	public function getBasicInjector() : IBasicInjector
+	public function getInjector() : IDependencyInjector
 	{
 		return null;
 	}

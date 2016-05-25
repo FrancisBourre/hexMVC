@@ -1,12 +1,11 @@
 package hex.control;
 
-import hex.di.InjectionEvent;
+import hex.control.FrontController;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
-import hex.control.FrontController;
 import hex.control.payload.ExecutionPayload;
-import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
+import hex.di.InjectionEvent;
 import hex.domain.Domain;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
@@ -185,7 +184,7 @@ private class MockModule implements IModule
 		return null;
 	}
 	
-	public function getBasicInjector() : IBasicInjector
+	public function getInjector() : IDependencyInjector
 	{
 		return null;
 	}

@@ -46,7 +46,7 @@ class MacroExecutor implements IMacroExecutor implements IInjectorContainer
 
 		if ( contextOwner != null )
 		{
-			injector = contextOwner.getBasicInjector();
+			injector = contextOwner.getInjector();
 		}
 		else
 		{

@@ -1,6 +1,6 @@
 package hex.module;
 
-import hex.di.IBasicInjector;
+import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.event.MessageType;
 import hex.log.ILogger;
@@ -60,7 +60,7 @@ class MockModule implements IModule
 		return null;
 	}
 	
-	public function getBasicInjector() : IBasicInjector
+	public function getInjector() : IDependencyInjector
 	{
 		return null;
 	}

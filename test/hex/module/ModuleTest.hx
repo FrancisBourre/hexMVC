@@ -70,11 +70,11 @@ class ModuleTest
 		anotherModule.initialize();
 	}
 	
-	@Test( "Test getBasicInjector behavior" )
-	public function testGetBasicInjector() : Void
+	@Test( "Test getInjector behavior" )
+	public function testGetInjector() : Void
 	{
 		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
-		Assert.isNotNull( module.getBasicInjector(), "injector shouldn't be null" );
+		Assert.isNotNull( module.getInjector(), "injector shouldn't be null" );
 	}
 	
 	@Test( "Test initialize" )

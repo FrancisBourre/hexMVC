@@ -2,11 +2,9 @@ package hex.control.async;
 
 import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommandListener;
-import hex.control.command.ICommandMapping;
-import hex.di.IBasicInjector;
+import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.error.IllegalStateException;
-import hex.error.VirtualMethodException;
 import hex.event.MessageType;
 import hex.log.ILogger;
 import hex.module.IModule;
@@ -242,7 +240,7 @@ private class MockModule implements IModule
 		return null;
 	}
 	
-	public function getBasicInjector() : IBasicInjector
+	public function getInjector() : IDependencyInjector
 	{
 		return null;
 	}

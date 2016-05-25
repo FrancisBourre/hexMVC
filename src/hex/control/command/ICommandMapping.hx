@@ -3,7 +3,6 @@ package hex.control.command;
 import hex.control.async.AsyncHandler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
-import hex.di.IBasicInjector;
 import hex.di.IContextOwner;
 
 /**
