@@ -3,6 +3,8 @@
 [![TravisCI Build Status](https://travis-ci.org/DoclerLabs/hexMVC.svg?branch=master)](https://travis-ci.org/DoclerLabs/hexMVC)
 hexMVC is a powerful MVC+S framework
 
+Find more information about hexMachina on hexmachina.org
+
 ## Dependencies
 
 * [hexCore](https://github.com/DoclerLabs/hexCore)
