@@ -8,14 +8,17 @@ import hex.unittest.assertion.Assert;
  */
 class AnnotationProviderTest
 {
-	var _annotationProvider = new AnnotationProvider();
-	var _colors 			= new Map<String, UInt>();
-	var _text 				= new Map<String, String>();
+	var _annotationProvider:AnnotationProvider;
+	var _colors:Map<String, UInt>;
+	var _text:Map<String, String>;
 		
 	@Before
     public function setUp() : Void
     {
 		this._annotationProvider = new AnnotationProvider();
+		this._colors = new Map<String, UInt>();
+		this._text = new Map<String, String>();
+		
         this._colors.set( "white", 0xFFFFFF );
 		this._text.set( "welcome", "Bienvenue" );
     }
