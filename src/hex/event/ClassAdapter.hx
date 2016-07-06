@@ -129,15 +129,8 @@ class ClassAdapter
 				{
 					annotationProvider.parse( adapterInstance );
 				}
-				
-				/*#if debug
-					if ( !Std.is( adapterInstance, IAdapterStrategy ) )
-					{
-						throw new IllegalArgumentException("adapterInstance class should extend AdapterStrategy. Check if you passed the correct class");
-					}
-				#end*/
 
-				result = adapterMethodName == "adapt" ? Reflect.callMethod( adapterInstance, adapterInstance.adapt, rest ) : Reflect.callMethod( adapterInstance, Reflect.field( adapterInstance, adapterMethodName ), rest );
+				result = Reflect.callMethod( adapterInstance, Reflect.field( adapterInstance, adapterMethodName ), rest );
 			}
 			
 			Reflect.callMethod( callbackTarget, callbackMethod, Std.is( result, Array ) ? result : [result] );
