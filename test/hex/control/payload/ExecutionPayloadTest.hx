@@ -37,11 +37,13 @@ class ExecutionPayloadTest
         Assert.equals( "name", this._executionPayload.getName(), "name should be the same" );
     }
 	
+	#if !php
 	@Test( "Test constructor null exception" )
     public function testConstructorNullException() : Void
     {
         Assert.constructorCallThrows( NullPointerException, ExecutionPayload, [ null ], "constructor should throw NullPointerException" );
     }
+	#end
 	
 	@Test( "Test constructor throws IllegalArgumentException" )
     public function testConstructorThrowsIllegalArgumentException() : Void
