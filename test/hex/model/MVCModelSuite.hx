@@ -7,5 +7,5 @@ package hex.model;
 class MVCModelSuite
 {
 	@Suite( "Model" )
-    public var list : Array<Class<Dynamic>> = [ModelDispatcherTest];
+    public var list : Array<Class<Dynamic>> = [ ModelTest ];
 }
