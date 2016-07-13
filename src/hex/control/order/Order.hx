@@ -15,8 +15,8 @@ class Order<ResultType> implements ICompletable<ResultType>
 	var _result 			: ResultType;
 	var _errorMessage 		: String;
 	
-	var _hasCompleted 		: Bool;
-	var _hasFailed 			: Bool;
+	var _hasCompleted 		: Bool = false;
+	var _hasFailed 			: Bool = false;
 	
 	var _completeResponder 	: Array<ResultType->Void>;
 	var _failResponder 		: Array<String->Void>;
@@ -46,7 +46,7 @@ class Order<ResultType> implements ICompletable<ResultType>
 	
 	public function onFail( callback : String->Void ) : ICompletable<ResultType>
 	{
-		if ( this._hasFailed )
+		if ( !this._hasFailed )
 		{
 			this._failResponder.push( callback );
 		}
@@ -79,6 +79,7 @@ class Order<ResultType> implements ICompletable<ResultType>
 		if ( !this._hasCompleted && !this._hasFailed )
 		{
 			this._errorMessage = errorMessage;
+			this._hasFailed = true;
 			for ( responder in this._failResponder )
 			{
 				responder( errorMessage );
