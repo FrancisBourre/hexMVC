@@ -75,7 +75,7 @@ class Module implements IModule
 		}
 		else
 		{
-			throw new IllegalStateException( this + ".initialize can't be called more than once. Check your code." );
+			throw new IllegalStateException( "initialize can't be called more than once. Check your code." );
 		}
 	}
 
