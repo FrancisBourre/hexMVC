@@ -142,9 +142,9 @@ class MacroExecutorTest
 		var listener1 			= new ASyncCommandListener();
 		var listener2 			= new ASyncCommandListener();
 		
-		var completeHandlers 	: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandComplete, listener1.onAsyncCommandComplete, listener2.onAsyncCommandComplete];
-		var failHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
-		var cancelHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandCancel, listener1.onAsyncCommandCancel, listener2.onAsyncCommandCancel];
+		var completeHandlers 	: Array<AsyncCommand->Void> 	= [ listener0.onAsyncCommandComplete, listener1.onAsyncCommandComplete, listener2.onAsyncCommandComplete, this._mockMacro.onAsyncCommandComplete ];
+		var failHandlers 		: Array<AsyncCommand->Void> 	= [ listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail, this._mockMacro.onAsyncCommandFail ];
+		var cancelHandlers 		: Array<AsyncCommand->Void> 	= [ listener0.onAsyncCommandCancel, listener1.onAsyncCommandCancel, listener2.onAsyncCommandCancel, this._mockMacro.onAsyncCommandCancel ];
 		
 		commandMapping	.withCompleteHandlers( new AsyncHandler( listener0, listener0.onAsyncCommandComplete ) )
 						.withCompleteHandlers( new AsyncHandler( listener1, listener1.onAsyncCommandComplete ) )
@@ -180,9 +180,9 @@ class MacroExecutorTest
 		
 		Assert.deepEquals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
 		
-		Assert.arrayContains( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
-		Assert.arrayContains( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
-		Assert.arrayContains( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
+		Assert.arrayContainsElementsFrom( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
+		Assert.arrayContainsElementsFrom( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
+		Assert.arrayContainsElementsFrom( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
 		
 		Assert.equals( 1, this._injector.getOrCreateNewInstanceCallCount, "'injector.getOrCreateNewInstance' method should be called once" );
 		Assert.equals( MockAsyncCommandForTestingExecution, this._injector.getOrCreateNewInstanceCallParameter, "'injector.getOrCreateNewInstance' parameter should be command class" );
