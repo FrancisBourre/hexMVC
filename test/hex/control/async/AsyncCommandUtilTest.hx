@@ -29,7 +29,7 @@ class AsyncCommandUtilTest
 												new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) ];
 		AsyncCommandUtil.addListenersToAsyncCommand( listeners, mockAsyncCommandForTestingListeners.addCompleteHandler );
 		
-		Assert.deepEquals( 	[ listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel ], 
+		Assert.arrayContainsElementsFrom( 	[ listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel ], 
 							mockAsyncCommandForTestingListeners.callback,
 							"'CommandExecutor.mapPayload' should map right callbacks" );
 							
