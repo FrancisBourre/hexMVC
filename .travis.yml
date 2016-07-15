@@ -30,8 +30,8 @@ install:
 
 script:
   - if [ $TRAVIS_HAXE_VERSION != "3.2.1" ]; then haxe build-php.hxml && php bin/index.php; fi
-  - haxe build-neko.hxml         && neko bin/MainMVCTest.n
-  - haxe build-js.hxml           && node bin/MainMVCTest.js
+  - if [ $TRAVIS_HAXE_VERSION != "3.2.1" ]; then haxe build-neko.hxml && neko bin/MainMVCTest.n
+  - haxe build-js.hxml && node bin/MainMVCTest.js
   - haxe build-flash.hxml -D fdb && haxe flash/run.hxml bin/MainMVCTest.swf
   
 notifications:
