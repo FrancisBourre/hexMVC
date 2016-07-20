@@ -9,7 +9,9 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
+#if !macro
 @:autoBuild( hex.control.controller.ControllerBuilder.build() )
+#end
 class Controller implements IController implements IInjectorContainer
 {
 	@Inject
