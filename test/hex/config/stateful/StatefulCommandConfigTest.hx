@@ -10,6 +10,7 @@ import hex.di.IDependencyInjector;
 import hex.event.Dispatcher;
 import hex.event.MessageType;
 import hex.module.MockModule;
+import hex.util.MacroUtil;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -38,6 +39,13 @@ class StatefulCommandConfigTest
 		config.map( messageType, BasicCommand );
 		
         Assert.deepEquals( [ messageType, BasicCommand ], controller.mapParameters, "parameters should be the same" );
+    }
+
+	@Test( "Test class is designed for injection" )
+    public function testClassIsDesignedForInjection() : Void
+    {
+		var b = MacroUtil.classImplementsInterface( 'hex.config.stateful.StatefulCommandConfig', 'hex.di.IInjectorContainer' );
+        Assert.isTrue( b, "'StatefulCommandConfig' class should implement 'IInjectorContainer' interface" );
     }
 }
 

@@ -1,9 +1,7 @@
 package hex.control.command;
 
 import hex.control.command.ICommand;
-import hex.control.Request;
 import hex.control.payload.ExecutionPayload;
-import hex.error.VirtualMethodException;
 import hex.log.ILogger;
 import hex.module.IModule;
 
