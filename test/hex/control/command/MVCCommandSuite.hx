@@ -6,6 +6,6 @@ package hex.control.command;
  */
 class MVCCommandSuite
 {
-	@Suite("Command")
-    public var list : Array<Class<Dynamic>> = [CommandExecutorTest, CommandMappingTest];
+		@Suite("Command")
+    public var list : Array<Class<Dynamic>> = [BasicCommandTest, CommandExecutorTest, CommandMappingTest ];
 }
