@@ -8,10 +8,16 @@ import hex.unittest.assertion.Assert;
  */
 class BasicViewTest
 {
-		@Test( "Test constructor" )
-	  public function testConstructor() : Void
+		@Test( "Test 'visible' property" )
+	  public function testVisibleProperty() : Void
 	  {
-	    	var basicView = new BasicView();
-	      Assert.equals( "hex.view.BasicView", Type.getClassName( Type.getClass( basicView ) ), "BasicView constructor should create an object with correct type" );
+	    	var view = new BasicView();
+	      Assert.isTrue( view.visible, "view should be visible by default" );
+
+				view.visible = false;
+				Assert.isFalse( view.visible, "view should not be visible when 'visible' property is set to false" );
+
+				view.visible = true;
+				Assert.isTrue( view.visible, "view should be visible when 'visible' property is set to true" );
 	  }
 }

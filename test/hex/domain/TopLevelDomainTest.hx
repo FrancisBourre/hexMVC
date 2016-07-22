@@ -1,6 +1,5 @@
 package hex.domain;
 
-import hex.domain.DomainUtil;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -9,11 +8,15 @@ import hex.unittest.assertion.Assert;
  */
 class TopLevelDomainTest
 {
-		@Test( "Test 'TopLevelDomain'" )
-	  public function testTopLevelDomain() : Void
-	  {
-	    	var staticVariable = TopLevelDomain.DOMAIN;
-        var domain = DomainUtil.getDomain( "TopLevelDomain", TopLevelDomain );
-	      Assert.equals( domain.getName(), staticVariable.getName(), "TopLevelDomain should exist" );
-	  }
+	@Test( "Test if 'TopLevelDomain' static variable exists" )
+    public function testIfTopLevelDomainStaticVariableExists() : Void
+    {
+        Assert.equals( "TopLevelDomain", TopLevelDomain.DOMAIN.getName(), "'TopLevelDomain.DOMAIN' static variable name should be 'TopLevelDomain'" );
+    }
+	
+	@Test( "Test if TopLevelDomain.DOMAIN is an instance of TopLevelDomain" )
+    public function testTopLevelDomainStaticVariableType() : Void
+    {
+        Assert.isInstanceOf( TopLevelDomain.DOMAIN, TopLevelDomain, "domain should be an instance of 'TopLevelDomain'" );
+    }
 }

@@ -8,7 +8,7 @@ class BasicView implements IView
 {
 	public function new() 
 	{
-		
+		this.visible = true;
 	}
 	
 	@:isVar public var visible( get, set ) : Bool;

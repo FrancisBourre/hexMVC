@@ -9,19 +9,19 @@ import hex.unittest.assertion.Assert;
  */
 class ViewHelperManagerMessageTest
 {
-		@Test( "Test 'onViewHelperCreation'" )
-	  public function testOnViewHelperCreation() : Void
-	  {
-	    	var staticVariable = ViewHelperManagerMessage.VIEW_HELPER_CREATION;
-        var message = new MessageType( "onViewHelperCreation" );
-	      Assert.equals( message.name, staticVariable.name, "onViewHelperCreation should exist" );
-	  }
+	@Test( "Test 'VIEW_HELPER_CREATION' property" )
+	public function testViewHelperCreationProperty() : Void
+	{
+		var message = ViewHelperManagerMessage.VIEW_HELPER_CREATION;
+		Assert.isInstanceOf( message, MessageType, "'ViewHelperManagerMessage.VIEW_HELPER_CREATION' should be an instance of 'MessageType'" );
+		Assert.equals( "onViewHelperCreation", message.name, "'name' property should be the same" );
+	}
 
-    @Test( "Test 'onViewHelperRelease'" )
-	  public function testOnViewHelperRelease() : Void
-	  {
-	    	var staticVariable = ViewHelperManagerMessage.VIEW_HELPER_RELEASE;
-        var message = new MessageType( "onViewHelperRelease" );
-	      Assert.equals( message.name, staticVariable.name, "onViewHelperRelease should exist" );
-	  }
+	@Test( "Test 'VIEW_HELPER_RELEASE' property" )
+	public function testViewHelperReleaseProperty() : Void
+	{
+		var message = ViewHelperManagerMessage.VIEW_HELPER_RELEASE;
+		Assert.isInstanceOf( message, MessageType, "'ViewHelperManagerMessage.VIEW_HELPER_RELEASE' should be an instance of 'MessageType'" );
+		Assert.equals( "onViewHelperRelease", message.name, "'name' property should be the same" );
+	}
 }

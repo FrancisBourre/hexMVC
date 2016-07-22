@@ -9,35 +9,35 @@ import hex.unittest.assertion.Assert;
  */
 class ViewHelperMessageTest
 {
-		@Test( "Test 'onInit'" )
-	  public function testOnInit() : Void
-	  {
-	    	var staticVariable = ViewHelperMessage.INIT;
-        var message = new MessageType( "onInit" );
-	      Assert.equals( message.name, staticVariable.name, "onInit should exist" );
-	  }
+	@Test( "Test 'INIT' property" )
+	public function testInitProperty() : Void
+	{
+		var message = ViewHelperMessage.INIT;
+		Assert.isInstanceOf( message, MessageType, "'ViewHelperMessage.INIT' should be an instance of 'MessageType'" );
+		Assert.equals( "onInit", message.name, "'name' property should be the same" );
+	}
 
-    @Test( "Test 'onRelease'" )
-	  public function testOnRelease() : Void
-	  {
-	    	var staticVariable = ViewHelperMessage.RELEASE;
-        var message = new MessageType( "onRelease" );
-	      Assert.equals( message.name, staticVariable.name, "onRelease should exist" );
-	  }
+	@Test( "Test 'RELEASE' property" )
+	public function testReleaseProperty() : Void
+	{
+		var message = ViewHelperMessage.RELEASE;
+		Assert.isInstanceOf( message, MessageType, "'ViewHelperMessage.RELEASE' should be an instance of 'MessageType'" );
+		Assert.equals( "onRelease", message.name, "'name' property should be the same" );
+	}
 
-    @Test( "Test 'onAttachView'" )
-	  public function testOnAttachView() : Void
-	  {
-	    	var staticVariable = ViewHelperMessage.ATTACH_VIEW;
-        var message = new MessageType( "onAttachView" );
-	      Assert.equals( message.name, staticVariable.name, "onAttachView should exist" );
-	  }
+	@Test( "Test 'ATTACH_VIEW' property" )
+	public function testAttachViewProperty() : Void
+	{
+		var message = ViewHelperMessage.ATTACH_VIEW;
+		Assert.isInstanceOf( message, MessageType, "'ViewHelperMessage.ATTACH_VIEW' should be an instance of 'MessageType'" );
+		Assert.equals( "onAttachView", message.name, "'name' property should be the same" );
+	}
 
-    @Test( "Test 'onRemoveView'" )
-	  public function testOnRemoveView() : Void
-	  {
-	    	var staticVariable = ViewHelperMessage.REMOVE_VIEW;
-        var message = new MessageType( "onRemoveView" );
-	      Assert.equals( message.name, staticVariable.name, "onRemoveView should exist" );
-	  }
+	@Test( "Test 'REMOVE_VIEW' property" )
+	public function testRemoveViewProperty() : Void
+	{
+		var message = ViewHelperMessage.REMOVE_VIEW;
+		Assert.isInstanceOf( message, MessageType, "'ViewHelperMessage.REMOVE_VIEW' should be an instance of 'MessageType'" );
+		Assert.equals( "onRemoveView", message.name, "'name' property should be the same" );
+	}
 }
