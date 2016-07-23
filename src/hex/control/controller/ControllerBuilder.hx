@@ -3,6 +3,7 @@ package hex.control.controller;
 import haxe.macro.Context;
 import haxe.macro.Expr.Field;
 import hex.annotation.MethodAnnotationData;
+import hex.control.Responder;
 import hex.module.IModule;
 import hex.util.MacroUtil;
 
@@ -35,7 +36,7 @@ class ControllerBuilder
 		var tMap : Map<String, String> = new Map();
 		
 		//Create responder
-		var responderTypePath = MacroUtil.getTypePath( Type.getClassName( ControllerResponder ) );
+		var responderTypePath = MacroUtil.getTypePath( Type.getClassName( Responder ) );
 
 		for ( method in data.methods )
 		{
