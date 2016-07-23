@@ -3,7 +3,6 @@ package hex.control.controller;
 import haxe.macro.Context;
 import haxe.macro.Expr.Field;
 import hex.annotation.MethodAnnotationData;
-import hex.control.async.AsyncCommand;
 import hex.module.IModule;
 import hex.util.MacroUtil;
 
@@ -27,7 +26,7 @@ class ControllerBuilder
 		var fields = Context.getBuildFields();
 		
 		//parse annotations
-		fields = hex.annotation.AnnotationReader.parseMetadata( "hex.control.controller.IController", [ ClassAnnotation ], true );
+		fields = hex.annotation.AnnotationReader.parseMetadata( Type.getClassName( IController ) , [ ClassAnnotation ], true );
 		
 		//get data result
 		var data = hex.annotation.AnnotationReader._static_classes[ hex.annotation.AnnotationReader._static_classes.length - 1 ];
