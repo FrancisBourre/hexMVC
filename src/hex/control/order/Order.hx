@@ -1,6 +1,6 @@
 package hex.control.order;
 
-import hex.control.controller.ICompletable;
+import hex.control.ICompletable;
 import hex.error.IllegalStateException;
 import hex.log.ILogger;
 import hex.module.IModule;

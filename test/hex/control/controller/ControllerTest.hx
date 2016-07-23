@@ -1,5 +1,6 @@
 package hex.control.controller;
 
+import hex.control.ICompletable;
 import hex.control.controller.Controller;
 import hex.control.controller.IController;
 import hex.di.IDependencyInjector;

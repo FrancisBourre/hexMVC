@@ -1,4 +1,5 @@
 package hex.control.controller;
+import hex.control.ICompletable;
 
 /**
  * ...
