@@ -46,7 +46,7 @@ class StatelessCommandConfigTest
 	@Test( "Test class is designed for injection" )
     public function testClassIsDesignedForInjection() : Void
     {
-		var b = MacroUtil.classImplementsInterface( 'hex.config.stateless.StatelessCommandConfig', 'hex.di.IInjectorContainer' );
+		var b = MacroUtil.classImplementsInterface( hex.config.stateless.StatelessCommandConfig, hex.di.IInjectorContainer );
         Assert.isTrue( b, "'StatelessCommandConfig' class should implement 'IInjectorContainer' interface" );
     }
 }
