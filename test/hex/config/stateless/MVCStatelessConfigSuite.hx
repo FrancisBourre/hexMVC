@@ -6,6 +6,6 @@ package hex.config.stateless;
  */
 class MVCStatelessConfigSuite
 {
-		@Suite( "Stateless" )
-    public var list : Array<Class<Dynamic>> = [ StatelessCommandConfigTest ];
+	@Suite( "Stateless" )
+    public var list : Array<Class<Dynamic>> = [ StatelessCommandConfigTest, StatelessModelConfigTest ];
 }

@@ -24,7 +24,7 @@ class StatelessModelConfig implements IStatelessConfig implements IInjectorConta
 		throw new VirtualMethodException( this + ".configure must be overridden" );
 	}
 	
-	public function mapModel<ModelType>( modelInterface : Class<ModelType>, modelClass : Class<ModelType>,  name : String = "" ) : Void
+	public function map<ModelType>( modelInterface : Class<ModelType>, modelClass : Class<ModelType>,  name : String = "" ) : Void
 	{
 		var instance : Dynamic = this.injector.instantiateUnmapped( modelClass );
 		this.injector.mapToValue( modelInterface, instance, name );

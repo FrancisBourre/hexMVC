@@ -1,8 +1,11 @@
 package hex.config.stateless;
 
+import hex.control.IFrontController;
+import hex.control.command.ICommand;
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorContainer;
 import hex.error.VirtualMethodException;
+import hex.event.MessageType;
 
 /**
  * ...
@@ -13,6 +16,9 @@ class StatelessModuleConfig implements IStatelessConfig implements IInjectorCont
 	@Inject
 	public var injector : IDependencyInjector;
 	
+	@Inject
+	public var frontController : IFrontController;
+	
 	public function new() 
 	{
 		
@@ -21,6 +27,11 @@ class StatelessModuleConfig implements IStatelessConfig implements IInjectorCont
 	public function configure() : Void 
 	{
 		throw new VirtualMethodException( this + ".configure must be overridden" );
+	}
+	
+	public function mapCommand( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping
+	{
+		return this.frontController.map( messageType, commandClass );
 	}
 	
 	public function mapController<ControllerType>( controllerInterface : Class<ControllerType>, controllerClass : Class<ControllerType>,  name : String = "" ) : Void
