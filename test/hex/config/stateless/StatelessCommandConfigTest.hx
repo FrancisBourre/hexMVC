@@ -1,25 +1,17 @@
 package hex.config.stateless;
 
+import hex.control.IFrontController;
 import hex.control.command.BasicCommand;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
-import hex.control.IFrontController;
-import hex.event.MessageType;
 import hex.error.VirtualMethodException;
-import hex.util.MacroUtil;
+import hex.event.MessageType;
 import hex.unittest.assertion.Assert;
+import hex.util.MacroUtil;
 
 /**
  * ...
  * @author Tamas Kinsztler
-
-
-
-
-
-
-
- 
  */
 class StatelessCommandConfigTest
 {
@@ -48,6 +40,13 @@ class StatelessCommandConfigTest
     {
 		var b = MacroUtil.classImplementsInterface( hex.config.stateless.StatelessCommandConfig, hex.di.IInjectorContainer );
         Assert.isTrue( b, "'StatelessCommandConfig' class should implement 'IInjectorContainer' interface" );
+    }
+	
+	@Test( "Test class implements IStatelessConfig" )
+    public function testClassImplementsIStatelessConfig() : Void
+    {
+		var b = MacroUtil.classImplementsInterface( hex.config.stateless.StatelessCommandConfig, hex.config.stateless.IStatelessConfig );
+        Assert.isTrue( b, "'StatelessCommandConfig' class should implement 'IStatelessConfig' interface" );
     }
 }
 

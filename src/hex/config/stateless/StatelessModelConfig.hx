@@ -28,6 +28,6 @@ class StatelessModelConfig implements IStatelessConfig implements IInjectorConta
 	{
 		var instance : Dynamic = this.injector.instantiateUnmapped( modelClass );
 		this.injector.mapToValue( modelInterface, instance, name );
-		this.injector.mapToValue( Type.resolveClass( Type.getClassName( modelInterface ) + "RO" ), instance );
+		this.injector.mapToValue( Type.resolveClass( Type.getClassName( modelInterface ) + "RO" ), instance, name );
 	}
 }
