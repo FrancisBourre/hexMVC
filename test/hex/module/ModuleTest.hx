@@ -4,7 +4,9 @@ import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
+import hex.di.error.MissingMappingException;
 import hex.domain.DomainExpert;
+import hex.error.Exception;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
@@ -121,6 +123,15 @@ class ModuleTest
 		Assert.methodCallThrows( IllegalStateException, module, module.release, [], "'release' called twice should throw 'IllegalStateException'" );
 		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
 	}
+	
+	@Test( "Test get accessor" )
+	public function testGetAccessor() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		module.getInjector().mapToValue( ModuleTest, this );
+		Assert.equals ( this, module.get( ModuleTest ), "'_get' method call should return mapping result from internal moudle's injector" );
+		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ Exception ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
+	}
 }
 
 private class MockModuleForTestigInjector extends Module
@@ -129,6 +140,11 @@ private class MockModuleForTestigInjector extends Module
 	{
 		super();
 
+	}
+	
+	public function get<T>( type : Class<T> ) : T
+	{
+		return this._get( type );
 	}
 }
 
