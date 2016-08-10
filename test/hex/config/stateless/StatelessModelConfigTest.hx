@@ -10,8 +10,6 @@ import hex.util.MacroUtil;
  */
 class StatelessModelConfigTest
 {
-	//TODO finish to implement
-	
 	@Test( "Test 'configure' throws 'VirtualMethodException'" )
 	public function testConfigureThrowsVirtualMethodException() : Void
 	{
