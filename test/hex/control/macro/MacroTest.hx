@@ -1,6 +1,8 @@
 package hex.control.macro;
 
 import haxe.Timer;
+import hex.MockDependencyInjector;
+import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
@@ -11,14 +13,12 @@ import hex.control.command.ICommandMapping;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.Macro;
 import hex.control.macro.MacroExecutor;
-import hex.control.Request;
 import hex.control.payload.ExecutionPayload;
 import hex.error.IllegalStateException;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
 import hex.log.ILogger;
 import hex.log.Stringifier;
-import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -353,7 +353,7 @@ private class MockMacroWithHandler extends Macro
 		this.add( MockAsyncCommand ).withCompleteHandlers( new AsyncHandler( this, this.onCommandComplete ) );
 	}
 	
-	function onCommandComplete( command:AsyncCommand ) : Void
+	function onCommandComplete( command: IAsyncCommand ) : Void
 	{
 		this.add( MockCommand );
 	}

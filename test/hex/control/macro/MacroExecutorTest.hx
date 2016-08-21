@@ -1,8 +1,11 @@
 package hex.control.macro;
 
 import haxe.Timer;
+import hex.MockDependencyInjector;
+import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncHandler;
+import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.BasicCommand;
 import hex.control.command.CommandMapping;
@@ -11,13 +14,10 @@ import hex.control.command.ICommandMapping;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
-import hex.control.Request;
 import hex.error.IllegalStateException;
-import hex.MockDependencyInjector;
 import hex.log.ILogger;
 import hex.module.IModule;
 import hex.module.MockModule;
-import hex.module.Module;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
 
@@ -372,9 +372,9 @@ private class MockCommand implements ICommand
 private class MockMacroFailListener extends ASyncCommandListener
 {
 	public var onAsyncCommandFailCallCount : Int = 0;
-	public var failCommand : AsyncCommand;
+	public var failCommand : IAsyncCommand;
 	
-	override public function onAsyncCommandFail( cmd : AsyncCommand ) : Void 
+	override public function onAsyncCommandFail( cmd : IAsyncCommand ) : Void 
 	{
 		this.onAsyncCommandFailCallCount++;
 		this.failCommand = cmd;
@@ -391,17 +391,17 @@ private class MockMacroListener extends ASyncCommandListener
 		super();
 	}
 	
-	override public function onAsyncCommandComplete( cmd : AsyncCommand ) : Void
+	override public function onAsyncCommandComplete( cmd : IAsyncCommand ) : Void
 	{
 		this._macroExecutor.asyncCommandCalled( cmd );
 	}
 	
-	override public function onAsyncCommandFail( cmd : AsyncCommand ) : Void
+	override public function onAsyncCommandFail( cmd : IAsyncCommand ) : Void
 	{
 		this._macroExecutor.asyncCommandCalled( cmd );
 	}
 	
-	override public function onAsyncCommandCancel( cmd : AsyncCommand ) : Void 
+	override public function onAsyncCommandCancel( cmd : IAsyncCommand ) : Void 
 	{
 		this._macroExecutor.asyncCommandCalled( cmd );
 	}
@@ -414,17 +414,17 @@ private class ASyncCommandListener implements IAsyncCommandListener
 		
 	}
 	
-	public function onAsyncCommandComplete( cmd : AsyncCommand ) : Void 
+	public function onAsyncCommandComplete( cmd : IAsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandFail( cmd : AsyncCommand ) : Void 
+	public function onAsyncCommandFail( cmd : IAsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandCancel( cmd : AsyncCommand ) : Void 
+	public function onAsyncCommandCancel( cmd : IAsyncCommand ) : Void 
 	{
 		
 	}

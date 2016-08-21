@@ -26,17 +26,17 @@ private class ASyncCommandListener implements IAsyncCommandListener
 
 	}
 
-	public function onAsyncCommandComplete( cmd : AsyncCommand ) : Void
+	public function onAsyncCommandComplete( cmd : IAsyncCommand ) : Void
 	{
 
 	}
 
-	public function onAsyncCommandFail( cmd : AsyncCommand ) : Void
+	public function onAsyncCommandFail( cmd : IAsyncCommand ) : Void
 	{
 
 	}
 
-	public function onAsyncCommandCancel( cmd : AsyncCommand ) : Void
+	public function onAsyncCommandCancel( cmd : IAsyncCommand ) : Void
 	{
 
 	}

@@ -1,17 +1,17 @@
 package hex.control.command;
 
+import hex.MockDependencyInjector;
+import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncHandler;
+import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommandMapping;
 import hex.control.payload.ExecutionPayload;
-import hex.control.Request;
-import hex.MockDependencyInjector;
 import hex.module.IModule;
 import hex.module.MockModule;
-import hex.module.Module;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -220,17 +220,17 @@ private class ASyncCommandListener implements IAsyncCommandListener
 		
 	}
 	
-	public function onAsyncCommandComplete( command : AsyncCommand ) : Void 
+	public function onAsyncCommandComplete( command : IAsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandFail( command : AsyncCommand ) : Void 
+	public function onAsyncCommandFail( command : IAsyncCommand ) : Void 
 	{
 		
 	}
 	
-	public function onAsyncCommandCancel( command : AsyncCommand ) : Void 
+	public function onAsyncCommandCancel( command : IAsyncCommand ) : Void 
 	{
 		
 	}

@@ -1,7 +1,7 @@
 package hex.control.command;
 
-import hex.control.async.AsyncCommand;
 import hex.control.async.AsyncHandler;
+import hex.control.async.IAsyncCommand;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
@@ -155,7 +155,7 @@ private class MockAsyncCommandListener
 		
 	}
 	
-	public function handler( command : AsyncCommand ) : Void
+	public function handler( command : IAsyncCommand ) : Void
 	{
 		
 	}
