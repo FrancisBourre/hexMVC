@@ -1,10 +1,7 @@
 package hex.event;
 
-import hex.control.Request;
-import hex.control.async.AsyncCommand;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
-import hex.di.IInjectorContainer;
 import hex.di.Injector;
 import hex.unittest.assertion.Assert;
 
@@ -159,27 +156,5 @@ private class MockMacroAdapterStrategy extends MacroAdapterStrategy
 	override public function getResult() : Array<Dynamic> 
 	{
 		return [ this.data0, this.data1 ];
-	}
-}
-
-private class MockValueObject
-{
-	public var value : String;
-	
-	public function new( value :  String )
-	{
-		this.value = value;
-	}
-}
-
-private class MockAsyncCommand extends AsyncCommand implements IInjectorContainer
-{
-	@Inject
-	public var data : MockValueObject;
-	
-	public function execute( ?request : Request ) : Void
-    {
-		this.data.value += "!";
-		this._handleComplete();
 	}
 }
