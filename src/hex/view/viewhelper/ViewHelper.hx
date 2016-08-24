@@ -114,8 +114,8 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	{
 		if ( !this._isVisible )
 		{
-			/*this._isVisible = true;
-			if ( this._view != null )
+			this._isVisible = true;
+			/*if ( this._view != null )
 			{
 				this._view.visible = true;
 			}*/
@@ -126,8 +126,8 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	{
 		if ( this._isVisible )
 		{
-			/*this._isVisible = false;
-			if ( this._view != null )
+			this._isVisible = false;
+			/*if ( this._view != null )
 			{
 				this._view.visible = false;
 			}*/
