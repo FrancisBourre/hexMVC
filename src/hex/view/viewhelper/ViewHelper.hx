@@ -70,7 +70,7 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		{
 			this._dispatcher.dispatch( ViewHelperMessage.ATTACH_VIEW, [ this, this._view ] );
 
-			if ( view.visible )
+			/*if ( view.visible )
 			{
 				if ( view.visible != this._isVisible )
 				{
@@ -80,7 +80,7 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 			else
 			{
 				this._isVisible = false;
-			}
+			}*/
 			
 			//TODO: figure out when we should fire it. now it's automatic - grosmar
 			this._fireInitialisation();
@@ -115,10 +115,10 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		if ( !this._isVisible )
 		{
 			this._isVisible = true;
-			if ( this._view != null )
+			/*if ( this._view != null )
 			{
 				this._view.visible = true;
-			}
+			}*/
 		}
 	}
 	
@@ -127,10 +127,10 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		if ( this._isVisible )
 		{
 			this._isVisible = false;
-			if ( this._view != null )
+			/*if ( this._view != null )
 			{
 				this._view.visible = false;
-			}
+			}*/
 		}
 	}
 	

@@ -5,5 +5,5 @@ package hex.view;
  */
 interface IView 
 {
-	var visible( get, set ) : Bool;
+	
 }
