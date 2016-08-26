@@ -1,6 +1,6 @@
 package hex.event;
 
-import haxe.web.Request;
+import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.di.IInjectorContainer;
 
