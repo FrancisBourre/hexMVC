@@ -7,6 +7,7 @@ import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.IFrontController;
 import hex.di.IDependencyInjector;
+import hex.di.provider.IDependencyProvider;
 import hex.event.Dispatcher;
 import hex.event.MessageType;
 import hex.module.MockModule;
@@ -147,5 +148,10 @@ private class MockInjectorWithFrontController implements IDependencyInjector
 	public function removeEventListener( eventType : String, callback : InjectionEvent->Void ) : Bool
 	{
 		return false;
+	}
+	
+	public function getProvider( type : Class<Dynamic>, name : String = '' ) : IDependencyProvider
+	{
+		return null;
 	}
 }
