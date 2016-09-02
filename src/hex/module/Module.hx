@@ -58,6 +58,7 @@ class Module implements IModule
 		this._injector.mapToValue( IModule, this );
 		
 		this._logger = new DomainLogger( this.getDomain() );
+		this._injector.mapToValue( ILogger, this._logger );
 	}
 			
 	/**
