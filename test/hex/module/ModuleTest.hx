@@ -2,6 +2,7 @@ package hex.module;
 
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
+import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.di.error.MissingMappingException;
@@ -129,8 +130,17 @@ class ModuleTest
 	{
 		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
 		module.getInjector().mapToValue( ModuleTest, this );
-		Assert.equals ( this, module.get( ModuleTest ), "'_get' method call should return mapping result from internal moudle's injector" );
+		Assert.equals ( this, module.get( ModuleTest ), "'_get' method call should return mapping result from internal module's injector" );
 		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ Exception ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
+	}
+	
+	@Test( "Test module mappings" )
+	public function testModuleMappings() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		Assert.equals ( module.getLogger(), module.get( ILogger ), "'_get' method call should return module's logger" );
+		Assert.equals ( module.getInjector(), module.get( IBasicInjector ), "'_get' method call should return module's injector" );
+		Assert.equals ( module.getInjector(), module.get( IDependencyInjector ), "'_get' method call should return module's injector" );
 	}
 }
 
