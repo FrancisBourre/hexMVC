@@ -3,6 +3,7 @@ package hex.control;
 import hex.control.FrontController;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
+import hex.control.macro.Macro;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IDependencyInjector;
 import hex.di.InjectionEvent;
@@ -91,6 +92,31 @@ class FrontControllerTest
 		Assert.equals( anotherRequest, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 	}
 	
+	@Test( "Functional test of request handling from a macro" )
+    public function testRequestHandlingFromMacro() : Void
+    {
+		var messageType = new MessageType( "messageType" );
+		var request = new Request();
+		this._frontcontroller.map( messageType, MockMacroForFrontcontroller );
+		
+		this._dispatcher.dispatch( messageType, [request] );
+		
+		Assert.equals( 1, MockMacroForFrontcontroller.executeCallCount, "Command execution should happenned once" );
+		Assert.equals( request, MockMacroForFrontcontroller.requestParameter, "request received by the command should be the same that was dispatched" );
+		
+		var anotherMessageType = new MessageType( "anotherMessageType" );
+		var anotherRequest = new Request();
+		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
+		
+		Assert.equals( 1, MockMacroForFrontcontroller.executeCallCount, "Command execution should happenned once" );
+		Assert.equals( request, MockMacroForFrontcontroller.requestParameter, "request received by the command should be the same that was dispatched" );
+		
+		this._frontcontroller.map( anotherMessageType, MockMacroForFrontcontroller );
+		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
+		
+		Assert.equals( 2, MockMacroForFrontcontroller.executeCallCount, "Command execution should happenned twice" );
+		Assert.equals( anotherRequest, MockMacroForFrontcontroller.requestParameter, "request received by the command should be the same that was dispatched" );
+	}
 }
 
 private class MockCommand implements ICommand
@@ -230,7 +256,7 @@ private class MockDependencyInjector implements IDependencyInjector
 	
 	public function getOrCreateNewInstance<T>( type : Class<Dynamic> ) : T 
 	{
-		return cast Type.createInstance( MockCommand, [] );
+		return cast Type.createInstance( type, [] );
 	}
 	
 	public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic 

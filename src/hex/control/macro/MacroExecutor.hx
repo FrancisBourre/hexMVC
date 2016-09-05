@@ -104,7 +104,7 @@ class MacroExecutor implements IMacroExecutor implements IInjectorContainer
             if ( isAsync )
             {
                 var aSyncCommand : IAsyncCommand = cast( command, IAsyncCommand );
-                aSyncCommand.preExecute();
+                aSyncCommand.preExecute( request );
                 if ( mapping.hasCompleteHandler )   AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCompleteHandlers(), aSyncCommand.addCompleteHandler );
                 if ( mapping.hasFailHandler )       AsyncCommandUtil.addListenersToAsyncCommand( mapping.getFailHandlers(), aSyncCommand.addFailHandler );
                 if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), aSyncCommand.addCancelHandler );
