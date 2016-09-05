@@ -270,18 +270,47 @@ class MacroTest
 	{
 		return false;
 	}
+	
+	@Async( "Test commands get request passed to macro" )
+	public function testCommandsGetRequestPassedToMacro() : Void
+	{
+		MockCommand.lastRequest = null;
+		MockAsyncCommand.lastRequest = null;
+		
+		var myMacro = new MockMacro();
+		var macroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+		
+		var request = new Request();
+		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onMacroWithRequestComplete, [ request ] ) );
+		
+		myMacro.preExecute();
+		myMacro.execute( request );
+		
+		Assert.equals( request, MockAsyncCommand.lastRequest, "request should be the same" );
+	}
+	
+	function _onMacroWithRequestComplete( command : AsyncCommand, request : Request ) : Void
+	{
+		Assert.equals( request, MockCommand.lastRequest, "request should be the same" );
+	}
 }
 
 private class MockAsyncCommand extends AsyncCommand
 {
+	static public var lastRequest : Request;
+	
 	public function execute( ?request : Request ) : Void 
 	{
+		MockAsyncCommand.lastRequest = request;
 		Timer.delay( this._handleComplete, 50 );
 	}
 }
 
 private class MockCommand implements ICommand
 {
+	static public var lastRequest : Request;
 	var _owner : IModule;
 	
 	public var executeMethodName( default, null ) : String = "execute";
@@ -300,6 +329,7 @@ private class MockCommand implements ICommand
 	
 	public function execute( ?request : Request ) : Void 
 	{
+		MockCommand.lastRequest = request;
 		MockCommand.executeCallCount++;
 	}
 	
