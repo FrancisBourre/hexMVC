@@ -7,5 +7,5 @@ package hex.model;
 class MVCModelSuite
 {
 	@Suite( "Model" )
-    public var list : Array<Class<Dynamic>> = [ ModelTest ];
+    public var list : Array<Class<Dynamic>> = [ BasicModelTest ];
 }
