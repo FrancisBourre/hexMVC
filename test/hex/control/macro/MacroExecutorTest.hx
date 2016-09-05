@@ -292,7 +292,7 @@ private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
 		MockAsyncCommandForTestingExecution.owner = owner;
 	}
 	
-	override public function preExecute() : Void 
+	override public function preExecute( ?request : Request ) : Void 
 	{
 		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
 	}

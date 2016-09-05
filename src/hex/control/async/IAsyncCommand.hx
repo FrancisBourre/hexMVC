@@ -1,10 +1,11 @@
 package hex.control.async;
 
+import hex.control.Request;
 import hex.control.command.ICommand;
 
 interface IAsyncCommand extends ICommand
 {
-    function preExecute() : Void;
+    function preExecute( ?request : Request ) : Void;
 
     function cancel() : Void;
 

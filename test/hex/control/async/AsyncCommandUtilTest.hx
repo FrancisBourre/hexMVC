@@ -68,7 +68,7 @@ private class MockAsyncCommand implements IAsyncCommand
 		return this.getOwner().getLogger();
 	}
 	
-	public function preExecute() : Void 
+	public function preExecute( ?request : Request ) : Void 
 	{
 		
 	}
