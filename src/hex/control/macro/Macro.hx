@@ -36,7 +36,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener implements IIn
 		throw new VirtualMethodException( this + ".execute must be overridden" );
 	}
 	
-	override public function preExecute() : Void
+	override public function preExecute( ?request : Request ) : Void
 	{
 		if ( this.macroExecutor != null )
 		{
@@ -48,14 +48,14 @@ class Macro extends AsyncCommand implements IAsyncCommandListener implements IIn
 		}
 		
 		this._prepare();
-		super.preExecute();
+		this._request = request;
+		super.preExecute( request );
 	}
 	
 	@:final 
 	public function execute( ?request : Request ) : Void
 	{
 		!this.isRunning && this._throwExecutionIllegalStateError();
-		this._request = request;
 		this._executeNextCommand();
 	}
 	

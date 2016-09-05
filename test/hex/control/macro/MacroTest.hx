@@ -135,15 +135,11 @@ class MacroTest
 		myMacro.macroExecutor = this._macroExecutor;
 		
 		Assert.methodCallThrows( IllegalStateException, myMacro, myMacro.execute, [], "Macro should throw IllegalStateException when calling execute without calling preExecute before" );
-		myMacro.preExecute();
 		
 		var request = new Request();
+		myMacro.preExecute( request );
 		myMacro.execute( request );
 		Assert.equals( request, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
-		
-		var anotherRequest = new Request();
-		myMacro.execute( anotherRequest );
-		Assert.equals( anotherRequest, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
 	}
 	
 	@Test( "Test execute triggers 'handleComplete'" )
@@ -285,7 +281,7 @@ class MacroTest
 		var request = new Request();
 		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onMacroWithRequestComplete, [ request ] ) );
 		
-		myMacro.preExecute();
+		myMacro.preExecute( request );
 		myMacro.execute( request );
 		
 		Assert.equals( request, MockAsyncCommand.lastRequest, "request should be the same" );

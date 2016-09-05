@@ -40,7 +40,7 @@ class AsyncCommand implements IAsyncCommand
 		return this._owner.getLogger();
 	}
 
-    public function preExecute() :  Void
+    public function preExecute( ?request : Request ) : Void
     {
         this.wasUsed && this._throwExecutionIllegalStateError();
         this._status = AsyncCommand.IS_RUNNING;
