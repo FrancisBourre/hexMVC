@@ -71,10 +71,12 @@ class CommandExecutor
             command.setOwner( this._module );
 
             var isAsync : Bool = Std.is( command, IAsyncCommand );
+
             if ( isAsync )
             {
                 var asynCommand : IAsyncCommand = cast( command, IAsyncCommand );
-                asynCommand.preExecute();
+                asynCommand.preExecute( request );
+
                 if ( mapping.hasCompleteHandler )   AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCompleteHandlers(), asynCommand.addCompleteHandler );
                 if ( mapping.hasFailHandler )       AsyncCommandUtil.addListenersToAsyncCommand( mapping.getFailHandlers(), asynCommand.addFailHandler );
                 if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
