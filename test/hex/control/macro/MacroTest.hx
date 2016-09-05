@@ -291,6 +291,23 @@ class MacroTest
 	{
 		Assert.equals( request, MockCommand.lastRequest, "request should be the same" );
 	}
+	
+	@Test( "Test request is available from prepare method" )
+	public function testRequestIsAvailableFromPrepareMethod() : Void
+	{
+		MockCommand.lastRequest = null;
+		MockAsyncCommand.lastRequest = null;
+		
+		var myMacro = new MockEmptyMacroWithPrepareOverriden();
+		var macroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+		
+		var request = new Request();
+		myMacro.preExecute( request );
+		
+		Assert.equals( request, myMacro.requestPassedDuringExecution, "request should be available from prepare" );
+	}
 }
 
 private class MockAsyncCommand extends AsyncCommand
@@ -357,9 +374,11 @@ private class MockEmptyMacro extends Macro
 
 private class MockEmptyMacroWithPrepareOverriden extends Macro
 {
+	public var requestPassedDuringExecution	: Request;
+	
 	override function _prepare() : Void
 	{
-		
+		this.requestPassedDuringExecution = this._request;
 	}
 }
 

@@ -47,8 +47,8 @@ class Macro extends AsyncCommand implements IAsyncCommandListener implements IIn
 			throw new NullPointerException( "macroExecutor can't be null in '" + Stringifier.stringify( this ) + "'" );
 		}
 		
-		this._prepare();
 		this._request = request;
+		this._prepare();
 		super.preExecute( request );
 	}
 	
