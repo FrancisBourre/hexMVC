@@ -12,11 +12,10 @@ import haxe.Constraints.Constructible;
  */
 @:generic
 #if ( haxe_ver >= "3.3" )
-class Model<DispatcherType:(IModelDispatcher<ListenerType>, haxe.Constraints.Constructible<Void->Void>), ListenerType: {}>
+class BasicModel<DispatcherType:(IModelDispatcher<ListenerType>, haxe.Constraints.Constructible<Void->Void>), ListenerType: {}>
 #else
-class Model<DispatcherType:IModelDispatcher<ListenerType>, ListenerType: {}>
+class BasicModel<DispatcherType:IModelDispatcher<ListenerType>, ListenerType: {}>
 #end
-
 {
 	public var dispatcher : DispatcherType;
 

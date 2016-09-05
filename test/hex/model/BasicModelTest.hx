@@ -6,7 +6,7 @@ import hex.unittest.assertion.Assert;
  * ...
  * @author Francis Bourre
  */
-class ModelTest
+class BasicModelTest
 {
     @Test( 'test constructor' )
 	function testConstructor() : Void
@@ -16,7 +16,7 @@ class ModelTest
     }
 }
 
-private class MockModel extends Model<MockModelDispatcher, IMockModelListener>
+private class MockModel extends BasicModel<MockModelDispatcher, IMockModelListener>
 {
     public function new() 
 	{
