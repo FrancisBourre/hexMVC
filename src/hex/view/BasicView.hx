@@ -1,25 +1,15 @@
 package hex.view;
 
+import hex.di.IInjectorContainer;
+
 /**
  * ...
  * @author Francis Bourre
  */
-class BasicView implements IView
+class BasicView implements IView implements IInjectorContainer
 {
 	public function new() 
 	{
-		this.visible = true;
-	}
-	
-	@:isVar public var visible( get, set ) : Bool;
-	
-	function get_visible() : Bool 
-	{
-		return visible;
-	}
-	
-	function set_visible( value : Bool ) : Bool 
-	{
-		return visible = value;
+		
 	}
 }
