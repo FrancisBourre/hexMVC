@@ -15,20 +15,29 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 {
 	public static var DEFAULT_VISIBLE : Bool = true;
 	
+	/**
+	 * This is the public dispatcher injected by the module
+	 * Use it to dispatch request inside your module.
+	 */
 	@Inject
 	public var dispatcher 	: IDispatcher<{}>;
 	
-	var _dispatcher 		: Dispatcher<{}>;
 	var _owner 				: IModule;
 	var _view 				: ViewType;
 	var _isVisible 			: Bool = ViewHelper.DEFAULT_VISIBLE;
 	
 	var _isPreInitialized 	: Bool = false;
+	
+	/**
+	 * Don't use this dispatcher, it's used internally for
+	 * updating current state to manager.
+	 */
+	var _internal 			: Dispatcher<{}>;
 		
 	
 	public function new ()
 	{
-		this._dispatcher = new Dispatcher<{}>();
+		this._internal = new Dispatcher<{}>();
 	}
 	
 	function _preInitialize() : Void
@@ -61,14 +70,14 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 
 		if ( this.view != null || view == null )
 		{
-			this._dispatcher.dispatch( ViewHelperMessage.REMOVE_VIEW, [ this, this._view ] );
+			this._internal.dispatch( ViewHelperMessage.REMOVE_VIEW, [ this, this._view ] );
 		}
 			
 		this._view = view;
 		
 		if ( view != null )
 		{
-			this._dispatcher.dispatch( ViewHelperMessage.ATTACH_VIEW, [ this, this._view ] );
+			this._internal.dispatch( ViewHelperMessage.ATTACH_VIEW, [ this, this._view ] );
 
 			/*if ( view.visible )
 			{
@@ -92,7 +101,7 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	function _fireInitialisation() : Void
 	{
 		this._initialize();
-		this._dispatcher.dispatch( ViewHelperMessage.INIT, [ this ] );
+		this._internal.dispatch( ViewHelperMessage.INIT, [ this ] );
 	}
 	
 	public function getOwner() : IModule
@@ -156,18 +165,18 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	
 	public function release() : Void 
 	{
-		this._dispatcher.dispatch( ViewHelperMessage.RELEASE, [ this ] );
+		this._internal.dispatch( ViewHelperMessage.RELEASE, [ this ] );
 		this._view = null;
-		this._dispatcher.removeAllListeners();
+		this._internal.removeAllListeners();
 	}
 	
 	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._dispatcher.addHandler( messageType, scope, callback );
+		this._internal.addHandler( messageType, scope, callback );
 	}
 	
 	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
 	{
-		this._dispatcher.removeHandler( messageType, scope, callback );
+		this._internal.removeHandler( messageType, scope, callback );
 	}
 }
