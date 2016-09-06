@@ -6,6 +6,7 @@ import hex.control.async.IAsyncCommandListener;
 import hex.control.payload.ExecutionPayload;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
+import hex.event.ClosureDispatcher;
 import hex.event.Dispatcher;
 import hex.log.ILogger;
 import hex.log.Stringifier;
@@ -24,7 +25,7 @@ class AsyncCommand implements IAsyncCommand
     public static inline var IS_CANCELLED       : String = "IS_CANCELLED";
 
     var _status                         : String;
-    var _dispatcher 					: Dispatcher<{}>;
+    var _dispatcher 					: ClosureDispatcher;
     var _owner                          : IModule;
 	
 	public var executeMethodName( default, null ) : String = "execute";
@@ -32,7 +33,7 @@ class AsyncCommand implements IAsyncCommand
     public function new()
     {
         this._status 			= AsyncCommand.WAS_NEVER_USED;
-        this._dispatcher        = new Dispatcher<{}>();
+        this._dispatcher        = new ClosureDispatcher();
     }
 	
 	public function getLogger() : ILogger
@@ -74,13 +75,13 @@ class AsyncCommand implements IAsyncCommand
         }
         else
         {
-            this._dispatcher.addHandler( AsyncCommandMessage.COMPLETE, scope, callback );
+            this._dispatcher.addHandler( AsyncCommandMessage.COMPLETE, callback );
         }
     }
 
     public function removeCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
-        this._dispatcher.removeHandler( AsyncCommandMessage.COMPLETE, scope, callback );
+        this._dispatcher.removeHandler( AsyncCommandMessage.COMPLETE, callback );
     }
 
     public function addFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
@@ -91,13 +92,13 @@ class AsyncCommand implements IAsyncCommand
         }
         else
         {
-            this._dispatcher.addHandler( AsyncCommandMessage.FAIL, scope, callback );
+            this._dispatcher.addHandler( AsyncCommandMessage.FAIL, callback );
         }
     }
 
     public function removeFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
-        this._dispatcher.removeHandler( AsyncCommandMessage.FAIL, scope, callback );
+        this._dispatcher.removeHandler( AsyncCommandMessage.FAIL, callback );
     }
 
     public function addCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
@@ -108,13 +109,13 @@ class AsyncCommand implements IAsyncCommand
         }
         else
         {
-            this._dispatcher.addHandler( AsyncCommandMessage.CANCEL, scope, callback );
+            this._dispatcher.addHandler( AsyncCommandMessage.CANCEL, callback );
         }
     }
 
     public function removeCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
     {
-        this._dispatcher.removeHandler( AsyncCommandMessage.CANCEL, scope, callback );
+        this._dispatcher.removeHandler( AsyncCommandMessage.CANCEL, callback );
     }
 
 	@:final 
