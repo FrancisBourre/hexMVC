@@ -4,7 +4,6 @@ import haxe.Timer;
 import hex.MockDependencyInjector;
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
-import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandMapping;
