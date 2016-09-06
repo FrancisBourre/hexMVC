@@ -14,11 +14,11 @@ class AsyncCommandUtil
 		throw new PrivateConstructorException( "'AsyncCommandUtil' class can't be instantiated." );
 	}
 	
-	static public function addListenersToAsyncCommand( handlers : Array<AsyncHandler>, methodToAddListener : Dynamic->( IAsyncCommand->Void )->Void ) : Void
+	static public function addListenersToAsyncCommand( handlers : Array<AsyncHandler>, methodToAddListener : ( IAsyncCommand->Void )->Void ) : Void
     {
         for ( handler in handlers )
         {
-            methodToAddListener( handler.scope, handler.callback );
+            methodToAddListener( handler.callback );
         }
     }
 }

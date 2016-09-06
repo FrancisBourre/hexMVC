@@ -73,7 +73,7 @@ class AsyncCommandTest
 		var anotherHandler 	= new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
-		this._asyncCommand.addCancelHandler( handler, handler.onAsyncCommandCancel );
+		this._asyncCommand.addCancelHandler( handler.onAsyncCommandCancel );
 		
 		Assert.isFalse( this._asyncCommand.isCancelled, "'isCancelled' property should return false" );
 		this._asyncCommand.cancel();
@@ -86,7 +86,7 @@ class AsyncCommandTest
 		Assert.equals( this._asyncCommand, listener.lastCommandReceived, "command received by listener should be asyncCommand instance" );
 		Assert.equals( this._asyncCommand, handler.lastCommandReceived, "command received by handler should be asyncCommand instance" );
 		
-		this._asyncCommand.addCancelHandler( anotherHandler, anotherHandler.onAsyncCommandCancel );
+		this._asyncCommand.addCancelHandler( anotherHandler.onAsyncCommandCancel );
 		Assert.equals( 1, anotherHandler.cancelCallbackCount, "'post-handler' callback should be triggered once" );
 		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
     }
@@ -99,7 +99,7 @@ class AsyncCommandTest
 		var anotherHandler 	= new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
-		this._asyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );
+		this._asyncCommand.addCompleteHandler( handler.onAsyncCommandComplete );
 		
 		Assert.isFalse( this._asyncCommand.hasCompleted, "'hasCompleted' property should return false" );
 		this._asyncCommand.execute();
@@ -112,7 +112,7 @@ class AsyncCommandTest
 		Assert.equals( this._asyncCommand, listener.lastCommandReceived, "command received by listener should be asyncCommand instance" );
 		Assert.equals( this._asyncCommand, handler.lastCommandReceived, "command received by handler should be asyncCommand instance" );
 		
-		this._asyncCommand.addCompleteHandler( anotherHandler, anotherHandler.onAsyncCommandComplete );
+		this._asyncCommand.addCompleteHandler( anotherHandler.onAsyncCommandComplete );
 		Assert.equals( 1, anotherHandler.completeCallbackCount, "'post-handler' callback should be triggered once" );
 		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
 	}
@@ -125,7 +125,7 @@ class AsyncCommandTest
 		var anotherHandler 	= new MockAsyncCommandListener();
 		
 		this._asyncCommand.addAsyncCommandListener( listener );
-		this._asyncCommand.addFailHandler( handler, handler.onAsyncCommandFail );
+		this._asyncCommand.addFailHandler( handler.onAsyncCommandFail );
 		
 		Assert.isFalse( this._asyncCommand.hasFailed, "'hasFailed' property should return false" );
 		this._asyncCommand.fail();
@@ -138,7 +138,7 @@ class AsyncCommandTest
 		Assert.equals( this._asyncCommand, listener.lastCommandReceived, "command received by listener should be asyncCommand instance" );
 		Assert.equals( this._asyncCommand, handler.lastCommandReceived, "command received by handler should be asyncCommand instance" );
 		
-		this._asyncCommand.addFailHandler( anotherHandler, anotherHandler.onAsyncCommandFail );
+		this._asyncCommand.addFailHandler( anotherHandler.onAsyncCommandFail );
 		Assert.equals( 1, anotherHandler.failCallbackCount, "'post-handler' callback should be triggered once" );
 		Assert.equals( this._asyncCommand, anotherHandler.lastCommandReceived, "command received by post-handler should be asyncCommand instance" );
 	}

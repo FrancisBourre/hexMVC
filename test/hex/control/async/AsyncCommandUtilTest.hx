@@ -24,9 +24,9 @@ class AsyncCommandUtilTest
 		var listener2 		= new ASyncCommandListener();
 		
 		var mockAsyncCommandForTestingListeners = new MockAsyncCommandForTestingListeners();
-		var listeners : Array<AsyncHandler> = [ new AsyncHandler( listener0, listener0.onAsyncCommandComplete ), 
-												new AsyncHandler( listener1, listener1.onAsyncCommandFail), 
-												new AsyncHandler( listener2, listener2.onAsyncCommandCancel ) ];
+		var listeners : Array<AsyncHandler> = [ new AsyncHandler( listener0.onAsyncCommandComplete ), 
+												new AsyncHandler( listener1.onAsyncCommandFail), 
+												new AsyncHandler( listener2.onAsyncCommandCancel ) ];
 		AsyncCommandUtil.addListenersToAsyncCommand( listeners, mockAsyncCommandForTestingListeners.addCompleteHandler );
 		
 		var a : Array<hex.control.async.AsyncCommand -> Void> = [ listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel ];
@@ -34,22 +34,16 @@ class AsyncCommandUtilTest
 		Assert.arrayContainsElementsFrom( 	a, 
 							mockAsyncCommandForTestingListeners.callback,
 							"'CommandExecutor.mapPayload' should map right callbacks" );
-							
-		Assert.deepEquals( 	[ listener0, listener1, listener2 ], 
-							mockAsyncCommandForTestingListeners.scope,
-							"'CommandExecutor.mapPayload' should map right scopes" );
 	}
 	
 }
 
 private class MockAsyncCommandForTestingListeners extends MockAsyncCommand
 {
-	public var scope 	: Array<Dynamic> 			= [];
 	public var callback : Array<AsyncCommand->Void> = [];
 	
-	override public function addCompleteHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void
+	override public function addCompleteHandler( callback : IAsyncCommand->Void ) : Void
 	{
-		this.scope.push( scope );
 		this.callback.push( callback );
 	}
 }
@@ -88,32 +82,32 @@ private class MockAsyncCommand implements IAsyncCommand
 		
 	}
 	
-	public function addCompleteHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void
+	public function addCompleteHandler( callback : IAsyncCommand->Void ) : Void
 	{
 		
 	}
 	
-	public function removeCompleteHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void 
+	public function removeCompleteHandler( callback : IAsyncCommand->Void ) : Void 
 	{
 		
 	}
 	
-	public function addFailHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void 
+	public function addFailHandler( callback : IAsyncCommand->Void ) : Void 
 	{
 		
 	}
 	
-	public function removeFailHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void
+	public function removeFailHandler( callback : IAsyncCommand->Void ) : Void
 	{
 		
 	}
 	
-	public function addCancelHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void
+	public function addCancelHandler( callback : IAsyncCommand->Void ) : Void
 	{
 		
 	}
 	
-	public function removeCancelHandler( scope : Dynamic, callback : IAsyncCommand->Void ) : Void
+	public function removeCancelHandler( callback : IAsyncCommand->Void ) : Void
 	{
 		
 	}

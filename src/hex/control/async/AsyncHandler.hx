@@ -6,12 +6,10 @@ package hex.control.async;
  */
 class AsyncHandler
 {
-	public var scope 	: Dynamic;
 	public var callback	: IAsyncCommand->Void;
 
-	public function new( scope : Dynamic, callback : IAsyncCommand->Void ) 
+	public function new( callback : IAsyncCommand->Void ) 
 	{
-		this.scope = scope;
 		this.callback = callback;
 	}
 }

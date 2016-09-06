@@ -12,9 +12,8 @@ class AsyncHandlerTest
 	public function testConstructor() : Void
 	{
 		var asyncCallback = new ASyncCommandListener();
-		var asyncHandler = new AsyncHandler( asyncCallback , asyncCallback.onAsyncCommandComplete );
+		var asyncHandler = new AsyncHandler( asyncCallback.onAsyncCommandComplete );
 
-		Assert.equals( asyncCallback, asyncHandler.scope, "scope parameter should be the same" );
 		Assert.equals( asyncCallback.onAsyncCommandComplete, asyncHandler.callback, "method closures should be the same" );
 	}
 }

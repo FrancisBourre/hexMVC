@@ -75,9 +75,9 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		var completeHandler0 	= new AsyncHandler( listener0, listener0.handler );
-		var completeHandler1 	= new AsyncHandler( listener1, listener1.handler );
-		var completeHandler2 	= new AsyncHandler( listener2, listener2.handler );
+		var completeHandler0 	= new AsyncHandler( listener0.handler );
+		var completeHandler1 	= new AsyncHandler( listener1.handler );
+		var completeHandler2 	= new AsyncHandler( listener2.handler );
 		
 		this._commandMapping.withCompleteHandlers( completeHandler0 ).withCompleteHandlers( completeHandler1 ).withCompleteHandlers( completeHandler2 );
 		
@@ -94,9 +94,9 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		var failHandler0 	= new AsyncHandler( listener0, listener0.handler );
-		var failHandler1 	= new AsyncHandler( listener1, listener1.handler );
-		var failHandler2 	= new AsyncHandler( listener2, listener2.handler );
+		var failHandler0 	= new AsyncHandler( listener0.handler );
+		var failHandler1 	= new AsyncHandler( listener1.handler );
+		var failHandler2 	= new AsyncHandler( listener2.handler );
 		this._commandMapping.withFailHandlers( failHandler0 ).withFailHandlers( failHandler1 ).withFailHandlers( failHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasFailHandler, "hasFailHandler should return true" );
@@ -112,9 +112,9 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		var cancelHandler0 	= new AsyncHandler( listener0, listener0.handler );
-		var cancelHandler1 	= new AsyncHandler( listener1, listener1.handler );
-		var cancelHandler2 	= new AsyncHandler( listener2, listener2.handler );
+		var cancelHandler0 	= new AsyncHandler( listener0.handler );
+		var cancelHandler1 	= new AsyncHandler( listener1.handler );
+		var cancelHandler2 	= new AsyncHandler( listener2.handler );
 		this._commandMapping.withCancelHandlers( cancelHandler0 ).withCancelHandlers( cancelHandler1 ).withCancelHandlers( cancelHandler2 );
 		
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
