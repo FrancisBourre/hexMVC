@@ -3,7 +3,6 @@ package hex.control.command;
 import hex.MockDependencyInjector;
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
-import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandExecutor;
@@ -53,17 +52,17 @@ class CommandExecutorTest
 		var failHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
 		var cancelHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandCancel, listener1.onAsyncCommandCancel, listener2.onAsyncCommandCancel];
 		
-		commandMapping	.withCompleteHandlers( new AsyncHandler( listener0.onAsyncCommandComplete ) )
-						.withCompleteHandlers( new AsyncHandler( listener1.onAsyncCommandComplete ) )
-						.withCompleteHandlers( new AsyncHandler( listener2.onAsyncCommandComplete ) );
+		commandMapping	.withCompleteHandlers( listener0.onAsyncCommandComplete )
+						.withCompleteHandlers( listener1.onAsyncCommandComplete )
+						.withCompleteHandlers( listener2.onAsyncCommandComplete );
 						
-		commandMapping	.withFailHandlers( new AsyncHandler( listener0.onAsyncCommandFail ) )
-						.withFailHandlers( new AsyncHandler( listener1.onAsyncCommandFail ) )
-						.withFailHandlers( new AsyncHandler( listener2.onAsyncCommandFail ) );
+		commandMapping	.withFailHandlers( listener0.onAsyncCommandFail )
+						.withFailHandlers( listener1.onAsyncCommandFail )
+						.withFailHandlers( listener2.onAsyncCommandFail );
 						
-		commandMapping	.withCancelHandlers( new AsyncHandler( listener0.onAsyncCommandCancel ) )
-						.withCancelHandlers( new AsyncHandler( listener1.onAsyncCommandCancel ) )
-						.withCancelHandlers( new AsyncHandler( listener2.onAsyncCommandCancel ) );
+		commandMapping	.withCancelHandlers( listener0.onAsyncCommandCancel )
+						.withCancelHandlers( listener1.onAsyncCommandCancel )
+						.withCancelHandlers( listener2.onAsyncCommandCancel );
 		
 		var mockImplementation 	= new MockImplementation( "mockImplementation" );
 		var mockPayload 		= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );

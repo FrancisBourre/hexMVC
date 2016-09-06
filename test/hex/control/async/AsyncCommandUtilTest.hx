@@ -1,7 +1,7 @@
 package hex.control.async;
 
+import haxe.Constraints.Function;
 import hex.control.async.AsyncCommandUtil;
-import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.payload.ExecutionPayload;
@@ -15,7 +15,6 @@ import hex.unittest.assertion.Assert;
  */
 class AsyncCommandUtilTest
 {
-
 	@Test( "Test addListenersToAsyncCommand" )
     public function testAddListenersToAsyncCommand() : Void
     {
@@ -24,9 +23,9 @@ class AsyncCommandUtilTest
 		var listener2 		= new ASyncCommandListener();
 		
 		var mockAsyncCommandForTestingListeners = new MockAsyncCommandForTestingListeners();
-		var listeners : Array<AsyncHandler> = [ new AsyncHandler( listener0.onAsyncCommandComplete ), 
-												new AsyncHandler( listener1.onAsyncCommandFail), 
-												new AsyncHandler( listener2.onAsyncCommandCancel ) ];
+		var listeners : Array<Function> = [ listener0.onAsyncCommandComplete, 
+												listener1.onAsyncCommandFail, 
+												listener2.onAsyncCommandCancel ];
 		AsyncCommandUtil.addListenersToAsyncCommand( listeners, mockAsyncCommandForTestingListeners.addCompleteHandler );
 		
 		var a : Array<hex.control.async.AsyncCommand -> Void> = [ listener0.onAsyncCommandComplete, listener1.onAsyncCommandFail, listener2.onAsyncCommandCancel ];
