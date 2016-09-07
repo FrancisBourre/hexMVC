@@ -118,7 +118,7 @@ class ClassAdapter
 				Reflect.callMethod( aSyncCommand, aSyncCommand.adapt, rest );
 				aSyncCommand.preExecute();
 				var handler = new MacroAdapterStrategyHandler( callbackTarget, callbackMethod );
-				aSyncCommand.addCompleteHandler( handler, handler.onAsyncCommandComplete );	
+				aSyncCommand.addCompleteHandler( handler.onAsyncCommandComplete );	
 				aSyncCommand.execute();
 
 				return;

@@ -7,6 +7,6 @@ package hex.control.async;
 class MVCAsyncSuite
 {
 		@Suite("Async")
-    public var list : Array<Class<Dynamic>> = [ AsyncCommandMessageTest, AsyncCommandTest, AsyncCommandUtilTest, AsyncHandlerTest ];
+    public var list : Array<Class<Dynamic>> = [ AsyncCommandMessageTest, AsyncCommandTest, AsyncCommandUtilTest ];
 
 }
