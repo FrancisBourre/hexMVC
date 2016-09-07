@@ -83,14 +83,14 @@ class CommandMapping implements ICommandMapping
         return this._payloads;
     }
 
-    public function withPayloads( payloads : Array<ExecutionPayload> ) : ICommandMapping
+    public function withPayload( payload : ExecutionPayload ) : ICommandMapping
     {
         if ( this._payloads == null )
         {
             this._payloads = new Array<ExecutionPayload>();
         }
 
-        this._payloads = this._payloads.concat( payloads );
+        this._payloads.push( payload );
         return this;
     }
 
@@ -105,7 +105,7 @@ class CommandMapping implements ICommandMapping
 		return this._completeHandlers != null;
 	}
 
-    public function withCompleteHandlers( handler : Function ) : ICommandMapping
+    public function withCompleteHandler( handler : Function ) : ICommandMapping
     {
         if ( this._completeHandlers == null )
         {
@@ -127,7 +127,7 @@ class CommandMapping implements ICommandMapping
 		return this._failHandlers != null;
 	}
 
-    public function withFailHandlers( handler : Function ) : ICommandMapping
+    public function withFailHandler( handler : Function ) : ICommandMapping
     {
         if ( this._failHandlers == null )
         {
@@ -149,7 +149,7 @@ class CommandMapping implements ICommandMapping
 		return this._cancelHandlers != null;
 	}
 
-    public function withCancelHandlers( handler : Function ) : ICommandMapping
+    public function withCancelHandler( handler : Function ) : ICommandMapping
     {
         if ( this._cancelHandlers == null )
         {
