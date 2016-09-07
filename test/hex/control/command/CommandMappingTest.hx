@@ -77,7 +77,7 @@ class CommandMappingTest
 		this._commandMapping.withCompleteHandlers( listener0.handler ).withCompleteHandlers( listener1.handler ).withCompleteHandlers( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return true" );
-		Assert.deepEquals( [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
+		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
     }
 	
 	@Test( "Test fail handlers" )
@@ -92,7 +92,7 @@ class CommandMappingTest
 		this._commandMapping.withFailHandlers( listener0.handler ).withFailHandlers( listener1.handler ).withFailHandlers( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasFailHandler, "hasFailHandler should return true" );
-		Assert.deepEquals( [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
+		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
     }
 	
 	@Test( "Test cancel handlers" )
@@ -107,7 +107,7 @@ class CommandMappingTest
 		this._commandMapping.withCancelHandlers( listener0.handler ).withCancelHandlers( listener1.handler ).withCancelHandlers( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
-		Assert.deepEquals( [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
+		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
     }
 	
 	@Test( "Test mappingResults" )
