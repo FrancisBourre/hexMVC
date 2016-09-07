@@ -1,6 +1,6 @@
 package hex.control.command;
 
-import hex.control.async.AsyncHandler;
+import haxe.Constraints.Function;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IContextOwner;
@@ -59,7 +59,7 @@ interface ICommandMapping
     /**
      * A list of complete callbacks
      */
-    function getCompleteHandlers() : Array<AsyncHandler>;
+    function getCompleteHandlers() : Array<Function>;
 
     /**
      * Returns true if mapping has complete callbacks
@@ -69,12 +69,12 @@ interface ICommandMapping
     /**
      * A list of complete callbacks
      */
-    function withCompleteHandlers( handler : AsyncHandler ) : ICommandMapping;
+    function withCompleteHandlers( handler : Function ) : ICommandMapping;
 
     /**
      * A list of fail callbacks
      */
-    function getFailHandlers() : Array<AsyncHandler>;
+    function getFailHandlers() : Array<Function>;
 
     /**
      * Returns true if mapping has fail callbacks
@@ -84,12 +84,12 @@ interface ICommandMapping
     /**
      * A list of fail callbacks
      */
-    function withFailHandlers( handler : AsyncHandler ) : ICommandMapping;
+    function withFailHandlers( handler : Function ) : ICommandMapping;
 
     /**
      * A list of cancel callbacks
      */
-    function getCancelHandlers() : Array<AsyncHandler>;
+    function getCancelHandlers() : Array<Function>;
 
     /**
      * Returns true if mapping has cancel callbacks
@@ -99,7 +99,7 @@ interface ICommandMapping
     /**
      * A list of cancel callbacks
      */
-    function withCancelHandlers( handler : AsyncHandler ) : ICommandMapping;
+    function withCancelHandlers( handler : Function ) : ICommandMapping;
 	
 	
 	function setContextOwner( contextOwner : IContextOwner ) : Void;

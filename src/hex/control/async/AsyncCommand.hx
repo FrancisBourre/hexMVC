@@ -55,19 +55,19 @@ class AsyncCommand implements IAsyncCommand
 
     public function addAsyncCommandListener( listener : IAsyncCommandListener ) : Void
     {
-		this.addCompleteHandler( listener, listener.onAsyncCommandComplete );
-        this.addFailHandler( listener, listener.onAsyncCommandFail );
-        this.addCancelHandler( listener, listener.onAsyncCommandCancel );
+		this.addCompleteHandler( listener.onAsyncCommandComplete );
+        this.addFailHandler( listener.onAsyncCommandFail );
+        this.addCancelHandler( listener.onAsyncCommandCancel );
     }
 
     public function removeAsyncCommandListener( listener : IAsyncCommandListener ) : Void
     {
-		this.removeCompleteHandler( listener, listener.onAsyncCommandComplete );
-        this.removeFailHandler( listener, listener.onAsyncCommandFail );
-        this.removeCancelHandler( listener, listener.onAsyncCommandCancel );
+		this.removeCompleteHandler( listener.onAsyncCommandComplete );
+        this.removeFailHandler( listener.onAsyncCommandFail );
+        this.removeCancelHandler( listener.onAsyncCommandCancel );
     }
 
-    public function addCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+    public function addCompleteHandler( callback : AsyncCommand->Void ) : Void
     {
         if ( this.hasCompleted )
         {
@@ -79,12 +79,12 @@ class AsyncCommand implements IAsyncCommand
         }
     }
 
-    public function removeCompleteHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+    public function removeCompleteHandler( callback : AsyncCommand->Void ) : Void
     {
         this._dispatcher.removeHandler( AsyncCommandMessage.COMPLETE, callback );
     }
 
-    public function addFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+    public function addFailHandler( callback : AsyncCommand->Void ) : Void
     {
         if ( this.hasFailed )
         {
@@ -96,12 +96,12 @@ class AsyncCommand implements IAsyncCommand
         }
     }
 
-    public function removeFailHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+    public function removeFailHandler( callback : AsyncCommand->Void ) : Void
     {
         this._dispatcher.removeHandler( AsyncCommandMessage.FAIL, callback );
     }
 
-    public function addCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+    public function addCancelHandler( callback : AsyncCommand->Void ) : Void
     {
         if ( this.isCancelled )
         {
@@ -113,7 +113,7 @@ class AsyncCommand implements IAsyncCommand
         }
     }
 
-    public function removeCancelHandler( scope : Dynamic, callback : AsyncCommand->Void ) : Void
+    public function removeCancelHandler( callback : AsyncCommand->Void ) : Void
     {
         this._dispatcher.removeHandler( AsyncCommandMessage.CANCEL, callback );
     }

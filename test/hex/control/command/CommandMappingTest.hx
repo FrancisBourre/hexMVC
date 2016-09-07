@@ -1,6 +1,5 @@
 package hex.control.command;
 
-import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
@@ -75,14 +74,10 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		var completeHandler0 	= new AsyncHandler( listener0, listener0.handler );
-		var completeHandler1 	= new AsyncHandler( listener1, listener1.handler );
-		var completeHandler2 	= new AsyncHandler( listener2, listener2.handler );
-		
-		this._commandMapping.withCompleteHandlers( completeHandler0 ).withCompleteHandlers( completeHandler1 ).withCompleteHandlers( completeHandler2 );
+		this._commandMapping.withCompleteHandlers( listener0.handler ).withCompleteHandlers( listener1.handler ).withCompleteHandlers( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return true" );
-		Assert.deepEquals( [completeHandler0, completeHandler1, completeHandler2], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
+		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
     }
 	
 	@Test( "Test fail handlers" )
@@ -94,13 +89,10 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		var failHandler0 	= new AsyncHandler( listener0, listener0.handler );
-		var failHandler1 	= new AsyncHandler( listener1, listener1.handler );
-		var failHandler2 	= new AsyncHandler( listener2, listener2.handler );
-		this._commandMapping.withFailHandlers( failHandler0 ).withFailHandlers( failHandler1 ).withFailHandlers( failHandler2 );
+		this._commandMapping.withFailHandlers( listener0.handler ).withFailHandlers( listener1.handler ).withFailHandlers( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasFailHandler, "hasFailHandler should return true" );
-		Assert.deepEquals( [failHandler0, failHandler1, failHandler2], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
+		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
     }
 	
 	@Test( "Test cancel handlers" )
@@ -112,13 +104,10 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		var cancelHandler0 	= new AsyncHandler( listener0, listener0.handler );
-		var cancelHandler1 	= new AsyncHandler( listener1, listener1.handler );
-		var cancelHandler2 	= new AsyncHandler( listener2, listener2.handler );
-		this._commandMapping.withCancelHandlers( cancelHandler0 ).withCancelHandlers( cancelHandler1 ).withCancelHandlers( cancelHandler2 );
+		this._commandMapping.withCancelHandlers( listener0.handler ).withCancelHandlers( listener1.handler ).withCancelHandlers( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
-		Assert.deepEquals( [cancelHandler0, cancelHandler1, cancelHandler2], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
+		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
     }
 	
 	@Test( "Test mappingResults" )

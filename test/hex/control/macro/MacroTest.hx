@@ -4,7 +4,6 @@ import haxe.Timer;
 import hex.MockDependencyInjector;
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
-import hex.control.async.AsyncHandler;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandMapping;
@@ -229,7 +228,7 @@ class MacroTest
 		myMacro.add( MockCommand );
 		
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
-		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onTestSequenceModeComplete, [ myMacro ] ) );
+		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onTestSequenceModeComplete, [ myMacro ] ) );
 		myMacro.execute();
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
 	}
@@ -247,7 +246,7 @@ class MacroTest
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 		
-		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onMacroWithHandlerComplete, [ myMacro ] ) );
+		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onMacroWithHandlerComplete, [ myMacro ] ) );
 		
 		myMacro.isInSequenceMode = true;
 		myMacro.preExecute();
@@ -279,7 +278,7 @@ class MacroTest
 		myMacro.macroExecutor = macroExecutor;
 		
 		var request = new Request();
-		myMacro.addCompleteHandler( this, MethodRunner.asyncHandler( this._onMacroWithRequestComplete, [ request ] ) );
+		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onMacroWithRequestComplete, [ request ] ) );
 		
 		myMacro.preExecute( request );
 		myMacro.execute( request );
@@ -395,7 +394,7 @@ private class MockMacroWithHandler extends Macro
 {
 	override function _prepare():Void 
 	{
-		this.add( MockAsyncCommand ).withCompleteHandlers( new AsyncHandler( this, this.onCommandComplete ) );
+		this.add( MockAsyncCommand ).withCompleteHandlers( this.onCommandComplete );
 	}
 	
 	function onCommandComplete( command: IAsyncCommand ) : Void
