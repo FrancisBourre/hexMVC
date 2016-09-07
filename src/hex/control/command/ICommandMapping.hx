@@ -54,7 +54,7 @@ interface ICommandMapping
     /**
      * A list of payloads to be injected during execution
      */
-    function withPayload( payloads : Array<ExecutionPayload> ) : ICommandMapping;
+    function withPayload( payload : ExecutionPayload ) : ICommandMapping;
 
     /**
      * A list of complete callbacks
