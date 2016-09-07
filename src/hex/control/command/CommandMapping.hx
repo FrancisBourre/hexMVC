@@ -105,7 +105,7 @@ class CommandMapping implements ICommandMapping
 		return this._completeHandlers != null;
 	}
 
-    public function withCompleteHandlers( handler : Function ) : ICommandMapping
+    public function withCompleteHandler( handler : Function ) : ICommandMapping
     {
         if ( this._completeHandlers == null )
         {
@@ -127,7 +127,7 @@ class CommandMapping implements ICommandMapping
 		return this._failHandlers != null;
 	}
 
-    public function withFailHandlers( handler : Function ) : ICommandMapping
+    public function withFailHandler( handler : Function ) : ICommandMapping
     {
         if ( this._failHandlers == null )
         {
@@ -149,7 +149,7 @@ class CommandMapping implements ICommandMapping
 		return this._cancelHandlers != null;
 	}
 
-    public function withCancelHandlers( handler : Function ) : ICommandMapping
+    public function withCancelHandler( handler : Function ) : ICommandMapping
     {
         if ( this._cancelHandlers == null )
         {

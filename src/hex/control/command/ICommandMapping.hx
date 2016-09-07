@@ -69,7 +69,7 @@ interface ICommandMapping
     /**
      * A list of complete callbacks
      */
-    function withCompleteHandlers( handler : Function ) : ICommandMapping;
+    function withCompleteHandler( handler : Function ) : ICommandMapping;
 
     /**
      * A list of fail callbacks
@@ -84,7 +84,7 @@ interface ICommandMapping
     /**
      * A list of fail callbacks
      */
-    function withFailHandlers( handler : Function ) : ICommandMapping;
+    function withFailHandler( handler : Function ) : ICommandMapping;
 
     /**
      * A list of cancel callbacks
@@ -99,7 +99,7 @@ interface ICommandMapping
     /**
      * A list of cancel callbacks
      */
-    function withCancelHandlers( handler : Function ) : ICommandMapping;
+    function withCancelHandler( handler : Function ) : ICommandMapping;
 	
 	
 	function setContextOwner( contextOwner : IContextOwner ) : Void;

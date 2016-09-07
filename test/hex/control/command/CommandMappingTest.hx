@@ -74,7 +74,7 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		this._commandMapping.withCompleteHandlers( listener0.handler ).withCompleteHandlers( listener1.handler ).withCompleteHandlers( listener2.handler );
+		this._commandMapping.withCompleteHandler( listener0.handler ).withCompleteHandler( listener1.handler ).withCompleteHandler( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasCompleteHandler, "hasCompleteHandler should return true" );
 		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCompleteHandlers(), "getCompleteHandlers should be the same" );
@@ -89,7 +89,7 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		this._commandMapping.withFailHandlers( listener0.handler ).withFailHandlers( listener1.handler ).withFailHandlers( listener2.handler );
+		this._commandMapping.withFailHandler( listener0.handler ).withFailHandler( listener1.handler ).withFailHandler( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasFailHandler, "hasFailHandler should return true" );
 		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getFailHandlers(), "getFailHandlers should be the same" );
@@ -104,7 +104,7 @@ class CommandMappingTest
 		var listener1 = new MockAsyncCommandListener();
 		var listener2 = new MockAsyncCommandListener();
 		
-		this._commandMapping.withCancelHandlers( listener0.handler ).withCancelHandlers( listener1.handler ).withCancelHandlers( listener2.handler );
+		this._commandMapping.withCancelHandler( listener0.handler ).withCancelHandler( listener1.handler ).withCancelHandler( listener2.handler );
 		
 		Assert.isTrue( this._commandMapping.hasCancelHandler, "hasCancelHandler should return true" );
 		Assert.arrayContainsElementsFrom( cast [listener0.handler, listener1.handler, listener2.handler], this._commandMapping.getCancelHandlers(), "getCancelHandlers should be the same" );
