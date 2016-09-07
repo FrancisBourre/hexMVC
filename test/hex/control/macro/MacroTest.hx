@@ -394,7 +394,7 @@ private class MockMacroWithHandler extends Macro
 {
 	override function _prepare():Void 
 	{
-		this.add( MockAsyncCommand ).withCompleteHandlers( this.onCommandComplete );
+		this.add( MockAsyncCommand ).withCompleteHandler( this.onCommandComplete );
 	}
 	
 	function onCommandComplete( command: IAsyncCommand ) : Void

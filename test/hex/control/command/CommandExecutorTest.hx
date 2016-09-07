@@ -52,21 +52,21 @@ class CommandExecutorTest
 		var failHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandFail, listener1.onAsyncCommandFail, listener2.onAsyncCommandFail];
 		var cancelHandlers 		: Array<AsyncCommand->Void> 	= [listener0.onAsyncCommandCancel, listener1.onAsyncCommandCancel, listener2.onAsyncCommandCancel];
 		
-		commandMapping	.withCompleteHandlers( listener0.onAsyncCommandComplete )
-						.withCompleteHandlers( listener1.onAsyncCommandComplete )
-						.withCompleteHandlers( listener2.onAsyncCommandComplete );
+		commandMapping	.withCompleteHandler( listener0.onAsyncCommandComplete )
+						.withCompleteHandler( listener1.onAsyncCommandComplete )
+						.withCompleteHandler( listener2.onAsyncCommandComplete );
 						
-		commandMapping	.withFailHandlers( listener0.onAsyncCommandFail )
-						.withFailHandlers( listener1.onAsyncCommandFail )
-						.withFailHandlers( listener2.onAsyncCommandFail );
+		commandMapping	.withFailHandler( listener0.onAsyncCommandFail )
+						.withFailHandler( listener1.onAsyncCommandFail )
+						.withFailHandler( listener2.onAsyncCommandFail );
 						
-		commandMapping	.withCancelHandlers( listener0.onAsyncCommandCancel )
-						.withCancelHandlers( listener1.onAsyncCommandCancel )
-						.withCancelHandlers( listener2.onAsyncCommandCancel );
+		commandMapping	.withCancelHandler( listener0.onAsyncCommandCancel )
+						.withCancelHandler( listener1.onAsyncCommandCancel )
+						.withCancelHandler( listener2.onAsyncCommandCancel );
 		
 		var mockImplementation 	= new MockImplementation( "mockImplementation" );
 		var mockPayload 		= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
-		commandMapping.withPayloads( [mockPayload] );
+		commandMapping.withPayload( mockPayload );
 		
 		var stringPayload 				= new ExecutionPayload( "test", String, "stringPayload" );
 		var anotherMockImplementation 	= new MockImplementation( "anotherMockImplementation" );
