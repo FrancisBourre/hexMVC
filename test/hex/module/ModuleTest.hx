@@ -362,12 +362,12 @@ private class MockService implements IService
 		
 	}
 	
-	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Bool 
+	public function addHandler( messageType : MessageType, callback : Dynamic ) : Bool 
 	{
 		return false;
 	}
 	
-	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Bool 
+	public function removeHandler( messageType : MessageType, callback : Dynamic ) : Bool 
 	{
 		return false;
 	}
