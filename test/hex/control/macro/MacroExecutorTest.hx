@@ -159,7 +159,7 @@ class MacroExecutorTest
 		
 		var mockImplementation 	= new MockImplementation( "mockImplementation" );
 		var mockPayload 		= new ExecutionPayload( mockImplementation, IMockType, "mockPayload" );
-		commandMapping.withPayloads( [mockPayload] );
+		commandMapping.withPayload( [mockPayload] );
 		
 		var stringPayload 				= new ExecutionPayload( "test", String, "stringPayload" );
 		var anotherMockImplementation 	= new MockImplementation( "anotherMockImplementation" );

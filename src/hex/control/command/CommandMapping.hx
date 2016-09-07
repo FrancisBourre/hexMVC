@@ -83,7 +83,7 @@ class CommandMapping implements ICommandMapping
         return this._payloads;
     }
 
-    public function withPayloads( payloads : Array<ExecutionPayload> ) : ICommandMapping
+    public function withPayload( payloads : Array<ExecutionPayload> ) : ICommandMapping
     {
         if ( this._payloads == null )
         {

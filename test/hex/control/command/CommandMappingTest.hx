@@ -59,7 +59,7 @@ class CommandMappingTest
 		var stringPayload0 	= new ExecutionPayload( "test0", String, "stringPayload0" );
 		var stringPayload1 	= new ExecutionPayload( "test1", String, "stringPayload1" );
 		var stringPayload2 	= new ExecutionPayload( "test2", String, "stringPayload2" );
-		this._commandMapping.withPayloads( [stringPayload0, stringPayload1, stringPayload2] );
+		this._commandMapping.withPayload( [stringPayload0, stringPayload1, stringPayload2] );
 		
 		Assert.isTrue( this._commandMapping.hasPayload, "hasPayload should return true" );
 		Assert.deepEquals( [stringPayload0, stringPayload1, stringPayload2], this._commandMapping.getPayloads(), "payloads should be the same" );

@@ -143,8 +143,8 @@ private class MockMacroAdapterStrategy extends MacroAdapterStrategy
 	
 	override function _prepare() : Void
 	{
-		this.add( MockAsyncCommand ).withPayloads( [new ExecutionPayload( data0, MockValueObject )] );
-		this.add( MockAsyncCommand ).withPayloads( [new ExecutionPayload( data1, MockValueObject )] );
+		this.add( MockAsyncCommand ).withPayload( [new ExecutionPayload( data0, MockValueObject )] );
+		this.add( MockAsyncCommand ).withPayload( [new ExecutionPayload( data1, MockValueObject )] );
 	}
 
 	public function onAdapt( data0 : MockValueObject, data1 : MockValueObject ) : Void
