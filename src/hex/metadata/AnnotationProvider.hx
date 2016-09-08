@@ -6,6 +6,7 @@ import hex.core.IAnnotationParsable;
 import hex.di.IDependencyInjector;
 import hex.di.InjectionEvent;
 import hex.domain.Domain;
+import hex.domain.TopLevelDomain;
 import hex.error.IllegalArgumentException;
 import hex.log.Stringifier;
 
@@ -15,36 +16,47 @@ import hex.log.Stringifier;
  */
 class AnnotationProvider implements IAnnotationProvider
 {
-	static var _Instance 		: IAnnotationProvider = new AnnotationProvider();
-	static var _Domains			= new Map<Domain, IAnnotationProvider>();
-	static var _META_DATA 		= new HashMap<Class<Dynamic>, ClassMetaDataVO>();
+	static var _initialized 	: Bool = false;
+	static var _Domains			: Map<Domain, IAnnotationProvider> = new Map();
 	
+	var _parent 				: IAnnotationProvider;
+	var _cache 					: HashMap<Class<Dynamic>, ClassMetaDataVO>;
 	var _metadata 				: Map<String, ProviderHandler>;
 	var _instances 				: Map<String, Array<InstanceVO>>;
 
-	public function new() 
+	function new( parent : IAnnotationProvider = null ) 
 	{
-		this._metadata 				= new Map();
-		this._instances 			= new Map();
+		this._parent 			= parent;
+		this._cache 			= new HashMap();
+		this._metadata 			= new Map();
+		this._instances 		= new Map();
 	}
 	
-	static public function registerToDomain( annotationProvider : IAnnotationProvider, domain : Domain ) : Bool
+	static public function getAnnotationProvider( ?domain : Domain, ?parentDomain : Domain ) : IAnnotationProvider
 	{
-		if ( AnnotationProvider._Domains.exists( domain ) )
+		if ( !AnnotationProvider._initialized )
 		{
-			return false;
-		}
-		else
-		{
-			AnnotationProvider._Domains.set( domain, annotationProvider );
-			return true;
+			AnnotationProvider._initialized = true;
+			var provider = new AnnotationProvider( null );
+			AnnotationProvider._Domains.set( TopLevelDomain.DOMAIN, provider );
 		}
 		
-	}
-	
-	static public function getAnnotationProvider( domain : Domain ) : IAnnotationProvider
-	{
-		return AnnotationProvider._Domains.exists( domain ) ? AnnotationProvider._Domains.get( domain ) : AnnotationProvider._Instance;
+		if ( domain == null )
+		{
+			domain = TopLevelDomain.DOMAIN;
+		}
+		
+		if ( parentDomain == null && domain != TopLevelDomain.DOMAIN )
+		{
+			parentDomain = TopLevelDomain.DOMAIN;
+		}
+		
+		if ( !AnnotationProvider._Domains.exists( domain ) )
+		{
+			AnnotationProvider._Domains.set( domain, new AnnotationProvider( AnnotationProvider._Domains.get( parentDomain ) ) );
+		}
+		
+		return AnnotationProvider._Domains.get( domain );
 	}
 	
 	public function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void 
@@ -75,6 +87,7 @@ class AnnotationProvider implements IAnnotationProvider
 	
 	public function clear() : Void 
 	{
+		this._cache 				= new HashMap();
 		this._metadata 				= new Map();
 		this._instances 			= new Map();
 	}
@@ -82,7 +95,7 @@ class AnnotationProvider implements IAnnotationProvider
 	public function parse( instance : {} ) : Void 
 	{
 		var classMetaDataVO : ClassMetaDataVO = this._parse( instance );
-		
+	
 		if ( classMetaDataVO != null )
 		{
 			var properties : Array<PropertyMetaDataVO> = classMetaDataVO.properties;
@@ -104,6 +117,11 @@ class AnnotationProvider implements IAnnotationProvider
 					}
 					else
 					{
+						if ( this._parent != null )
+						{
+							this._parent.parse( instance );
+						}
+
 						this._instances.set( metaDataName, [ instanceVO ] );
 					}
 				}
@@ -121,9 +139,9 @@ class AnnotationProvider implements IAnnotationProvider
 		if ( classReference != null )
 		{
 			//try to get cache
-			if ( AnnotationProvider._META_DATA.containsKey( classReference ) )
+			if ( this._cache.containsKey( classReference ) )
 			{
-				classMetaDataVO = AnnotationProvider._META_DATA.get( classReference );
+				classMetaDataVO = this._cache.get( classReference );
 			}
 			else
 			{
@@ -151,7 +169,7 @@ class AnnotationProvider implements IAnnotationProvider
 					}
 				}
 				
-				AnnotationProvider._META_DATA.put( classReference, classMetaDataVO );
+				this._cache.put( classReference, classMetaDataVO );
 			}
 		}
 		
