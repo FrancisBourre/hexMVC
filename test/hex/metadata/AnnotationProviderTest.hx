@@ -155,7 +155,7 @@ class AnnotationProviderTest
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
-	@Test( "Test register before parsing with overridding" )
+	@Ignore( "Test register before parsing with overridding" )
 	public function testRegisterBeforeParsingWithOverridding() : Void
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
