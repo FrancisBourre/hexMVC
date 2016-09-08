@@ -2,6 +2,7 @@ package hex.config.stateless;
 
 import hex.control.IFrontController;
 import hex.control.command.ICommand;
+import hex.control.command.ICommandMapping;
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorContainer;
 import hex.error.VirtualMethodException;
