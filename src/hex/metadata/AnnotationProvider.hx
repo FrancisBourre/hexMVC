@@ -21,7 +21,7 @@ class AnnotationProvider implements IAnnotationProvider
 	
 	var _parent 				: IAnnotationProvider;
 	var _cache 					: HashMap<Class<Dynamic>, ClassMetaDataVO>;
-	var _metadata 				: Map<String, ProviderHandler>;
+	var _metadata 				: Map<String, String->Dynamic>;
 	var _instances 				: Map<String, Array<InstanceVO>>;
 
 	function new( parent : IAnnotationProvider = null ) 
@@ -59,12 +59,11 @@ class AnnotationProvider implements IAnnotationProvider
 		return AnnotationProvider._Domains.get( domain );
 	}
 	
-	public function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void 
+	public function registerMetaData( metaDataName : String, providerMethod : String->Dynamic ) : Void 
 	{
 		if ( !this._metadata.exists( metaDataName ) )
 		{
-			var providerHandler = new ProviderHandler( scope, providerMethod );
-			this._metadata.set( metaDataName, providerHandler );
+			this._metadata.set( metaDataName, providerMethod );
 			
 			var voCollection : Array<InstanceVO> = this._instances.get( metaDataName );
 			
@@ -74,14 +73,28 @@ class AnnotationProvider implements IAnnotationProvider
 				{
 					if ( vo.metaDataName == metaDataName )
 					{
-						Reflect.setProperty( vo.owner, vo.propertyName, providerHandler.call( vo.metaDataValue ) );
+						Reflect.setProperty( vo.owner, vo.propertyName, providerMethod( vo.metaDataValue ) );
 					}
 				}
+			}
+			
+			if ( this._parent != null )
+			{
+				AnnotationProvider._unregisterInstances( metaDataName, cast this._parent );
 			}
 		}
 		else
 		{
 			throw new IllegalArgumentException( "registerMetaData failed. '" + metaDataName + "' is already registered in '" + Stringifier.stringify( this ) + "'" );
+		}
+	}
+	
+	static private function _unregisterInstances( metaDataName : String, provider : AnnotationProvider ) : Void
+	{
+		provider._instances.remove( metaDataName );
+		if ( provider._parent != null )
+		{
+			AnnotationProvider._unregisterInstances( metaDataName, cast provider._parent );
 		}
 	}
 	
@@ -105,8 +118,8 @@ class AnnotationProvider implements IAnnotationProvider
 
 				if ( this._metadata.exists( metaDataName ) )
 				{
-					var providerHandler : ProviderHandler = this._metadata.get( metaDataName );
-					Reflect.setProperty( instance, property.propertyName, providerHandler.call( property.metaDataValue ) );
+					var providerMethod : String->Dynamic = this._metadata.get( metaDataName );
+					Reflect.setProperty( instance, property.propertyName, providerMethod( property.metaDataValue ) );
 				}
 				else
 				{
@@ -192,23 +205,6 @@ class AnnotationProvider implements IAnnotationProvider
 		{
 			this.parse( event.instance );
 		}
-	}
-}
-
-private class ProviderHandler
-{
-	public var scope		: Dynamic;
-	public var callback		: String->Dynamic;
-	
-	public function new( scope : Dynamic, callback : String->Dynamic )
-	{
-		this.scope 		= scope;
-		this.callback 	= callback;
-	}
-	
-	public function call( metaDataValue : String ) : Dynamic
-	{
-		return Reflect.callMethod( this.scope, this.callback, [ metaDataValue ] );
 	}
 }
 

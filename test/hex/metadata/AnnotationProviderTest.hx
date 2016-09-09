@@ -56,8 +56,8 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		this._annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this.getText );
 		
 		this._annotationProvider.parse( mockObjectWithMetaData );
 		
@@ -73,8 +73,8 @@ class AnnotationProviderTest
 		
 		this._annotationProvider.parse( mockObjectWithMetaData );
 		
-		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		this._annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this.getText );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -88,8 +88,8 @@ class AnnotationProviderTest
 		
 		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance', Domain ) );
 		
-		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		this._annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this.getText );
 		
 		provider.parse( mockObjectWithMetaData );
 		
@@ -107,8 +107,8 @@ class AnnotationProviderTest
 		var provider = AnnotationProvider.getAnnotationProvider( domain );
 		provider.parse( mockObjectWithMetaData );
 		
-		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		this._annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this.getText );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -124,8 +124,8 @@ class AnnotationProviderTest
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance1', Domain ), parentDomain );
 		
-		parentProvider.registerMetaData( "color", this, this.getColorByName );
-		parentProvider.registerMetaData( "language", this, this.getText );
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
 		
 		provider.parse( mockObjectWithMetaData );
 		
@@ -147,15 +147,15 @@ class AnnotationProviderTest
 		
 		provider.parse( mockObjectWithMetaData );
 		
-		parentProvider.registerMetaData( "color", this, this.getColorByName );
-		parentProvider.registerMetaData( "language", this, this.getText );
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
-	@Ignore( "Test register before parsing with overridding" )
+	@Test( "Test register before parsing with overridding" )
 	public function testRegisterBeforeParsingWithOverridding() : Void
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
@@ -164,9 +164,9 @@ class AnnotationProviderTest
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding1', Domain ), parentDomain );
 		
-		parentProvider.registerMetaData( "color", this, this.getColorByName );
-		parentProvider.registerMetaData( "language", this, this.getText );
-		provider.registerMetaData( "language", this, this.getAnotherText );
+		provider.registerMetaData( "language", this.getAnotherText );
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
 		
 		provider.parse( mockObjectWithMetaData );
 		
@@ -175,7 +175,7 @@ class AnnotationProviderTest
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
-	@Ignore( "Test register after parsing with overridding" )
+	@Test( "Test register after parsing with overridding" )
 	public function testRegisterAfterParsingWithOverridding() : Void
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
@@ -187,12 +187,12 @@ class AnnotationProviderTest
 		
 		provider.parse( mockObjectWithMetaData );
 		
-		parentProvider.registerMetaData( "color", this, this.getColorByName );
-		parentProvider.registerMetaData( "language", this, this.getText );
-		provider.registerMetaData( "language", this, this.getAnotherText );
+		provider.registerMetaData( "language", this.getAnotherText );
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
 		
 		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
-		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.equals( "anotherText", mockObjectWithMetaData.languageTest, "text should be the same" );
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
@@ -202,8 +202,8 @@ class AnnotationProviderTest
 		var module = new MockModuleForAnnotationProviding();
 		this._annotationProvider = module.getAnnotationProvider();
 		
-		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
-		this._annotationProvider.registerMetaData( "language", this, this.getText );
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this.getText );
 		
 		module.initialize();
 
@@ -217,7 +217,7 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		this._annotationProvider.registerMetaData( "color", this, this.getColorByName );
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
 		this._annotationProvider.clear();
 		
 		this._annotationProvider.parse( mockObjectWithMetaData );

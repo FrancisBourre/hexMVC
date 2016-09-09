@@ -7,7 +7,7 @@ import hex.di.IDependencyInjector;
  */
 interface IAnnotationProvider 
 {
-	function registerMetaData( metaDataName : String, scope : Dynamic, providerMethod : String->Dynamic ) : Void;
+	function registerMetaData( metaDataName : String, providerMethod : String->Dynamic ) : Void;
 	function clear() : Void;
 	function parse( object : {} ) : Void;
 	function registerInjector( injector : IDependencyInjector ) : Void;
