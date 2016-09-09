@@ -32,7 +32,7 @@ class AnnotationProviderTest
     {
         this._colors.remove( "white" );
 		this._text.remove( "welcome" );
-		this._annotationProvider.clear();
+		AnnotationProvider.release();
     }
 	
 	@Test( "Test get AnnotationProvider instance without passing a domain" )
@@ -176,6 +176,31 @@ class AnnotationProviderTest
 		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
 	}
 	
+	@Test( "Test register before parsing with late overridding" )
+	public function testRegisterBeforeParsingWithLateOverridding() : Void
+	{
+		var mockObjectWithMetaData = new MockObjectWithAnnotation();
+		
+		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding0', Domain );
+		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
+		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding1', Domain ), parentDomain );
+		
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
+		
+		provider.parse( mockObjectWithMetaData );
+		
+		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "Bienvenue", mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
+		
+		provider.registerMetaData( "language", this.getAnotherText );
+		
+		Assert.equals( 0xffffff, mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "anotherText", mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( mockObjectWithMetaData.propWithoutMetaData, "property should be null" );
+	}
+	
 	@Test( "Test register after parsing with overridding" )
 	public function testRegisterAfterParsingWithOverridding() : Void
 	{
@@ -266,6 +291,34 @@ class AnnotationProviderTest
 		
 		module.initialize();
 
+		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "anotherText", module.mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
+	}
+	
+	@Test( "Test with module and late overridding" )
+	public function testWithModuleAndLateOverridding() : Void
+	{
+		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance', Domain );
+		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
+		
+		var moduleDomain = DomainUtil.getDomain( 'moduleID', Domain );
+		DomainExpert.getInstance().registerDomain( moduleDomain );
+		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
+		var module = new MockModuleForAnnotationProviding();
+
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
+		
+		module.initialize();
+
+		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
+		
+		module.getAnnotationProvider().registerMetaData( "language", this.getAnotherText );
+		module.rebuildComponents();
+		
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "anotherText", module.mockObjectWithMetaData.languageTest, "text should be the same" );
 		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
