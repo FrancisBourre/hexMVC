@@ -33,6 +33,11 @@ class MockModuleForAnnotationProviding extends Module
 	
 	override function _onInitialisation() : Void 
 	{
+		rebuildComponents();
+	}
+	
+	public function rebuildComponents() : Void 
+	{
 		this.mockObjectWithMetaData 		= this._getDependencyInjector().getInstance( MockObjectWithAnnotation );
 		this.anotherMockObjectWithMetaData 	= this._getDependencyInjector().getInstance( MockWithoutIAnnotationParsableImplementation );
 	}

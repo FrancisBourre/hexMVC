@@ -142,27 +142,28 @@ class AnnotationProvider implements IAnnotationProvider
 	private function _do( instance : {}, property : PropertyMetaDataVO ) : Void
 	{
 		var metaDataName : String = property.metaDataName;
-		
+
 		if ( this._metadata.exists( metaDataName ) )
-		{
+		{	
 			var providerMethod : String->Dynamic = this._metadata.get( metaDataName );
 			Reflect.setProperty( instance, property.propertyName, providerMethod( property.metaDataValue ) );
 		}
 		else
 		{
 			var instanceVO = new InstanceVO( instance, property.propertyName, property.metaDataName, property.metaDataValue );
+
 			if ( this._instances.exists( metaDataName ) )
 			{
 				this._instances.get( metaDataName ).push( instanceVO );
 			}
 			else
 			{
-				if ( this._parent != null )
-				{
-					( cast this._parent )._do( instance, property );
-				}
-
 				this._instances.set( metaDataName, [ instanceVO ] );
+			}
+			
+			if ( this._parent != null )
+			{
+				( cast this._parent )._do( instance, property );
 			}
 		}
 	}
