@@ -1,6 +1,7 @@
 package hex.metadata;
 
 import hex.domain.Domain;
+import hex.domain.DomainExpert;
 import hex.domain.DomainUtil;
 import hex.domain.TopLevelDomain;
 import hex.unittest.assertion.Assert;
@@ -209,6 +210,64 @@ class AnnotationProviderTest
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
+	}
+	
+	@Test( "Test with module top level inheritance" )
+	public function testWithModuleTopLevelInheritance() : Void
+	{
+		var module = new MockModuleForAnnotationProviding();
+
+		this._annotationProvider.registerMetaData( "color", this.getColorByName );
+		this._annotationProvider.registerMetaData( "language", this.getText );
+		
+		module.initialize();
+
+		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
+	}
+	
+	@Test( "Test with module and inheritance" )
+	public function testWithModuleAndInheritance() : Void
+	{
+		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance', Domain );
+		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
+		
+		var moduleDomain = DomainUtil.getDomain( 'moduleID', Domain );
+		DomainExpert.getInstance().registerDomain( moduleDomain );
+		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
+		var module = new MockModuleForAnnotationProviding();
+
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
+		
+		module.initialize();
+
+		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
+		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
+	}
+	
+	@Test( "Test with module and inheritance overridding" )
+	public function testWithModuleAndInheritanceOverridding() : Void
+	{
+		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance', Domain );
+		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
+		
+		var moduleDomain = DomainUtil.getDomain( 'moduleID', Domain );
+		DomainExpert.getInstance().registerDomain( moduleDomain );
+		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
+		var module = new MockModuleForAnnotationProviding();
+
+		module.getAnnotationProvider().registerMetaData( "language", this.getAnotherText );
+		parentProvider.registerMetaData( "color", this.getColorByName );
+		parentProvider.registerMetaData( "language", this.getText );
+		
+		module.initialize();
+
+		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
+		Assert.equals( "anotherText", module.mockObjectWithMetaData.languageTest, "text should be the same" );
 		Assert.isNull( module.anotherMockObjectWithMetaData.languageTest, "property should be null when class is not implementing IAnnotationParsable" );
 	}
 	

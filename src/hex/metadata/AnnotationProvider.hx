@@ -8,6 +8,7 @@ import hex.di.InjectionEvent;
 import hex.domain.Domain;
 import hex.domain.TopLevelDomain;
 import hex.error.IllegalArgumentException;
+import hex.error.IllegalStateException;
 import hex.log.Stringifier;
 
 /**
@@ -18,6 +19,7 @@ class AnnotationProvider implements IAnnotationProvider
 {
 	static var _initialized 	: Bool = false;
 	static var _Domains			: Map<Domain, IAnnotationProvider> = new Map();
+	static var _Parents			: Map<Domain, Domain> = new Map();
 	
 	var _domain 				: Domain;
 	var _parent 				: IAnnotationProvider;
@@ -32,6 +34,13 @@ class AnnotationProvider implements IAnnotationProvider
 		this._cache 			= new HashMap();
 		this._metadata 			= new Map();
 		this._instances 		= new Map();
+	}
+	
+	static public function release() : Void
+	{
+		AnnotationProvider._initialized = false;
+		AnnotationProvider._Domains = new Map();
+		AnnotationProvider._Parents = new Map();
 	}
 	
 	static public function getAnnotationProvider( ?domain : Domain, ?parentDomain : Domain ) : IAnnotationProvider
@@ -50,7 +59,14 @@ class AnnotationProvider implements IAnnotationProvider
 		
 		if ( parentDomain == null && domain != TopLevelDomain.DOMAIN )
 		{
-			parentDomain = TopLevelDomain.DOMAIN;
+			if ( !AnnotationProvider._Parents.exists( domain ) )
+			{
+				parentDomain = TopLevelDomain.DOMAIN;
+			}
+			else
+			{
+				parentDomain = AnnotationProvider._Parents.get( domain );
+			}
 		}
 		
 		if ( !AnnotationProvider._Domains.exists( domain ) )
@@ -59,6 +75,21 @@ class AnnotationProvider implements IAnnotationProvider
 		}
 		
 		return AnnotationProvider._Domains.get( domain );
+	}
+	
+	static public function registerToParentDomain( domain : Domain, parentDomain : Domain) : Void
+	{
+		if ( !AnnotationProvider._Parents.exists( domain ) )
+		{
+			AnnotationProvider._Parents.set( domain, parentDomain );
+		}
+		else
+		{
+			throw new IllegalStateException( 	"'" + domain.getName() + "' cannot be registered to '" + parentDomain.getName() +
+													"' parent domain, it's already registered to '" + 
+														AnnotationProvider._Parents.get( domain ).getName() 
+															+ "' parent domain" );
+		}
 	}
 	
 	public function registerMetaData( metaDataName : String, providerMethod : String->Dynamic ) : Void 
