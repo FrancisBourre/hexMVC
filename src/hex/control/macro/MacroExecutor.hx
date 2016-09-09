@@ -57,7 +57,11 @@ class MacroExecutor implements IMacroExecutor implements IInjectorContainer
 		var payloads : Array<ExecutionPayload> = mapping.getPayloads();
 		if ( request != null )
 		{
-			payloads = payloads != null ? payloads.concat( request.getExecutionPayloads() ) : request.getExecutionPayloads();
+			var requestPayloads = request.getExecutionPayloads();
+			if ( requestPayloads != null )
+			{
+				payloads = payloads != null ? payloads.concat( request.getExecutionPayloads() ) : requestPayloads;
+			}
 		}
 		
 		// Get payloads from mapping results
