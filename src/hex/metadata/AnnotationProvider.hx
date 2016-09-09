@@ -19,13 +19,15 @@ class AnnotationProvider implements IAnnotationProvider
 	static var _initialized 	: Bool = false;
 	static var _Domains			: Map<Domain, IAnnotationProvider> = new Map();
 	
+	var _domain 				: Domain;
 	var _parent 				: IAnnotationProvider;
 	var _cache 					: HashMap<Class<Dynamic>, ClassMetaDataVO>;
 	var _metadata 				: Map<String, String->Dynamic>;
 	var _instances 				: Map<String, Array<InstanceVO>>;
 
-	function new( parent : IAnnotationProvider = null ) 
+	function new( domain : Domain, parent : IAnnotationProvider = null ) 
 	{
+		this._domain 			= domain;
 		this._parent 			= parent;
 		this._cache 			= new HashMap();
 		this._metadata 			= new Map();
@@ -37,7 +39,7 @@ class AnnotationProvider implements IAnnotationProvider
 		if ( !AnnotationProvider._initialized )
 		{
 			AnnotationProvider._initialized = true;
-			var provider = new AnnotationProvider( null );
+			var provider = new AnnotationProvider( TopLevelDomain.DOMAIN, null );
 			AnnotationProvider._Domains.set( TopLevelDomain.DOMAIN, provider );
 		}
 		
@@ -53,7 +55,7 @@ class AnnotationProvider implements IAnnotationProvider
 		
 		if ( !AnnotationProvider._Domains.exists( domain ) )
 		{
-			AnnotationProvider._Domains.set( domain, new AnnotationProvider( AnnotationProvider._Domains.get( parentDomain ) ) );
+			AnnotationProvider._Domains.set( domain, new AnnotationProvider( domain, AnnotationProvider._Domains.get( parentDomain ) ) );
 		}
 		
 		return AnnotationProvider._Domains.get( domain );
@@ -92,6 +94,7 @@ class AnnotationProvider implements IAnnotationProvider
 	static private function _unregisterInstances( metaDataName : String, provider : AnnotationProvider ) : Void
 	{
 		provider._instances.remove( metaDataName );
+
 		if ( provider._parent != null )
 		{
 			AnnotationProvider._unregisterInstances( metaDataName, cast provider._parent );
@@ -105,6 +108,34 @@ class AnnotationProvider implements IAnnotationProvider
 		this._instances 			= new Map();
 	}
 	
+	private function _do( instance : {}, property : PropertyMetaDataVO ) : Void
+	{
+		var metaDataName : String = property.metaDataName;
+		
+		if ( this._metadata.exists( metaDataName ) )
+		{
+			var providerMethod : String->Dynamic = this._metadata.get( metaDataName );
+			Reflect.setProperty( instance, property.propertyName, providerMethod( property.metaDataValue ) );
+		}
+		else
+		{
+			var instanceVO = new InstanceVO( instance, property.propertyName, property.metaDataName, property.metaDataValue );
+			if ( this._instances.exists( metaDataName ) )
+			{
+				this._instances.get( metaDataName ).push( instanceVO );
+			}
+			else
+			{
+				if ( this._parent != null )
+				{
+					( cast this._parent )._do( instance, property );
+				}
+
+				this._instances.set( metaDataName, [ instanceVO ] );
+			}
+		}
+	}
+	
 	public function parse( instance : {} ) : Void 
 	{
 		var classMetaDataVO : ClassMetaDataVO = this._parse( instance );
@@ -114,30 +145,7 @@ class AnnotationProvider implements IAnnotationProvider
 			var properties : Array<PropertyMetaDataVO> = classMetaDataVO.properties;
 			for ( property in properties )
 			{
-				var metaDataName : String = property.metaDataName;
-
-				if ( this._metadata.exists( metaDataName ) )
-				{
-					var providerMethod : String->Dynamic = this._metadata.get( metaDataName );
-					Reflect.setProperty( instance, property.propertyName, providerMethod( property.metaDataValue ) );
-				}
-				else
-				{
-					var instanceVO = new InstanceVO( instance, property.propertyName, property.metaDataName, property.metaDataValue );
-					if ( this._instances.exists( metaDataName ) )
-					{
-						this._instances.get( metaDataName ).push( instanceVO );
-					}
-					else
-					{
-						if ( this._parent != null )
-						{
-							this._parent.parse( instance );
-						}
-
-						this._instances.set( metaDataName, [ instanceVO ] );
-					}
-				}
+				this._do( instance, property );
 			}
 		}
 	}
