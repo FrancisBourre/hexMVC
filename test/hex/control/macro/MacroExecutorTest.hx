@@ -198,7 +198,7 @@ class MacroExecutorTest
 	@Test( "Test command execution with approved guards" )
     public function testExecuteCommandWithApprovedGuards() : Void
     {
-		var commandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeApproved] );
+		var commandMapping = new CommandMapping( MockCommand ).withGuard( [thatWillBeApproved] );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
 		Assert.isNotNull( command, "'command' should not be null" );
 		Assert.isInstanceOf( command, MockCommand, "'command' shouldbe typed 'MockCommand'" );
@@ -210,7 +210,7 @@ class MacroExecutorTest
 		var failListener = new MockMacroFailListener();
 		this._macroExecutor.setAsyncCommandListener( failListener );
 		
-		var commandMapping = new CommandMapping( MockCommand ).withGuards( [thatWillBeRefused] );
+		var commandMapping = new CommandMapping( MockCommand ).withGuard( thatWillBeRefused );
 		var command : ICommand = this._macroExecutor.executeCommand( commandMapping );
 		Assert.isNull( command, "'command' should be null" );
 		Assert.equals( 1, failListener.onAsyncCommandFailCallCount, "'onAsyncCommandFail' method should be called once" );

@@ -49,14 +49,14 @@ class CommandMapping implements ICommandMapping
         return this._guards;
     }
 
-    public function withGuards( guards : Array<Dynamic> ) : ICommandMapping
+    public function withGuard( guard : Dynamic ) : ICommandMapping
     {
         if ( this._guards == null )
         {
             this._guards = new Array<Dynamic>();
         }
 
-        this._guards = this._guards.concat( guards );
+        this._guards.push( guard );
         return this;
     }
 	

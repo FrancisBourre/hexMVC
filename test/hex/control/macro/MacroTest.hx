@@ -166,7 +166,7 @@ class MacroTest
 		myMacro.macroExecutor = macroExecutor;
 
 		myMacro.preExecute();
-		myMacro.add( MockCommand ).withGuards( [thatWillBeApproved] );
+		myMacro.add( MockCommand ).withGuard( thatWillBeApproved );
 		myMacro.execute();
 		
 		Assert.isTrue( myMacro.hasCompleted, "'hasCompleted' property should return true" );
@@ -188,7 +188,7 @@ class MacroTest
 		myMacro.macroExecutor = macroExecutor;
 
 		myMacro.preExecute();
-		myMacro.add( MockCommand ).withGuards( [thatWillBeRefused] );
+		myMacro.add( MockCommand ).withGuard( thatWillBeRefused );
 		myMacro.execute();
 		
 		Assert.isTrue( myMacro.hasFailed, "'hasFailed' property should return true" );
