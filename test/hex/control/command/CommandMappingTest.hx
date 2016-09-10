@@ -38,7 +38,7 @@ class CommandMappingTest
     public function testGuards() : Void
     {
         Assert.isFalse( this._commandMapping.hasGuard, "hasGuard should return false" );
-		this._commandMapping.withGuards( [1, 2, 3] );
+		this._commandMapping.withGuard( 1 ).withGuard( 2 ).withGuard( 3 );
 		Assert.isTrue( this._commandMapping.hasGuard, "hasGuard should return true" );
 		Assert.deepEquals( [1, 2, 3], this._commandMapping.getGuards(), "guards should be the same" );
     }

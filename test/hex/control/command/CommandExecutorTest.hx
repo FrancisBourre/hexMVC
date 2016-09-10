@@ -127,7 +127,7 @@ class CommandExecutorTest
 		var domain = new Domain( "testGuardInjectionApproved" );
 		injector.mapToValue( Domain, domain );
 		var commandExecutor = new CommandExecutor( injector, this._module );
-		var cm = new CommandMapping( MockCommand ).withGuards( [MockGuardForCommandExecutorTest] );
+		var cm = new CommandMapping( MockCommand ).withGuard( MockGuardForCommandExecutorTest );
 		commandExecutor.executeCommand( cm );
 		
 		Assert.equals( 1, MockCommand.executionCount, "command should have been called once" );
@@ -142,7 +142,7 @@ class CommandExecutorTest
 		var domain = new Domain( "testGuardInjectionRefused" );
 		injector.mapToValue( Domain, domain );
 		var commandExecutor = new CommandExecutor( injector, this._module );
-		var cm = new CommandMapping( MockCommand ).withGuards( [MockGuardForCommandExecutorTest] );
+		var cm = new CommandMapping( MockCommand ).withGuard( MockGuardForCommandExecutorTest );
 		commandExecutor.executeCommand( cm );
 		
 		Assert.equals( 0, MockCommand.executionCount, "command should not have been called" );

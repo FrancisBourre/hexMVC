@@ -29,7 +29,7 @@ interface ICommandMapping
     /**
      * A list of Guards to query before execution
      */
-    function withGuards( guards : Array<Dynamic> ) : ICommandMapping;
+    function withGuard( guard : Dynamic ) : ICommandMapping;
 
     /**
      * Unmaps a Command after a successful execution
