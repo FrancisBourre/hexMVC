@@ -20,6 +20,7 @@ class MockGuardForCommandExecutorTest implements IGuard implements IInjectorCont
 	
 	public function approve() : Bool
 	{
+		trace( this.domain );
 		return this.domain.getName() == "testGuardInjectionApproved";
 	}
 }
