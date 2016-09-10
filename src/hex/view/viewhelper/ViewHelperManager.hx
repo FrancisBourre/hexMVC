@@ -61,7 +61,7 @@ class ViewHelperManager
 		{
 			var viewHelper : IViewHelperTypedef = this._viewHelpers[ len-i-1 ];
 			this._viewHelpers.splice( len-i-1, 1 );
-			viewHelper.removeHandler( ViewHelperMessage.RELEASE, this, this._onViewHelperRelease );
+			viewHelper.removeHandler( ViewHelperMessage.RELEASE, this._onViewHelperRelease );
 			viewHelper.release();
 			this._notifyViewHelperRelease( viewHelper );
 		}
@@ -78,7 +78,7 @@ class ViewHelperManager
 			injector.mapToValue( clazz,  viewHelper );
 			viewHelper.setOwner( this._owner );
 			viewHelper.view = view;
-			viewHelper.addHandler( ViewHelperMessage.RELEASE, this, this._onViewHelperRelease );
+			viewHelper.addHandler( ViewHelperMessage.RELEASE, this._onViewHelperRelease );
 			this._viewHelpers.push( viewHelper );
 		}
 

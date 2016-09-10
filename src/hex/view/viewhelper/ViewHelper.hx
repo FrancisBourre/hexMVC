@@ -1,7 +1,8 @@
 package hex.view.viewhelper;
 
 import hex.di.IInjectorContainer;
-import hex.event.Dispatcher;
+import hex.event.ClosureDispatcher;
+import hex.event.IClosureDispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.log.ILogger;
@@ -32,12 +33,12 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	 * Don't use this dispatcher, it's used internally for
 	 * updating current state to manager.
 	 */
-	var _internal 			: Dispatcher<{}>;
+	var _internal 			: IClosureDispatcher;
 		
 	
 	public function new ()
 	{
-		this._internal = new Dispatcher<{}>();
+		this._internal = new ClosureDispatcher();
 	}
 	
 	function _preInitialize() : Void
@@ -170,13 +171,13 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		this._internal.removeAllListeners();
 	}
 	
-	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
+	public function addHandler( messageType : MessageType, callback : Dynamic ) : Void
 	{
-		this._internal.addHandler( messageType, scope, callback );
+		this._internal.addHandler( messageType, callback );
 	}
 	
-	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
+	public function removeHandler( messageType : MessageType, callback : Dynamic ) : Void
 	{
-		this._internal.removeHandler( messageType, scope, callback );
+		this._internal.removeHandler( messageType, callback );
 	}
 }
