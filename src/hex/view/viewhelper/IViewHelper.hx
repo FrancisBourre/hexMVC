@@ -25,7 +25,7 @@ interface IViewHelper<ViewType:IView>
 	
 	function release() : Void;
 	
-	function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
+	function addHandler( messageType : MessageType, callback : Dynamic ) : Void;
 	
-	function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void;
+	function removeHandler( messageType : MessageType, callback : Dynamic ) : Void;
 }
