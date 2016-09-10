@@ -9,6 +9,8 @@ import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommandMapping;
 import hex.control.payload.ExecutionPayload;
+import hex.di.Injector;
+import hex.domain.Domain;
 import hex.module.IModule;
 import hex.module.MockModule;
 import hex.unittest.assertion.Assert;
@@ -115,10 +117,42 @@ class CommandExecutorTest
 		
 		Assert.deepEquals( 	[ ["s", String, ""] ], this._injector.mappedPayloads, "'CommandExecutor.mapPayload' should map right values" );
 	}
+	
+	@Test( "Test guard injection approved" )
+    public function testGuardInjectionApproved() : Void
+    {
+		MockCommand.executionCount = 0;
+		
+		var injector = new Injector();
+		var domain = new Domain( "testGuardInjectionApproved" );
+		injector.mapToValue( Domain, domain );
+		var commandExecutor = new CommandExecutor( injector, this._module );
+		var cm = new CommandMapping( MockCommand ).withGuards( [MockGuardForCommandExecutorTest] );
+		commandExecutor.executeCommand( cm );
+		
+		Assert.equals( 1, MockCommand.executionCount, "command should have been called once" );
+	}
+	
+	@Test( "Test guard injection refused" )
+    public function testGuardInjectionRefused() : Void
+    {
+		MockCommand.executionCount = 0;
+		
+		var injector = new Injector();
+		var domain = new Domain( "testGuardInjectionRefused" );
+		injector.mapToValue( Domain, domain );
+		var commandExecutor = new CommandExecutor( injector, this._module );
+		var cm = new CommandMapping( MockCommand ).withGuards( [MockGuardForCommandExecutorTest] );
+		commandExecutor.executeCommand( cm );
+		
+		Assert.equals( 0, MockCommand.executionCount, "command should not have been called" );
+	}
 }
 
 private class MockCommand extends BasicCommand
 {
+	static public var executionCount : UInt;
+	
 	public function new()
 	{
 		super();
@@ -126,7 +160,7 @@ private class MockCommand extends BasicCommand
 	
 	public function execute( ?request : Request ) : Void 
 	{
-		
+		MockCommand.executionCount++;
 	}
 	
 	override public function getReturnedExecutionPayload():Array<ExecutionPayload> 
