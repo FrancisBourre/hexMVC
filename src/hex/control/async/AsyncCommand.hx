@@ -4,6 +4,7 @@ import hex.control.async.AsyncCommandMessage;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.payload.ExecutionPayload;
+import hex.di.IInjectorContainer;
 import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.ClosureDispatcher;
@@ -15,7 +16,7 @@ import hex.module.IModule;
  * ...
  * @author Francis Bourre
  */
-class AsyncCommand implements IAsyncCommand
+class AsyncCommand implements IAsyncCommand implements IInjectorContainer
 {
     public static inline var WAS_NEVER_USED     : String = "WAS_NEVER_USED";
     public static inline var IS_RUNNING         : String = "IS_RUNNING";
