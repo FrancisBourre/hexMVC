@@ -7,5 +7,5 @@ package hex.event;
 class MVCEventSuite
 {
 	@Suite("event")
-    public var list : Array<Class<Dynamic>> = [CallbackAdapterTest, ClassAdapterTest, EventProxyTest];
+    public var list : Array<Class<Dynamic>> = [CallbackAdapterTest, ClassAdapterTest, EventProxyTest, MacroAdapterStrategyTest];
 }
