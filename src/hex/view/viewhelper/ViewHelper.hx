@@ -66,6 +66,7 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	{
 		if ( !this._isPreInitialized )
 		{
+			this._isPreInitialized = true;
 			this._preInitialize();
 		}
 
@@ -166,6 +167,7 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	
 	public function release() : Void 
 	{
+		this._release();
 		this._internal.dispatch( ViewHelperMessage.RELEASE, [ this ] );
 		this._view = null;
 		this._internal.removeAllListeners();
