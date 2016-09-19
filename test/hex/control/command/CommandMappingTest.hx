@@ -118,7 +118,7 @@ class CommandMappingTest
 		var mapping 		= new CommandMapping( MockCommand );
 		var anotherMapping 	= new CommandMapping( MockCommand );
 		
-		Assert.equals( this._commandMapping, this._commandMapping.withMappingResults( [ mapping, anotherMapping ] ), "CommandMapping returned should be the same" );
+		Assert.equals( this._commandMapping, this._commandMapping.withMappingResult( mapping ).withMappingResult( anotherMapping ), "CommandMapping returned should be the same" );
 		Assert.isTrue( this._commandMapping.hasMappingResult, "'hasMappingResult' should return true" );
     }
 	
@@ -129,7 +129,7 @@ class CommandMappingTest
 		
 		var command = new MockCommand();
 		var mapping = new CommandMapping( MockCommand );
-		this._commandMapping.withMappingResults( [mapping] );
+		this._commandMapping.withMappingResult( mapping );
 		Assert.isNull( this._commandMapping.getPayloadResult(), "'getPayloadResult' should return null" );
 		
 		mapping.setLastCommandInstance( command );

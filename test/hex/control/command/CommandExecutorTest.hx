@@ -109,7 +109,7 @@ class CommandExecutorTest
     public function textExecuteCommandWithMappingResults() : Void
     {
 		var mapping = new CommandMapping( MockCommand );
-		var mappingWithMappingResults = new CommandMapping( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
+		var mappingWithMappingResults = new CommandMapping( MockCommandUsingMappingResults ).withMappingResult( mapping );
 		
 		var request = new Request();
 		this._commandExecutor.executeCommand( mapping, request );
