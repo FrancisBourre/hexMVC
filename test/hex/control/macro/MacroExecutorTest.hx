@@ -230,7 +230,7 @@ class MacroExecutorTest
     public function textExecuteCommandWithMappingResults() : Void
     {
 		var mapping : ICommandMapping = this._macroExecutor.add( MockCommandWithReturnedPayload );
-		var mappingWithMappingResults : ICommandMapping = this._macroExecutor.add( MockCommandUsingMappingResults ).withMappingResults( [ mapping ] );
+		var mappingWithMappingResults : ICommandMapping = this._macroExecutor.add( MockCommandUsingMappingResults ).withMappingResult( mapping );
 		
 		var request = new Request();
 		this._macroExecutor.executeCommand( mapping, request );

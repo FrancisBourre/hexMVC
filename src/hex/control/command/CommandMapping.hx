@@ -176,14 +176,14 @@ class CommandMapping implements ICommandMapping
 		return this._mappingResults != null;
 	}
 	
-    public function withMappingResults( mappingResults : Array<ICommandMapping> ) : ICommandMapping
+    public function withMappingResult( mappingResult : ICommandMapping ) : ICommandMapping
 	{
 		if ( this._mappingResults == null )
         {
             this._mappingResults = [];
         }
 		
-		this._mappingResults = this._mappingResults.concat( mappingResults );
+		this._mappingResults.push( mappingResult );
 		return this;
 	}
 	

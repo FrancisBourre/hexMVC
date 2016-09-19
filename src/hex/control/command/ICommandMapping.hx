@@ -27,22 +27,22 @@ interface ICommandMapping
     function getGuards() : Array<Dynamic>;
 
     /**
-     * A list of Guards to query before execution
+     * Add a guards to query before execution
      */
     function withGuard( guard : Dynamic ) : ICommandMapping;
 
     /**
-     * Unmaps a Command after a successful execution
+     * Returns true if command mapped should be fired once
      */
 	var isFiredOnce( get, null ) : Bool;
 
     /**
-     * Unmaps a Command after a successful execution
+     * Unmaps a Command after first successful execution
      */
     function once() : ICommandMapping;
 	
 	/**
-     * A list of payloads to be injected during execution
+     * AReturns true if mapping has payloads to be injected during execution
      */
 	var hasPayload( get, null ) : Bool;
 
@@ -52,7 +52,7 @@ interface ICommandMapping
     function getPayloads() : Array<ExecutionPayload>;
 
     /**
-     * A list of payloads to be injected during execution
+     * Add a payload to be injected during execution
      */
     function withPayload( payload : ExecutionPayload ) : ICommandMapping;
 
@@ -67,7 +67,7 @@ interface ICommandMapping
 	var hasCompleteHandler( get, null ) : Bool;
 
     /**
-     * A list of complete callbacks
+     * Add a complete callback
      */
     function withCompleteHandler( handler : Function ) : ICommandMapping;
 
@@ -82,7 +82,7 @@ interface ICommandMapping
 	var hasFailHandler( get, null ) : Bool;
 
     /**
-     * A list of fail callbacks
+     * Add a fail callback
      */
     function withFailHandler( handler : Function ) : ICommandMapping;
 
@@ -97,7 +97,7 @@ interface ICommandMapping
 	var hasCancelHandler( get, null ) : Bool;
 
     /**
-     * A list of cancel callbacks
+     * Add a cancel callback
      */
     function withCancelHandler( handler : Function ) : ICommandMapping;
 	
@@ -107,14 +107,14 @@ interface ICommandMapping
 	function getContextOwner() : IContextOwner;
 	
 	/**
-     * A list of mapping results
+     * Returns true if mapping has mapping results
      */
 	var hasMappingResult( get, null ) : Bool;
 
     /**
-     * A list of mapping results
+     * Add a mapping result
      */
-	function withMappingResults( mappingResults : Array<ICommandMapping> ) : ICommandMapping;
+	function withMappingResult( mappingResult : ICommandMapping ) : ICommandMapping;
 	
 	/**
      * A list of payloads taken from mapping results
@@ -122,7 +122,7 @@ interface ICommandMapping
 	function getPayloadResult() : Array<ExecutionPayload>;
 	
 	/**
-     * Last command executed from this mapping
+     * Store last command instance executed from this mapping
      */
 	function setLastCommandInstance( command : ICommand ) : Void;
 }
