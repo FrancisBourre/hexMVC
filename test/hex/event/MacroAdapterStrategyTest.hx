@@ -6,7 +6,6 @@ import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommand;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
-import hex.di.IInjectorContainer;
 import hex.di.Injector;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -92,7 +91,7 @@ private class MockAdapterStrategyMacro extends MacroAdapterStrategy
 	}
 }
 
-private class MockAdapterStrategyCommand extends AsyncCommand implements IInjectorContainer
+private class MockAdapterStrategyCommand extends AsyncCommand
 {
 	public function new() 
 	{
