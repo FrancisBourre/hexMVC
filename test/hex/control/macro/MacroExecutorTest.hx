@@ -56,7 +56,7 @@ class MacroExecutorTest
     public function testCommandIndex() : Void
     {
 		Assert.equals( 0, this._macroExecutor.commandIndex, "'commandIndex' should return 0" );
-		this._macroExecutor.add( MockAsyncCommand );
+		this._macroExecutor.add( MockBasicAsyncCommand );
 		this._macroExecutor.executeNextCommand();
 		Assert.equals( 1, this._macroExecutor.commandIndex, "'commandIndex' should return 1" );
 	}
@@ -65,7 +65,7 @@ class MacroExecutorTest
     public function testHasNextCommandMapping() : Void
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
-		this._macroExecutor.add( MockAsyncCommand );
+		this._macroExecutor.add( MockBasicAsyncCommand );
 		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
 		this._macroExecutor.executeNextCommand();
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
@@ -79,7 +79,7 @@ class MacroExecutorTest
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 		this._macroExecutor.executeNextCommand();
 		Assert.isTrue( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return true" );
-		this._macroExecutor.add( MockAsyncCommand );
+		this._macroExecutor.add( MockBasicAsyncCommand );
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 		this._macroExecutor.executeNextCommand();
 		Timer.delay( MethodRunner.asyncHandler( this._onTestHasRunEveryCommand ), 100 );
@@ -89,11 +89,11 @@ class MacroExecutorTest
     public function testExecuteNextCommand() : Void
     {
 		this._macroExecutor.add( MockCommand );
-		this._macroExecutor.add( MockAsyncCommand );
+		this._macroExecutor.add( MockBasicAsyncCommand );
 		var command : ICommand = this._macroExecutor.executeNextCommand();
 		Assert.isInstanceOf( command, MockCommand, "command should be typed 'MockCommand'" );
 		command = this._macroExecutor.executeNextCommand();
-		Assert.isInstanceOf( command, MockAsyncCommand, "command should be typed 'MockCommand'" );
+		Assert.isInstanceOf( command, MockBasicAsyncCommand, "command should be typed 'MockCommand'" );
 	}
 	
 	@Test( "Test asyncCommandCalled" )
@@ -112,8 +112,8 @@ class MacroExecutorTest
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 		
-		var commandMapping : ICommandMapping = this._macroExecutor.add( MockAsyncCommand );
-		Assert.equals( MockAsyncCommand, commandMapping.getCommandClass(), "'add' should return expected mapping with right same command class" );
+		var commandMapping : ICommandMapping = this._macroExecutor.add( MockBasicAsyncCommand );
+		Assert.equals( MockBasicAsyncCommand, commandMapping.getCommandClass(), "'add' should return expected mapping with right same command class" );
 		Assert.equals( 0, this._macroExecutor.commandIndex, "'commandIndex' should return 0" );
 		Assert.isTrue( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return true" );
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
@@ -124,7 +124,7 @@ class MacroExecutorTest
     {
 		Assert.isFalse( this._macroExecutor.hasNextCommandMapping, "'hasNextCommandMapping' should return false" );
 		
-		var commandMapping = new CommandMapping( MockAsyncCommand );
+		var commandMapping = new CommandMapping( MockBasicAsyncCommand );
 		var returnedCommandMapping : ICommandMapping = this._macroExecutor.addMapping( commandMapping );
 		Assert.equals( commandMapping, returnedCommandMapping, "'addMapping' should return ethe same command mapping" );
 		Assert.equals( 0, this._macroExecutor.commandIndex, "'commandIndex' should return 0" );
@@ -237,92 +237,6 @@ class MacroExecutorTest
 		this._macroExecutor.executeCommand( mappingWithMappingResults, request );
 		
 		Assert.deepEquals( 	[ ["s", String, ""] ], this._injector.mappedPayloads, "'CommandExecutor.mapPayload' should map right values" );
-	}
-}
-
-private class MockCommandWithReturnedPayload extends BasicCommand
-{
-	public function new()
-	{
-		super();
-	}
-	
-	public function execute( ?request : Request ) : Void 
-	{
-		
-	}
-	
-	override public function getReturnedExecutionPayload():Array<ExecutionPayload> 
-	{
-		return [ new ExecutionPayload( "s", String ) ];
-	}
-}
-
-private class MockCommandUsingMappingResults extends BasicCommand
-{
-	@Inject
-	public var value : String;
-	
-	public function new()
-	{
-		super();
-	}
-	
-	public function execute( ?request : Request ) : Void 
-	{
-		
-	}
-}
-
-private class MockAsyncCommandForTestingExecution extends MockAsyncCommand
-{
-	static public var executeCallCount 		: Int = 0;
-	static public var preExecuteCallCount 	: Int = 0;
-	
-	static public var request 				: Request;
-	static public var owner 				: IModule;
-	
-	static public var completeHandlers 		: Array<AsyncCommand->Void> = [];
-	static public var failHandlers 			: Array<AsyncCommand->Void> = [];
-	static public var cancelHandlers 		: Array<AsyncCommand->Void> = [];
-	
-	override public function setOwner( owner : IModule ) : Void 
-	{
-		MockAsyncCommandForTestingExecution.owner = owner;
-	}
-	
-	override public function preExecute( ?request : Request ) : Void 
-	{
-		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
-	}
-	
-	override public function execute( ?request : Request ) : Void 
-	{
-		MockAsyncCommandForTestingExecution.executeCallCount++;
-		MockAsyncCommandForTestingExecution.request = request;
-	}
-	
-	override public function addCompleteHandler( callback : AsyncCommand->Void ) : Void
-	{
-		MockAsyncCommandForTestingExecution.completeHandlers.push( callback );
-	}
-	
-	override public function addFailHandler( callback : AsyncCommand->Void ) : Void
-	{
-		MockAsyncCommandForTestingExecution.failHandlers.push( callback );
-	}
-	
-	override public function addCancelHandler( callback : AsyncCommand->Void ) : Void
-	{
-		MockAsyncCommandForTestingExecution.cancelHandlers.push( callback );
-	}
-}
-
-private class MockAsyncCommand extends AsyncCommand
-{
-	public function execute( ?request : Request ) : Void 
-	{
-		Timer.delay( this._handleComplete, 50 );
 	}
 }
 

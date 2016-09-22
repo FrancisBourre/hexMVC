@@ -6,6 +6,7 @@ import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommand;
 import hex.control.macro.MacroExecutor;
 import hex.control.payload.ExecutionPayload;
+import hex.di.IInjectorContainer;
 import hex.di.Injector;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -52,68 +53,4 @@ class MacroAdapterStrategyTest
 		Assert.equals( "testMessage", this._result[ 0 ], "macro result should return expected value" );
 	}
 	
-}
-
-private class MockRequest extends Request
-{
-	public var message : String;
-	
-	public function new()
-	{
-		super();
-		this.message = "Message";
-	}
-}
-
-private class MockAdapterStrategyMacro extends MacroAdapterStrategy
-{
-	var _message : String;
-
-	public function new()
-	{
-		super( this, this.onAdapt );
-	}
-
-	public function onAdapt( request : MockRequest, message : String ) : Void
-	{
-		this._request = request;
-		this._message = message;
-	}
-
-	override function _prepare() : Void
-	{
-		this.add( MockAdapterStrategyCommand ).withPayload( new ExecutionPayload( this._message, String ) ).withCompleteHandler( this._end );
-	}
-
-	function _end( async : IAsyncCommand ) : Void
-	{
-		this._result = async.getResult();
-	}
-}
-
-private class MockAdapterStrategyCommand extends AsyncCommand
-{
-	public function new() 
-	{
-		super();
-	}
-
-	@Inject
-	public var message : String;
-
-	public function execute( request : MockRequest ) : Void
-	{
-		this.message += request.message;
-		Timer.delay( this.testAsyncCallback, 50 );
-	}
-	
-	override public function getResult() : Array<Dynamic> 
-	{
-		return [ message ];
-	}
-
-	function testAsyncCallback() : Void
-	{
-		this._handleComplete();
-	}
 }

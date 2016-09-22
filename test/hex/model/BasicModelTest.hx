@@ -1,6 +1,8 @@
 package hex.model;
 
+import hex.di.IInjectorContainer;
 import hex.unittest.assertion.Assert;
+import hex.util.MacroUtil;
 
 /**
  * ...
@@ -11,8 +13,9 @@ class BasicModelTest
     @Test( 'test constructor' )
 	function testConstructor() : Void
     {
-        //var model = new MockModel();
-		//Assert.isInstanceOf( model, Model, "model should be an instance of 'Model'" );
+        var model = new MockModel();
+
+		//Assert.isTrue( MacroUtil.classImplementsInterface( MockModel, IInjectorContainer ), "'BasicModel' should be injectable" );
     }
 }
 

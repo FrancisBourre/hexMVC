@@ -5,6 +5,7 @@ import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
+import hex.di.IInjectorContainer;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
 import hex.log.Stringifier;

@@ -2,6 +2,7 @@ package hex.event;
 
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
+import hex.di.IInjectorContainer;
 
 /**
  * ...
