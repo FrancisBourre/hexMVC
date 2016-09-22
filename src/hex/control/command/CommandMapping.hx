@@ -4,8 +4,6 @@ import haxe.Constraints.Function;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IContextOwner;
-import hex.event.Dispatcher;
-import hex.event.MessageType;
 
 /**
  * ...

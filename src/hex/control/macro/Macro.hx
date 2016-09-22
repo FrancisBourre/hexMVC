@@ -14,7 +14,7 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
-class Macro extends AsyncCommand implements IAsyncCommandListener implements IInjectorContainer
+class Macro extends AsyncCommand implements IAsyncCommandListener
 {
 	var _request 			: Request;
 	var _isAtomic 			: Bool = true;

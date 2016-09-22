@@ -149,42 +149,6 @@ class CommandExecutorTest
 	}
 }
 
-private class MockCommand extends BasicCommand
-{
-	static public var executionCount : UInt;
-	
-	public function new()
-	{
-		super();
-	}
-	
-	public function execute( ?request : Request ) : Void 
-	{
-		MockCommand.executionCount++;
-	}
-	
-	override public function getReturnedExecutionPayload():Array<ExecutionPayload> 
-	{
-		return [ new ExecutionPayload( "s", String ) ];
-	}
-}
-
-private class MockCommandUsingMappingResults extends BasicCommand
-{
-	@Inject
-	public var value : String;
-	
-	public function new()
-	{
-		super();
-	}
-	
-	public function execute( ?request : Request ) : Void 
-	{
-		
-	}
-}
-
 private class MockForTriggeringUnmap
 {
 	public var commandMapping : ICommandMapping;
@@ -199,50 +163,6 @@ private class MockForTriggeringUnmap
 	{
 		this.unmapCallCount++;
 		return this.commandMapping;
-	}
-}
-
-private class MockAsyncCommandForTestingExecution extends AsyncCommand
-{
-	static public var executeCallCount 		: Int = 0;
-	static public var preExecuteCallCount 	: Int = 0;
-	
-	static public var request 				: Request;
-	static public var owner 				: IModule;
-	
-	static public var completeHandlers 		: Array<AsyncCommand->Void> = [];
-	static public var failHandlers 			: Array<AsyncCommand->Void> = [];
-	static public var cancelHandlers 		: Array<AsyncCommand->Void> = [];
-	
-	override public function setOwner( owner : IModule ) : Void 
-	{
-		MockAsyncCommandForTestingExecution.owner = owner;
-	}
-	
-	override public function preExecute( ?request : Request ) : Void 
-	{
-		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
-	}
-	
-	public function execute( ?request : Request ) : Void 
-	{
-		MockAsyncCommandForTestingExecution.executeCallCount++;
-		MockAsyncCommandForTestingExecution.request = request;
-	}
-	
-	override public function addCompleteHandler( callback : AsyncCommand->Void ) : Void
-	{
-		MockAsyncCommandForTestingExecution.completeHandlers.push( callback );
-	}
-	
-	override public function addFailHandler( callback : AsyncCommand->Void ) : Void
-	{
-		MockAsyncCommandForTestingExecution.failHandlers.push( callback );
-	}
-	
-	override public function addCancelHandler( callback : AsyncCommand->Void ) : Void
-	{
-		MockAsyncCommandForTestingExecution.cancelHandlers.push( callback );
 	}
 }
 

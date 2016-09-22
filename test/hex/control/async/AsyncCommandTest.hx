@@ -144,19 +144,6 @@ class AsyncCommandTest
 	}
 }
 
-private class MockAsyncCommand extends AsyncCommand
-{
-	public function execute( ?request : Request ) : Void
-	{
-		this._handleComplete();
-	}
-	
-	public function fail() : Void
-	{
-		this._handleFail();
-	}
-}
-
 private class MockAsyncCommandListener implements IAsyncCommandListener
 {
 	public var lastCommandReceived 		: AsyncCommand;

@@ -8,7 +8,7 @@ import hex.di.IInjectorContainer;
  * ...
  * @author Francis Bourre
  */
-class MockAsyncCommand extends AsyncCommand implements IInjectorContainer
+class MockAsyncCommand extends AsyncCommand
 {
 	@Inject
 	public var data : MockValueObject;
