@@ -21,13 +21,13 @@ class RuntimeDependencyChecker
     {
         if ( dependencies.hasMappedDependencies() )
         {
-            var mappedDependencies : Array<Class<Dynamic>> = dependencies.getMappedDependencies();
+            var mappedDependencies = dependencies.getMappedDependencies();
 
             for ( dependency in mappedDependencies )
             {
-                if ( !injector.hasMapping( dependency ) )
+                if ( !injector.hasMapping( dependency.type, dependency.name ) )
                 {
-                    throw new RuntimeDependencyException( "'" + dependency + "' class dependency is not available during '" + Stringifier.stringify( module ) + "' initialisation." );
+                    throw new RuntimeDependencyException( "'" + dependency + "' dependency is not available during '" + Stringifier.stringify( module ) + "' initialisation." );
                 }
             }
         }

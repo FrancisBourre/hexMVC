@@ -6,6 +6,7 @@ import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.di.error.MissingMappingException;
+import hex.di.mapping.MappingDefinition;
 import hex.domain.DomainExpert;
 import hex.error.Exception;
 import hex.error.IllegalStateException;
@@ -285,7 +286,7 @@ private class MockModuleForTestingRuntimeDependencies extends Module
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		var rd : RuntimeDependencies = new RuntimeDependencies();
-		rd.addMappedDependencies( [IService]);
+		rd.addMappedDependencies( [ new MappingDefinition( IService ) ]);
 		return rd;
 	}
 }
