@@ -26,7 +26,7 @@ private class MModule extends Module
 	override private function _getRuntimeDependencies() : IRuntimeDependencies
 	{
 		var rt = new RuntimeDependencies();
-		rt.addServiceDependencies( [IGitService] );
+		rd.addMappedDependencies( [ new MappingDefinition( IGitService ) ]); 
 		return rt;
 	}
 	
@@ -43,7 +43,7 @@ private class MStatelessModelConfig extends StatelessModelConfig
 {
 	override public function configure() : Void 
 	{
-		this.mapModel( IMModel, MModel  );
+		this.map( IMModel, MModel  );
 	}
 }
 ```
@@ -61,7 +61,7 @@ private class MStatefulCommandConfig extends StatefulCommandConfig
 	override public function configure( injector : IDependencyInjector ) : Void
 	{
 		super.configure( injector );
-		this.map( MessageTypeList.TEST, TestCommand ).once().withGuards( MyGuardClass ).withCompleteHandlers([ function( e : AsyncCommandEvent ){ trace( e ); } ]);
+		this.map( MessageTypeList.TEST, TestCommand ).once().withGuard( MyGuardClass ).withCompleteHandler( function( e : AsyncCommandEvent ){ trace( e ); } );
 	}
 }
 ```
@@ -69,7 +69,7 @@ private class MStatefulCommandConfig extends StatefulCommandConfig
 
 ## Asynchronous command example with injections
 ```haxe
-private class TestCommand extends AsyncCommand implements IHTTPServiceListener<GitServiceConfiguration> implements IInjectorContainer
+private class TestCommand extends AsyncCommand implements IAsyncStatelessServiceListener
 {
 	@Inject
     public var model : IMModel;
@@ -79,27 +79,27 @@ private class TestCommand extends AsyncCommand implements IHTTPServiceListener<G
 
     override public function execute( ?request : Request ) : Void
     {
-		this.service.addHTTPServiceListener( this );
+		this.service.addListener( this );
 		this.service.call();
     }
 	
-	public function onServiceTimeout( service : IHTTPService<GitServiceConfiguration> ) : Void 
+	public function onServiceTimeout( service : IAsyncStatelessService ) : Void 
 	{
 		this._handleFail();
 	}
 	
-	public function onServiceComplete( service : IHTTPService<GitServiceConfiguration> ) : Void 
+	public function onServiceComplete( service : IAsyncStatelessService ) : Void  
 	{
 		this.model.setValue( service.getResult() );
 		this._handleComplete();
 	}
 	
-	public function onServiceFail( service : IHTTPService<GitServiceConfiguration> ) : Void 
+	public function onServiceFail( service : IAsyncStatelessService ) : Void 
 	{
 		this._handleFail();
 	}
 	
-	public function onServiceCancel( service : IHTTPService<GitServiceConfiguration> ) : Void 
+	public function onServiceCancel( service : IAsyncStatelessService ) : Void  
 	{
 		this._handleCancel();
 	}
