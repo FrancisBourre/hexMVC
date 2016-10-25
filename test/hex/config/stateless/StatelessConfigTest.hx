@@ -68,7 +68,10 @@ private interface IMockInterface
 
 private class MockClass implements IMockInterface
 {
-	
+	public function new()
+	{
+		
+	}
 }
 
 private class MockInjectorForMapAsSingletonTest extends MockDependencyInjector

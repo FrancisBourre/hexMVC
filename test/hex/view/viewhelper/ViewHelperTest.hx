@@ -178,22 +178,22 @@ private class MockListener
 		
 	}
 	
-	public function init() : Void
+	public function init( viewHelper : MockViewHelper ) : Void
 	{
 		this.initCallCount++;
 	}
 	
-	public function attach() : Void
+	public function attach( viewHelper : MockViewHelper, view : MockView ) : Void
 	{
 		this.attachCallCount++;
 	}
 	
-	public function remove() : Void
+	public function remove( viewHelper : MockViewHelper, view : MockView ) : Void
 	{
 		this.removeCallCount++;
 	}
 	
-	public function release() : Void
+	public function release( viewHelper : MockViewHelper ) : Void
 	{
 		this.releaseCallCount++;
 	}
