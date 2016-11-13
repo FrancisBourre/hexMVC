@@ -16,7 +16,9 @@ import hex.error.IllegalStateException;
 import hex.module.IModule;
 
 /**
- * ...
+ * Not intended for direct use
+ * Designed to be used inside Macro class
+ * Use CommandExecutor instead
  * @author Francis Bourre
  */
 class MacroExecutor implements IMacroExecutor implements IInjectorContainer

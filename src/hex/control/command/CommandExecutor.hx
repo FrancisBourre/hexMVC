@@ -11,7 +11,7 @@ import hex.module.IModule;
 import Std;
 
 /**
- * ...
+ * Execute commands and macros
  * @author Francis Bourre
  */
 class CommandExecutor
