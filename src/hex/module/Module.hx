@@ -53,7 +53,7 @@ class Module implements IModule
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
-		this._injector.mapToValue( IDispatcher, this._internalDispatcher );
+		this._injector.mapClassNameToValue( "hex.event.IDispatcher<{}>", this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 		
