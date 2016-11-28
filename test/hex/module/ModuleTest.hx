@@ -24,6 +24,10 @@ import hex.module.dependency.RuntimeDependencyException;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
 import hex.unittest.assertion.Assert;
+import hex.view.IView;
+import hex.view.viewhelper.IViewHelperTypedef;
+import hex.view.viewhelper.MockView;
+import hex.view.viewhelper.ViewHelper;
 
 /**
  * ...
@@ -142,6 +146,34 @@ class ModuleTest
 		Assert.equals ( module.getLogger(), module.get( ILogger ), "'_get' method call should return module's logger" );
 		Assert.equals ( module.getInjector(), module.get( IBasicInjector ), "'_get' method call should return module's injector" );
 		Assert.equals ( module.getInjector(), module.get( IDependencyInjector ), "'_get' method call should return module's injector" );
+	}
+	
+	@Test( "Test build ViewHelper" )
+	public function testBuildViewHelper() : Void
+	{
+		var module 		= new MockModuleForTestingViewHelper();
+		var view 		= new MockView();
+		var viewHelper 	= module.mockBuildViewHelper( ViewHelper, view );
+		
+		Assert.isInstanceOf( viewHelper, ViewHelper );
+		Assert.equals( view, viewHelper.view );
+		Assert.isTrue( module.getInjector().hasMapping( ViewHelper ) );
+		Assert.equals( viewHelper, module.getInjector().getInstance( ViewHelper ) );
+	}
+}
+
+
+private class MockModuleForTestingViewHelper extends Module
+{
+	public function new()
+	{
+		super();
+
+	}
+	
+	public function mockBuildViewHelper( type : Class<IViewHelperTypedef>, view : IView ) : IViewHelperTypedef
+	{
+		return this.buildViewHelper( type, view );
 	}
 }
 
