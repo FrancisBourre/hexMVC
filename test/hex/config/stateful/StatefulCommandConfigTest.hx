@@ -115,7 +115,7 @@ private class MockInjectorWithFrontController implements IDependencyInjector
 		return Type.createInstance( type, [] );
 	}
 	
-	public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic 
+	public function instantiateUnmapped<T>( type : Class<T> ) : T
 	{
 		return Type.createInstance( type, [] );
 	}

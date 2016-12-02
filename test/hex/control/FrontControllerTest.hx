@@ -259,12 +259,12 @@ private class MockDependencyInjector implements IDependencyInjector
 		return null;
 	}
 	
-	public function getOrCreateNewInstance<T>( type : Class<Dynamic> ) : T 
+	public function getOrCreateNewInstance<T>( type : Class<T> ) : T 
 	{
 		return cast Type.createInstance( type, [] );
 	}
 	
-	public function instantiateUnmapped( type : Class<Dynamic> ) : Dynamic 
+	public function instantiateUnmapped<T>( type : Class<T> ) : T 
 	{
 		return null;
 	}
