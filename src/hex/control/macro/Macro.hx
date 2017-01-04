@@ -17,8 +17,6 @@ import hex.log.Stringifier;
 class Macro extends AsyncCommand implements IAsyncCommandListener
 {
 	var _request 			: Request;
-	var _isAtomic 			: Bool = true;
-    var _isSequenceMode 	: Bool = true;
 	
 	@Inject
 	public var macroExecutor 		: IMacroExecutor;
