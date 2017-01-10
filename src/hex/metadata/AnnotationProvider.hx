@@ -4,7 +4,7 @@ import haxe.rtti.Meta;
 import hex.collection.HashMap;
 import hex.core.IAnnotationParsable;
 import hex.di.IDependencyInjector;
-import hex.di.InjectionEvent;
+import hex.di.IInjectorListener;
 import hex.domain.Domain;
 import hex.domain.TopLevelDomain;
 import hex.error.IllegalArgumentException;
@@ -15,7 +15,9 @@ import hex.log.Stringifier;
  * ...
  * @author Francis Bourre
  */
-class AnnotationProvider implements IAnnotationProvider
+class AnnotationProvider 
+	implements IInjectorListener
+	implements IAnnotationProvider
 {
 	static var _initialized 	: Bool = false;
 	static var _Domains			: Map<Domain, IAnnotationProvider> = new Map();
@@ -229,22 +231,27 @@ class AnnotationProvider implements IAnnotationProvider
 		return classMetaDataVO;
 	}
 	
+	public function onPreConstruct( target : IDependencyInjector, instance : Dynamic, instanceType : Class<Dynamic> ): Void
+	{
+		if ( Std.is( instance, IAnnotationParsable ) )
+		{
+			this.parse( instance );
+		}
+	}
+	
+	public function onPostConstruct( target : IDependencyInjector, instance : Dynamic, instanceType : Class<Dynamic> ) : Void
+	{
+		
+	}
+	
 	public function registerInjector( injector : IDependencyInjector ) : Void
 	{
-		injector.addEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
+		injector.addListener( this );
 	}
 
 	public function unregisterInjector( injector : IDependencyInjector ) : Void
 	{
-		injector.removeEventListener( InjectionEvent.PRE_CONSTRUCT, _onPostconstruct );
-	}
-	
-	function _onPostconstruct( event : InjectionEvent ) : Void
-	{
-		if ( Std.is( event.instance, IAnnotationParsable ) )
-		{
-			this.parse( event.instance );
-		}
+		injector.removeListener( this );
 	}
 }
 
