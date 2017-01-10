@@ -1,4 +1,5 @@
 package hex.view.viewhelper;
+
 import hex.event.MessageType;
 
 /**
@@ -7,10 +8,10 @@ import hex.event.MessageType;
  */
 class ViewHelperMessage
 {
-	static public var INIT 			= new MessageType( "onInit" );
-	static public var RELEASE 		= new MessageType( "onRelease" );
-	static public var ATTACH_VIEW 	= new MessageType( "onAttachView" );
-	static public var REMOVE_VIEW 	= new MessageType( "onRemoveView" );
+	inline static public var INIT 			= new MessageType( "onInit" );
+	inline static public var RELEASE 		= new MessageType( "onRelease" );
+	inline static public var ATTACH_VIEW 	= new MessageType( "onAttachView" );
+	inline static public var REMOVE_VIEW 	= new MessageType( "onRemoveView" );
 	
 	function new() 
 	{
