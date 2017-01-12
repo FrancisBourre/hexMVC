@@ -6,6 +6,7 @@ import hex.control.FrontController;
 import hex.control.IFrontController;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
+import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
@@ -28,6 +29,8 @@ import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
 import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelperManager;
+
+using hex.di.util.InjectionUtil;
 
 /**
  * ...
@@ -53,7 +56,7 @@ class Module implements IModule
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
-		this._injector.mapClassNameToValue( "hex.event.IDispatcher<{}>", this._internalDispatcher );
+		this._injector.mapDependencyToValue( new Dependency<IDispatcher<{}>>(), this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 		

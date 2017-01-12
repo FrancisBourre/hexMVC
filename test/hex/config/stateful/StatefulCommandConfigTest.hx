@@ -1,18 +1,18 @@
 package hex.config.stateful;
 
-import hex.di.error.MissingMappingException;
-import hex.di.InjectionEvent;
+import hex.control.IFrontController;
 import hex.control.command.BasicCommand;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
-import hex.control.IFrontController;
 import hex.di.IDependencyInjector;
+import hex.di.IInjectorListener;
+import hex.di.error.MissingMappingException;
 import hex.di.provider.IDependencyProvider;
 import hex.event.Dispatcher;
 import hex.event.MessageType;
 import hex.module.MockModule;
-import hex.util.MacroUtil;
 import hex.unittest.assertion.Assert;
+import hex.util.MacroUtil;
 
 /**
  * ...
@@ -145,12 +145,12 @@ private class MockInjectorWithFrontController implements IDependencyInjector
 		
 	}
 
-	public function addEventListener( eventType : String, callback : InjectionEvent->Void ) : Bool
+	public function addListener( listener : IInjectorListener ) : Bool
 	{
 		return false;
 	}
 
-	public function removeEventListener( eventType : String, callback : InjectionEvent->Void ) : Bool
+	public function removeListener( listener : IInjectorListener ) : Bool
 	{
 		return false;
 	}
