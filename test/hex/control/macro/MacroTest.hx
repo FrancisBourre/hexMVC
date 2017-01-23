@@ -2,9 +2,7 @@ package hex.control.macro;
 
 import hex.MockDependencyInjector;
 import hex.control.Request;
-#if (!neko || haxe_ver >= "3.3")
 import hex.control.async.AsyncCommand;
-#end
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.command.CommandMapping;
@@ -194,7 +192,6 @@ class MacroTest
 		Assert.isFalse( myMacro.isCancelled, "'isCancelled' property should return false" );
 	}
 	
-	#if (!neko || haxe_ver >= "3.3")
 	@Test( "Test parallel mode" )
 	public function testParallelMode() : Void
 	{
@@ -230,8 +227,7 @@ class MacroTest
 		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onTestSequenceModeComplete, [ myMacro ] ) );
 		myMacro.execute();
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
-	}
-	#end 
+	} 
 	
 	function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : Macro ) : Void
 	{
@@ -266,7 +262,6 @@ class MacroTest
 		return false;
 	}
 	
-	#if (!neko || haxe_ver >= "3.3")
 	@Async( "Test commands get request passed to macro" )
 	public function testCommandsGetRequestPassedToMacro() : Void
 	{
@@ -308,7 +303,6 @@ class MacroTest
 		
 		Assert.equals( request, myMacro.requestPassedDuringExecution, "request should be available from prepare" );
 	}
-	#end
 }
 
 private class MockMacroExecutor implements IMacroExecutor
