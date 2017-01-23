@@ -210,6 +210,7 @@ class MacroTest
 		Assert.equals( 1, MockCommand.executeCallCount, "'execute' method shoud have been called once" );
 	}
 	
+	#if (!neko || haxe_ver >= "3.3")
 	@Async( "Test sequence mode" )
 	public function testSequenceMode() : Void
 	{
@@ -286,6 +287,7 @@ class MacroTest
 	{
 		Assert.equals( request, MockCommand.lastRequest, "request should be the same" );
 	}
+	#end
 	
 	@Test( "Test request is available from prepare method" )
 	public function testRequestIsAvailableFromPrepareMethod() : Void

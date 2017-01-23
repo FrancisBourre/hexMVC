@@ -1,5 +1,6 @@
 package hex.control.macro;
 
+#if (!neko || haxe_ver >= "3.3")
 import hex.control.async.IAsyncCommand;
 
 /**
@@ -18,3 +19,4 @@ class MockMacroWithHandler extends Macro
 		this.add( MockCommand );
 	}
 }
+#end
