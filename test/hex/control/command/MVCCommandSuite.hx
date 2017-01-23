@@ -7,5 +7,9 @@ package hex.control.command;
 class MVCCommandSuite
 {
 		@Suite("Command")
-    public var list : Array<Class<Dynamic>> = [BasicCommandTest, CommandExecutorTest, CommandMappingTest ];
+    public var list : Array<Class<Dynamic>> = [BasicCommandTest, 
+	#if (!neko || haxe_ver >= "3.3")
+	CommandExecutorTest, 
+	#end
+	CommandMappingTest ];
 }

@@ -1,5 +1,6 @@
 package hex.control.async;
 
+#if (!neko || haxe_ver >= "3.3")
 import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.di.IDependencyInjector;
@@ -237,3 +238,4 @@ private class MockModule implements IModule
 		return null;
 	}
 }
+#end

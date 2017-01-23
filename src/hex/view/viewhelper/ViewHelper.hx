@@ -57,12 +57,12 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	}
 	
 	public var view( get, set ) : ViewType;
-	public function get_view() : ViewType 
+	function get_view() : ViewType 
 	{
 		return this._view;
 	}
 	
-	public function set_view( view : ViewType ) : ViewType 
+	function set_view( view : ViewType ) : ViewType 
 	{
 		if ( !this._isPreInitialized )
 		{
@@ -146,12 +146,12 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 	}
 	
 	public var visible( get, set ) : Bool;
-	public function get_visible() : Bool 
+	function get_visible() : Bool 
 	{
 		return this._isVisible;
 	}
 	
-	public function set_visible( visible : Bool ) : Bool 
+	function set_visible( visible : Bool ) : Bool 
 	{
 		if ( visible )
 		{

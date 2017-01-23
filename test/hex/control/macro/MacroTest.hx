@@ -1,6 +1,5 @@
 package hex.control.macro;
 
-import haxe.Timer;
 import hex.MockDependencyInjector;
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
@@ -12,13 +11,10 @@ import hex.control.command.ICommandMapping;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.Macro;
 import hex.control.macro.MacroExecutor;
-import hex.control.payload.ExecutionPayload;
 import hex.error.IllegalStateException;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.log.ILogger;
 import hex.log.Stringifier;
-import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
 
@@ -28,6 +24,7 @@ import hex.unittest.runner.MethodRunner;
  */
 class MacroTest
 {
+	#if (!neko || haxe_ver >= "3.3")
 	var _macro 			: Macro;
 	var _macroExecutor 	: MockMacroExecutor;
 
@@ -231,7 +228,7 @@ class MacroTest
 		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onTestSequenceModeComplete, [ myMacro ] ) );
 		myMacro.execute();
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
-	}
+	} 
 	
 	function _onTestSequenceModeComplete( command : AsyncCommand, myMacro : Macro ) : Void
 	{
@@ -307,6 +304,7 @@ class MacroTest
 		
 		Assert.equals( request, myMacro.requestPassedDuringExecution, "request should be available from prepare" );
 	}
+	#end
 }
 
 private class MockMacroExecutor implements IMacroExecutor

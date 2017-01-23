@@ -1,5 +1,6 @@
 package hex.control.macro;
 
+#if (!neko || haxe_ver >= "3.3")
 import hex.control.async.AsyncCommand;
 import hex.module.IModule;
 
@@ -50,3 +51,4 @@ class MockAsyncCommandForTestingExecution extends MockBasicAsyncCommand
 		MockAsyncCommandForTestingExecution.cancelHandlers.push( callback );
 	}
 }
+#end
