@@ -287,7 +287,6 @@ class MacroTest
 	{
 		Assert.equals( request, MockCommand.lastRequest, "request should be the same" );
 	}
-	#end
 	
 	@Test( "Test request is available from prepare method" )
 	public function testRequestIsAvailableFromPrepareMethod() : Void
@@ -305,6 +304,7 @@ class MacroTest
 		
 		Assert.equals( request, myMacro.requestPassedDuringExecution, "request should be available from prepare" );
 	}
+	#end
 }
 
 private class MockMacroExecutor implements IMacroExecutor
