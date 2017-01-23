@@ -1,5 +1,6 @@
 package hex.event;
 
+#if (!neko || haxe_ver >= "3.3")
 import hex.control.async.IAsyncCommand;
 import hex.control.payload.ExecutionPayload;
 import hex.event.MacroAdapterStrategy;
@@ -33,3 +34,4 @@ class MockAdapterStrategyMacro extends MacroAdapterStrategy
 		this._result = async.getResult();
 	}
 }
+#end

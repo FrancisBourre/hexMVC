@@ -7,5 +7,9 @@ package hex.control.macro;
 class MVCMacroSuite
 {
 	@Suite("Macro")
-    public var list : Array<Class<Dynamic>> = [MacroExecutorTest, MacroTest];
+    public var list : Array<Class<Dynamic>> = [
+	#if (!neko || haxe_ver >= "3.3")
+	MacroExecutorTest, 
+	#end
+	MacroTest];
 }

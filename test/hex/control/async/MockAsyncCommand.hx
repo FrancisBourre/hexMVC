@@ -1,5 +1,6 @@
 package hex.control.async;
 
+#if (!neko || haxe_ver >= "3.3")
 /**
  * ...
  * @author Francis Bourre
@@ -16,3 +17,4 @@ class MockAsyncCommand extends AsyncCommand
 		this._handleFail();
 	}
 }
+#end

@@ -1,5 +1,6 @@
 package hex.control.command;
 
+#if (!neko || haxe_ver >= "3.3")
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.module.IModule;
@@ -51,3 +52,4 @@ class MockAsyncCommandForTestingExecution extends AsyncCommand
 		MockAsyncCommandForTestingExecution.cancelHandlers.push( callback );
 	}
 }
+#end
