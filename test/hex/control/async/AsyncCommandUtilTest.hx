@@ -1,5 +1,6 @@
 package hex.control.async;
 
+#if (!neko || haxe_ver >= "3.3")
 import haxe.Constraints.Function;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
@@ -203,3 +204,4 @@ private class ASyncCommandListener implements IAsyncCommandListener
 		
 	}
 }
+#end

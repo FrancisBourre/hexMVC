@@ -6,7 +6,12 @@ package hex.control.async;
  */
 class MVCAsyncSuite
 {
-		@Suite("Async")
-    public var list : Array<Class<Dynamic>> = [ AsyncCommandMessageTest, AsyncCommandTest, AsyncCommandUtilTest ];
+	@Suite("Async")
+    public var list : Array<Class<Dynamic>> = [ AsyncCommandMessageTest, 
+	#if (!neko || haxe_ver >= "3.3")
+	AsyncCommandTest, 
+	AsyncCommandUtilTest
+	#end
+	];
 
 }

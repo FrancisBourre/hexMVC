@@ -1,5 +1,6 @@
 package hex.control.macro;
 
+#if (!neko || haxe_ver >= "3.3")
 import haxe.Timer;
 import hex.MockDependencyInjector;
 import hex.control.Request;
@@ -382,3 +383,4 @@ private interface IMockType
 {
 	
 }
+#end
