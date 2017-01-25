@@ -14,7 +14,7 @@ class ModuleConfig implements IStatelessConfig implements IInjectorContainer
 	@Inject
 	public var injector : IDependencyInjector;
 	
-	public function new() 
+	function new() 
 	{
 		
 	}
@@ -31,7 +31,7 @@ class ModuleConfig implements IStatelessConfig implements IInjectorContainer
 	
 	public function mapController<ControllerType>( controllerInterface : Class<ControllerType>, controllerClass : Class<ControllerType>,  name : String = "", asSingleton : Bool = false ) : Void
 	{
-		if ( !asSingleton )
+		if ( asSingleton )
 		{
 			this.injector.mapToSingleton( controllerInterface, controllerClass, name );
 		}
@@ -43,7 +43,7 @@ class ModuleConfig implements IStatelessConfig implements IInjectorContainer
 	
 	public function mapModel<ModelType>( modelInterface : Class<ModelType>, modelClass : Class<ModelType>,  name : String = "", asSingleton : Bool = false ) : Void
 	{
-		if ( !asSingleton )
+		if ( asSingleton )
 		{
 			this.injector.mapToSingleton( modelInterface, modelClass, name );
 		}
@@ -53,15 +53,15 @@ class ModuleConfig implements IStatelessConfig implements IInjectorContainer
 		}
 	}
 	
-	public function mapDriver<DriverType>( driverInterface : Class<DriverType>, driverClass : Class<DriverType>,  name : String = "", asSingleton : Bool = false ) : Void
+	public function mapMediator<MediatorType>( mediatorInterface : Class<MediatorType>, mediatorClass : Class<MediatorType>,  name : String = "", asSingleton : Bool = false ) : Void
 	{
-		if ( !asSingleton )
+		if ( asSingleton )
 		{
-			this.injector.mapToSingleton( driverInterface, driverClass, name );
+			this.injector.mapToSingleton( mediatorInterface, mediatorClass, name );
 		}
 		else
 		{
-			this.injector.mapToType( driverInterface, driverClass, name );
+			this.injector.mapToType( mediatorInterface, mediatorClass, name );
 		}
 	}
 }
