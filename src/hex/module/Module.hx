@@ -317,8 +317,20 @@ class Module implements IModule
 		}
 	}
 	
-	function _get<T>( type : Class<T> ) : T
+	function _get<T>( type : Class<T>, name : String = '' ) : T
 	{
-		return this._injector.getInstance( type );
+		return this._injector.getInstance( type, name );
+	}
+	
+	function _map<T>( tInterface : Class<T>, tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
+	{
+		if ( asSingleton )
+		{
+			this._injector.mapToSingleton( tInterface, tClass, name );
+		}
+		else
+		{
+			this._injector.mapToType( tInterface, tClass, name );
+		}
 	}
 }
