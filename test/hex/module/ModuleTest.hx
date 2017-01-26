@@ -139,6 +139,51 @@ class ModuleTest
 		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ Exception ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
 	}
 	
+	@Test( "Test get accessor with name" )
+	public function testGetAccessorWithName() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		module.getInjector().mapToValue( ModuleTest, this, 'name' );
+		Assert.equals ( this, module.get( ModuleTest, 'name' ), "'_get' method call should return mapping result from internal module's injector" );
+		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ ModuleTest ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
+	}
+	
+	@Test( "Test map" )
+	public function testMap() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		module.map( IMockInterface, MockClass );
+		Assert.isInstanceOf ( module.get( IMockInterface ), MockClass );
+	}
+	
+	@Test( "Test map with name" )
+	public function testMapWithName() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		module.map( IMockInterface, MockClass, 'name' );
+		Assert.isInstanceOf ( module.get( IMockInterface, 'name' ), MockClass );
+	}
+	
+	@Test( "Test map as singleton" )
+	public function testMapAsSingleton() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		module.map( IMockInterface, MockClass, '', true );
+		var instance = module.get( IMockInterface );
+		Assert.isInstanceOf ( instance, MockClass );
+		Assert.equals ( instance, module.get( IMockInterface ) );
+	}
+	
+	@Test( "Test map as singleton with name" )
+	public function testMapAsSingletonWithName() : Void
+	{
+		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
+		module.map( IMockInterface, MockClass, 'name', true );
+		var instance = module.get( IMockInterface, 'name' );
+		Assert.isInstanceOf ( instance, MockClass );
+		Assert.equals ( instance, module.get( IMockInterface, 'name' ) );
+	}
+	
 	@Test( "Test module mappings" )
 	public function testModuleMappings() : Void
 	{
@@ -162,6 +207,18 @@ class ModuleTest
 	}
 }
 
+private interface IMockInterface
+{
+	
+}
+
+private class MockClass implements IMockInterface
+{
+	public function new()
+	{
+		
+	}
+}
 
 private class MockModuleForTestingViewHelper extends Module
 {
@@ -185,9 +242,14 @@ private class MockModuleForTestigInjector extends Module
 
 	}
 	
-	public function get<T>( type : Class<T> ) : T
+	public function get<T>( type : Class<T>, name : String = '' ) : T
 	{
-		return this._get( type );
+		return this._get( type, name );
+	}
+	
+	public function map<T>( tInterface : Class<T>, tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
+	{
+		this._map( tInterface, tClass, name, asSingleton );
 	}
 }
 
