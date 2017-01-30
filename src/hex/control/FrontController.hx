@@ -1,7 +1,6 @@
 package hex.control;
 
 import hex.collection.Locator;
-import hex.collection.LocatorMessage;
 import hex.control.command.CommandExecutor;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
@@ -62,14 +61,4 @@ class FrontController extends Locator<MessageType, ICommandMapping> implements I
             commandExecutor.executeCommand( commandMapping, request, mappingRemoval );
         }
     }
-	
-	override function _dispatchRegisterEvent( key : MessageType, element : ICommandMapping ) : Void 
-	{
-		this._dispatcher.dispatch( LocatorMessage.REGISTER, [ key, element ] );
-	}
-	
-	override function _dispatchUnregisterEvent( key : MessageType ) : Void 
-	{
-		this._dispatcher.dispatch( LocatorMessage.UNREGISTER, [ key ] );
-	}
 }
