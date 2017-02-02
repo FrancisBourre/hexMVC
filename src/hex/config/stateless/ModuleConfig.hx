@@ -21,7 +21,7 @@ class ModuleConfig implements IStatelessConfig implements IInjectorContainer
 	
 	public function configure() : Void 
 	{
-		throw new VirtualMethodException( this + ".configure must be overridden" );
+		throw new VirtualMethodException();
 	}
 	
 	public function get<T>( type : Class<T>, name : String = "" ) : T

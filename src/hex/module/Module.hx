@@ -278,7 +278,7 @@ class Module implements IModule
 	 */
 	function _getRuntimeDependencies() : IRuntimeDependencies
 	{
-		throw new VirtualMethodException( Stringifier.stringify( this ) + ".checkDependencies is not implemented" );
+		throw new VirtualMethodException();
 	}
 	
 	/**

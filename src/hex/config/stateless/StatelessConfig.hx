@@ -20,7 +20,7 @@ class StatelessConfig implements IStatelessConfig implements IInjectorContainer
 	
 	public function configure() : Void 
 	{
-		throw new VirtualMethodException( this + ".configure must be overridden" );
+		throw new VirtualMethodException();
 	}
 	
 	public function map<T>( interfaceRef : Class<T>, classRef : Class<T>,  name : String = "" ) : Void

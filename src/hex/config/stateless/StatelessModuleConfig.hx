@@ -27,7 +27,7 @@ class StatelessModuleConfig implements IStatelessConfig implements IInjectorCont
 	
 	public function configure() : Void 
 	{
-		throw new VirtualMethodException( this + ".configure must be overridden" );
+		throw new VirtualMethodException();
 	}
 	
 	public function mapCommand( messageType : MessageType, commandClass : Class<ICommand> ) : ICommandMapping

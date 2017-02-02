@@ -21,7 +21,7 @@ class StatelessModelConfig implements IStatelessConfig implements IInjectorConta
 	
 	public function configure() : Void 
 	{
-		throw new VirtualMethodException( this + ".configure must be overridden" );
+		throw new VirtualMethodException();
 	}
 	
 	public function map<ModelType>( modelInterface : Class<ModelType>, modelClass : Class<ModelType>,  name : String = "" ) : Void

@@ -27,7 +27,7 @@ class StatelessCommandConfig implements IStatelessConfig implements IInjectorCon
      */
 	public function configure() : Void 
 	{
-		throw new VirtualMethodException( "'configure' is not implemented" );
+		throw new VirtualMethodException();
 	}
 	
 	/**
