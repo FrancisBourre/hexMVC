@@ -9,10 +9,10 @@ import hex.error.PrivateConstructorException;
  */
 class AsyncCommandUtil
 {
-
-	public function new() 
+	/** @private */
+	function new() 
 	{
-		throw new PrivateConstructorException( "'AsyncCommandUtil' class can't be instantiated." );
+		throw new PrivateConstructorException();
 	}
 	
 	static public function addListenersToAsyncCommand( handlers : Array<Function>, methodToAddListener : ( IAsyncCommand->Void )->Void ) : Void
