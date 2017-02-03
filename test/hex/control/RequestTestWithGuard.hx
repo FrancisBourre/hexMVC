@@ -38,8 +38,8 @@ private class MockModule extends Module
 		super();
 		this._addStatelessConfigClasses( [MockCommandConfig] );
 		
-		this._dispatchPrivateMessage( TEST, [ new Request( [new ExecutionPayload( arr, null, 'name' ).withClassName( 'Array<Int>' )] ) ] );
-		this._dispatchPrivateMessage( TEST_REFUSED, [ new Request( [new ExecutionPayload( arr, null, 'name' ).withClassName( 'Array<Int>' )] ) ] );
+		this._dispatchPrivateMessage( TEST, new Request( [new ExecutionPayload( arr, null, 'name' ).withClassName( 'Array<Int>' )] ) );
+		this._dispatchPrivateMessage( TEST_REFUSED, new Request( [new ExecutionPayload( arr, null, 'name' ).withClassName( 'Array<Int>' )] ) );
 	}
 }
 

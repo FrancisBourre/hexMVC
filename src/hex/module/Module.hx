@@ -4,6 +4,7 @@ import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.control.FrontController;
 import hex.control.IFrontController;
+import hex.control.Request;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
 import hex.di.Dependency;
@@ -160,9 +161,9 @@ class Module implements IModule
 		}
 	}
 	
-	function _dispatchPrivateMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
+	function _dispatchPrivateMessage( messageType : MessageType, ?request : Request ) : Void
 	{
-		this._internalDispatcher.dispatch( messageType, data );
+		this._internalDispatcher.dispatch( messageType, [request] );
 	}
 
 	function buildViewHelper( type : Class<IViewHelperTypedef>, view : IView ) : IViewHelperTypedef
