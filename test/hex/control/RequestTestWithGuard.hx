@@ -45,7 +45,7 @@ private class MockCommandConfig extends StatelessCommandConfig
 	}
 }
 
-private class MockGuard implements IGuard implements IInjectorContainer
+private class MockGuard implements IGuard
 {
 	@Inject( 'name' )
 	public var collection : Array<Int>;
