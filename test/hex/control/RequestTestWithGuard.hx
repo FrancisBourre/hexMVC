@@ -57,6 +57,8 @@ private class MockGuard implements IGuard
 	@Inject( 'name' )
 	public var collection : Array<Int>;
 	
+	public function new(){}
+	
 	public function approve() : Bool
 	{
 		return this.collection.length == 3;
@@ -67,6 +69,8 @@ private class AnotherMockGuard implements IGuard
 {
 	@Inject( 'name' )
 	public var collection : Array<Int>;
+	
+	public function new(){}
 	
 	public function approve() : Bool
 	{
