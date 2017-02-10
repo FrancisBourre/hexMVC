@@ -24,7 +24,7 @@ class AsyncCommandUtilTest
 		var listener2 		= new ASyncCommandListener();
 		
 		var mockAsyncCommandForTestingListeners = new MockAsyncCommandForTestingListeners();
-		var listeners : Array<Function> = [ listener0.onAsyncCommandComplete, 
+		var listeners 						= [ listener0.onAsyncCommandComplete, 
 												listener1.onAsyncCommandFail, 
 												listener2.onAsyncCommandCancel ];
 		AsyncCommandUtil.addListenersToAsyncCommand( listeners, mockAsyncCommandForTestingListeners.addCompleteHandler );
