@@ -31,7 +31,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	
 	function _prepare() : Void
 	{
-		throw new VirtualMethodException( this + ".execute must be overridden" );
+		throw new VirtualMethodException();
 	}
 	
 	override public function preExecute( ?request : Request ) : Void

@@ -14,7 +14,7 @@ class RuntimeDependencyChecker
     /** @private */
     function new()
     {
-        throw new PrivateConstructorException( "'RuntimeDependecyChecker' class can't be instantiated." );
+        throw new PrivateConstructorException();
     }
 
     static public function check( module : IModule, injector : IDependencyInjector, dependencies : IRuntimeDependencies ) : Void

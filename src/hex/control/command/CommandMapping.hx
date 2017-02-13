@@ -1,6 +1,7 @@
 package hex.control.command;
 
 import haxe.Constraints.Function;
+import hex.control.async.IAsyncCommand;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IContextOwner;
@@ -17,9 +18,9 @@ class CommandMapping implements ICommandMapping
 	
     var _contextOwner               : IContextOwner;
 	
-    var _completeHandlers          	: Array<Function>;
-    var _cancelHandlers            	: Array<Function>;
-    var _failHandlers              	: Array<Function>;
+    var _completeHandlers          	: Array<IAsyncCommand->Void>;
+    var _cancelHandlers            	: Array<IAsyncCommand->Void>;
+    var _failHandlers              	: Array<IAsyncCommand->Void>;
 	
     var _mappingResults             : Array<ICommandMapping>;
 	
@@ -92,7 +93,7 @@ class CommandMapping implements ICommandMapping
         return this;
     }
 
-    public function getCompleteHandlers() : Array<Function>
+    public function getCompleteHandlers() : Array<IAsyncCommand->Void>
     {
         return this._completeHandlers;
     }
@@ -103,18 +104,18 @@ class CommandMapping implements ICommandMapping
 		return this._completeHandlers != null;
 	}
 
-    public function withCompleteHandler( handler : Function ) : ICommandMapping
+    public function withCompleteHandler( handler : IAsyncCommand->Void ) : ICommandMapping
     {
         if ( this._completeHandlers == null )
         {
-            this._completeHandlers = new Array<Function>();
+            this._completeHandlers = [];
         }
 
         this._completeHandlers.push( handler );
         return this;
     }
 
-    public function getFailHandlers() : Array<Function>
+    public function getFailHandlers() : Array<IAsyncCommand->Void>
     {
         return this._failHandlers;
     }
@@ -125,7 +126,7 @@ class CommandMapping implements ICommandMapping
 		return this._failHandlers != null;
 	}
 
-    public function withFailHandler( handler : Function ) : ICommandMapping
+    public function withFailHandler( handler : IAsyncCommand->Void ) : ICommandMapping
     {
         if ( this._failHandlers == null )
         {
@@ -136,7 +137,7 @@ class CommandMapping implements ICommandMapping
         return this;
     }
 
-    public function getCancelHandlers() : Array<Function>
+    public function getCancelHandlers() : Array<IAsyncCommand->Void>
     {
         return this._cancelHandlers;
     }
@@ -147,7 +148,7 @@ class CommandMapping implements ICommandMapping
 		return this._cancelHandlers != null;
 	}
 
-    public function withCancelHandler( handler : Function ) : ICommandMapping
+    public function withCancelHandler( handler : IAsyncCommand->Void ) : ICommandMapping
     {
         if ( this._cancelHandlers == null )
         {

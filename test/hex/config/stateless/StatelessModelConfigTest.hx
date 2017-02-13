@@ -62,7 +62,10 @@ private interface IMockModel extends IMockModelRO
 
 private class MockModel implements IMockModel
 {
-	
+	public function new()
+	{
+		
+	}
 }
 
 private class MockInjectorForMapToValueTest extends MockDependencyInjector
@@ -70,6 +73,11 @@ private class MockInjectorForMapToValueTest extends MockDependencyInjector
 	public var clazz	: Array<Class<Dynamic>>		= [];
 	public var value	: Array<Dynamic>			= [];
 	public var name		: Array<String>				= [];
+	
+	public function new()
+	{
+		super();
+	}
 	
 	override public function mapToValue( clazz : Class<Dynamic>, value : Dynamic, ?name : String = '' ) : Void 
 	{

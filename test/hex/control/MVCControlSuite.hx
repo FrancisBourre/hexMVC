@@ -2,6 +2,7 @@ package hex.control;
 
 import hex.control.async.MVCAsyncSuite;
 import hex.control.command.MVCCommandSuite;
+import hex.control.guard.CoreGuardSuite;
 import hex.control.macro.MVCMacroSuite;
 
 /**
@@ -11,5 +12,5 @@ import hex.control.macro.MVCMacroSuite;
 class MVCControlSuite
 {
 	@Suite("Control")
-    public var list : Array<Class<Dynamic>> = [ FrontControllerTest, MVCAsyncSuite, MVCCommandSuite, MVCMacroSuite ];
+    public var list : Array<Class<Dynamic>> = [ CoreGuardSuite, FrontControllerTest, MVCAsyncSuite, MVCCommandSuite, MVCMacroSuite, RequestTestWithGuard ];
 }
