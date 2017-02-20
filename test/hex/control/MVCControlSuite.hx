@@ -12,5 +12,17 @@ import hex.control.macro.MVCMacroSuite;
 class MVCControlSuite
 {
 	@Suite("Control")
-    public var list : Array<Class<Dynamic>> = [ CoreGuardSuite, FrontControllerTest, MVCAsyncSuite, MVCCommandSuite, MVCMacroSuite, RequestTestWithGuard ];
+    public var list : Array<Class<Dynamic>> = 
+	[ 
+		CoreGuardSuite, 
+		FrontControllerTest, 
+		MVCAsyncSuite, 
+		MVCCommandSuite, 
+		MVCMacroSuite, 
+		RequestTestWithGuard,
+		RequestTestWithTypedefMapped,
+		RequestTestWithEnumMapped,
+		RequestTestWitAbstractMapped,
+		RequestTestWithMapMapped
+	];
 }
