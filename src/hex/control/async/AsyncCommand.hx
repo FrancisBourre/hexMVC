@@ -27,14 +27,17 @@ class AsyncCommand implements IAsyncCommand implements IInjectorContainer
     var _status                         : String;
     var _dispatcher 					: ClosureDispatcher;
     var _owner                          : IModule;
-	
-	public var executeMethodName( default, null ) : String = "execute";
 
     public function new()
     {
         this._status 			= AsyncCommand.WAS_NEVER_USED;
         this._dispatcher        = new ClosureDispatcher();
     }
+	
+	public function execute() : Void
+	{
+		throw new VirtualMethodException();
+	}
 	
 	public function getLogger() : ILogger
 	{

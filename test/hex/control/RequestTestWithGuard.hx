@@ -91,7 +91,7 @@ private class MockCommand extends BasicCommand
 		super();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		MockCommand.executionCount++;
 		MockCommand.executionPayload = this.collection;
@@ -108,7 +108,7 @@ private class MockCommandRefused extends MockCommand
 		super();
 	}
 	
-	override public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		MockCommandRefused.executionCount++;
 		MockCommandRefused.executionPayload = this.collection;

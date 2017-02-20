@@ -75,20 +75,17 @@ class FrontControllerTest
 		this._dispatcher.dispatch( messageType, [request] );
 		
 		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
-		Assert.equals( request, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 		
 		var anotherMessageType = new MessageType( "anotherMessageType" );
 		var anotherRequest = new Request();
 		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
 		
 		Assert.equals( 1, MockCommand.executeCallCount, "Command execution should happenned once" );
-		Assert.equals( request, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 		
 		this._frontcontroller.map( anotherMessageType, MockCommand );
 		this._dispatcher.dispatch( anotherMessageType, [anotherRequest] );
 		
 		Assert.equals( 2, MockCommand.executeCallCount, "Command execution should happenned twice" );
-		Assert.equals( anotherRequest, MockCommand.requestParameter, "request received by the command should be the same that was dispatched" );
 	}
 	
 	@Test( "Functional test of request handling from a macro" )
@@ -121,23 +118,18 @@ class FrontControllerTest
 private class MockCommand implements ICommand
 {
 	public static var executeCallCount 				: Int = 0;
-	public static var requestParameter 				: Request;
 	public var executeMethodName( default, null ) 	: String = "execute";
 	
-	public function new()
-	{
-		
-	}
+	public function new(){}
 	
 	public function getLogger() : ILogger
 	{
 		return this.getOwner().getLogger();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	public function execute() : Void 
 	{
 		MockCommand.executeCallCount++;
-		MockCommand.requestParameter = request;
 	}
 	
 	public function getResult() : Array<Dynamic> 

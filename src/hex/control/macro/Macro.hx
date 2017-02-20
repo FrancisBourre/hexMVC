@@ -55,7 +55,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	}
 	
 	@:final 
-	public function execute( ?request : Request ) : Void
+	override public function execute() : Void
 	{
 		!this.isRunning && this._throwExecutionIllegalStateError();
 		this._executeNextCommand();

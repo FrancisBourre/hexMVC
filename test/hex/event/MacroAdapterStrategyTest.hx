@@ -2,12 +2,7 @@ package hex.event;
 
 #if (!neko || haxe_ver >= "3.3")
 import haxe.Timer;
-import hex.control.Request;
-import hex.control.async.AsyncCommand;
-import hex.control.async.IAsyncCommand;
 import hex.control.macro.MacroExecutor;
-import hex.control.payload.ExecutionPayload;
-import hex.di.IInjectorContainer;
 import hex.di.Injector;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -51,7 +46,7 @@ class MacroAdapterStrategyTest
 	
 	function _onTestEnd() : Void
 	{
-		Assert.equals( "testMessage", this._result[ 0 ], "macro result should return expected value" );
+		Assert.equals( "test", this._result[ 0 ] );
 	}
 	
 }

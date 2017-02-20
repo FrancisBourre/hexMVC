@@ -11,7 +11,6 @@ import hex.module.IModule;
  */
 class MockCommand implements ICommand
 {
-	static public var lastRequest : Request;
 	var _owner : IModule;
 	
 	public var executeMethodName( default, null ) : String = "execute";
@@ -28,9 +27,8 @@ class MockCommand implements ICommand
 		return this.getOwner().getLogger();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	public function execute() : Void
 	{
-		MockCommand.lastRequest = request;
 		MockCommand.executeCallCount++;
 	}
 	

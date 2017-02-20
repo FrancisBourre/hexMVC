@@ -58,7 +58,7 @@ private class MockCommand extends BasicCommand
 		super();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		MockCommand.executionCount++;
 		MockCommand.executionPayload = this.payload;

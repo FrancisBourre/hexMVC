@@ -18,9 +18,8 @@ class MockAdapterStrategyCommand extends AsyncCommand
 	@Inject
 	public var message : String;
 
-	public function execute( request : MockRequest ) : Void
+	override public function execute() : Void
 	{
-		this.message += request.message;
 		Timer.delay( this.testAsyncCallback, 50 );
 	}
 	

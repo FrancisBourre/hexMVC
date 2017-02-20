@@ -9,13 +9,6 @@ import hex.unittest.assertion.Assert;
  */
 class BasicCommandTest
 {
-	@Test( "Test constructor" )
-	public function testConstructor() : Void
-	{
-		var basicCommand = new BasicCommand();
-		Assert.equals( "execute", basicCommand.executeMethodName, "method names should be the same" );
-	}
-
 	@Test( "Test 'getResult'" )
 	public function testGetResult() : Void
 	{

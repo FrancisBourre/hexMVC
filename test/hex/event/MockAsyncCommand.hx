@@ -1,6 +1,5 @@
 package hex.event;
 
-import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.di.IInjectorContainer;
 
@@ -13,7 +12,7 @@ class MockAsyncCommand extends AsyncCommand
 	@Inject
 	public var data : MockValueObject;
 	
-	public function execute( ?request : Request ) : Void
+	override public function execute() : Void
     {
 		this.data.value += "!";
 		this._handleComplete();

@@ -14,7 +14,7 @@ class MockCommandUsingMappingResults extends BasicCommand
 		super();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		
 	}

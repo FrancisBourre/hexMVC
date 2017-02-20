@@ -10,7 +10,7 @@ import hex.control.async.AsyncCommand;
  */
 class MockBasicAsyncCommand extends AsyncCommand
 {
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		Timer.delay( this._handleComplete, 50 );
 	}
