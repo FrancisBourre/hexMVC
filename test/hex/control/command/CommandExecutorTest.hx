@@ -1,4 +1,5 @@
 package hex.control.command;
+import hex.domain.DomainUtil;
 
 #if (!neko || haxe_ver >= "3.3")
 import hex.MockDependencyInjector;
@@ -122,7 +123,7 @@ class CommandExecutorTest
 		MockCommand.executionCount = 0;
 		
 		var injector = new Injector();
-		var domain = new Domain( "testGuardInjectionApproved" );
+		var domain = DomainUtil.getDomain( "testGuardInjectionApproved" );
 		injector.mapToValue( Domain, domain );
 		var commandExecutor = new CommandExecutor( injector, this._module );
 		var cm = new CommandMapping( MockCommand ).withGuard( MockGuardForCommandExecutorTest );
@@ -137,7 +138,7 @@ class CommandExecutorTest
 		MockCommand.executionCount = 0;
 		
 		var injector = new Injector();
-		var domain = new Domain( "testGuardInjectionRefused" );
+		var domain = DomainUtil.getDomain( "testGuardInjectionRefused" );
 		injector.mapToValue( Domain, domain );
 		var commandExecutor = new CommandExecutor( injector, this._module );
 		var cm = new CommandMapping( MockCommand ).withGuard( MockGuardForCommandExecutorTest );
