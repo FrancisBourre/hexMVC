@@ -258,9 +258,8 @@ class AnnotationProviderTest
 		var parentDomain = Domain.getDomain( 'testWithModuleAndInheritance' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		
-		var moduleDomain = Domain.getDomain( 'moduleID' );
+		var moduleDomain = Domain.getDomain( 'testWithModuleAndInheritance.moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
-		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
 		var module = new MockModuleForAnnotationProviding();
 
 		parentProvider.registerMetaData( "color", this.getColorByName );
@@ -279,9 +278,8 @@ class AnnotationProviderTest
 		var parentDomain = Domain.getDomain( 'testWithModuleAndInheritance' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		
-		var moduleDomain = Domain.getDomain( 'moduleID' );
+		var moduleDomain = Domain.getDomain( 'testWithModuleAndInheritance.moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
-		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
 		var module = new MockModuleForAnnotationProviding();
 
 		module.getAnnotationProvider().registerMetaData( "language", this.getAnotherText );
@@ -301,9 +299,8 @@ class AnnotationProviderTest
 		var parentDomain = Domain.getDomain( 'testWithModuleAndInheritance' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		
-		var moduleDomain = Domain.getDomain( 'moduleID' );
+		var moduleDomain = Domain.getDomain( 'testWithModuleAndInheritance.moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
-		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
 		var module = new MockModuleForAnnotationProviding();
 
 		parentProvider.registerMetaData( "color", this.getColorByName );
