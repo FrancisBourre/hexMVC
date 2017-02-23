@@ -47,8 +47,8 @@ class AnnotationProviderTest
 	@Test( "Test get AnnotationProvider instance with a domain" )
 	public function testGetProviderWithDomain() : Void
 	{
-		var provider 		= AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testGetProviderWithoutDomain0', Domain ) );
-		var anotherProvider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testGetProviderWithoutDomain1', Domain ) );
+		var provider 		= AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testGetProviderWithoutDomain0' ) );
+		var anotherProvider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testGetProviderWithoutDomain1' ) );
 		Assert.notEquals( provider, anotherProvider, "instances should not be the same" );
 	}
 	
@@ -87,7 +87,7 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance', Domain ) );
+		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance' ) );
 		
 		this._annotationProvider.registerMetaData( "color", this.getColorByName );
 		this._annotationProvider.registerMetaData( "language", this.getText );
@@ -104,7 +104,7 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var domain = DomainUtil.getDomain( 'testRegisterAfterParsingWithTopInheritance', Domain );
+		var domain = DomainUtil.getDomain( 'testRegisterAfterParsingWithTopInheritance' );
 		var provider = AnnotationProvider.getAnnotationProvider( domain );
 		provider.parse( mockObjectWithMetaData );
 		
@@ -121,9 +121,9 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance0', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance0' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
-		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance1', Domain ), parentDomain );
+		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithTopInheritance1' ), parentDomain );
 		
 		parentProvider.registerMetaData( "color", this.getColorByName );
 		parentProvider.registerMetaData( "language", this.getText );
@@ -140,8 +140,8 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var parentDomain = DomainUtil.getDomain( 'testRegisterAfterParsingWithInheritance0', Domain );
-		var domain = DomainUtil.getDomain( 'testRegisterAfterParsingWithInheritance1', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testRegisterAfterParsingWithInheritance0' );
+		var domain = DomainUtil.getDomain( 'testRegisterAfterParsingWithInheritance1' );
 		
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		var provider = AnnotationProvider.getAnnotationProvider( domain, parentDomain );
@@ -161,9 +161,9 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding0', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding0' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
-		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding1', Domain ), parentDomain );
+		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding1' ), parentDomain );
 		
 		provider.registerMetaData( "language", this.getAnotherText );
 		parentProvider.registerMetaData( "color", this.getColorByName );
@@ -181,9 +181,9 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding0', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding0' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
-		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding1', Domain ), parentDomain );
+		var provider = AnnotationProvider.getAnnotationProvider( DomainUtil.getDomain( 'testRegisterBeforeParsingWithOverridding1' ), parentDomain );
 		
 		parentProvider.registerMetaData( "color", this.getColorByName );
 		parentProvider.registerMetaData( "language", this.getText );
@@ -206,8 +206,8 @@ class AnnotationProviderTest
 	{
 		var mockObjectWithMetaData = new MockObjectWithAnnotation();
 		
-		var parentDomain = DomainUtil.getDomain( 'testRegisterAfterParsingWithOverridding0', Domain );
-		var domain = DomainUtil.getDomain( 'testRegisterAfterParsingWithOverridding1', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testRegisterAfterParsingWithOverridding0' );
+		var domain = DomainUtil.getDomain( 'testRegisterAfterParsingWithOverridding1' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		var provider = AnnotationProvider.getAnnotationProvider( domain, parentDomain );
 		
@@ -256,10 +256,10 @@ class AnnotationProviderTest
 	@Test( "Test with module and inheritance" )
 	public function testWithModuleAndInheritance() : Void
 	{
-		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		
-		var moduleDomain = DomainUtil.getDomain( 'moduleID', Domain );
+		var moduleDomain = DomainUtil.getDomain( 'moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
 		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
 		var module = new MockModuleForAnnotationProviding();
@@ -277,10 +277,10 @@ class AnnotationProviderTest
 	@Test( "Test with module and inheritance overridding" )
 	public function testWithModuleAndInheritanceOverridding() : Void
 	{
-		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		
-		var moduleDomain = DomainUtil.getDomain( 'moduleID', Domain );
+		var moduleDomain = DomainUtil.getDomain( 'moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
 		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
 		var module = new MockModuleForAnnotationProviding();
@@ -299,10 +299,10 @@ class AnnotationProviderTest
 	@Test( "Test with module and late overridding" )
 	public function testWithModuleAndLateOverridding() : Void
 	{
-		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance', Domain );
+		var parentDomain = DomainUtil.getDomain( 'testWithModuleAndInheritance' );
 		var parentProvider = AnnotationProvider.getAnnotationProvider( parentDomain );
 		
-		var moduleDomain = DomainUtil.getDomain( 'moduleID', Domain );
+		var moduleDomain = DomainUtil.getDomain( 'moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
 		AnnotationProvider.registerToParentDomain( moduleDomain, parentDomain );
 		var module = new MockModuleForAnnotationProviding();
