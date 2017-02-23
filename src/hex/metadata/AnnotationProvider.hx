@@ -9,7 +9,7 @@ import hex.domain.Domain;
 import hex.domain.TopLevelDomain;
 import hex.error.IllegalArgumentException;
 import hex.error.IllegalStateException;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 
 /**
  * ...

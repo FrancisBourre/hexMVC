@@ -9,7 +9,7 @@ import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.ClosureDispatcher;
 import hex.log.ILogger;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 import hex.module.IModule;
 
 /**

@@ -2,7 +2,7 @@ package hex.module.dependency;
 
 import hex.di.IDependencyInjector;
 import hex.error.PrivateConstructorException;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 import hex.module.IModule;
 
 /**

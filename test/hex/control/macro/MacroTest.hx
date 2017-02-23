@@ -14,7 +14,7 @@ import hex.control.macro.MacroExecutor;
 import hex.error.IllegalStateException;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
 

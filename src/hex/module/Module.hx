@@ -21,7 +21,7 @@ import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.log.DomainLogger;
 import hex.log.ILogger;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;

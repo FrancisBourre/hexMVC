@@ -8,7 +8,7 @@ import hex.control.command.ICommandMapping;
 import hex.di.IInjectorContainer;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 
 /**
  * ...
