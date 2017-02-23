@@ -81,7 +81,7 @@ class AnnotationProvider
 	
 	static public function registerToParentDomain( domain : Domain, parentDomain : Domain) : Void
 	{
-		if ( !AnnotationProvider._Parents.exists( domain ) )
+		if ( !AnnotationProvider._Parents.exists( domain ) && AnnotationProvider._Parents.get( domain ) != parentDomain  )
 		{
 			AnnotationProvider._Parents.set( domain, parentDomain );
 		}
