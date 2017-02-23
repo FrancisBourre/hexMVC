@@ -134,7 +134,7 @@ class Module implements IModule
 	/**
 	 * Add callback for specific message type
 	 */
-	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
+	public function addHandler<T:haxe.Constraints.Function>( messageType : MessageType, scope : Dynamic, callback : T ) : Void
 	{
 		if ( this._domainDispatcher != null )
 		{
@@ -149,7 +149,7 @@ class Module implements IModule
 	/**
 	 * Remove callback for specific message type
 	 */
-	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
+	public function removeHandler<T:haxe.Constraints.Function>( messageType : MessageType, scope : Dynamic, callback : T ) : Void
 	{
 		if ( this._domainDispatcher != null )
 		{

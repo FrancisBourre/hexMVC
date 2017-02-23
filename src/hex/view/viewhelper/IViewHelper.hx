@@ -25,7 +25,7 @@ interface IViewHelper<ViewType:IView>
 	
 	function release() : Void;
 	
-	function addHandler( messageType : MessageType, callback : Dynamic ) : Void;
+	function addHandler<T:haxe.Constraints.Function>( messageType : MessageType, callback : T ) : Void;
 	
-	function removeHandler( messageType : MessageType, callback : Dynamic ) : Void;
+	function removeHandler<T:haxe.Constraints.Function>( messageType : MessageType, callback : T ) : Void;
 }
