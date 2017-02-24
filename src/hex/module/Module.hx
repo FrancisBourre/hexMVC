@@ -1,5 +1,6 @@
 package hex.module;
 
+import haxe.macro.Expr;
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.control.FrontController;
@@ -11,6 +12,7 @@ import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
+import hex.di.util.InjectionUtil;
 import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
@@ -21,7 +23,6 @@ import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.log.DomainLogger;
 import hex.log.ILogger;
-import hex.util.Stringifier;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;
@@ -31,7 +32,7 @@ import hex.view.IView;
 import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelperManager;
 
-using hex.di.util.InjectionUtil;
+//using hex.di.util.InjectionUtil;
 
 /**
  * ...
@@ -57,7 +58,7 @@ class Module implements IModule
 		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
-		this._injector.mapDependencyToValue( new Dependency<IDispatcher<{}>>(), this._internalDispatcher );
+		this._injector.mapClassNameToValue( 'hex.event.IDispatcher<{}>', this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 		
@@ -318,11 +319,17 @@ class Module implements IModule
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	function _get<T>( type : Class<T>, name : String = '' ) : T
 	{
 		return this._injector.getInstance( type, name );
 	}
 	
+	/**
+	 * 
+	 */
 	function _map<T>( tInterface : Class<T>, tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
 	{
 		if ( asSingleton )
@@ -333,5 +340,26 @@ class Module implements IModule
 		{
 			this._injector.mapToType( tInterface, tClass, name );
 		}
+	}
+	
+	/**
+	 * 
+	 */
+	macro public function _getDependency<T>( ethis : Expr, clazz : ExprOf<Dependency<T>>, ?id : ExprOf<String> ) : ExprOf<T>
+	{
+		var classRepresentation = InjectionUtil._getStringClassRepresentation( clazz );
+		var classReference = InjectionUtil._getClassReference( clazz );
+		var ct = InjectionUtil._getComplexType( clazz );
+		
+		var e = macro @:pos( ethis.pos ) $ethis._injector.getInstanceWithClassName( $v { classRepresentation }, $id );
+		return 
+		{
+			expr: ECheckType
+			( 
+				e,
+				ct
+			),
+			pos:ethis.pos
+		};
 	}
 }

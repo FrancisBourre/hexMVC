@@ -2,6 +2,7 @@ package hex.module;
 
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
+import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
@@ -28,6 +29,8 @@ import hex.view.IView;
 import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.MockView;
 import hex.view.viewhelper.ViewHelper;
+
+using hex.di.util.InjectionUtil;
 
 /**
  * ...
@@ -191,6 +194,7 @@ class ModuleTest
 		Assert.equals ( module.getLogger(), module.get( ILogger ), "'_get' method call should return module's logger" );
 		Assert.equals ( module.getInjector(), module.get( IBasicInjector ), "'_get' method call should return module's injector" );
 		Assert.equals ( module.getInjector(), module.get( IDependencyInjector ), "'_get' method call should return module's injector" );
+		Assert.deepEquals ( [ 3, 4 ], module.a, "'_getDependency' method call should return module's injector call" );
 	}
 	
 	@Test( "Test build ViewHelper" )
@@ -236,10 +240,14 @@ private class MockModuleForTestingViewHelper extends Module
 
 private class MockModuleForTestigInjector extends Module
 {
+	public var a : Array<Int>;
+	
 	public function new()
 	{
 		super();
-
+		
+		this._injector.mapDependencyToValue( new Dependency<Array<Int>>(), [ 3, 4 ] );
+		this.a = this._getDependency( new Dependency<Array<Int>>() );
 	}
 	
 	public function get<T>( type : Class<T>, name : String = '' ) : T
