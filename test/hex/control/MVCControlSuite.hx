@@ -23,6 +23,7 @@ class MVCControlSuite
 		RequestTestWithTypedefMapped,
 		RequestTestWithEnumMapped,
 		RequestTestWitAbstractMapped,
-		RequestTestWithMapMapped
+		RequestTestWithMapMapped,
+		RequestTestWithMacro
 	];
 }
