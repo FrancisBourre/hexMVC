@@ -29,13 +29,11 @@ class RequestTestWithMacro
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = [ Domain.getDomain('hello'), Domain.getDomain('world') ];
 		vos[ 9 ] = Date.now();
-		//vos[ 10 ] = null;
-		
-		var module = new MockModule( vos );
-		
-		var mo = MockMacro.command;
-		var cmd = MockCommand.command;
-		
+
+		var module 	= new MockModule( vos );
+		var mo 		= MockMacro.command;
+		var cmd 	= MockCommand.command;
+
 		Assert.equals( vos[ 0 ], mo.pString1 );
 		Assert.equals( vos[ 1 ], mo.pString2 );
 		Assert.equals( vos[ 2 ], mo.pInt );
@@ -46,7 +44,6 @@ class RequestTestWithMacro
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pObjectMap );
 		Assert.equals( vos[ 9 ], mo.pDate );
-		//Assert.equals( vos[ 10 ], mo.pNullInt );
 		
 		Assert.equals( vos[ 0 ], cmd.pString1 );
 		Assert.equals( vos[ 1 ], cmd.pString2 );
@@ -58,7 +55,6 @@ class RequestTestWithMacro
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pObjectMap );
 		Assert.equals( vos[ 9 ], cmd.pDate );
-		//Assert.equals( vos[ 10 ], cmd.pNullInt );
 	}
 }
 
@@ -84,8 +80,7 @@ private class MockModule extends Module
 				new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 				new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
 				new ExecutionPayload( vos[ 8 ] ).withClassName( 'Map<hex.domain.Domain, hex.domain.Domain>' ),
-				new ExecutionPayload( vos[ 9 ] ).withClassName( 'Date' )/*,
-				new ExecutionPayload( vos[ 10 ] ).withClassName( 'Null<Int>' )*/
+				new ExecutionPayload( vos[ 9 ] ).withClassName( 'Date' )
 			] ) );
 	}
 }
@@ -94,7 +89,7 @@ private class MockCommandConfig extends StatelessCommandConfig
 {
 	override public function configure():Void
 	{
-		this.map( MockModule.TEST, MockCommand );
+		this.map( MockModule.TEST, MockMacro );
 	}
 }
 
@@ -132,9 +127,6 @@ private class MockMacro extends Macro
 	
 	@Inject
 	public var pDate : Date;
-	
-	/*@Inject
-	public var pNullInt : Null<Int>;*/
 	
 	public function new()
 	{
@@ -183,9 +175,6 @@ private class MockCommand extends BasicCommand
 	
 	@Inject
 	public var pDate : Date;
-	
-	/*@Inject
-	public var pNullInt : Null<Int>;*/
 	
 	public function new()
 	{
