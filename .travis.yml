@@ -52,7 +52,7 @@ install:
   - git clone --recursive -b $DEPENDENCIES_BRANCH https://github.com/DoclerLabs/hexInject.git ./hexinject
   - haxelib dev hexinject ./hexinject
 #hexMVC
-  - git dev hexmvc .
+  - haxelib dev hexmvc .
   - export DISPLAY=:99.0;
   - export AUDIODEV=null;
   - haxe flash/install.hxml
