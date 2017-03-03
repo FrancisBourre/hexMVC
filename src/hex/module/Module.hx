@@ -21,8 +21,8 @@ import hex.error.VirtualMethodException;
 import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
-import hex.log.DomainLogger;
 import hex.log.ILogger;
+import hex.log.LogManager;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;
@@ -62,7 +62,7 @@ class Module implements IModule
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
 		this._injector.mapToValue( IModule, this );
 		
-		this._logger = new DomainLogger( this.getDomain() );
+		this._logger = LogManager.getLogger( this.getDomain().getName() );
 		this._injector.mapToValue( ILogger, this._logger );
 	}
 			
