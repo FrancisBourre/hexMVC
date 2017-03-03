@@ -5,6 +5,9 @@ import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.event.MessageType;
 import hex.log.ILogger;
+import hex.log.ILoggerContext;
+import hex.log.LogLevel;
+import hex.log.message.IMessage;
 import hex.module.IModule;
 
 /**
@@ -82,38 +85,79 @@ private class MockLogger implements ILogger
 
 	}
 	
-	public function clear() : Void
+	public function debug(message:Dynamic, ?params:Array<Dynamic>, ?posInfos:PosInfos):Void 
 	{
 		
 	}
 	
-	public function debug( o : Dynamic, ?posInfos : PosInfos ) : Void
+	public function debugMessage(message:IMessage, ?posInfos:PosInfos):Void 
 	{
 		
 	}
 	
-	public function info( o : Dynamic, ?posInfos : PosInfos ) : Void
+	public function info(message:Dynamic, ?params:Array<Dynamic>, ?posInfos:PosInfos):Void 
 	{
 		
 	}
 	
-	public function warn( o : Dynamic, ?posInfos : PosInfos ) : Void
+	public function infoMessage(message:IMessage, ?posInfos:PosInfos):Void 
 	{
 		
 	}
 	
-	public function error( o : Dynamic, ?posInfos : PosInfos ) : Void
+	public function warn(message:Dynamic, ?params:Array<Dynamic>, ?posInfos:PosInfos):Void 
 	{
 		
 	}
 	
-	public function fatal( o : Dynamic, ?posInfos : PosInfos ) : Void
+	public function warnMessage(message:IMessage, ?posInfos:PosInfos):Void 
 	{
 		
 	}
 	
-	public function getDomain() : Domain
+	public function error(message:Dynamic, ?params:Array<Dynamic>, ?posInfos:PosInfos):Void 
+	{
+		
+	}
+	
+	public function errorMessage(message:IMessage, ?posInfos:PosInfos):Void 
+	{
+		
+	}
+	
+	public function fatal(message:Dynamic, ?params:Array<Dynamic>, ?posInfos:PosInfos):Void 
+	{
+		
+	}
+	
+	public function fatalMessage(message:IMessage, ?posInfos:PosInfos):Void 
+	{
+		
+	}
+	
+	public function log(level:LogLevel, message:Dynamic, ?params:Array<Dynamic>, ?posInfos:PosInfos):Void 
+	{
+		
+	}
+	
+	public function logMessage(level:LogLevel, message:IMessage, ?posInfos:PosInfos):Void 
+	{
+		
+	}
+	
+	public function getLevel():LogLevel 
+	{
+		return LogLevel.OFF;
+	}
+	
+	public function getName():String 
 	{
 		return null;
 	}
+	
+	public function getContext():ILoggerContext 
+	{
+		return null;
+	}
+	
 }
