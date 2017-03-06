@@ -166,7 +166,7 @@ private class MockCommand implements ICommand
 		return this.getOwner().getLogger();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	public function execute() : Void 
 	{
 		
 	}

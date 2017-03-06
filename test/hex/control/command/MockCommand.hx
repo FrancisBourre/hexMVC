@@ -15,7 +15,7 @@ class MockCommand extends BasicCommand
 		super();
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		MockCommand.executionCount++;
 	}

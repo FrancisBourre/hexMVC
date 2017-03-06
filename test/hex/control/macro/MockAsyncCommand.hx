@@ -10,11 +10,8 @@ import hex.control.async.AsyncCommand;
  */
 class MockAsyncCommand extends AsyncCommand
 {
-	static public var lastRequest : Request;
-	
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
-		MockAsyncCommand.lastRequest = request;
 		Timer.delay( this._handleComplete, 50 );
 	}
 }

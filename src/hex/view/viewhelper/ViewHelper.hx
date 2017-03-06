@@ -80,18 +80,6 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		if ( view != null )
 		{
 			this._internal.dispatch( ViewHelperMessage.ATTACH_VIEW, [ this, this._view ] );
-
-			/*if ( view.visible )
-			{
-				if ( view.visible != this._isVisible )
-				{
-					view.visible = this._isVisible;
-				}
-			}
-			else
-			{
-				this._isVisible = false;
-			}*/
 			
 			//TODO: figure out when we should fire it. now it's automatic - grosmar
 			this._fireInitialisation();
@@ -126,10 +114,6 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		if ( !this._isVisible )
 		{
 			this._isVisible = true;
-			/*if ( this._view != null )
-			{
-				this._view.visible = true;
-			}*/
 		}
 	}
 	
@@ -138,10 +122,6 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		if ( this._isVisible )
 		{
 			this._isVisible = false;
-			/*if ( this._view != null )
-			{
-				this._view.visible = false;
-			}*/
 		}
 	}
 	
@@ -173,12 +153,12 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		this._internal.removeAllListeners();
 	}
 	
-	public function addHandler( messageType : MessageType, callback : Dynamic ) : Void
+	public function addHandler<T:haxe.Constraints.Function>( messageType : MessageType, callback : T ) : Void
 	{
 		this._internal.addHandler( messageType, callback );
 	}
 	
-	public function removeHandler( messageType : MessageType, callback : Dynamic ) : Void
+	public function removeHandler<T:haxe.Constraints.Function>( messageType : MessageType, callback : T ) : Void
 	{
 		this._internal.removeHandler( messageType, callback );
 	}

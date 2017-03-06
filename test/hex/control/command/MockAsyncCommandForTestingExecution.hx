@@ -14,7 +14,6 @@ class MockAsyncCommandForTestingExecution extends AsyncCommand
 	static public var executeCallCount 		: Int = 0;
 	static public var preExecuteCallCount 	: Int = 0;
 	
-	static public var request 				: Request;
 	static public var owner 				: IModule;
 	
 	static public var completeHandlers 		: Array<AsyncCommand->Void> = [];
@@ -31,10 +30,9 @@ class MockAsyncCommandForTestingExecution extends AsyncCommand
 		MockAsyncCommandForTestingExecution.preExecuteCallCount++;
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	override public function execute() : Void
 	{
 		MockAsyncCommandForTestingExecution.executeCallCount++;
-		MockAsyncCommandForTestingExecution.request = request;
 	}
 	
 	override public function addCompleteHandler( callback : AsyncCommand->Void ) : Void

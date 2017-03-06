@@ -119,7 +119,7 @@ class MacroExecutor implements IMacroExecutor implements IInjectorContainer
                 this._runningAsyncCommandList.push( aSyncCommand );
             }
 
-			Reflect.callMethod( command, Reflect.field( command, command.executeMethodName ), request != null ? [ request ] : [] );
+			command.execute();
 			
 			if ( !isAsync )
 			{

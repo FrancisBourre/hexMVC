@@ -82,7 +82,7 @@ class CommandExecutor
                 if ( mapping.hasCancelHandler )     AsyncCommandUtil.addListenersToAsyncCommand( mapping.getCancelHandlers(), asynCommand.addCancelHandler );
             }
 
-			Reflect.callMethod( command, Reflect.field( command, command.executeMethodName ), request != null ? [ request ] : [] );
+			command.execute();
         }
     }
 }

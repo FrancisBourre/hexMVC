@@ -10,7 +10,7 @@ import hex.module.IModule;
  */
 interface ICommand
 {
-	var executeMethodName( default, null ) : String;
+	function execute() : Void;
 
     function getResult() : Array<Dynamic>;
 	

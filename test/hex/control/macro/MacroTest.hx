@@ -14,7 +14,7 @@ import hex.control.macro.MacroExecutor;
 import hex.error.IllegalStateException;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
 
@@ -134,7 +134,7 @@ class MacroTest
 		
 		var request = new Request();
 		myMacro.preExecute( request );
-		myMacro.execute( request );
+		myMacro.execute();
 		Assert.equals( request, this._macroExecutor.requestPassedDuringExecution, "request passed to execute should be passed to macroexecutor" );
 	}
 	
@@ -263,37 +263,9 @@ class MacroTest
 		return false;
 	}
 	
-	@Async( "Test commands get request passed to macro" )
-	public function testCommandsGetRequestPassedToMacro() : Void
-	{
-		MockCommand.lastRequest = null;
-		MockAsyncCommand.lastRequest = null;
-		
-		var myMacro = new MockMacro();
-		var macroExecutor = new MacroExecutor();
-		macroExecutor.injector = new MockDependencyInjector();
-		myMacro.macroExecutor = macroExecutor;
-		
-		var request = new Request();
-		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onMacroWithRequestComplete, [ request ] ) );
-		
-		myMacro.preExecute( request );
-		myMacro.execute( request );
-		
-		Assert.equals( request, MockAsyncCommand.lastRequest, "request should be the same" );
-	}
-	
-	function _onMacroWithRequestComplete( command : AsyncCommand, request : Request ) : Void
-	{
-		Assert.equals( request, MockCommand.lastRequest, "request should be the same" );
-	}
-	
 	@Test( "Test request is available from prepare method" )
 	public function testRequestIsAvailableFromPrepareMethod() : Void
 	{
-		MockCommand.lastRequest = null;
-		MockAsyncCommand.lastRequest = null;
-		
 		var myMacro = new MockEmptyMacroWithPrepareOverriden();
 		var macroExecutor = new MacroExecutor();
 		macroExecutor.injector = new MockDependencyInjector();

@@ -1,14 +1,7 @@
 -main MainMVCTest
--cp src
+
+-lib hexunit
+-lib hexmvc
+
 -cp test
--cp hexcore/src
--cp hexcore/test
--cp hexreflection/src
--cp hexreflection/test
--cp hexannotation/src
--cp hexannotation/test
--cp hexinject/src
--cp hexinject/test
--cp hexunit/src
--cp hexunit/test
 -D debug=true

@@ -127,7 +127,7 @@ private class MockAsyncCommand implements IAsyncCommand
 		
 	}
 	
-	public function execute( ?request : Request ) : Void 
+	public function execute() : Void 
 	{
 		
 	}

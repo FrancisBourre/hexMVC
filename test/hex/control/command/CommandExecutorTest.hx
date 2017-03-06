@@ -85,9 +85,6 @@ class CommandExecutorTest
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
 		Assert.equals( this._module, MockAsyncCommandForTestingExecution.owner, "owner should be the same" );
-		Assert.equals( request, MockAsyncCommandForTestingExecution.request, "event should be the same" );
-		
-		Assert.deepEquals( request, MockAsyncCommandForTestingExecution.request, "event should be the same" );
 		
 		Assert.arrayContainsElementsFrom( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
 		Assert.arrayContainsElementsFrom( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
@@ -125,7 +122,7 @@ class CommandExecutorTest
 		MockCommand.executionCount = 0;
 		
 		var injector = new Injector();
-		var domain = new Domain( "testGuardInjectionApproved" );
+		var domain = Domain.getDomain( "testGuardInjectionApproved" );
 		injector.mapToValue( Domain, domain );
 		var commandExecutor = new CommandExecutor( injector, this._module );
 		var cm = new CommandMapping( MockCommand ).withGuard( MockGuardForCommandExecutorTest );
@@ -140,7 +137,7 @@ class CommandExecutorTest
 		MockCommand.executionCount = 0;
 		
 		var injector = new Injector();
-		var domain = new Domain( "testGuardInjectionRefused" );
+		var domain = Domain.getDomain( "testGuardInjectionRefused" );
 		injector.mapToValue( Domain, domain );
 		var commandExecutor = new CommandExecutor( injector, this._module );
 		var cm = new CommandMapping( MockCommand ).withGuard( MockGuardForCommandExecutorTest );

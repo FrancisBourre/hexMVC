@@ -8,7 +8,7 @@ import hex.control.command.ICommandMapping;
 import hex.di.IInjectorContainer;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.log.Stringifier;
+import hex.util.Stringifier;
 
 /**
  * ...
@@ -55,7 +55,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	}
 	
 	@:final 
-	public function execute( ?request : Request ) : Void
+	override public function execute() : Void
 	{
 		!this.isRunning && this._throwExecutionIllegalStateError();
 		this._executeNextCommand();

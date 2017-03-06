@@ -20,7 +20,6 @@ class MockAdapterStrategyMacro extends MacroAdapterStrategy
 
 	public function onAdapt( request : MockRequest, message : String ) : Void
 	{
-		this._request = request;
 		this._message = message;
 	}
 

@@ -6,6 +6,7 @@ import hex.control.payload.ExecutionPayload;
  * ...
  * @author Francis Bourre
  */
+@:final
 class Request
 {
 	var _executionPayloads : Array<ExecutionPayload>;

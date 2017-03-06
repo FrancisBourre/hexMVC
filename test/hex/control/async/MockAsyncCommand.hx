@@ -6,7 +6,7 @@ package hex.control.async;
  */
 class MockAsyncCommand extends AsyncCommand
 {
-	public function execute( ?request : Request ) : Void
+	override public function execute() : Void
 	{
 		this._handleComplete();
 	}

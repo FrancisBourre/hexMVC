@@ -3,6 +3,7 @@ package hex.control.command;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IInjectorContainer;
+import hex.error.VirtualMethodException;
 import hex.log.ILogger;
 import hex.module.IModule;
 
@@ -13,11 +14,14 @@ import hex.module.IModule;
 class BasicCommand implements ICommand implements IInjectorContainer
 {
 	var _owner : IModule;
-	
-	public var executeMethodName( default, null ) : String = "execute";
 
 	public function new() 
 	{
+	}
+	
+	public function execute() : Void
+	{
+		throw new VirtualMethodException();
 	}
 	
 	public function getResult() : Array<Dynamic> 

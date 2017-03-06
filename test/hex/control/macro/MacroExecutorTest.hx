@@ -176,10 +176,6 @@ class MacroExecutorTest
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.executeCallCount, "preExecute should be called once" );
 		Assert.equals( 1, MockAsyncCommandForTestingExecution.preExecuteCallCount, "execute should be called once" );
 		
-		Assert.equals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
-		
-		Assert.deepEquals( request, MockAsyncCommandForTestingExecution.request, "request should be the same" );
-		
 		Assert.arrayContainsElementsFrom( completeHandlers, MockAsyncCommandForTestingExecution.completeHandlers, "complete handlers should be added to async command instance" );
 		Assert.arrayContainsElementsFrom( failHandlers, MockAsyncCommandForTestingExecution.failHandlers, "fail handlers should be added to async command instance" );
 		Assert.arrayContainsElementsFrom( cancelHandlers, MockAsyncCommandForTestingExecution.cancelHandlers, "cancel handlers should be added to async command instance" );
@@ -257,7 +253,7 @@ private class MockCommand implements ICommand
 		return this.getOwner().getLogger();
 	}
 
-	public function execute( ?request : Request ) : Void 
+	public function execute() : Void 
 	{
 		
 	}
