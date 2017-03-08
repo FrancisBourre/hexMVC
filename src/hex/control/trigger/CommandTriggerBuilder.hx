@@ -10,7 +10,6 @@ import hex.control.payload.ExecutionPayload;
 import hex.control.trigger.Command;
 import hex.error.PrivateConstructorException;
 import hex.module.IModule;
-import hex.util.ArrayUtil;
 import hex.util.MacroUtil;
 
 using haxe.macro.Context;
@@ -216,15 +215,15 @@ class CommandTriggerBuilder
 	
 	static function hasMetaValue( meta, metaName : String )
 	{
-		var meta = ArrayUtil.find( meta, m => m.name == metaName );
+		var meta = Lambda.find( meta, function(m) return m.name == metaName );
 		return ( meta != null );
 	}
 	
-	static function getMetaValue( meta, metaName : String )
+	static function getMetaValue( meta : Null<Metadata>, metaName : String )
 	{
-		var meta = ArrayUtil.find( meta, m => m.name == metaName );
+		var meta : MetadataEntry = Lambda.find( meta, function(m) return m.name == metaName );
 		return ( meta != null ) ?
-			switch(meta.params[0].expr) { case EConst(CString(id)): id; case _: null; }
+			switch( meta.params[0].expr ) { case EConst(CString(id)): id; case _: null; }
 			: '';
 	}
 }
