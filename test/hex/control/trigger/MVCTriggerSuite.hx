@@ -7,5 +7,11 @@ package hex.control.trigger;
 class MVCTriggerSuite
 {
 	@Suite( "Trigger" )
-    public var list : Array<Class<Dynamic>> = [ CommandTriggerTest, MacroCommandTest ];
+    public var list : Array<Class<Dynamic>> = 
+	[ 
+		#if ( haxe_ver >= "3.3" )
+		CommandTriggerTest, 
+		#end
+		MacroCommandTest 
+	];
 }

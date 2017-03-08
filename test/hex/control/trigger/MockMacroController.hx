@@ -1,7 +1,8 @@
 package hex.control.trigger;
 
+#if ( haxe_ver >= "3.3" )
+import hex.collection.ILocator;
 import hex.control.async.IAsyncCallback;
-import hex.control.async.Nothing;
 
 /**
  * ...
@@ -11,6 +12,8 @@ class MockMacroController
 	implements ICommandTrigger
 {
 	public function new(){}
+	
+	
 	
 	@Map( hex.control.trigger.mock.MockMacroCommand )
 	public function doSomething
@@ -26,4 +29,17 @@ class MockMacroController
 		@Ignore							ai	: Array<Int>,
 										d 	: Date
 	) : IAsyncCallback<String>;
+	
+	public function sum( a : Int, b : Int ) : Int 
+	{ 
+		return a + b;
+	}
+	
+	@Map( hex.control.trigger.MockCommandClassWithParameters )
+	public function say( 
+							@Name( 'text' ) 		text 		: String, 
+													sender 		: CommandTriggerTest, 
+													locator 	: ILocator<String,Bool>
+						) : IAsyncCallback<String>;
 }
+#end

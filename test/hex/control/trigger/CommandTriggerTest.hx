@@ -79,10 +79,10 @@ class CommandTriggerTest
 	@Test( "test controller call without mapping" )
 	public function testControllerCallWithoutMapping() : Void
 	{
-		Assert.equals( 5, this._controller.sum( 2, 3 ), "" );
+		Assert.equals( 5, this._controller.sum( 2, 3 ) );
 	}
 	
-	@Test( "test controller call with macro and injections" )
+	@Async( "test controller call with macro and injections" )
 	public function testControllerCallWithMacroAndInjections() : Void
 	{
 		MockMacroCommand.command 	= null;
@@ -93,6 +93,24 @@ class CommandTriggerTest
 		controller.injector 	= this._injector;
 		controller.module 		= this._module;
 		
+		//sum
+		Assert.equals( 5, controller.sum( 2, 3 ) );
+		
+		//say
+		MockCommandClassWithParameters.callCount = 0;
+		
+		var f = function ( message : String )
+		{
+			Assert.equals( 1, MockCommandClassWithParameters.callCount );
+			Assert.equals( "hola mundo", message );
+			Assert.equals( message, MockCommandClassWithParameters.message );
+			Assert.equals( this, MockCommandClassWithParameters.test );
+			Assert.isNull( MockCommandClassWithParameters.ignored, 'Last parameter should be ignored' );
+		}
+		
+		controller.say( "hola mundo", this, new Locator<String, Bool>() ).onComplete( MethodRunner.asyncHandler( f ) );
+		
+		//doSomething
 		var vos : Array<Dynamic> = [];
 		vos[ 0 ] = 'string1';
 		vos[ 1 ] = 'string2';
