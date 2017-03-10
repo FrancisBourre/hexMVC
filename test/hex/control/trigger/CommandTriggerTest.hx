@@ -227,4 +227,11 @@ private class MockModule implements IModule
 	}
 }
 
+#else
+
+class CommandTriggerTest
+{
+	public function new(){}
+}
+
 #end
