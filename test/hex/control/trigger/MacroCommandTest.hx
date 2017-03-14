@@ -54,8 +54,7 @@ class MacroCommandTest
 		
 		PayloadUtil.mapPayload( payloads, injector );
 		var macroCommand = injector.getOrCreateNewInstance( MockMacroCommand );
-		PayloadUtil.mapPayload( payloads, injector );
-		
+		PayloadUtil.unmapPayload( payloads, injector );
 		macroCommand.execute();
 		
 		//
