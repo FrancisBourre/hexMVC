@@ -38,6 +38,27 @@ class Command<ResultType> implements IAsyncCallback<ResultType> implements IComm
 		throw new VirtualMethodException();
 	}
 	
+	@:final 
+	public var isCompleted( get, null ) : Bool;
+    public function get_isCompleted() : Bool
+	{
+		return this._acb.isCompleted;
+	}
+	
+	@:final 
+	public var isFailed( get, null ) : Bool;
+    public function get_isFailed() : Bool
+	{
+		return this._acb.isFailed;
+	}
+	
+	@:final 
+	public var isCancelled( get, null ) : Bool;
+    public function get_isCancelled() : Bool
+	{
+		return this._acb.isCancelled;
+	}
+	
 	public function onComplete( onComplete : Callback<ResultType> ) : IAsyncCallback<ResultType>
 	{
 		return this._acb.onComplete( onComplete );
@@ -46,6 +67,11 @@ class Command<ResultType> implements IAsyncCallback<ResultType> implements IComm
 	public function onFail( onFail : Exception->Void ) : IAsyncCallback<ResultType>
 	{
 		return this._acb.onFail( onFail );
+	}
+	
+	public function onCancel( onCancel : Void->Void ) : IAsyncCallback<ResultType>
+	{
+		return this._acb.onCancel( onCancel );
 	}
 	
 	function _complete( result : ResultType ) : Void
