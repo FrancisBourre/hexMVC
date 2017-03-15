@@ -215,7 +215,12 @@ class MacroCommand<ResultType> extends Command<ResultType>
 	//
 	static public function getCommand<ResultType>( injector : IDependencyInjector, mapping : ExecutionMapping<ResultType>, payloads : Array<ExecutionPayload> ) : Command<ResultType>
     {
-		var commandClass = mapping.getCommandClass();
+		// Build payloads collection
+		var mappedPayloads : Array<ExecutionPayload> = mapping.getPayloads();
+		if ( mappedPayloads != null )
+		{
+			payloads = payloads.concat( mappedPayloads );
+		}
 		
 		// Map payloads
         if ( payloads != null )
@@ -227,7 +232,7 @@ class MacroCommand<ResultType> extends Command<ResultType>
 		var command : Command<ResultType> = null;
 		if ( !mapping.hasGuard || GuardUtil.guardsApprove( mapping.getGuards(), injector ) )
         {
-			command = injector.getOrCreateNewInstance( commandClass );
+			command = injector.getOrCreateNewInstance( mapping.getCommandClass() );
 		}
 
 		// Unmap payloads
@@ -235,7 +240,7 @@ class MacroCommand<ResultType> extends Command<ResultType>
         {
             PayloadUtil.unmapPayload( payloads, injector );
         }
-		
+
 		return command;
     }
 }
