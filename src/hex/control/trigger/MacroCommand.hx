@@ -1,5 +1,6 @@
 package hex.control.trigger;
 
+import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
@@ -58,24 +59,41 @@ class MacroCommand<ResultType> extends Command<ResultType>
 		if ( this._mappings.length > 0 )
 		{
 			var command = MacroCommand.getCommand( this._injector, this._mappings.shift(), this._payloads );
-			command.execute();
 			
-			if ( this.isInSequenceMode )
+			if ( command != null )
 			{
-				command
-					.onComplete( this._onComplete )
-						.onFail( this._onFail )
-							.onCancel( this._onCancel );
+				command.execute();
+				
+				if ( this.isInSequenceMode )
+				{
+					command
+						.onComplete( this._onComplete )
+							.onFail( this._onFail )
+								.onCancel( this._onCancel );
+				}
+				else
+				{
+					command
+						.onComplete( this._onParallelComplete )
+							.onFail( this._onParallelFail )
+								.onCancel( this._onParallelCancel );
+								
+					this._executeNextCommand();
+				}
 			}
 			else
 			{
-				command
-					.onComplete( this._onParallelComplete )
-						.onFail( this._onParallelFail )
-							.onCancel( this._onParallelCancel );
-							
-				this._executeNextCommand();
+				//command fails
+				if ( this.isAtomic )
+				{
+					this._fail( new Exception( 'MacroCommand fails' ) );
+				}
+				else
+				{
+					this._executeNextCommand();
+				}
 			}
+			
 		}
 		else if ( this.isInSequenceMode )
 		{
@@ -204,10 +222,13 @@ class MacroCommand<ResultType> extends Command<ResultType>
         {
             PayloadUtil.mapPayload( payloads, injector );
         }
-
+		
 		// Instantiate command
 		var command : Command<ResultType> = null;
-        command = injector.getOrCreateNewInstance( commandClass );
+		if ( !mapping.hasGuard || GuardUtil.guardsApprove( mapping.getGuards(), injector ) )
+        {
+			command = injector.getOrCreateNewInstance( commandClass );
+		}
 
 		// Unmap payloads
         if ( payloads != null )
