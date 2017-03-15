@@ -240,6 +240,10 @@ class MacroCommand<ResultType> extends Command<ResultType>
         {
             PayloadUtil.unmapPayload( payloads, injector );
         }
+		
+		if ( mapping.hasCompleteHandler )   for ( handler in mapping.getCompleteHandlers() ) 	command.onComplete( handler );
+		if ( mapping.hasFailHandler )       for ( handler in mapping.getFailHandlers() ) 		command.onFail( handler );
+		if ( mapping.hasCancelHandler )     for ( handler in mapping.getCancelHandlers() ) 		command.onCancel( handler );
 
 		return command;
     }
