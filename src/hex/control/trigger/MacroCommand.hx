@@ -5,6 +5,7 @@ import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
 import hex.error.Exception;
+import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.util.Stringifier;
 
@@ -49,9 +50,16 @@ class MacroCommand<ResultType> extends Command<ResultType>
 
 	public function add( commandClass : Class<Command<ResultType>> ) : ExecutionMapping<ResultType>
 	{
-		var mapping = new ExecutionMapping( commandClass );
-		this._mappings.push( mapping );
-		return mapping;
+		if ( this.isWaiting )
+		{
+			var mapping = new ExecutionMapping( commandClass );
+			this._mappings.push( mapping );
+			return mapping;
+		}
+		else
+		{
+			throw new IllegalStateException( 'Macro has already ended' );
+		}
 	}
 	
 	function _executeNextCommand( r : ResultType = null ) : Void

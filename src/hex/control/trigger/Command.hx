@@ -39,6 +39,13 @@ class Command<ResultType> implements IAsyncCallback<ResultType> implements IComm
 	}
 	
 	@:final 
+	public var isWaiting( get, null ) : Bool;
+    public function get_isWaiting() : Bool
+	{
+		return this._acb.isWaiting;
+	}
+	
+	@:final 
 	public var isCompleted( get, null ) : Bool;
     public function get_isCompleted() : Bool
 	{

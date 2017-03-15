@@ -5,6 +5,7 @@ import hex.control.payload.PayloadUtil;
 import hex.control.trigger.mock.*;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
+import hex.error.IllegalStateException;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -1946,5 +1947,63 @@ class MacroCommandTest
 		Assert.equals( 2, MockNonAtomicMacroCommandWithFailHandler.completeCallCount );
 		Assert.equals( 2, MockNonAtomicMacroCommandWithFailHandler.failCallCount );
 		Assert.equals( 0, MockNonAtomicMacroCommandWithFailHandler.cancelCallCount );
+	}
+	
+	@Test( "test MacroCommand state consistency" )
+	public function testMacroCommandStateConsistency() : Void
+	{
+		MockMacroCommand.command 	= null;
+		MockCommand.command 		= null;
+		AnotherMockCommand.command 	= null;
+		
+		MockMacroCommand.executionCount = 0;
+		MockCommand.executionCount = 0;
+		AnotherMockCommand.executionCount = 0;
+		
+		var vos : Array<Dynamic> = [];
+		vos[ 0 ] = 'string1';
+		vos[ 1 ] = 'string2';
+		vos[ 2 ] = -3;
+		vos[ 3 ] = 4;
+		vos[ 4 ] = 5.6;
+		vos[ 5 ] = true;
+		vos[ 6 ] = [ 'hello', 'world' ];
+		vos[ 7 ] = [ 'hello' => 'world' ];
+		vos[ 8 ] = Date.now();
+		
+		var payloads =
+		[
+			new ExecutionPayload( vos[ 0 ], String, 'name1' ),
+			new ExecutionPayload( vos[ 1 ] ).withClassName( 'String' ).withName( 'name2' ),
+			new ExecutionPayload( vos[ 2 ] ).withClassName( 'Int' ),
+			new ExecutionPayload( vos[ 3 ] ).withClassName( 'UInt' ),
+			new ExecutionPayload( vos[ 4 ] ).withClassName( 'Float' ),
+			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
+			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
+			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
+			new ExecutionPayload( vos[ 8 ], Date )
+		];
+
+		//
+		var injector =  new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', payloads );
+		
+		
+		PayloadUtil.mapPayload( payloads, injector );
+		var macroCommand = injector.getOrCreateNewInstance( MockMacroCommand );
+		PayloadUtil.unmapPayload( payloads, injector );
+		macroCommand.execute();
+		
+		//
+		var mo = MockMacroCommand.command;
+		Assert.equals( 1, MockMacroCommand.executionCount );
+		Assert.isTrue( mo.isAtomic );
+		Assert.isFalse( mo.isInParallelMode );
+		Assert.isTrue( mo.isCompleted );
+		Assert.isFalse( mo.isFailed );
+		Assert.isFalse( mo.isCancelled );
+		
+		Assert.methodCallThrows( IllegalStateException, mo, mo.add, [ AnotherMockCommand ] );
 	}
 }
