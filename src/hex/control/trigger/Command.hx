@@ -83,6 +83,11 @@ class Command<ResultType> implements IAsyncCallback<ResultType> implements IComm
 	{
 		this._handler( error );
 	}
+	
+	function _cancel() : Void
+	{
+		this._handler( Result.CANCELLED );
+	}
 
 	public function getLogger() : ILogger 
 	{

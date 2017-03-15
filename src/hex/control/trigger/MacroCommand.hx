@@ -3,6 +3,7 @@ package hex.control.trigger;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
+import hex.error.Exception;
 import hex.error.VirtualMethodException;
 import hex.util.Stringifier;
 
@@ -12,10 +13,10 @@ import hex.util.Stringifier;
  */
 class MacroCommand<ResultType> extends Command<ResultType>
 {
-	var _injector : IDependencyInjector;
-	var _payloads : Array<ExecutionPayload>;
-	var _commands : Array<Class<Command<ResultType>>> = [];
-	
+	var _injector 			: IDependencyInjector;
+	var _payloads 			: Array<ExecutionPayload>;
+	var _mappings 			: Array<ExecutionMapping<ResultType>> = [];
+	var _parallelExecution	: Int;
 	
 	public function new() 
 	{
@@ -41,31 +42,113 @@ class MacroCommand<ResultType> extends Command<ResultType>
 	@:final 
 	override public function execute() : Void
 	{
+		this._parallelExecution = this._mappings.length;
 		this._executeNextCommand( null );
 	}
-	
-	public function add( commandClass : Class<Command<ResultType>> ) : MacroCommand<ResultType>
+
+	public function add( commandClass : Class<Command<ResultType>> ) : ExecutionMapping<ResultType>
 	{
-		this._commands.push( commandClass );
-		return this;
+		var mapping = new ExecutionMapping( commandClass );
+		this._mappings.push( mapping );
+		return mapping;
 	}
 	
 	function _executeNextCommand( r : ResultType = null ) : Void
 	{
-		if ( this._commands.length > 0 )
+		if ( this._mappings.length > 0 )
 		{
-			var command = MacroCommand.getCommand( this._injector, this._commands.shift(), this._payloads );
+			var command = MacroCommand.getCommand( this._injector, this._mappings.shift(), this._payloads );
 			command.execute();
 			
-			command.onComplete
-				( function( r ) this._executeNextCommand( r ) )
-					.onFail
-						( function( e ) this._fail( e ) );
-
+			if ( this.isInSequenceMode )
+			{
+				command
+					.onComplete( this._onComplete )
+						.onFail( this._onFail )
+							.onCancel( this._onCancel );
+			}
+			else
+			{
+				command
+					.onComplete( this._onParallelComplete )
+						.onFail( this._onParallelFail )
+							.onCancel( this._onParallelCancel );
+							
+				this._executeNextCommand();
+			}
+		}
+		else if ( this.isInSequenceMode )
+		{
+			this._complete( r );
+		}
+	}
+	
+	function _onComplete( result : ResultType ) : Void
+	{
+		this._executeNextCommand( result );
+	}
+	
+	function _onFail( e : Exception ) : Void
+	{
+		if ( this.isAtomic )
+		{
+			this._fail( e );
 		}
 		else
 		{
-			this._complete( r );
+			this._executeNextCommand();
+		}
+	}
+	
+	function _onCancel() : Void
+	{
+		if ( this.isAtomic )
+		{
+			this._cancel();
+		}
+		else
+		{
+			this._executeNextCommand();
+		}
+	}
+	
+	function _onParallelComplete( result : ResultType ) : Void
+	{
+		this._parallelExecution--;
+		if ( this._parallelExecution == 0 )
+		{
+			this._parallelExecution = -1;
+			this._complete( result );
+		}
+	}
+	
+	function _onParallelFail( e : Exception ) : Void
+	{
+		this._parallelExecution--;
+		
+		if ( this.isAtomic && this._parallelExecution > -1 )
+		{
+			this._parallelExecution = -1;
+			this._fail( e );
+		}
+		else if( this._parallelExecution == 0 )
+		{
+			this._complete( null );
+		}
+	}
+	
+	function _onParallelCancel() : Void
+	{
+		this._parallelExecution--;
+		
+		if ( this.isAtomic && this._parallelExecution > -1 )
+		{
+			this._parallelExecution = -1;
+			this._cancel();
+		}
+		else if( this._parallelExecution == 0 )
+		{
+			this._complete( null );
 		}
 	}
 	
@@ -112,8 +195,10 @@ class MacroCommand<ResultType> extends Command<ResultType>
 	}
 	
 	//
-	static public function getCommand<ResultType>( injector : IDependencyInjector, commandClass : Class<Command<ResultType>>, payloads : Array<ExecutionPayload> ) : Command<ResultType>
+	static public function getCommand<ResultType>( injector : IDependencyInjector, mapping : ExecutionMapping<ResultType>, payloads : Array<ExecutionPayload> ) : Command<ResultType>
     {
+		var commandClass = mapping.getCommandClass();
+		
 		// Map payloads
         if ( payloads != null )
         {
