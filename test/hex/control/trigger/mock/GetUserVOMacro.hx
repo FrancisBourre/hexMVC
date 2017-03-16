@@ -7,7 +7,7 @@ import hex.error.Exception;
  * ...
  * @author Francis Bourre
  */
-class GetUserVO extends MacroCommand<MockUserVO>
+class GetUserVOMacro extends MacroCommand<MockUserVO>
 {
 	public function new() 
 	{

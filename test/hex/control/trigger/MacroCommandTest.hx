@@ -2023,7 +2023,7 @@ class MacroCommandTest
 		
 		
 		PayloadUtil.mapPayload( payloads, injector );
-		var macroCommand = injector.getOrCreateNewInstance( GetUserVO );
+		var macroCommand = injector.getOrCreateNewInstance( GetUserVOMacro );
 		PayloadUtil.unmapPayload( payloads, injector );
 		macroCommand.execute();
 		

@@ -9,7 +9,7 @@ import hex.control.trigger.mock.MockUserVO;
  */
 class MockUserController implements ICommandTrigger
 {
-	@Map( GetUserVO )
+	@Map( GetUserVOMacro )
 	public function getUserVO( ageProvider : Void->UInt ) : IAsyncCallback<MockUserVO>;
 	
 	public function getTemperature( cityName : String ) : IAsyncCallback<UInt>
