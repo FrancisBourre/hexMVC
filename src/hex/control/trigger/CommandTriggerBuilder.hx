@@ -5,11 +5,9 @@ import haxe.macro.Expr;
 import haxe.macro.Expr.Access;
 import haxe.macro.Expr.Field;
 import haxe.macro.Expr.Position;
-import hex.control.async.IAsyncCallback;
 import hex.control.payload.ExecutionPayload;
 import hex.control.trigger.Command;
 import hex.error.PrivateConstructorException;
-import hex.module.IModule;
 import hex.util.MacroUtil;
 
 using haxe.macro.Context;
@@ -24,13 +22,6 @@ class CommandTriggerBuilder
 {
 	public static inline var MapAnnotation = "Map";
 	
-	#if macro
-	static var modulePack  				= MacroUtil.getPack( Type.getClassName( IModule ) );
-	static var CommandClassType 		= MacroUtil.getClassType( Type.getClassName( Command ) );
-	static var MacroCommandClassType 	= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
-	static var IAsyncCallbackType 		= MacroUtil.getClassType( Type.getClassName( IAsyncCallback ) );
-	#end
-	
 	/** @private */
     function new()
     {
@@ -39,7 +30,9 @@ class CommandTriggerBuilder
 	
 	macro static public function build() : Array<Field> 
 	{
-		var fields = Context.getBuildFields();
+		var fields 					= Context.getBuildFields();
+		var CommandClassType 		= MacroUtil.getClassType( Type.getClassName( Command ) );
+		var MacroCommandClassType 	= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
 		
 		for ( f in fields )
 		{
@@ -117,7 +110,7 @@ class CommandTriggerBuilder
 						{
 							var value = macro $i{arg.name};
 							var typeName = getMetaValue( arg.meta, 'Type');
-							if ( typeName == '' ) typeName = arg.type.toType().toString();
+							if ( typeName == '' ) typeName = arg.type.toType().toString().split(' ').join('');
 							var mapName = getMetaValue( arg.meta, 'Name');
 							var isIgnored = hasMetaValue( arg.meta, 'Ignore');
 							var typeName2 = getMetaValue( arg.meta, 'Type');
@@ -186,6 +179,42 @@ class CommandTriggerBuilder
 								
 								return command;
 							};
+						}
+					}
+					else
+					{
+						switch( func.expr )
+						{
+							case macro {$a { args }} :
+								
+								for ( arg in args )
+								{
+									switch( arg.expr )
+									{
+										case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
+												
+												var varName = vars[0].name;
+												var typeName = vars[0].type.toString();
+												var className = Context.getType( typeName.split('<')[0] );
+
+												var classPack = switch( className ) 
+												{ 
+													case TInst( t, params ): t.toString().split('.');
+													case TAbstract( t, params ): t.toString().split('.');
+													case TType( t, params ): t.toString().split('.');
+													case _: Context.error( 'Injection type cannot be retrieved', func.expr.pos );
+												}
+												
+												if ( classPack.length > 1 ) classPack.pop();
+												typeName = classPack.join('.') + '.' + typeName;
+
+												var varType = vars[0].type;
+												arg.expr = (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v { typeName } )).expr;
+										case _:
+											//trace( arg.expr );
+									}
+								}
+							case _:
 						}
 					}
 				}

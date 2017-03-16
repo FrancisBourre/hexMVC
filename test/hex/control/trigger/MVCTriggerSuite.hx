@@ -11,6 +11,7 @@ class MVCTriggerSuite
 	[ 
 		#if ( haxe_ver >= "3.3" )
 		CommandTriggerTest, 
+		CommandTriggerUserCaseTest,
 		#end
 		MacroCommandTest 
 	];

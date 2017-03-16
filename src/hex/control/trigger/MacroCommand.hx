@@ -17,8 +17,10 @@ class MacroCommand<ResultType> extends Command<ResultType>
 {
 	var _injector 			: IDependencyInjector;
 	var _payloads 			: Array<ExecutionPayload>;
-	var _mappings 			: Array<ExecutionMapping<ResultType>> = [];
+	var _mappings 			: Array<ExecutionMapping<Dynamic>> = [];
 	var _parallelExecution	: Int;
+	
+	var _result				: ResultType;
 	
 	public function new() 
 	{
@@ -26,6 +28,11 @@ class MacroCommand<ResultType> extends Command<ResultType>
 		
 		this.isAtomic 			= true;
 		this.isInSequenceMode 	= true;
+	}
+	
+	function _setResult( result : ResultType ) : Void
+	{
+		this._result = result;
 	}
 	
 	@Inject
@@ -45,10 +52,10 @@ class MacroCommand<ResultType> extends Command<ResultType>
 	override public function execute() : Void
 	{
 		this._parallelExecution = this._mappings.length;
-		this._executeNextCommand( null );
+		this._executeNextCommand();
 	}
 
-	public function add( commandClass : Class<Command<ResultType>> ) : ExecutionMapping<ResultType>
+	public function add<ResultType>( commandClass : Class<Command<ResultType>> ) : ExecutionMapping<ResultType>
 	{
 		if ( this.isWaiting )
 		{
@@ -62,7 +69,7 @@ class MacroCommand<ResultType> extends Command<ResultType>
 		}
 	}
 	
-	function _executeNextCommand( r : ResultType = null ) : Void
+	function _executeNextCommand() : Void
 	{
 		if ( this._mappings.length > 0 )
 		{
@@ -105,13 +112,13 @@ class MacroCommand<ResultType> extends Command<ResultType>
 		}
 		else if ( this.isInSequenceMode )
 		{
-			this._complete( r );
+			this._complete( this._result );
 		}
 	}
 	
 	function _onComplete( result : ResultType ) : Void
 	{
-		this._executeNextCommand( result );
+		this._executeNextCommand();
 	}
 	
 	function _onFail( e : Exception ) : Void
@@ -144,7 +151,7 @@ class MacroCommand<ResultType> extends Command<ResultType>
 		if ( this._parallelExecution == 0 )
 		{
 			this._parallelExecution = -1;
-			this._complete( result );
+			this._complete( this._result );
 		}
 	}
 	

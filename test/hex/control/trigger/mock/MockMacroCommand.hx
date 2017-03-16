@@ -51,5 +51,6 @@ class MockMacroCommand extends MacroCommand<String>
 		
 		this.add( MockCommand );
 		this.add( AnotherMockCommand );
+		this._setResult( this.pString2 );
 	}
 }

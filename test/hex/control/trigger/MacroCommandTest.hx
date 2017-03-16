@@ -7,6 +7,7 @@ import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.error.IllegalStateException;
 import hex.unittest.assertion.Assert;
+import hex.unittest.runner.MethodRunner;
 
 /**
  * ...
@@ -2005,5 +2006,36 @@ class MacroCommandTest
 		Assert.isFalse( mo.isCancelled );
 		
 		Assert.methodCallThrows( IllegalStateException, mo, mo.add, [ AnotherMockCommand ] );
+	}
+	
+	@Async( "test MacroCommand user case" )
+	public function testMacroCommandUserCase() : Void
+	{
+		var payloads =
+		[
+			new ExecutionPayload( function() return 46 ).withClassName( 'Void->UInt' )
+		];
+		
+		//
+		var injector =  new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', payloads );
+		
+		
+		PayloadUtil.mapPayload( payloads, injector );
+		var macroCommand = injector.getOrCreateNewInstance( GetUserVO );
+		PayloadUtil.unmapPayload( payloads, injector );
+		macroCommand.execute();
+		
+		var userOutcome : MockUserVO;
+		macroCommand.onComplete( function( result ) userOutcome = result );
+		macroCommand.onComplete( MethodRunner.asyncHandler( this._onUserCaseComplete ) );
+	}
+	
+	function _onUserCaseComplete( userVO : MockUserVO ) : Void
+	{
+		Assert.equals( 'John Doe', userVO.username );
+		Assert.equals( 46, userVO.age );
+		Assert.equals( true, userVO.isAdmin );
 	}
 }

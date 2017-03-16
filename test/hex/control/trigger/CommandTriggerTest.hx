@@ -1,15 +1,16 @@
 package hex.control.trigger;
 
 #if ( haxe_ver >= "3.3" )
-
 import hex.collection.Locator;
 import hex.control.async.Nothing;
 import hex.control.trigger.MockCommandClassWithParameters;
 import hex.control.trigger.MockCommandClassWithoutParameters;
-import hex.control.trigger.MockController;
+import hex.control.trigger.mock.MockController;
 import hex.control.trigger.mock.AnotherMockCommand;
 import hex.control.trigger.mock.MockCommand;
 import hex.control.trigger.mock.MockMacroCommand;
+import hex.control.trigger.mock.MockMacroController;
+import hex.control.trigger.mock.MockModule;
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorListener;
 import hex.di.Injector;
@@ -166,67 +167,6 @@ class CommandTriggerTest
 		Assert.equals( vos[ 8 ], acmd.pDate );
 	}
 }
-
-private class MockModule implements IModule
-{
-	public function new()
-	{
-		
-	}
-	
-	public function initialize() : Void 
-	{
-		
-	}
-	
-	@:isVar public var isInitialized( get, null ) : Bool;
-	function get_isInitialized() : Bool
-	{
-		return false;
-	}
-	
-	public function release() : Void 
-	{
-		
-	}
-
-	@:isVar public var isReleased( get, null ) : Bool;
-	public function get_isReleased() : Bool
-	{
-		return false;
-	}
-	
-	public function dispatchPublicMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
-	{
-		
-	}
-	
-	public function addHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
-	{
-		
-	}
-	
-	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : Dynamic ) : Void
-	{
-		
-	}
-	
-	public function getDomain() : Domain 
-	{
-		return null;
-	}
-	
-	public function getInjector() : IDependencyInjector
-	{
-		return null;
-	}
-	
-	public function getLogger() : ILogger
-	{
-		return null;
-	}
-}
-
 #else
 
 class CommandTriggerTest

@@ -1,4 +1,4 @@
-package hex.control.trigger;
+package hex.control.trigger.mock;
 
 import hex.collection.Locator;
 import hex.control.async.IAsyncCallback;

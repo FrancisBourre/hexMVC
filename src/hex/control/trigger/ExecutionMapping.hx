@@ -60,6 +60,12 @@ class ExecutionMapping<ResultType>
     {
         return this._payloads;
     }
+	
+	public function asPayload( value : Dynamic, type : Class<Dynamic>, name = '', className : String = '' ) : ExecutionMapping<ResultType> 
+    {
+		return className == '' ? this.withPayload( new ExecutionPayload( value, type, name ) ):
+			this.withPayload( new ExecutionPayload( value, type, name ).withClassName( className ) );
+	}
 
     public function withPayload( payload : ExecutionPayload ) : ExecutionMapping<ResultType> 
     {
