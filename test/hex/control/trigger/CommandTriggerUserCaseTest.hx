@@ -60,7 +60,7 @@ class CommandTriggerUserCaseTest
 	public function testMacroCommandWithoutMapping() : Void
 	{
 		var service = function( cityName ) 
-			return AsyncCallback.get( function( set ) Timer.delay( function() set( cityName=='Luxembourg'?20:0 ), 50 ) );
+			return AsyncCallback.get( function( set ) Timer.delay( function() set(cityName=='Luxembourg'?20:0), 50 ) );
 
 		this._injector.mapDependencyToValue( new Dependency<TemperatureService>(), service );
 		
