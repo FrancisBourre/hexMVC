@@ -1,7 +1,9 @@
 package hex.control.trigger;
 
+import haxe.Timer;
 import hex.control.async.AsyncCallback;
-import hex.control.async.IAsyncCallback;
+import hex.control.async.Expect;
+import hex.control.async.Handler;
 import hex.control.trigger.mock.*;
 import hex.di.Dependency;
 import hex.di.IDependencyInjector;
@@ -44,27 +46,30 @@ class CommandTriggerUserCaseTest
 		var ageProvider = function() return 46;
 		
 		this._controller.getUserVO( ageProvider )
-			.onComplete( MethodRunner.asyncHandler( this._onComplete ) );
+			.onComplete( MethodRunner.asyncHandler( this._onGetUser ) );
 	}
 	
-	function _onComplete( userVO : MockUserVO ) : Void
+	function _onGetUser( userVO : MockUserVO ) : Void
 	{
 		Assert.equals( 'John Doe', userVO.username );
 		Assert.equals( 46, userVO.age );
 		Assert.equals( true, userVO.isAdmin );
 	}
 	
-	@Test( "test MacroCommand without mapping" )
+	@Async( "test MacroCommand without mapping" )
 	public function testMacroCommandWithoutMapping() : Void
 	{
-		var service = function( cityName : String ) return AsyncCallback.get( function( set ) set( 20 ) );
+		var service = function( cityName ) 
+			return AsyncCallback.get( function( set ) Timer.delay( function() set( cityName=='Luxembourg'?20:0 ), 50 ) );
 
-		var temperature : UInt = 0;
 		this._injector.mapDependencyToValue( new Dependency<TemperatureService>(), service );
 		
 		this._controller.getTemperature( 'Luxembourg' )
-			.onComplete( function(result) temperature = result );
-			
+			.onComplete( MethodRunner.asyncHandler( this._onGetTemperature ) );
+	}
+	
+	function _onGetTemperature( temperature : Int ) : Void
+	{
 		Assert.equals( 20, temperature );
 	}
 }

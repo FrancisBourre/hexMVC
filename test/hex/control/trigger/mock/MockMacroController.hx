@@ -2,7 +2,7 @@ package hex.control.trigger.mock;
 
 #if ( haxe_ver >= "3.3" )
 import hex.collection.ILocator;
-import hex.control.async.IAsyncCallback;
+import hex.control.async.Expect;
 
 /**
  * ...
@@ -28,7 +28,7 @@ class MockMacroController
 		@Type( 'Map<String, String>' )	m 	: Map<Dynamic, Dynamic>,
 		@Ignore							ai	: Array<Int>,
 										d 	: Date
-	) : IAsyncCallback<String>;
+	) : Expect<String>;
 	
 	public function sum( a : Int, b : Int ) : Int 
 	{ 
@@ -40,6 +40,6 @@ class MockMacroController
 							@Name( 'text' ) 		text 		: String, 
 													sender 		: CommandTriggerTest, 
 													locator 	: ILocator<String,Bool>
-						) : IAsyncCallback<String>;
+						) : Expect<String>;
 }
 #end

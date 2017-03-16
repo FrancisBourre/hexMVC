@@ -1,8 +1,8 @@
 package hex.control.trigger.mock;
 
-import hex.control.async.IAsyncCallback;
+import hex.control.async.Expect;
 
 /**
  * @author Francis Bourre
  */
-typedef TemperatureService = String->IAsyncCallback<UInt>;
+typedef TemperatureService = String->Expect<Int>;

@@ -1,6 +1,6 @@
 package hex.control.trigger.mock;
 
-import hex.control.async.IAsyncCallback;
+import hex.control.async.Expect;
 import hex.control.trigger.mock.MockUserVO;
 
 /**
@@ -10,9 +10,9 @@ import hex.control.trigger.mock.MockUserVO;
 class MockUserController implements ICommandTrigger
 {
 	@Map( GetUserVOMacro )
-	public function getUserVO( ageProvider : Void->UInt ) : IAsyncCallback<MockUserVO>;
+	public function getUserVO( ageProvider : Void->UInt ) : Expect<MockUserVO>;
 	
-	public function getTemperature( cityName : String ) : IAsyncCallback<UInt>
+	public function getTemperature( cityName : String ) : Expect<Int>
 	{
 		@Inject
 		var temperatureService : TemperatureService;
