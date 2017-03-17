@@ -183,39 +183,7 @@ class CommandTriggerBuilder
 					}
 					else
 					{
-						switch( func.expr )
-						{
-							case macro {$a { args }} :
-								
-								for ( arg in args )
-								{
-									switch( arg.expr )
-									{
-										case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
-												
-												var varName = vars[0].name;
-												var typeName = vars[0].type.toString();
-												var className = Context.getType( typeName.split('<')[0] );
-
-												var classPack = switch( className ) 
-												{ 
-													case TInst( t, params ): t.toString().split('.');
-													case TAbstract( t, params ): t.toString().split('.');
-													case TType( t, params ): t.toString().split('.');
-													case _: Context.error( 'Injection type cannot be retrieved', func.expr.pos );
-												}
-												
-												if ( classPack.length > 1 ) classPack.pop();
-												typeName = classPack.join('.') + '.' + typeName;
-
-												var varType = vars[0].type;
-												arg.expr = (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v { typeName } )).expr;
-										case _:
-											//trace( arg.expr );
-									}
-								}
-							case _:
-						}
+						CommandTriggerBuilder._searchForInjection( func.expr );
 					}
 				}
 				
@@ -240,6 +208,44 @@ class CommandTriggerBuilder
 			});
 			
 		return fields;
+	}
+	
+	static function _searchForInjection( expr : Expr ) : Void
+	{
+		switch( expr )
+		{
+			case macro {$a { args }} :
+				
+				for ( arg in args )
+				{
+					switch( arg.expr )
+					{
+						case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
+								
+								var varName = vars[0].name;
+								var typeName = vars[0].type.toString();
+								var className = Context.getType( typeName.split('<')[0] );
+
+								var classPack = switch( className ) 
+								{ 
+									case TInst( t, params ): t.toString().split('.');
+									case TAbstract( t, params ): t.toString().split('.');
+									case TType( t, params ): t.toString().split('.');
+									case _: Context.error( 'Injection type cannot be retrieved', expr.pos );
+								}
+								
+								if ( classPack.length > 1 ) classPack.pop();
+								typeName = classPack.join('.') + '.' + typeName;
+
+								var varType = vars[0].type;
+								arg.expr = (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v { typeName } )).expr;
+						
+						case _:
+							CommandTriggerBuilder._searchForInjection( arg );
+					}
+				}
+			case _:
+		}
 	}
 	
 	static function hasMetaValue( meta, metaName : String )
