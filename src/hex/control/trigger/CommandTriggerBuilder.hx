@@ -1,5 +1,6 @@
 package hex.control.trigger;
 
+#if macro
 import haxe.macro.Context;
 import haxe.macro.Expr;
 import haxe.macro.Expr.Access;
@@ -262,3 +263,4 @@ class CommandTriggerBuilder
 			: '';
 	}
 }
+#end
