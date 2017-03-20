@@ -4,6 +4,7 @@ import hex.control.async.MVCAsyncSuite;
 import hex.control.command.MVCCommandSuite;
 import hex.control.guard.CoreGuardSuite;
 import hex.control.macro.MVCMacroSuite;
+import hex.control.trigger.MVCTriggerSuite;
 
 /**
  * ...
@@ -19,6 +20,7 @@ class MVCControlSuite
 		MVCAsyncSuite, 
 		MVCCommandSuite, 
 		MVCMacroSuite, 
+		MVCTriggerSuite, 
 		RequestTestWithGuard,
 		RequestTestWithTypedefMapped,
 		RequestTestWithEnumMapped,
