@@ -18,4 +18,9 @@ class MockUserController implements ICommandTrigger
 		var temperatureService : TemperatureService;
 		return temperatureService( cityName );
 	}
+
+	public function new()
+	{
+
+	}
 }
