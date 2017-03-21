@@ -60,6 +60,7 @@ class Module implements IModule
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
 		this._injector.mapClassNameToValue( 'hex.event.IDispatcher<{}>', this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
+		this._injector.mapToValue( IContextModule, this );
 		this._injector.mapToValue( IModule, this );
 		
 		this._logger = LogManager.getLogger( this.getDomain().getName() );
