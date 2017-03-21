@@ -1,21 +1,14 @@
 package hex.model;
 
 import hex.model.IModelDispatcher;
-
-#if ( haxe_ver >= "3.3" )
 import haxe.Constraints.Constructible;
-#end
 
 /**
  * ...
  * @author duke
  */
 @:generic
-#if ( haxe_ver >= "3.3" )
 class BasicModel<DispatcherType:(IModelDispatcher<ListenerType>, haxe.Constraints.Constructible<Void->Void>), ListenerType: {}>
-#else
-class BasicModel<DispatcherType:IModelDispatcher<ListenerType>, ListenerType: {}>
-#end
 {
 	public var dispatcher : DispatcherType;
 

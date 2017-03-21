@@ -1,6 +1,5 @@
 package hex.control.command;
 
-#if (!neko || haxe_ver >= "3.3")
 import hex.MockDependencyInjector;
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
@@ -226,4 +225,3 @@ private interface IMockType
 {
 	
 }
-#end

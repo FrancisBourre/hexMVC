@@ -1,6 +1,5 @@
 package hex.event;
 
-#if (!neko || haxe_ver >= "3.3")
 import haxe.Timer;
 import hex.control.macro.MacroExecutor;
 import hex.di.Injector;
@@ -50,4 +49,3 @@ class MacroAdapterStrategyTest
 	}
 	
 }
-#end
