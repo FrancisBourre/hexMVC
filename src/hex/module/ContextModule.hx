@@ -3,45 +3,26 @@ package hex.module;
 import haxe.macro.Expr;
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
-import hex.control.FrontController;
-import hex.control.IFrontController;
-import hex.control.Request;
-import hex.control.macro.IMacroExecutor;
-import hex.control.macro.MacroExecutor;
 import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.di.util.InjectionUtil;
-import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
 import hex.error.IllegalStateException;
-import hex.error.VirtualMethodException;
-import hex.event.Dispatcher;
-import hex.event.IDispatcher;
-import hex.event.MessageType;
 import hex.log.ILogger;
 import hex.log.LogManager;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
-import hex.module.IModule;
-import hex.module.dependency.IRuntimeDependencies;
-import hex.module.dependency.RuntimeDependencyChecker;
-import hex.view.IView;
-import hex.view.viewhelper.IViewHelperTypedef;
-import hex.view.viewhelper.ViewHelperManager;
-
-//using hex.di.util.InjectionUtil;
+import hex.module.IContextModule;
 
 /**
  * ...
  * @author Francis Bourre
  */
-class Module implements IModule
+class ContextModule implements IContextModule
 {
-	var _internalDispatcher 	: IDispatcher<{}>;
-	var _domainDispatcher 		: IDispatcher<{}>;
 	var _injector 				: Injector;
 	var _annotationProvider 	: IAnnotationProvider;
 	var _logger 				: ILogger;
@@ -52,15 +33,10 @@ class Module implements IModule
 		this._injector.mapToValue( IBasicInjector, this._injector );
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
-		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
 		this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain() );
 		this._annotationProvider.registerInjector( this._injector );
 		
-		this._internalDispatcher = new Dispatcher<{}>();
-		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
-		this._injector.mapClassNameToValue( 'hex.event.IDispatcher<{}>', this._internalDispatcher );
-		this._injector.mapToType( IMacroExecutor, MacroExecutor );
-		this._injector.mapToValue( IModule, this );
+		this._injector.mapToValue( IContextModule, this );
 		
 		this._logger = LogManager.getLogger( this.getDomain().getName() );
 		this._injector.mapToValue( ILogger, this._logger );
@@ -75,9 +51,7 @@ class Module implements IModule
 		if ( !this.isInitialized )
 		{
 			this._onInitialisation();
-			this._checkRuntimeDependencies( this._getRuntimeDependencies() );
 			this.isInitialized = true;
-			this._fireInitialisationEvent();
 		}
 		else
 		{
@@ -117,62 +91,6 @@ class Module implements IModule
 	}
 
 	/**
-	 * Sends an event outside of the module
-	 * @param	event
-	 */
-	public function dispatchPublicMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
-	{
-		if ( this._domainDispatcher != null )
-		{
-			this._domainDispatcher.dispatch( messageType, data );
-		}
-		else
-		{
-			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
-		}
-	}
-	
-	/**
-	 * Add callback for specific message type
-	 */
-	public function addHandler<T:haxe.Constraints.Function>( messageType : MessageType, scope : Dynamic, callback : T ) : Void
-	{
-		if ( this._domainDispatcher != null )
-		{
-			this._domainDispatcher.addHandler( messageType, scope, callback );
-		}
-		else
-		{
-			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
-		}
-	}
-
-	/**
-	 * Remove callback for specific message type
-	 */
-	public function removeHandler<T:haxe.Constraints.Function>( messageType : MessageType, scope : Dynamic, callback : T ) : Void
-	{
-		if ( this._domainDispatcher != null )
-		{
-			this._domainDispatcher.removeHandler( messageType, scope, callback );
-		}
-		else
-		{
-			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
-		}
-	}
-	
-	function _dispatchPrivateMessage( messageType : MessageType, ?request : Request ) : Void
-	{
-		this._internalDispatcher.dispatch( messageType, [request] );
-	}
-
-	function buildViewHelper( type : Class<IViewHelperTypedef>, view : IView ) : IViewHelperTypedef
-	{
-		return ViewHelperManager.getInstance( this ).buildViewHelper( this._injector, type, view );
-	}
-
-	/**
 	 * Release this module
 	 */
 	@:final 
@@ -182,16 +100,7 @@ class Module implements IModule
 		{
 			this.isReleased = true;
 			this._onRelease();
-			this._fireReleaseEvent();
 
-			ViewHelperManager.release( this );
-			
-			if ( this._domainDispatcher != null )
-			{
-				this._domainDispatcher.removeAllListeners();
-			}
-			
-			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
 			this._annotationProvider.unregisterInjector( this._injector );
@@ -217,38 +126,6 @@ class Module implements IModule
 	}
 	
 	/**
-	 * Fire initialisation event
-	 */
-	@:final
-	function _fireInitialisationEvent() : Void
-	{
-		if ( this.isInitialized )
-		{
-			this.dispatchPublicMessage( ModuleMessage.INITIALIZED, [ this ] );
-		}
-		else
-		{
-			throw new IllegalStateException( this + ".fireModuleInitialisationNote can't be called with previous initialize call." );
-		}
-	}
-
-	/**
-	 * Fire release event
-	 */
-	@:final
-	function _fireReleaseEvent() : Void
-	{
-		if ( this.isReleased )
-		{
-			this.dispatchPublicMessage( ModuleMessage.RELEASED, [ this ] );
-		}
-		else
-		{
-			throw new IllegalStateException( this + ".fireModuleReleaseNote can't be called with previous release call." );
-		}
-	}
-	
-	/**
 	 * Override and implement
 	 */
 	function _onInitialisation() : Void
@@ -271,25 +148,6 @@ class Module implements IModule
 	function _getDependencyInjector() : IDependencyInjector
 	{
 		return this._injector;
-	}
-	
-	/**
-	 * Getter for runtime dependencies that needs to be
-	 * checked before initialisation end
-	 * @return <code>IRuntimeDependencies</code> used by this module
-	 */
-	function _getRuntimeDependencies() : IRuntimeDependencies
-	{
-		throw new VirtualMethodException();
-	}
-	
-	/**
-	 * Check collection of injected dependencies
-	 * @param	dependencies
-	 */
-	function _checkRuntimeDependencies( dependencies : IRuntimeDependencies ) : Void
-	{
-		RuntimeDependencyChecker.check( this, this._injector, dependencies );
 	}
 	
 	/**

@@ -2,7 +2,7 @@ package hex.control.trigger;
 
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorContainer;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * @author Francis Bourre
@@ -12,6 +12,6 @@ import hex.module.IModule;
 #end
 interface ICommandTrigger extends IInjectorContainer
 {
-	var module     : IModule;
+	var module     : IContextModule;
     var injector   : IDependencyInjector;
 }

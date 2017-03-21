@@ -2,7 +2,7 @@ package hex.control.command;
 
 import hex.control.payload.ExecutionPayload;
 import hex.log.ILogger;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * ...
@@ -18,7 +18,7 @@ interface ICommand
 
     function getLogger() : ILogger;
 	
-    function getOwner() : IModule;
+    function getOwner() : IContextModule;
 
-    function setOwner( owner : IModule ) : Void;
+    function setOwner( owner : IContextModule ) : Void;
 }

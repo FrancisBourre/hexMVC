@@ -8,7 +8,9 @@ import haxe.macro.Expr.Field;
 import haxe.macro.Expr.Position;
 import hex.control.payload.ExecutionPayload;
 import hex.control.trigger.Command;
+import hex.di.IDependencyInjector;
 import hex.error.PrivateConstructorException;
+import hex.module.IContextModule;
 import hex.util.MacroUtil;
 
 using haxe.macro.Context;
@@ -32,8 +34,16 @@ class CommandTriggerBuilder
 	macro static public function build() : Array<Field> 
 	{
 		var fields 					= Context.getBuildFields();
+		
+		if ( Context.getLocalClass().get().isInterface )
+		{
+			return fields;
+		}
+		
 		var CommandClassType 		= MacroUtil.getClassType( Type.getClassName( Command ) );
 		var MacroCommandClassType 	= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
+		var IContextModuleClassType 	= MacroUtil.getClassType( Type.getClassName( IContextModule ) );
+		var IDependencyInjectorClassType 	= MacroUtil.getClassType( Type.getClassName( IDependencyInjector ) );
 		
 		for ( f in fields )
 		{
@@ -184,7 +194,8 @@ class CommandTriggerBuilder
 					}
 					else
 					{
-						CommandTriggerBuilder._searchForInjection( func.expr );
+						if( func.expr != null )
+							CommandTriggerBuilder._searchForInjection( func.expr );
 					}
 				}
 				
@@ -193,21 +204,21 @@ class CommandTriggerBuilder
 		}
 		
 		fields.push({ 
-				kind: FVar(TPath( { name: "IModule", pack:  [ "hex", "module" ], params: [] } ), null ), 
-				meta: [ { name: "Inject", params: [], pos: Context.currentPos() }, { name: ":noCompletion", params: [], pos: Context.currentPos() } ], 
+				kind: FVar(TPath( { name: IContextModuleClassType.name, pack:  IContextModuleClassType.pack, params: [] } ), null ), 
+				meta: [ { name: "Inject", params: [], pos: Context.currentPos() } ], 
 				name: "module", 
 				access: [ Access.APublic ],
 				pos: Context.currentPos()
 			});
 			
 		fields.push({ 
-				kind: FVar(TPath( { name: "IDependencyInjector", pack:  [ "hex", "di" ], params: [] } ), null ), 
-				meta: [ { name: "Inject", params: [], pos: Context.currentPos() }, { name: ":noCompletion", params: [], pos: Context.currentPos() } ], 
+				kind: FVar(TPath( { name: IDependencyInjectorClassType.name, pack:  IDependencyInjectorClassType.pack, params: [] } ), null ), 
+				meta: [ { name: "Inject", params: [], pos: Context.currentPos() } ], 
 				name: "injector", 
 				access: [ Access.APublic ],
 				pos: Context.currentPos()
 			});
-			
+	
 		return fields;
 	}
 	

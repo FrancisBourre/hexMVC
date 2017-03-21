@@ -1,4 +1,5 @@
 package hex.control.macro;
+import hex.module.IContextModule;
 
 import haxe.Timer;
 import hex.MockDependencyInjector;
@@ -237,7 +238,7 @@ class MacroExecutorTest
 
 private class MockCommand implements ICommand
 {
-	var _owner : IModule;
+	var _owner : IContextModule;
 	
 	public var executeMethodName( default, null ) : String = "execute";
 	
@@ -266,12 +267,12 @@ private class MockCommand implements ICommand
 		return null;
 	}
 	
-	public function getOwner() : IModule 
+	public function getOwner() : IContextModule 
 	{
 		return this._owner;
 	}
 	
-	public function setOwner( owner : IModule ) : Void 
+	public function setOwner( owner : IContextModule ) : Void 
 	{
 		this._owner = owner;
 	}

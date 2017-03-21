@@ -3,7 +3,7 @@ package hex.control.macro;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.log.ILogger;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * ...
@@ -11,7 +11,7 @@ import hex.module.IModule;
  */
 class MockCommand implements ICommand
 {
-	var _owner : IModule;
+	var _owner : IContextModule;
 	
 	public var executeMethodName( default, null ) : String = "execute";
 	
@@ -42,12 +42,12 @@ class MockCommand implements ICommand
 		return null;
 	}
 	
-	public function getOwner() : IModule 
+	public function getOwner() : IContextModule 
 	{
 		return _owner;
 	}
 	
-	public function setOwner( owner : IModule ) : Void 
+	public function setOwner( owner : IContextModule ) : Void 
 	{
 		this._owner = owner;
 	}

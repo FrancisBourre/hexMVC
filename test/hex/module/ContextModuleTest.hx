@@ -7,28 +7,17 @@ import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.di.error.MissingMappingException;
-import hex.di.mapping.MappingDefinition;
 import hex.domain.DomainExpert;
 import hex.error.Exception;
 import hex.error.IllegalStateException;
-import hex.error.VirtualMethodException;
-import hex.event.Dispatcher;
-import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.log.ILogger;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;
-import hex.module.dependency.IRuntimeDependencies;
-import hex.module.dependency.RuntimeDependencies;
-import hex.module.dependency.RuntimeDependencyException;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
 import hex.unittest.assertion.Assert;
-import hex.view.IView;
-import hex.view.viewhelper.IViewHelperTypedef;
-import hex.view.viewhelper.MockView;
-import hex.view.viewhelper.ViewHelper;
 
 using hex.di.util.InjectionUtil;
 
@@ -36,15 +25,13 @@ using hex.di.util.InjectionUtil;
  * ...
  * @author Francis Bourre
  */
-class ModuleTest
+class ContextModuleTest
 {
 	@Test( "Test constructor" )
 	public function testconstructor() : Void
 	{
 		var module : MockModuleForTestingConstructor = new MockModuleForTestingConstructor();
 		Assert.isInstanceOf( module.injector, Injector, "injector shouldn't be null" );
-		Assert.isInstanceOf( module.dispatcher, Dispatcher, "dispatcher shouldn't be null" );
-		Assert.isInstanceOf( module.domainDispatcher, IDispatcher, "domainDispatcher shouldn't be null" );
 		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
 	}
 	
@@ -67,19 +54,6 @@ class ModuleTest
 		Assert.equals( 1, MockStatelessConfig.configureWasCalled, "'configure' method should have been called once" );
 	}
 	
-	@Test( "Test runtime dependencies" )
-	public function testRuntimeDependencies() : Void
-	{
-		var module : MockModuleForTestingVirtualException = new MockModuleForTestingVirtualException();
-		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
-		
-		var anotherModule : MockModuleForTestingRuntimeDependencies = new MockModuleForTestingRuntimeDependencies();
-		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
-		
-		anotherModule.mapServiceClass( MockService );
-		anotherModule.initialize();
-	}
-	
 	@Test( "Test getInjector behavior" )
 	public function testGetInjector() : Void
 	{
@@ -91,18 +65,11 @@ class ModuleTest
 	public function testInitialize() : Void
 	{
 		var module : MockModuleForTestingInitialisation = new MockModuleForTestingInitialisation();
-		var listener : MockModuleListener = new MockModuleListener();
-		module.addHandler( ModuleMessage.INITIALIZED, listener, listener.onInit );
-		
+
 		module.initialize();
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
 		Assert.isTrue( module.isInitialized, "'isInitialized' should return true" );
 		
-		Assert.equals( 1, listener.onInitCallCount, "message should have been dispatched to listeners" );
-		Assert.equals( module, listener.moduleReference, "module should be the same" );
-		
-		Assert.isInstanceOf( module.getPrivateDispatcher(), Dispatcher,  "private dispatcher should not be null" );
-		Assert.isInstanceOf( module.getPublicDispatcher(), Dispatcher,  "public dispatcher should not be null" );
 		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
 		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
@@ -113,31 +80,23 @@ class ModuleTest
 	public function testRelease() : Void
 	{
 		var module : MockModuleForTestingRelease = new MockModuleForTestingRelease();
-		var listener : MockModuleListener = new MockModuleListener();
-		module.addHandler( ModuleMessage.RELEASED, listener, listener.onRelease );
-		
+
 		module.release();
 		Assert.equals( 1, module.releaseCallCount, "release should have been called once" );
 		Assert.isTrue( module.isReleased, "'isReleased' should return true" );
 		
-		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
-		Assert.equals( module, listener.moduleReference, "module should be the same" );
-		
-		Assert.isTrue( module.getPrivateDispatcher().isEmpty(),  "all listeners should have been removed" );
-		Assert.isTrue( module.getPublicDispatcher().isEmpty(),  "all listeners should have been removed" );
 		Assert.isNull( DomainExpert.getInstance().getDomainFor( module ), "domain should be null" );
 		Assert.isNull( module.getLogger(), "logger should be null" );
 		
 		Assert.methodCallThrows( IllegalStateException, module, module.release, [], "'release' called twice should throw 'IllegalStateException'" );
-		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
 	}
 	
 	@Test( "Test get accessor" )
 	public function testGetAccessor() : Void
 	{
 		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
-		module.getInjector().mapToValue( ModuleTest, this );
-		Assert.equals ( this, module.get( ModuleTest ), "'_get' method call should return mapping result from internal module's injector" );
+		module.getInjector().mapToValue( ContextModuleTest, this );
+		Assert.equals ( this, module.get( ContextModuleTest ), "'_get' method call should return mapping result from internal module's injector" );
 		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ Exception ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
 	}
 	
@@ -145,9 +104,9 @@ class ModuleTest
 	public function testGetAccessorWithName() : Void
 	{
 		var module : MockModuleForTestigInjector = new MockModuleForTestigInjector();
-		module.getInjector().mapToValue( ModuleTest, this, 'name' );
-		Assert.equals ( this, module.get( ModuleTest, 'name' ), "'_get' method call should return mapping result from internal module's injector" );
-		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ ModuleTest ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
+		module.getInjector().mapToValue( ContextModuleTest, this, 'name' );
+		Assert.equals ( this, module.get( ContextModuleTest, 'name' ), "'_get' method call should return mapping result from internal module's injector" );
+		Assert.methodCallThrows ( MissingMappingException, module, module.get, [ ContextModuleTest ], "_get' method call should throw 'MissingMappingException' when the mapping is missing" );
 	}
 	
 	@Test( "Test map" )
@@ -195,19 +154,6 @@ class ModuleTest
 		Assert.equals ( module.getInjector(), module.get( IDependencyInjector ), "'_get' method call should return module's injector" );
 		Assert.deepEquals ( [ 3, 4 ], module.a, "'_getDependency' method call should return module's injector call" );
 	}
-	
-	@Test( "Test build ViewHelper" )
-	public function testBuildViewHelper() : Void
-	{
-		var module 		= new MockModuleForTestingViewHelper();
-		var view 		= new MockView();
-		var viewHelper 	= module.mockBuildViewHelper( ViewHelper, view );
-		
-		Assert.isInstanceOf( viewHelper, ViewHelper );
-		Assert.equals( view, viewHelper.view );
-		Assert.isTrue( module.getInjector().hasMapping( ViewHelper ) );
-		Assert.equals( viewHelper, module.getInjector().getInstance( ViewHelper ) );
-	}
 }
 
 private interface IMockInterface
@@ -223,21 +169,7 @@ private class MockClass implements IMockInterface
 	}
 }
 
-private class MockModuleForTestingViewHelper extends Module
-{
-	public function new()
-	{
-		super();
-
-	}
-	
-	public function mockBuildViewHelper( type : Class<IViewHelperTypedef>, view : IView ) : IViewHelperTypedef
-	{
-		return this.buildViewHelper( type, view );
-	}
-}
-
-private class MockModuleForTestigInjector extends Module
+private class MockModuleForTestigInjector extends ContextModule
 {
 	public var a : Array<Int>;
 	
@@ -260,7 +192,7 @@ private class MockModuleForTestigInjector extends Module
 	}
 }
 
-private class MockModuleForTestingVirtualException extends Module
+private class MockModuleForTestingVirtualException extends ContextModule
 {
 	public function new()
 	{
@@ -293,7 +225,7 @@ private class MockModuleListener
 	}
 }
 
-private class MockModuleForTestingInitialisation extends Module
+private class MockModuleForTestingInitialisation extends ContextModule
 {
 	public var initialisationCallCount : Int = 0;
 	
@@ -307,24 +239,9 @@ private class MockModuleForTestingInitialisation extends Module
 		super._onInitialisation();
 		this.initialisationCallCount++;
 	}
-	
-	override function _getRuntimeDependencies() : IRuntimeDependencies 
-	{
-		return new RuntimeDependencies();
-	}
-	
-	public function getPrivateDispatcher() : IDispatcher<{}>
-	{
-		return this._internalDispatcher;
-	}
-	
-	public function getPublicDispatcher() : IDispatcher<{}>
-	{
-		return this._domainDispatcher;
-	}
 }
 
-private class MockModuleForTestingRelease extends Module
+private class MockModuleForTestingRelease extends ContextModule
 {
 	public var releaseCallCount : Int = 0;
 	
@@ -338,27 +255,11 @@ private class MockModuleForTestingRelease extends Module
 		super._onRelease();
 		this.releaseCallCount++;
 	}
-	
-	override function _getRuntimeDependencies() : IRuntimeDependencies 
-	{
-		return new RuntimeDependencies();
-	}
-	public function getPrivateDispatcher() : IDispatcher<{}>
-	{
-		return this._internalDispatcher;
-	}
-	
-	public function getPublicDispatcher() : IDispatcher<{}>
-	{
-		return this._domainDispatcher;
-	}
 }
 
-private class MockModuleForTestingConstructor extends Module
+private class MockModuleForTestingConstructor extends ContextModule
 {
 	public var injector 			: Injector;
-	public var dispatcher 			: IDispatcher<{}>;
-	public var domainDispatcher		: IDispatcher<{}>;
 	public var annotationProvider	: IAnnotationProvider;
 	
 	public function new()
@@ -366,36 +267,13 @@ private class MockModuleForTestingConstructor extends Module
 		super();
 
 		this.injector 			= this._injector;
-		this.dispatcher 		= this._internalDispatcher;
-		this.domainDispatcher 	= this._domainDispatcher;
 		this.annotationProvider = this._annotationProvider;
 	}
 }
 
-private class MockModuleForTestingRuntimeDependencies extends Module
-{
-	public function new()
-	{
-		super();
-	}
-	
-	public function mapServiceClass( serviceClass : Class<IService> ) : Void
-	{
-		this._injector.mapToType( IService, serviceClass );
-	}
-	
-	override function _getRuntimeDependencies() : IRuntimeDependencies 
-	{
-		var rd : RuntimeDependencies = new RuntimeDependencies();
-		rd.addMappedDependencies( [ new MappingDefinition( IService ) ]);
-		return rd;
-	}
-}
-
-private class MockModuleForTestingStatelessConfig extends Module
+private class MockModuleForTestingStatelessConfig extends ContextModule
 {
 	public var injector 	: Injector;
-	public var dispatcher 	: IDispatcher<{}>;
 	
 	public function new( ?statelessConfigClass : Class<IStatelessConfig> )
 	{
@@ -422,11 +300,10 @@ private class MockStatelessConfig implements IStatelessConfig
 	}
 }
 
-private class MockModuleForTestingStateFulConfig extends Module
+private class MockModuleForTestingStateFulConfig extends ContextModule
 {
 	public var injector 	: Injector;
-	public var dispatcher 	: IDispatcher<{}>;
-	
+
 	public function new( ?statefulConfig : IStatefulConfig )
 	{
 		super();
@@ -434,7 +311,6 @@ private class MockModuleForTestingStateFulConfig extends Module
 		this._addStatefulConfigs( [statefulConfig] );
 
 		this.injector = this._injector;
-		this.dispatcher = this._internalDispatcher;
 	}
 }
 

@@ -12,6 +12,7 @@ import hex.event.Dispatcher;
 import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.log.ILogger;
+import hex.module.IContextModule;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 
@@ -147,7 +148,7 @@ private class MockCommand implements ICommand
 		return null;
 	}
 	
-	public function setOwner( owner : IModule ) : Void 
+	public function setOwner( owner : IContextModule ) : Void 
 	{
 		
 	}

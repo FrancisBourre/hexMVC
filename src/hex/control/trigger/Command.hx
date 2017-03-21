@@ -2,15 +2,15 @@ package hex.control.trigger;
 
 import hex.control.Callback;
 import hex.control.async.AsyncCallback;
-import hex.control.async.Handler;
 import hex.control.async.Expect;
+import hex.control.async.Handler;
 import hex.control.command.ICommand;
 import hex.control.payload.ExecutionPayload;
 import hex.di.IInjectorContainer;
 import hex.error.Exception;
 import hex.error.VirtualMethodException;
 import hex.log.ILogger;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * ...
@@ -20,7 +20,7 @@ class Command<ResultType> implements Expect<ResultType> implements ICommand impl
 {
 	var _acb 				: Expect<ResultType>;
 	var _handler 			: Handler<ResultType>;
-	var _owner 				: IModule;
+	var _owner 				: IContextModule;
 	
 	public function new() 
 	{
@@ -101,12 +101,12 @@ class Command<ResultType> implements Expect<ResultType> implements ICommand impl
 		return this._owner.getLogger();
 	}
 	
-	public function getOwner() : IModule 
+	public function getOwner() : IContextModule 
 	{
 		return this._owner;
 	}
 	
-	public function setOwner( owner : IModule ) : Void 
+	public function setOwner( owner : IContextModule ) : Void 
 	{
 		this._owner = owner;
 	}

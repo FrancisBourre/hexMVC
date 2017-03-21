@@ -5,7 +5,7 @@ import hex.control.payload.ExecutionPayload;
 import hex.di.IInjectorContainer;
 import hex.error.VirtualMethodException;
 import hex.log.ILogger;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * ...
@@ -13,7 +13,7 @@ import hex.module.IModule;
  */
 class BasicCommand implements ICommand implements IInjectorContainer
 {
-	var _owner : IModule;
+	var _owner : IContextModule;
 
 	public function new() 
 	{
@@ -39,12 +39,12 @@ class BasicCommand implements ICommand implements IInjectorContainer
 		return this._owner.getLogger();
 	}
 	
-	public function getOwner() : IModule 
+	public function getOwner() : IContextModule 
 	{
 		return this._owner;
 	}
 	
-	public function setOwner( owner : IModule ) : Void 
+	public function setOwner( owner : IContextModule ) : Void 
 	{
 		this._owner = owner;
 	}

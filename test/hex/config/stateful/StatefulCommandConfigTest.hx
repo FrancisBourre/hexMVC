@@ -34,7 +34,7 @@ class StatefulCommandConfigTest
 		var controller = new MockFrontController();
 		var injector = new MockInjectorWithFrontController( controller );
 		var config = new StatefulCommandConfig();
-		config.configure( injector, new Dispatcher<{}>(), new MockModule() );
+		config.configure( injector, new MockModule() );
 		
 		var messageType = new MessageType( "test" );
 		config.map( messageType, BasicCommand );
