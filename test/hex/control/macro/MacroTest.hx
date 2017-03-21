@@ -24,7 +24,6 @@ import hex.unittest.runner.MethodRunner;
  */
 class MacroTest
 {
-	#if (!neko || haxe_ver >= "3.3")
 	var _macro 			: Macro;
 	var _macroExecutor 	: MockMacroExecutor;
 
@@ -276,7 +275,6 @@ class MacroTest
 		
 		Assert.equals( request, myMacro.requestPassedDuringExecution, "request should be available from prepare" );
 	}
-	#end
 }
 
 private class MockMacroExecutor implements IMacroExecutor

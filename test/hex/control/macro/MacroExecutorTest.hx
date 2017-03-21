@@ -1,13 +1,11 @@
 package hex.control.macro;
 
-#if (!neko || haxe_ver >= "3.3")
 import haxe.Timer;
 import hex.MockDependencyInjector;
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
-import hex.control.command.BasicCommand;
 import hex.control.command.CommandMapping;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
@@ -379,4 +377,3 @@ private interface IMockType
 {
 	
 }
-#end

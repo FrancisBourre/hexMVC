@@ -1,6 +1,5 @@
 package hex.control.trigger.mock;
 
-#if ( haxe_ver >= "3.3" )
 import hex.collection.Locator;
 import hex.control.async.Expect;
 import hex.control.async.Nothing;
@@ -32,4 +31,3 @@ class MockController
 		return a + b;
 	}
 }
-#end

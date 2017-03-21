@@ -1,8 +1,6 @@
 package hex.control.trigger;
 
-#if ( haxe_ver >= "3.3" )
 import hex.collection.Locator;
-import hex.control.async.Nothing;
 import hex.control.trigger.MockCommandClassWithParameters;
 import hex.control.trigger.MockCommandClassWithoutParameters;
 import hex.control.trigger.mock.MockController;
@@ -12,11 +10,7 @@ import hex.control.trigger.mock.MockMacroCommand;
 import hex.control.trigger.mock.MockMacroController;
 import hex.control.trigger.mock.MockModule;
 import hex.di.IDependencyInjector;
-import hex.di.IInjectorListener;
 import hex.di.Injector;
-import hex.di.provider.IDependencyProvider;
-import hex.domain.Domain;
-import hex.event.MessageType;
 import hex.log.ILogger;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
@@ -167,11 +161,3 @@ class CommandTriggerTest
 		Assert.equals( vos[ 8 ], acmd.pDate );
 	}
 }
-#else
-
-class CommandTriggerTest
-{
-	public function new(){}
-}
-
-#end

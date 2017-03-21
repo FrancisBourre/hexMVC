@@ -1,6 +1,5 @@
 package hex.control.trigger.mock;
 
-#if ( haxe_ver >= "3.3" )
 import hex.collection.ILocator;
 import hex.control.async.Expect;
 
@@ -42,4 +41,3 @@ class MockMacroController
 													locator 	: ILocator<String,Bool>
 						) : Expect<String>;
 }
-#end
