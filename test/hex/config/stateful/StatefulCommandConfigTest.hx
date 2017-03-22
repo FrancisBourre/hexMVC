@@ -25,7 +25,7 @@ class StatefulCommandConfigTest
     public function testConfigureThrowsInjectorMissingMappingError() : Void
     {
 		var config = new StatefulCommandConfig();
-        Assert.methodCallThrows( MissingMappingException, config, config.configure, [ new MockDependencyInjector(), new Dispatcher<{}>(), new MockModule() ], "constructor should throw IllegalArgumentException" );
+        Assert.methodCallThrows( MissingMappingException, config, config.configure, [ new MockDependencyInjector(), new MockModule() ], "constructor should throw IllegalArgumentException" );
     }
 	
 	@Test( "Test 'map' behavior" )
