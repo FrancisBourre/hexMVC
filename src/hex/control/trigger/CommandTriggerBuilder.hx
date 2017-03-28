@@ -205,7 +205,7 @@ class CommandTriggerBuilder
 		
 		fields.push({ 
 				kind: FVar(TPath( { name: IContextModuleClassType.name, pack:  IContextModuleClassType.pack, params: [] } ), null ), 
-				meta: [ { name: "Inject", params: [], pos: Context.currentPos() } ], 
+				meta: [ { name: "Inject", params: [], pos: Context.currentPos() }, { name: "Optional", params: [macro true], pos: Context.currentPos() } ], 
 				name: "module", 
 				access: [ Access.APublic ],
 				pos: Context.currentPos()
