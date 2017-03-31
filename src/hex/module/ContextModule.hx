@@ -188,15 +188,15 @@ class ContextModule implements IContextModule
 	/**
 	 * 
 	 */
-	function _map<T>( tInterface : Class<T>, tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
+	function _map<T>( tInterface : Class<T>, ?tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
 	{
 		if ( asSingleton )
 		{
-			this._injector.mapToSingleton( tInterface, tClass, name );
+			this._injector.mapToSingleton( tInterface, tClass != null ? tClass : tInterface, name );
 		}
 		else
 		{
-			this._injector.mapToType( tInterface, tClass, name );
+			this._injector.mapToType( tInterface, tClass != null ? tClass : tInterface, name );
 		}
 	}
 	
