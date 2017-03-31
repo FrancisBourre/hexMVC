@@ -234,28 +234,15 @@ class CommandTriggerBuilder
 					{
 						case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
 								
-								var varName = vars[0].name;
-								var typeName = vars[0].type.toString();
-								var className = Context.getType( typeName.split('<')[0] );
+								var varName 	= vars[0].name;
+								var varType 	= vars[0].type;
+								arg.expr 		= (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v{ MacroUtil.getFQCNFromComplexType( varType ) } )).expr;
 
-								var classPack = switch( className ) 
-								{ 
-									case TInst( t, params ): t.toString().split('.');
-									case TAbstract( t, params ): t.toString().split('.');
-									case TType( t, params ): t.toString().split('.');
-									case _: Context.error( 'Injection type cannot be retrieved', expr.pos );
-								}
-								
-								if ( classPack.length > 1 ) classPack.pop();
-								typeName = classPack.join('.') + '.' + typeName;
-
-								var varType = vars[0].type;
-								arg.expr = (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v { typeName } )).expr;
-						
 						case _:
 							CommandTriggerBuilder._searchForInjection( arg );
 					}
 				}
+				
 			case _:
 		}
 	}
