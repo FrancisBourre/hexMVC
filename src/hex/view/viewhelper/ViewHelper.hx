@@ -153,12 +153,12 @@ class ViewHelper<ViewType:IView> implements IViewHelper<ViewType> implements IIn
 		this._internal.removeAllListeners();
 	}
 	
-	public function addHandler<T:haxe.Constraints.Function>( messageType : MessageType, callback : T ) : Void
+	public function addHandler( messageType : MessageType, callback : haxe.Constraints.Function ) : Void
 	{
 		this._internal.addHandler( messageType, callback );
 	}
 	
-	public function removeHandler<T:haxe.Constraints.Function>( messageType : MessageType, callback : T ) : Void
+	public function removeHandler( messageType : MessageType, callback : haxe.Constraints.Function ) : Void
 	{
 		this._internal.removeHandler( messageType, callback );
 	}
