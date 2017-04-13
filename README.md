@@ -12,6 +12,10 @@ hexMVC is a powerful MVC+S framework
 * [hexInject](https://github.com/DoclerLabs/hexInject)
 	
 	
+## Features
+- [Extending hexLog functionality and providing domain information](src/hex/log/README.md)
+
+	
 ## Module example with service locator
 ```haxe
 private class MModule extends Module

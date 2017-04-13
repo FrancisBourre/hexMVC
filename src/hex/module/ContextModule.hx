@@ -7,12 +7,14 @@ import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
+import hex.di.provider.DomainLoggerProvider;
 import hex.di.util.InjectionUtil;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
 import hex.error.IllegalStateException;
 import hex.log.ILogger;
 import hex.log.LogManager;
+import hex.log.message.DomainMessageFactory;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IContextModule;
@@ -38,8 +40,10 @@ class ContextModule implements IContextModule
 		
 		this._injector.mapToValue( IContextModule, this );
 		
-		this._logger = LogManager.getLogger( this.getDomain().getName() );
-		this._injector.mapToValue( ILogger, this._logger );
+		
+		var factory = new DomainMessageFactory(this.getDomain());
+		this._logger = LogManager.getLoggerByInstance(this, factory);
+		this._injector.map(ILogger).toProvider(new DomainLoggerProvider(factory, this._logger));
 	}
 			
 	/**
