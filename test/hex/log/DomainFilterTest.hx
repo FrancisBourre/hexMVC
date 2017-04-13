@@ -25,9 +25,9 @@ class DomainFilterTest
 		var d = Domain.getDomain("testDomain");
 		var filter = new DomainFilter(d, FilterResult.ACCEPT, FilterResult.DENY);
 		
-		Assert.equals(FilterResult.ACCEPT, filter.filterEvent(new LogEvent(null, new DomainMessage(d, "", []), null)));
+		Assert.equals(FilterResult.ACCEPT, filter.filterEvent(new LogEvent(null, new DomainMessage(d, "", []), LogLevel.DEBUG)));
 		Assert.equals(FilterResult.ACCEPT, filter.filterLoggerMessage(null, new DomainMessage(d, "", [])));
-		Assert.equals(FilterResult.ACCEPT, filter.filterMessage(null, null, new DomainMessage(d, "", [])));
+		Assert.equals(FilterResult.ACCEPT, filter.filterMessage(null, LogLevel.DEBUG, new DomainMessage(d, "", [])));
 	}
 	
 	@Test("Test domain filter mismatch")
@@ -36,10 +36,10 @@ class DomainFilterTest
 		var d = Domain.getDomain("testDomain");
 		var filter = new DomainFilter(TopLevelDomain.DOMAIN, FilterResult.ACCEPT, FilterResult.DENY);
 		
-		Assert.equals(FilterResult.DENY, filter.filter(null, null, "", []));
-		Assert.equals(FilterResult.DENY, filter.filterEvent(new LogEvent(null, new DomainMessage(d, "", []), null)));
+		Assert.equals(FilterResult.DENY, filter.filter(null, LogLevel.DEBUG, "", []));
+		Assert.equals(FilterResult.DENY, filter.filterEvent(new LogEvent(null, new DomainMessage(d, "", []), LogLevel.DEBUG)));
 		Assert.equals(FilterResult.DENY, filter.filterLoggerMessage(null, new DomainMessage(d, "", [])));
-		Assert.equals(FilterResult.DENY, filter.filterMessage(null, null, new DomainMessage(d, "", [])));
+		Assert.equals(FilterResult.DENY, filter.filterMessage(null, LogLevel.DEBUG, new DomainMessage(d, "", [])));
 	}
 	
 }
