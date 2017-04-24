@@ -5,7 +5,7 @@ import hex.control.async.IAsyncCommand;
 import hex.control.async.IAsyncCommandListener;
 import hex.control.payload.ExecutionPayload;
 import hex.log.ILogger;
-import hex.module.IModule;
+import hex.module.IContextModule;
 import hex.unittest.assertion.Assert;
 
 /**
@@ -139,12 +139,12 @@ private class MockAsyncCommand implements IAsyncCommand
 		return null;
 	}
 	
-	public function getOwner() : IModule 
+	public function getOwner() : IContextModule 
 	{
 		return null;
 	}
 	
-	public function setOwner( owner : IModule ) : Void 
+	public function setOwner( owner : IContextModule ) : Void 
 	{
 		
 	}

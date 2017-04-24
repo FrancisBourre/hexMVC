@@ -7,9 +7,8 @@ import hex.control.command.ICommandMapping;
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorContainer;
 import hex.di.error.MissingMappingException;
-import hex.event.IDispatcher;
 import hex.event.MessageType;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * ...
@@ -27,7 +26,7 @@ class StatefulCommandConfig implements IStatefulConfig implements IInjectorConta
 	/**
      * Configure will be invoked after dependencies have been supplied
      */
-	public function configure( injector : IDependencyInjector, dispatcher : IDispatcher<{}>, module : IModule ) : Void
+	public function configure( injector : IDependencyInjector, module : IContextModule ) : Void
 	{
 		this._frontController = injector.getInstance( IFrontController );
 		

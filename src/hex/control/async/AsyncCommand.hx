@@ -9,8 +9,8 @@ import hex.error.IllegalStateException;
 import hex.error.VirtualMethodException;
 import hex.event.ClosureDispatcher;
 import hex.log.ILogger;
+import hex.module.IContextModule;
 import hex.util.Stringifier;
-import hex.module.IModule;
 
 /**
  * ...
@@ -26,7 +26,7 @@ class AsyncCommand implements IAsyncCommand implements IInjectorContainer
 
     var _status                         : String;
     var _dispatcher 					: ClosureDispatcher;
-    var _owner                          : IModule;
+    var _owner                          : IContextModule;
 
     public function new()
     {
@@ -193,12 +193,12 @@ class AsyncCommand implements IAsyncCommand implements IInjectorContainer
 		return null;
 	}
 
-    public function getOwner() : IModule
+    public function getOwner() : IContextModule
     {
         return this._owner;
     }
 
-    public function setOwner( owner : IModule ) : Void
+    public function setOwner( owner : IContextModule ) : Void
     {
         if ( this._owner == null )
         {

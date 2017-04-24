@@ -12,6 +12,7 @@ import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
+import hex.di.provider.DomainLoggerProvider;
 import hex.di.util.InjectionUtil;
 import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
@@ -23,6 +24,7 @@ import hex.event.IDispatcher;
 import hex.event.MessageType;
 import hex.log.ILogger;
 import hex.log.LogManager;
+import hex.log.message.DomainMessageFactory;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;
@@ -31,8 +33,6 @@ import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
 import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelperManager;
-
-//using hex.di.util.InjectionUtil;
 
 /**
  * ...
@@ -60,10 +60,13 @@ class Module implements IModule
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
 		this._injector.mapClassNameToValue( 'hex.event.IDispatcher<{}>', this._internalDispatcher );
 		this._injector.mapToType( IMacroExecutor, MacroExecutor );
+		this._injector.mapToValue( IContextModule, this );
 		this._injector.mapToValue( IModule, this );
 		
-		this._logger = LogManager.getLogger( this.getDomain().getName() );
-		this._injector.mapToValue( ILogger, this._logger );
+		
+		var factory = new DomainMessageFactory(this.getDomain());
+		this._logger = LogManager.getLoggerByInstance(this, factory);
+		this._injector.map(ILogger).toProvider(new DomainLoggerProvider(factory, _logger));
 	}
 			
 	/**
@@ -72,17 +75,22 @@ class Module implements IModule
 	@:final 
 	public function initialize() : Void
 	{
+		#if debug
 		if ( !this.isInitialized )
 		{
+		#end
 			this._onInitialisation();
+			
+			#if debug
 			this._checkRuntimeDependencies( this._getRuntimeDependencies() );
+			#end
+			
 			this.isInitialized = true;
 			this._fireInitialisationEvent();
+		#if debug
 		}
-		else
-		{
-			throw new IllegalStateException( "initialize can't be called more than once. Check your code." );
-		}
+		else throw new IllegalStateException( "initialize can't be called more than once. Check your code." );
+		#end
 	}
 
 	/**
@@ -122,44 +130,41 @@ class Module implements IModule
 	 */
 	public function dispatchPublicMessage( messageType : MessageType, ?data : Array<Dynamic> ) : Void
 	{
+		#if debug
 		if ( this._domainDispatcher != null )
-		{
+		#end
 			this._domainDispatcher.dispatch( messageType, data );
-		}
-		else
-		{
-			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
-		}
+		#if debug
+		else throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
+		#end
 	}
 	
 	/**
 	 * Add callback for specific message type
 	 */
-	public function addHandler<T:haxe.Constraints.Function>( messageType : MessageType, scope : Dynamic, callback : T ) : Void
+	public function addHandler( messageType : MessageType, scope : Dynamic, callback : haxe.Constraints.Function ) : Void
 	{
+		#if debug
 		if ( this._domainDispatcher != null )
-		{
+		#end
 			this._domainDispatcher.addHandler( messageType, scope, callback );
-		}
-		else
-		{
-			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
-		}
+		#if debug
+		else throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
+		#end
 	}
 
 	/**
 	 * Remove callback for specific message type
 	 */
-	public function removeHandler<T:haxe.Constraints.Function>( messageType : MessageType, scope : Dynamic, callback : T ) : Void
+	public function removeHandler( messageType : MessageType, scope : Dynamic, callback : haxe.Constraints.Function ) : Void
 	{
+		#if debug
 		if ( this._domainDispatcher != null )
-		{
+		#end
 			this._domainDispatcher.removeHandler( messageType, scope, callback );
-		}
-		else
-		{
-			throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
-		}
+		#if debug
+		else throw new IllegalStateException( "Domain dispatcher is null. Try to use 'Module.registerInternalDomain' before calling super constructor to fix the problem");
+		#end
 	}
 	
 	function _dispatchPrivateMessage( messageType : MessageType, ?request : Request ) : Void
@@ -178,8 +183,10 @@ class Module implements IModule
 	@:final 
 	public function release() : Void
 	{
+		#if debug
 		if ( !this.isReleased )
 		{
+		#end
 			this.isReleased = true;
 			this._onRelease();
 			this._fireReleaseEvent();
@@ -199,11 +206,10 @@ class Module implements IModule
 			this._injector.teardown();
 			
 			this._logger = null;
+		#if debug
 		}
-		else
-		{
-			throw new IllegalStateException( this + ".release can't be called more than once. Check your code." );
-		}
+		else throw new IllegalStateException( this + ".release can't be called more than once. Check your code." );
+		#end
 	}
 	
 	public function getInjector() : IDependencyInjector
@@ -222,14 +228,13 @@ class Module implements IModule
 	@:final
 	function _fireInitialisationEvent() : Void
 	{
+		#if debug
 		if ( this.isInitialized )
-		{
+		#end
 			this.dispatchPublicMessage( ModuleMessage.INITIALIZED, [ this ] );
-		}
-		else
-		{
-			throw new IllegalStateException( this + ".fireModuleInitialisationNote can't be called with previous initialize call." );
-		}
+		#if debug
+		else throw new IllegalStateException( this + ".fireModuleInitialisationNote can't be called with previous initialize call." );
+		#end
 	}
 
 	/**
@@ -238,14 +243,13 @@ class Module implements IModule
 	@:final
 	function _fireReleaseEvent() : Void
 	{
+		#if debug
 		if ( this.isReleased )
-		{
+		#end
 			this.dispatchPublicMessage( ModuleMessage.RELEASED, [ this ] );
-		}
-		else
-		{
-			throw new IllegalStateException( this + ".fireModuleReleaseNote can't be called with previous release call." );
-		}
+		#if debug
+		else throw new IllegalStateException( this + ".fireModuleReleaseNote can't be called with previous release call." );
+		#end
 	}
 	
 	/**
@@ -315,7 +319,7 @@ class Module implements IModule
 	{
 		for ( configuration in configurations )
 		{
-			configuration.configure( this._injector, this._internalDispatcher, this );
+			configuration.configure( this._injector, this );
 		}
 	}
 	
@@ -330,15 +334,15 @@ class Module implements IModule
 	/**
 	 * 
 	 */
-	function _map<T>( tInterface : Class<T>, tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
+	function _map<T>( tInterface : Class<T>, ?tClass : Class<T>,  name : String = "", asSingleton : Bool = false ) : Void
 	{
 		if ( asSingleton )
 		{
-			this._injector.mapToSingleton( tInterface, tClass, name );
+			this._injector.mapToSingleton( tInterface, tClass != null ? tClass : tInterface, name );
 		}
 		else
 		{
-			this._injector.mapToType( tInterface, tClass, name );
+			this._injector.mapToType( tInterface, tClass != null ? tClass : tInterface, name );
 		}
 	}
 	

@@ -2,7 +2,7 @@ package hex.control.command;
 
 import hex.control.Request;
 import hex.control.async.AsyncCommand;
-import hex.module.IModule;
+import hex.module.IContextModule;
 
 /**
  * ...
@@ -13,13 +13,13 @@ class MockAsyncCommandForTestingExecution extends AsyncCommand
 	static public var executeCallCount 		: Int = 0;
 	static public var preExecuteCallCount 	: Int = 0;
 	
-	static public var owner 				: IModule;
+	static public var owner 				: IContextModule;
 	
 	static public var completeHandlers 		: Array<AsyncCommand->Void> = [];
 	static public var failHandlers 			: Array<AsyncCommand->Void> = [];
 	static public var cancelHandlers 		: Array<AsyncCommand->Void> = [];
 	
-	override public function setOwner( owner : IModule ) : Void 
+	override public function setOwner( owner : IContextModule ) : Void 
 	{
 		MockAsyncCommandForTestingExecution.owner = owner;
 	}
