@@ -1,5 +1,6 @@
 package hex.control.command;
 
+import Std;
 import hex.control.async.AsyncCommandUtil;
 import hex.control.async.IAsyncCommand;
 import hex.control.command.ICommand;
@@ -7,8 +8,7 @@ import hex.control.guard.GuardUtil;
 import hex.control.payload.ExecutionPayload;
 import hex.control.payload.PayloadUtil;
 import hex.di.IDependencyInjector;
-import hex.module.IModule;
-import Std;
+import hex.module.IContextModule;
 
 /**
  * Execute commands and macros
@@ -17,9 +17,9 @@ import Std;
 class CommandExecutor
 {
     var _injector   : IDependencyInjector;
-    var _module     : IModule;
+    var _module     : IContextModule;
 
-    public function new ( injector : IDependencyInjector, ?module : IModule )
+    public function new ( injector : IDependencyInjector, ?module : IContextModule )
     {
         this._injector  = injector;
         this._module    = module;

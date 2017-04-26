@@ -28,6 +28,10 @@ class AsyncCommand implements IAsyncCommand implements IInjectorContainer
     var _dispatcher 					: ClosureDispatcher;
     var _owner                          : IContextModule;
 
+	@Inject
+	@Optional(true)
+	public var logger:ILogger;
+	
     public function new()
     {
         this._status 			= AsyncCommand.WAS_NEVER_USED;
@@ -41,7 +45,7 @@ class AsyncCommand implements IAsyncCommand implements IInjectorContainer
 	
 	public function getLogger() : ILogger
 	{
-		return this._owner.getLogger();
+		return (logger == null) ? _owner.getLogger() : logger;
 	}
 
     public function preExecute( ?request : Request ) : Void

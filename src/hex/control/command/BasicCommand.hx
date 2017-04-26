@@ -15,6 +15,10 @@ class BasicCommand implements ICommand implements IInjectorContainer
 {
 	var _owner : IContextModule;
 
+	@Inject
+	@Optional(true)
+	public var logger:ILogger;
+	
 	public function new() 
 	{
 	}
@@ -36,7 +40,7 @@ class BasicCommand implements ICommand implements IInjectorContainer
 	
 	public function getLogger() : ILogger 
 	{
-		return this._owner.getLogger();
+		return (logger == null) ? _owner.getLogger() : logger;
 	}
 	
 	public function getOwner() : IContextModule 

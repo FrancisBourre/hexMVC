@@ -22,6 +22,10 @@ class Command<ResultType> implements Expect<ResultType> implements ICommand impl
 	var _handler 			: Handler<ResultType>;
 	var _owner 				: IContextModule;
 	
+	@Inject
+	@Optional(true)
+	public var logger:ILogger;
+	
 	public function new() 
 	{
 		this._acb = AsyncCallback.get
@@ -98,7 +102,7 @@ class Command<ResultType> implements Expect<ResultType> implements ICommand impl
 
 	public function getLogger() : ILogger 
 	{
-		return this._owner.getLogger();
+		return (logger == null) ? this._owner.getLogger() : logger;
 	}
 	
 	public function getOwner() : IContextModule 
