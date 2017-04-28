@@ -48,6 +48,8 @@ class BasicCommand implements ICommand implements IInjectorContainer
 		return this._owner;
 	}
 	
+	@Inject
+	@Optional(true)
 	public function setOwner( owner : IContextModule ) : Void 
 	{
 		this._owner = owner;

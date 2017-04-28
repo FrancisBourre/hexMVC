@@ -110,6 +110,8 @@ class Command<ResultType> implements Expect<ResultType> implements ICommand impl
 		return this._owner;
 	}
 	
+	@Inject
+	@Optional(true)
 	public function setOwner( owner : IContextModule ) : Void 
 	{
 		this._owner = owner;
