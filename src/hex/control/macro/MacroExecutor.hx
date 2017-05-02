@@ -101,6 +101,11 @@ class MacroExecutor implements IMacroExecutor implements IInjectorContainer
 		// Execute command
         if ( command != null )
         {
+			if ( injector.hasMapping( IModule ) )
+			{
+				command.setOwner ( injector.getInstance( IModule ) );
+			}
+
             var isAsync : Bool = Std.is( command, IAsyncCommand );
             if ( isAsync )
             {

@@ -202,8 +202,6 @@ class AsyncCommand implements IAsyncCommand implements IInjectorContainer
         return this._owner;
     }
 
-	@Inject
-	@Optional(true)
     public function setOwner( owner : IContextModule ) : Void
     {
         if ( this._owner == null )

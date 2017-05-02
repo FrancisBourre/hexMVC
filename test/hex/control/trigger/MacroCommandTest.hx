@@ -2048,6 +2048,7 @@ class MacroCommandTest
 		
 		owner.getInjector().mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', [] );
 		var macroCommand = owner.getInjector().getOrCreateNewInstance(MockMacroCommandWithChildCommand);
+		macroCommand.setOwner(owner);
 		
 		Assert.isNotNull(macroCommand.getOwner());
 		Assert.equals(owner, macroCommand.getOwner());
@@ -2060,6 +2061,7 @@ class MacroCommandTest
 		
 		owner.getInjector().mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', [] );
 		var macroCommand = owner.getInjector().getOrCreateNewInstance(MockMacroCommandWithChildCommand);
+		macroCommand.setOwner(owner);
 		
 		macroCommand.execute();
 		
