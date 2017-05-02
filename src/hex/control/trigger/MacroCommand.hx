@@ -77,6 +77,7 @@ class MacroCommand<ResultType> extends Command<ResultType>
 			
 			if ( command != null )
 			{
+				command.setOwner(_owner);
 				command.execute();
 				
 				if ( this.isInSequenceMode )
