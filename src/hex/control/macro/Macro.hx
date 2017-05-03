@@ -88,11 +88,11 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	
 	function _executeNextCommand() : Void
 	{
-		if ( this.macroExecutor.hasNextCommandMapping )
+		if ( this.isRunning && this.macroExecutor.hasNextCommandMapping )
 		{
 			this._executeCommand();
 		}
-		else if ( this.macroExecutor.hasRunEveryCommand )
+		else if ( this.macroExecutor.hasRunEveryCommand && this.isRunning )
 		{
 			this._handleComplete();
 		}
@@ -149,12 +149,9 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 			this.macroExecutor.asyncCommandCalled( cmd );
 		}
 		
-		if ( this.isAtomic )
+		if ( this.isAtomic && this.isRunning )
 		{
-			if ( this.isRunning )
-			{
-				this._handleFail();
-			}
+			this._handleFail();
 		}
 		else
 		{
@@ -166,7 +163,7 @@ class Macro extends AsyncCommand implements IAsyncCommandListener
 	{
 		this.macroExecutor.asyncCommandCalled( cmd );
 		
-		if ( this.isAtomic )
+		if ( this.isAtomic && this.isRunning )
 		{
 			this.cancel();
 		}

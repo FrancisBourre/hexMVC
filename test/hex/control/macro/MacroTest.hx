@@ -11,12 +11,14 @@ import hex.control.command.ICommandMapping;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.Macro;
 import hex.control.macro.MacroExecutor;
+import hex.control.macro.MockAtomicMacroWithHandleFail.TestAsyncCommandToNotRun;
+import hex.control.macro.MockNonAtomicMacroWithHandleFail.TestAsyncCommandThatShouldBeBeExecuted;
 import hex.error.IllegalStateException;
 import hex.error.NullPointerException;
 import hex.error.VirtualMethodException;
-import hex.util.Stringifier;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
+import hex.util.Stringifier;
 
 /**
  * ...
@@ -274,6 +276,36 @@ class MacroTest
 		myMacro.preExecute( request );
 		
 		Assert.equals( request, myMacro.requestPassedDuringExecution, "request should be available from prepare" );
+	}
+	
+	@Test( "Test atomic macro is stopped after handleFail" )
+	public function testAtomicMacroFailingAfterHandleFail() : Void
+	{
+		var myMacro = new MockAtomicMacroWithHandleFail();
+		var macroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+		
+		var request = new Request();
+		myMacro.preExecute( request );
+		myMacro.execute();
+		
+		Assert.isFalse( TestAsyncCommandToNotRun.EXECUTED, "Second command should not be executed after handleFail" );
+	}
+	
+	@Test( "Test atomic macro is stopped after handleFail" )
+	public function testNonAtomicMacroFailingAfterHandleFail() : Void
+	{
+		var myMacro = new MockNonAtomicMacroWithHandleFail();
+		var macroExecutor = new MacroExecutor();
+		macroExecutor.injector = new MockDependencyInjector();
+		myMacro.macroExecutor = macroExecutor;
+		
+		var request = new Request();
+		myMacro.preExecute( request );
+		myMacro.execute();
+		
+		Assert.isTrue( TestAsyncCommandThatShouldBeBeExecuted.EXECUTED, "Second command should not be executed after handleFail" );
 	}
 }
 
