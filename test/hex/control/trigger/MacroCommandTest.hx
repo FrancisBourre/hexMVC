@@ -6,6 +6,8 @@ import hex.control.trigger.mock.*;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.error.IllegalStateException;
+import hex.module.ContextModule;
+import hex.module.IContextModule;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
 
@@ -2038,4 +2040,33 @@ class MacroCommandTest
 		Assert.equals( 46, userVO.age );
 		Assert.equals( true, userVO.isAdmin );
 	}
+	
+	@Test("Test macro command has owner")
+	public function testMacroCommandHasOwner()
+	{
+		var owner = new ContextModule();
+		
+		owner.getInjector().mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', [] );
+		var macroCommand = owner.getInjector().getOrCreateNewInstance(MockMacroCommandWithChildCommand);
+		macroCommand.setOwner(owner);
+		
+		Assert.isNotNull(macroCommand.getOwner());
+		Assert.equals(owner, macroCommand.getOwner());
+	}
+	
+	@Test("Test child command of macro command has owner")
+	public function testChildCommandOfMacroCommandHasOwner()
+	{
+		var owner = new ContextModule();
+		
+		owner.getInjector().mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', [] );
+		var macroCommand = owner.getInjector().getOrCreateNewInstance(MockMacroCommandWithChildCommand);
+		macroCommand.setOwner(owner);
+		
+		macroCommand.execute();
+		
+		Assert.isNotNull(macroCommand.commandSelfReturn.getOwner());
+		Assert.equals(owner, macroCommand.commandSelfReturn.getOwner());
+	}
+	
 }
