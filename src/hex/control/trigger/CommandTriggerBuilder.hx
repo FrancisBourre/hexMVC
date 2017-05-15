@@ -233,10 +233,21 @@ class CommandTriggerBuilder
 					switch( arg.expr )
 					{
 						case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
-								
+								var mapName = if ( s.params.length > 0 )
+								{
+									switch( s.params[ 0 ].expr )
+									{
+										
+										case EConst(CString(name)): name;
+										case EConst(CIdent(ident)): "";
+										case EField(e, field): "";
+										case _: "";
+									}
+								} else "";
+
 								var varName 	= vars[0].name;
 								var varType 	= vars[0].type;
-								arg.expr 		= (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v{ MacroUtil.getFQCNFromComplexType( varType ) } )).expr;
+								arg.expr 		= (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v{ MacroUtil.getFQCNFromComplexType( varType ) }, $v{mapName} )).expr;
 
 						case _:
 							CommandTriggerBuilder._searchForInjection( arg );
