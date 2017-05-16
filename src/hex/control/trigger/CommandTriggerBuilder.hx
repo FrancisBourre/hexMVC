@@ -6,6 +6,7 @@ import haxe.macro.Expr;
 import haxe.macro.Expr.Access;
 import haxe.macro.Expr.Field;
 import haxe.macro.Expr.Position;
+import hex.annotation.AnnotationReplaceBuilder;
 import hex.control.payload.ExecutionPayload;
 import hex.control.trigger.Command;
 import hex.di.IDependencyInjector;
@@ -235,12 +236,10 @@ class CommandTriggerBuilder
 						case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
 								var mapName = if ( s.params.length > 0 )
 								{
-									switch( s.params[ 0 ].expr )
+									var transformed = AnnotationReplaceBuilder.processParam(s.params[ 0 ]);
+									switch(transformed.expr)
 									{
-										
 										case EConst(CString(name)): name;
-										case EConst(CIdent(ident)): "";
-										case EField(e, field): "";
 										case _: "";
 									}
 								} else "";
