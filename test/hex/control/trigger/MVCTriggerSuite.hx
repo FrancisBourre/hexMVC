@@ -11,6 +11,7 @@ class MVCTriggerSuite
 	[
 		CommandTriggerTest, 
 		CommandTriggerUserCaseTest,
-		MacroCommandTest 
+		MacroCommandTest,
+		CommandTriggerAnnotationReplaceTest
 	];
 }
