@@ -19,7 +19,7 @@ class RuntimeDependencies implements IRuntimeDependencies
 	{
 		if ( this._mappedDependencies == null )
 		{
-			this._mappedDependencies = new Array<Mapping>();
+			this._mappedDependencies = [];
 		}
 		
 		this._mappedDependencies = this._mappedDependencies.concat( serviceDependencies );
