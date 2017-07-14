@@ -12,7 +12,7 @@ import hex.module.IContextModule;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
 
-using hex.di.util.InjectionUtil;
+using hex.di.util.InjectorUtil;
 
 /**
  * ...

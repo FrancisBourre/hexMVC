@@ -19,7 +19,7 @@ import hex.service.IService;
 import hex.service.ServiceConfiguration;
 import hex.unittest.assertion.Assert;
 
-using hex.di.util.InjectionUtil;
+using hex.di.util.InjectorUtil;
 
 /**
  * ...

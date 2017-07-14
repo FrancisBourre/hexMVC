@@ -29,7 +29,7 @@ import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.MockView;
 import hex.view.viewhelper.ViewHelper;
 
-using hex.di.util.InjectionUtil;
+using hex.di.util.InjectorUtil;
 
 /**
  * ...

@@ -13,7 +13,7 @@ import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.di.provider.DomainLoggerProvider;
-import hex.di.util.InjectionUtil;
+import hex.di.util.InjectorUtil;
 import hex.domain.ApplicationDomainDispatcher;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
@@ -351,9 +351,9 @@ class Module implements IModule
 	 */
 	macro public function _getDependency<T>( ethis : Expr, clazz : ExprOf<Dependency<T>>, ?id : ExprOf<String> ) : ExprOf<T>
 	{
-		var classRepresentation = InjectionUtil._getStringClassRepresentation( clazz );
-		var classReference = InjectionUtil._getClassReference( clazz );
-		var ct = InjectionUtil._getComplexType( clazz );
+		var classRepresentation = InjectorUtil._getStringClassRepresentation( clazz );
+		var classReference = InjectorUtil._getClassReference( clazz );
+		var ct = InjectorUtil._getComplexType( clazz );
 		
 		var e = macro @:pos( ethis.pos ) $ethis._injector.getInstanceWithClassName( $v { classRepresentation }, $id );
 		return 
