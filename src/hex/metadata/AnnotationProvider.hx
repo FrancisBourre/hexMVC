@@ -3,15 +3,18 @@ package hex.metadata;
 import haxe.rtti.Meta;
 import hex.collection.HashMap;
 import hex.core.IAnnotationParsable;
+import hex.core.IApplicationContext;
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorListener;
 import hex.domain.Domain;
 import hex.domain.TopLevelDomain;
 import hex.error.IllegalArgumentException;
+import hex.runtime.basic.ApplicationContext;
 import hex.util.Stringifier;
 
 /**
- * ...
+ * Don't look inside please,
+ * It will be soon deprecated.
  * @author Francis Bourre
  */
 class AnnotationProvider 
@@ -19,7 +22,9 @@ class AnnotationProvider
 	implements IAnnotationProvider
 {
 	static var _initialized 	: Bool = false;
-	static var _Domains			: Map<Domain, IAnnotationProvider> = new Map();
+	static var __Domains		: Map<IApplicationContext, Map<Domain, IAnnotationProvider>>;
+
+	static var _DefaultApplicationContext;
 	
 	var _domain 				: Domain;
 	var _parent 				: IAnnotationProvider;
@@ -39,16 +44,21 @@ class AnnotationProvider
 	static public function release() : Void
 	{
 		AnnotationProvider._initialized = false;
-		AnnotationProvider._Domains = new Map();
+		AnnotationProvider.__Domains = new Map();
 	}
 	
-	static public function getAnnotationProvider( ?domain : Domain, ?parentDomain : Domain ) : IAnnotationProvider
+	static public function getAnnotationProvider( ?domain : Domain, ?parentDomain : Domain, context : IApplicationContext = null ) : IAnnotationProvider
 	{
-		if ( !AnnotationProvider._initialized )
+		if ( __Domains == null ) __Domains = new Map();
+		if ( _DefaultApplicationContext == null ) _DefaultApplicationContext = new ApplicationContext('love you');
+		if ( context == null ) context = _DefaultApplicationContext;
+		if (!__Domains.exists(context))
 		{
-			AnnotationProvider._initialized = true;
+			var m = new Map();
+			__Domains.set( context, m );
+			
 			var provider = new AnnotationProvider( TopLevelDomain.DOMAIN, null );
-			AnnotationProvider._Domains.set( TopLevelDomain.DOMAIN, provider );
+			m.set( TopLevelDomain.DOMAIN, provider );
 		}
 		
 		if ( domain == null )
@@ -61,12 +71,12 @@ class AnnotationProvider
 			parentDomain = domain.getParent();
 		}
 		
-		if ( !AnnotationProvider._Domains.exists( domain ) )
+		if ( !__Domains.get(context).exists( domain ) )
 		{
-			AnnotationProvider._Domains.set( domain, new AnnotationProvider( domain, AnnotationProvider._Domains.get( parentDomain ) ) );
+			__Domains.get(context).set( domain, new AnnotationProvider( domain, __Domains.get(context).get( parentDomain ) ) );
 		}
 		
-		return AnnotationProvider._Domains.get( domain );
+		return __Domains.get(context).get( domain );
 	}
 	
 	public function registerMetaData( metaDataName : String, providerMethod : String->Dynamic ) : Void 

@@ -66,18 +66,26 @@ class ModuleTest
 		Assert.equals( 1, MockStatelessConfig.configureWasCalled, "'configure' method should have been called once" );
 	}
 	
+	
 	@Test( "Test runtime dependencies" )
 	public function testRuntimeDependencies() : Void
 	{
 		var module : MockModuleForTestingVirtualException = new MockModuleForTestingVirtualException();
+		
+		#if debug
 		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
+		#end
 		
 		var anotherModule : MockModuleForTestingRuntimeDependencies = new MockModuleForTestingRuntimeDependencies();
+		
+		#if debug
 		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
+		#end
 		
 		anotherModule.mapServiceClass( MockService );
 		anotherModule.initialize();
 	}
+	
 	
 	@Test( "Test getInjector behavior" )
 	public function testGetInjector() : Void
@@ -104,7 +112,10 @@ class ModuleTest
 		Assert.isInstanceOf( module.getPublicDispatcher(), Dispatcher,  "public dispatcher should not be null" );
 		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
+		#if debug
 		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
+		#end
+		
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
 	}
 	
@@ -127,7 +138,10 @@ class ModuleTest
 		Assert.isNull( DomainExpert.getInstance().getDomainFor( module ), "domain should be null" );
 		Assert.isNull( module.getLogger(), "logger should be null" );
 		
+		#if debug
 		Assert.methodCallThrows( IllegalStateException, module, module.release, [], "'release' called twice should throw 'IllegalStateException'" );
+		#end
+		
 		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
 	}
 	
