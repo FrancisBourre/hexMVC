@@ -73,13 +73,13 @@ class ModuleTest
 		var module : MockModuleForTestingVirtualException = new MockModuleForTestingVirtualException();
 		
 		#if debug
-		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
+		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [null], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
 		#end
 		
 		var anotherModule : MockModuleForTestingRuntimeDependencies = new MockModuleForTestingRuntimeDependencies();
 		
 		#if debug
-		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
+		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [null], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
 		#end
 		
 		anotherModule.mapServiceClass( MockService );
@@ -109,7 +109,7 @@ class ModuleTest
 		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
 		#if debug
-		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
+		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [null], "'initialize' called twice should throw 'IllegalStateException'" );
 		#end
 		
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );

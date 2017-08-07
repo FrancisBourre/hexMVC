@@ -73,7 +73,7 @@ class ContextModuleTest
 		
 		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
-		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
+		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [null], "'initialize' called twice should throw 'IllegalStateException'" );
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
 		
 		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
