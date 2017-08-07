@@ -8,6 +8,7 @@ import hex.control.IFrontController;
 import hex.control.Request;
 import hex.control.macro.IMacroExecutor;
 import hex.control.macro.MacroExecutor;
+import hex.core.IApplicationContext;
 import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
@@ -52,10 +53,6 @@ class Module implements IModule
 		this._injector.mapToValue( IBasicInjector, this._injector );
 		this._injector.mapToValue( IDependencyInjector, this._injector );
 		
-		this._domainDispatcher = ApplicationDomainDispatcher.getInstance().getDomainDispatcher( this.getDomain() );
-		this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain() );
-		this._annotationProvider.registerInjector( this._injector );
-		
 		this._internalDispatcher = new Dispatcher<{}>();
 		this._injector.mapToValue( IFrontController, new FrontController( this._internalDispatcher, this._injector, this ) );
 		this._injector.mapClassNameToValue( 'hex.event.IDispatcher<{}>', this._internalDispatcher );
@@ -64,21 +61,24 @@ class Module implements IModule
 		this._injector.mapToValue( IModule, this );
 		
 		
-		var factory = new DomainMessageFactory(this.getDomain());
-		this._logger = LogManager.getLoggerByInstance(this, factory);
-		this._injector.map(ILogger).toProvider(new DomainLoggerProvider(factory, _logger));
+		var factory = new DomainMessageFactory( this.getDomain() );
+		this._logger = LogManager.getLoggerByInstance( this, factory );
+		this._injector.map( ILogger ).toProvider( new DomainLoggerProvider( factory, this._logger ) );
 	}
 			
 	/**
 	 * Initialize the module
 	 */
 	@:final 
-	public function initialize() : Void
+	public function initialize( context : IApplicationContext ) : Void
 	{
 		#if debug
 		if ( !this.isInitialized )
 		{
 		#end
+			this._domainDispatcher = ApplicationDomainDispatcher.getInstance( context ).getDomainDispatcher( this.getDomain() );
+			this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain(), null, context );
+			this._annotationProvider.registerInjector( this._injector );
 			this._onInitialisation();
 			
 			#if debug
@@ -86,7 +86,6 @@ class Module implements IModule
 			#end
 			
 			this.isInitialized = true;
-			this._fireInitialisationEvent();
 		#if debug
 		}
 		else throw new IllegalStateException( "initialize can't be called more than once. Check your code." );
@@ -189,7 +188,6 @@ class Module implements IModule
 		#end
 			this.isReleased = true;
 			this._onRelease();
-			this._fireReleaseEvent();
 
 			ViewHelperManager.release( this );
 			
@@ -201,7 +199,11 @@ class Module implements IModule
 			this._internalDispatcher.removeAllListeners();
 			DomainExpert.getInstance().releaseDomain( this );
 
-			this._annotationProvider.unregisterInjector( this._injector );
+			if ( this._annotationProvider != null )
+			{
+				this._annotationProvider.unregisterInjector( this._injector );
+			}
+			
 			this._injector.destroyInstance( this );
 			this._injector.teardown();
 			
@@ -220,36 +222,6 @@ class Module implements IModule
 	public function getLogger() : ILogger
 	{
 		return this._logger;
-	}
-	
-	/**
-	 * Fire initialisation event
-	 */
-	@:final
-	function _fireInitialisationEvent() : Void
-	{
-		#if debug
-		if ( this.isInitialized )
-		#end
-			this.dispatchPublicMessage( ModuleMessage.INITIALIZED, [ this ] );
-		#if debug
-		else throw new IllegalStateException( this + ".fireModuleInitialisationNote can't be called with previous initialize call." );
-		#end
-	}
-
-	/**
-	 * Fire release event
-	 */
-	@:final
-	function _fireReleaseEvent() : Void
-	{
-		#if debug
-		if ( this.isReleased )
-		#end
-			this.dispatchPublicMessage( ModuleMessage.RELEASED, [ this ] );
-		#if debug
-		else throw new IllegalStateException( this + ".fireModuleReleaseNote can't be called with previous release call." );
-		#end
 	}
 	
 	/**

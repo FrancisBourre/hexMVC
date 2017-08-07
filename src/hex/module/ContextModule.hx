@@ -3,6 +3,7 @@ package hex.module;
 import haxe.macro.Expr;
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
+import hex.core.IApplicationContext;
 import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
@@ -34,26 +35,24 @@ class ContextModule implements IContextModule
 		this._injector = new Injector();
 		this._injector.mapToValue( IBasicInjector, this._injector );
 		this._injector.mapToValue( IDependencyInjector, this._injector );
-		
-		this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain() );
-		this._annotationProvider.registerInjector( this._injector );
-		
+
 		this._injector.mapToValue( IContextModule, this );
 		
-		
-		var factory = new DomainMessageFactory(this.getDomain());
-		this._logger = LogManager.getLoggerByInstance(this, factory);
-		this._injector.map(ILogger).toProvider(new DomainLoggerProvider(factory, this._logger));
+		var factory = new DomainMessageFactory( this.getDomain() );
+		this._logger = LogManager.getLoggerByInstance( this, factory );
+		this._injector.map( ILogger ).toProvider( new DomainLoggerProvider( factory, this._logger ) );
 	}
 			
 	/**
 	 * Initialize the module
 	 */
 	@:final 
-	public function initialize() : Void
+	public function initialize( context : IApplicationContext ) : Void
 	{
 		if ( !this.isInitialized )
 		{
+			this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain(), null, context );
+			this._annotationProvider.registerInjector( this._injector );
 			this._onInitialisation();
 			this.isInitialized = true;
 		}
@@ -107,7 +106,11 @@ class ContextModule implements IContextModule
 
 			DomainExpert.getInstance().releaseDomain( this );
 
-			this._annotationProvider.unregisterInjector( this._injector );
+			if ( this._annotationProvider != null )
+			{
+				this._annotationProvider.unregisterInjector( this._injector );
+			}
+			
 			this._injector.destroyInstance( this );
 			this._injector.teardown();
 			
