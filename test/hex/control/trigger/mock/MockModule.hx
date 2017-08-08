@@ -1,5 +1,6 @@
 package hex.control.trigger.mock;
 
+import hex.core.IApplicationContext;
 import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.event.MessageType;
@@ -17,7 +18,7 @@ class MockModule implements IModule
 		
 	}
 	
-	public function initialize() : Void 
+	public function initialize( context : IApplicationContext ) : Void 
 	{
 		
 	}

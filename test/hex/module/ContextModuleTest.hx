@@ -19,7 +19,7 @@ import hex.service.IService;
 import hex.service.ServiceConfiguration;
 import hex.unittest.assertion.Assert;
 
-using hex.di.util.InjectionUtil;
+using hex.di.util.InjectorUtil;
 
 /**
  * ...
@@ -32,7 +32,7 @@ class ContextModuleTest
 	{
 		var module : MockModuleForTestingConstructor = new MockModuleForTestingConstructor();
 		Assert.isInstanceOf( module.injector, Injector, "injector shouldn't be null" );
-		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
+		Assert.isNull( module.annotationProvider, "annotationProvider should be null" );
 	}
 	
 	@Test( "Test _addStatefulConfigs protected method" )
@@ -66,14 +66,18 @@ class ContextModuleTest
 	{
 		var module : MockModuleForTestingInitialisation = new MockModuleForTestingInitialisation();
 
-		module.initialize();
+		var context = new MockApplicationContext();
+		module.initialize( context );
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
 		Assert.isTrue( module.isInitialized, "'isInitialized' should return true" );
 		
 		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
-		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
+		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [null], "'initialize' called twice should throw 'IllegalStateException'" );
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
+		
+		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
+		Assert.equals( module.annotationProvider, AnnotationProvider.getAnnotationProvider( module.getDomain(), null, context ), "AnnotationProvider should be the same" );
 	}
 	
 	@Test( "Test release" )
@@ -228,6 +232,7 @@ private class MockModuleListener
 private class MockModuleForTestingInitialisation extends ContextModule
 {
 	public var initialisationCallCount : Int = 0;
+	public var annotationProvider	: IAnnotationProvider;
 	
 	public function new()
 	{
@@ -237,6 +242,7 @@ private class MockModuleForTestingInitialisation extends ContextModule
 	override function _onInitialisation():Void 
 	{
 		super._onInitialisation();
+		this.annotationProvider = this._annotationProvider;
 		this.initialisationCallCount++;
 	}
 }

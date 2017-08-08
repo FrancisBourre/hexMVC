@@ -4,6 +4,7 @@ import hex.control.FrontController;
 import hex.control.command.ICommand;
 import hex.control.command.ICommandMapping;
 import hex.control.payload.ExecutionPayload;
+import hex.core.IApplicationContext;
 import hex.di.IDependencyInjector;
 import hex.di.IInjectorListener;
 import hex.di.provider.IDependencyProvider;
@@ -161,7 +162,7 @@ private class MockModule implements IModule
 		
 	}
 	
-	public function initialize() : Void 
+	public function initialize( context : IApplicationContext ) : Void 
 	{
 		
 	}

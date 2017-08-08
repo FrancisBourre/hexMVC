@@ -1,6 +1,7 @@
 package hex.module;
 
 import haxe.PosInfos;
+import hex.core.IApplicationContext;
 import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.event.MessageType;
@@ -23,7 +24,7 @@ class MockModule implements IModule
 		this._logger = new MockLogger();
 	}
 	
-	public function initialize() : Void 
+	public function initialize( context : IApplicationContext ) : Void 
 	{
 		this.isInitialized = true;
 	}

@@ -2,6 +2,7 @@ package hex.control.async;
 
 import hex.control.async.AsyncCommand;
 import hex.control.async.IAsyncCommandListener;
+import hex.core.IApplicationContext;
 import hex.di.IDependencyInjector;
 import hex.domain.Domain;
 import hex.error.IllegalStateException;
@@ -185,7 +186,7 @@ private class MockModule implements IModule
 		
 	}
 
-	public function initialize():Void 
+	public function initialize( context : IApplicationContext ) : Void  
 	{
 		
 	}

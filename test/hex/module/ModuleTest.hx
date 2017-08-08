@@ -29,7 +29,7 @@ import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.MockView;
 import hex.view.viewhelper.ViewHelper;
 
-using hex.di.util.InjectionUtil;
+using hex.di.util.InjectorUtil;
 
 /**
  * ...
@@ -43,8 +43,8 @@ class ModuleTest
 		var module : MockModuleForTestingConstructor = new MockModuleForTestingConstructor();
 		Assert.isInstanceOf( module.injector, Injector, "injector shouldn't be null" );
 		Assert.isInstanceOf( module.dispatcher, Dispatcher, "dispatcher shouldn't be null" );
-		Assert.isInstanceOf( module.domainDispatcher, IDispatcher, "domainDispatcher shouldn't be null" );
-		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
+		Assert.isNull( module.domainDispatcher, "domainDispatcher should be null" );
+		Assert.isNull( module.annotationProvider, "annotationProvider should be null" );
 	}
 	
 	@Test( "Test _addStatefulConfigs protected method" )
@@ -66,17 +66,24 @@ class ModuleTest
 		Assert.equals( 1, MockStatelessConfig.configureWasCalled, "'configure' method should have been called once" );
 	}
 	
+	
 	@Test( "Test runtime dependencies" )
 	public function testRuntimeDependencies() : Void
 	{
 		var module : MockModuleForTestingVirtualException = new MockModuleForTestingVirtualException();
-		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
+		
+		#if debug
+		Assert.methodCallThrows( VirtualMethodException, module, module.initialize, [null], "initialize should throw 'VirtualMethodException' when _getRuntimeDependencies is not overriden" );
+		#end
 		
 		var anotherModule : MockModuleForTestingRuntimeDependencies = new MockModuleForTestingRuntimeDependencies();
-		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
+		
+		#if debug
+		Assert.methodCallThrows( RuntimeDependencyException, anotherModule, anotherModule.initialize, [null], "initialize should throw 'RuntimeDependencyException' when dependency is not filled" );
+		#end
 		
 		anotherModule.mapServiceClass( MockService );
-		anotherModule.initialize();
+		anotherModule.initialize( null );
 	}
 	
 	@Test( "Test getInjector behavior" )
@@ -90,45 +97,46 @@ class ModuleTest
 	public function testInitialize() : Void
 	{
 		var module : MockModuleForTestingInitialisation = new MockModuleForTestingInitialisation();
-		var listener : MockModuleListener = new MockModuleListener();
-		module.addHandler( ModuleMessage.INITIALIZED, listener, listener.onInit );
 		
-		module.initialize();
+		var context = new MockApplicationContext();
+		module.initialize( context );
+		
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
 		Assert.isTrue( module.isInitialized, "'isInitialized' should return true" );
-		
-		Assert.equals( 1, listener.onInitCallCount, "message should have been dispatched to listeners" );
-		Assert.equals( module, listener.moduleReference, "module should be the same" );
 		
 		Assert.isInstanceOf( module.getPrivateDispatcher(), Dispatcher,  "private dispatcher should not be null" );
 		Assert.isInstanceOf( module.getPublicDispatcher(), Dispatcher,  "public dispatcher should not be null" );
 		Assert.isInstanceOf( module.getLogger(), ILogger,  "logger should not be null" );
 		
-		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [], "'initialize' called twice should throw 'IllegalStateException'" );
+		#if debug
+		Assert.methodCallThrows( IllegalStateException, module, module.initialize, [null], "'initialize' called twice should throw 'IllegalStateException'" );
+		#end
+		
 		Assert.equals( 1, module.initialisationCallCount, "initialise should have been called once" );
+		
+		Assert.isInstanceOf( module.annotationProvider, AnnotationProvider, "annotationProvider shouldn't be null" );
+		Assert.equals( module.annotationProvider, AnnotationProvider.getAnnotationProvider( module.getDomain(), null, context ), "AnnotationProvider should be the same" );
 	}
 	
 	@Test( "Test release" )
 	public function testRelease() : Void
 	{
 		var module : MockModuleForTestingRelease = new MockModuleForTestingRelease();
-		var listener : MockModuleListener = new MockModuleListener();
-		module.addHandler( ModuleMessage.RELEASED, listener, listener.onRelease );
+		var context = new MockApplicationContext();
+		module.initialize( context );
 		
 		module.release();
 		Assert.equals( 1, module.releaseCallCount, "release should have been called once" );
 		Assert.isTrue( module.isReleased, "'isReleased' should return true" );
-		
-		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
-		Assert.equals( module, listener.moduleReference, "module should be the same" );
 		
 		Assert.isTrue( module.getPrivateDispatcher().isEmpty(),  "all listeners should have been removed" );
 		Assert.isTrue( module.getPublicDispatcher().isEmpty(),  "all listeners should have been removed" );
 		Assert.isNull( DomainExpert.getInstance().getDomainFor( module ), "domain should be null" );
 		Assert.isNull( module.getLogger(), "logger should be null" );
 		
+		#if debug
 		Assert.methodCallThrows( IllegalStateException, module, module.release, [], "'release' called twice should throw 'IllegalStateException'" );
-		Assert.equals( 1, listener.onReleaseCallCount, "message should have been dispatched to listeners" );
+		#end
 	}
 	
 	@Test( "Test get accessor" )
@@ -267,34 +275,10 @@ private class MockModuleForTestingVirtualException extends Module
 	}
 }
 
-private class MockModuleListener
-{
-	public var onInitCallCount 		: UInt = 0;
-	public var onReleaseCallCount 	: UInt = 0;
-	
-	public var moduleReference 		: IModule;
-	
-	public function new()
-	{
-		
-	}
-	
-	public function onInit( moduleReference : IModule ) : Void
-	{
-		this.onInitCallCount++;
-		this.moduleReference = moduleReference;
-	}
-	
-	public function onRelease( moduleReference : IModule ) : Void
-	{
-		this.onReleaseCallCount++;
-		this.moduleReference = moduleReference;
-	}
-}
-
 private class MockModuleForTestingInitialisation extends Module
 {
 	public var initialisationCallCount : Int = 0;
+	public var annotationProvider	: IAnnotationProvider;
 	
 	public function new()
 	{
@@ -304,6 +288,7 @@ private class MockModuleForTestingInitialisation extends Module
 	override function _onInitialisation():Void 
 	{
 		super._onInitialisation();
+		this.annotationProvider = this._annotationProvider;
 		this.initialisationCallCount++;
 	}
 	

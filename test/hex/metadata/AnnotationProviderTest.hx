@@ -225,12 +225,12 @@ class AnnotationProviderTest
 	public function testWithModule() : Void
 	{
 		var module = new MockModuleForAnnotationProviding();
+		module.initialize( null );
+		
 		this._annotationProvider = module.getAnnotationProvider();
 		
 		this._annotationProvider.registerMetaData( "color", this.getColorByName );
 		this._annotationProvider.registerMetaData( "language", this.getText );
-		
-		module.initialize();
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -245,7 +245,7 @@ class AnnotationProviderTest
 		this._annotationProvider.registerMetaData( "color", this.getColorByName );
 		this._annotationProvider.registerMetaData( "language", this.getText );
 		
-		module.initialize();
+		module.initialize( null );
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -265,7 +265,7 @@ class AnnotationProviderTest
 		parentProvider.registerMetaData( "color", this.getColorByName );
 		parentProvider.registerMetaData( "language", this.getText );
 		
-		module.initialize();
+		module.initialize( null );
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -280,13 +280,13 @@ class AnnotationProviderTest
 		
 		var moduleDomain = Domain.getDomain( 'testWithModuleAndInheritance.moduleID' );
 		DomainExpert.getInstance().registerDomain( moduleDomain );
+		
 		var module = new MockModuleForAnnotationProviding();
+		module.initialize( null );
 
 		module.getAnnotationProvider().registerMetaData( "language", this.getAnotherText );
 		parentProvider.registerMetaData( "color", this.getColorByName );
 		parentProvider.registerMetaData( "language", this.getText );
-		
-		module.initialize();
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "anotherText", module.mockObjectWithMetaData.languageTest, "text should be the same" );
@@ -306,7 +306,7 @@ class AnnotationProviderTest
 		parentProvider.registerMetaData( "color", this.getColorByName );
 		parentProvider.registerMetaData( "language", this.getText );
 		
-		module.initialize();
+		module.initialize( null );
 
 		Assert.equals( 0xffffff, module.mockObjectWithMetaData.colorTest, "color should be the same" );
 		Assert.equals( "Bienvenue", module.mockObjectWithMetaData.languageTest, "text should be the same" );

@@ -3,12 +3,13 @@ package hex.module;
 import haxe.macro.Expr;
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
+import hex.core.IApplicationContext;
 import hex.di.Dependency;
 import hex.di.IBasicInjector;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
 import hex.di.provider.DomainLoggerProvider;
-import hex.di.util.InjectionUtil;
+import hex.di.util.InjectorUtil;
 import hex.domain.Domain;
 import hex.domain.DomainExpert;
 import hex.error.IllegalStateException;
@@ -34,26 +35,24 @@ class ContextModule implements IContextModule
 		this._injector = new Injector();
 		this._injector.mapToValue( IBasicInjector, this._injector );
 		this._injector.mapToValue( IDependencyInjector, this._injector );
-		
-		this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain() );
-		this._annotationProvider.registerInjector( this._injector );
-		
+
 		this._injector.mapToValue( IContextModule, this );
 		
-		
-		var factory = new DomainMessageFactory(this.getDomain());
-		this._logger = LogManager.getLoggerByInstance(this, factory);
-		this._injector.map(ILogger).toProvider(new DomainLoggerProvider(factory, this._logger));
+		var factory = new DomainMessageFactory( this.getDomain() );
+		this._logger = LogManager.getLoggerByInstance( this, factory );
+		this._injector.map( ILogger ).toProvider( new DomainLoggerProvider( factory, this._logger ) );
 	}
 			
 	/**
 	 * Initialize the module
 	 */
 	@:final 
-	public function initialize() : Void
+	public function initialize( context : IApplicationContext ) : Void
 	{
 		if ( !this.isInitialized )
 		{
+			this._annotationProvider = AnnotationProvider.getAnnotationProvider( this.getDomain(), null, context );
+			this._annotationProvider.registerInjector( this._injector );
 			this._onInitialisation();
 			this.isInitialized = true;
 		}
@@ -107,7 +106,11 @@ class ContextModule implements IContextModule
 
 			DomainExpert.getInstance().releaseDomain( this );
 
-			this._annotationProvider.unregisterInjector( this._injector );
+			if ( this._annotationProvider != null )
+			{
+				this._annotationProvider.unregisterInjector( this._injector );
+			}
+			
 			this._injector.destroyInstance( this );
 			this._injector.teardown();
 			
@@ -209,9 +212,9 @@ class ContextModule implements IContextModule
 	 */
 	macro public function _getDependency<T>( ethis : Expr, clazz : ExprOf<Dependency<T>>, ?id : ExprOf<String> ) : ExprOf<T>
 	{
-		var classRepresentation = InjectionUtil._getStringClassRepresentation( clazz );
-		var classReference = InjectionUtil._getClassReference( clazz );
-		var ct = InjectionUtil._getComplexType( clazz );
+		var classRepresentation = InjectorUtil._getStringClassRepresentation( clazz );
+		var classReference = InjectorUtil._getClassReference( clazz );
+		var ct = InjectorUtil._getComplexType( clazz );
 		
 		var e = macro @:pos( ethis.pos ) $ethis._injector.getInstanceWithClassName( $v { classRepresentation }, $id );
 		return 
