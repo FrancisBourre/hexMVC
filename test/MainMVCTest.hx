@@ -20,6 +20,7 @@ class MainMVCTest
 		#else
 		emu.addListener( new hex.unittest.notifier.ConsoleNotifier( ) );
 		#end
+		emu.addListener( new hex.unittest.notifier.ExitingNotifier( ) );
 		
         emu.addTest( HexMVCSuite );
         emu.run();
