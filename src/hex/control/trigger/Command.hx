@@ -42,29 +42,29 @@ class Command<ResultType> implements Expect<ResultType> implements ICommand impl
 		throw new VirtualMethodException();
 	}
 	
-	@:final 
 	public var isWaiting( get, null ) : Bool;
+	@:final 
     public function get_isWaiting() : Bool
 	{
 		return this._acb.isWaiting;
 	}
 	
-	@:final 
 	public var isCompleted( get, null ) : Bool;
+	@:final 
     public function get_isCompleted() : Bool
 	{
 		return this._acb.isCompleted;
 	}
 	
-	@:final 
 	public var isFailed( get, null ) : Bool;
+	@:final 
     public function get_isFailed() : Bool
 	{
 		return this._acb.isFailed;
 	}
 	
-	@:final 
 	public var isCancelled( get, null ) : Bool;
+	@:final 
     public function get_isCancelled() : Bool
 	{
 		return this._acb.isCancelled;

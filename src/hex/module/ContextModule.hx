@@ -66,8 +66,8 @@ class ContextModule implements IContextModule
 	 * Accessor for module initialisation state
 	 * @return <code>true</code> if the module is initialized
 	 */
-	@:final 
 	@:isVar public var isInitialized( get, null ) : Bool;
+	@:final 
 	function get_isInitialized() : Bool
 	{
 		return this.isInitialized;
@@ -77,8 +77,8 @@ class ContextModule implements IContextModule
 	 * Accessor for module release state
 	 * @return <code>true</code> if the module is released
 	 */
-	@:final 
 	@:isVar public var isReleased( get, null ) : Bool;
+	@:final 
 	public function get_isReleased() : Bool
 	{
 		return this.isReleased;
