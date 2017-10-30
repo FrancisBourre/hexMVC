@@ -1,5 +1,11 @@
 package hex.module;
 
+#if debug
+import hex.module.dependency.IRuntimeDependencies;
+import hex.module.dependency.RuntimeDependencies;
+import hex.module.dependency.RuntimeDependencyException;
+#end
+
 import hex.config.stateful.IStatefulConfig;
 import hex.config.stateless.IStatelessConfig;
 import hex.di.Dependency;
@@ -18,9 +24,6 @@ import hex.log.ILogger;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;
-import hex.module.dependency.IRuntimeDependencies;
-import hex.module.dependency.RuntimeDependencies;
-import hex.module.dependency.RuntimeDependencyException;
 import hex.service.IService;
 import hex.service.ServiceConfiguration;
 import hex.unittest.assertion.Assert;
@@ -292,10 +295,12 @@ private class MockModuleForTestingInitialisation extends Module
 		this.initialisationCallCount++;
 	}
 	
+	#if debug
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		return new RuntimeDependencies();
 	}
+	#end
 	
 	public function getPrivateDispatcher() : IDispatcher<{}>
 	{
@@ -323,10 +328,13 @@ private class MockModuleForTestingRelease extends Module
 		this.releaseCallCount++;
 	}
 	
+	#if debug
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		return new RuntimeDependencies();
 	}
+	#end
+	
 	public function getPrivateDispatcher() : IDispatcher<{}>
 	{
 		return this._internalDispatcher;
@@ -368,12 +376,14 @@ private class MockModuleForTestingRuntimeDependencies extends Module
 		this._injector.mapToType( IService, serviceClass );
 	}
 	
+	#if debug
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		var rd : RuntimeDependencies = new RuntimeDependencies();
 		rd.addMappedDependencies([ {type: IService } ]);
 		return rd;
 	}
+	#end
 }
 
 private class MockModuleForTestingStatelessConfig extends Module

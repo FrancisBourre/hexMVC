@@ -29,8 +29,6 @@ import hex.log.message.DomainMessageFactory;
 import hex.metadata.AnnotationProvider;
 import hex.metadata.IAnnotationProvider;
 import hex.module.IModule;
-import hex.module.dependency.IRuntimeDependencies;
-import hex.module.dependency.RuntimeDependencyChecker;
 import hex.view.IView;
 import hex.view.viewhelper.IViewHelperTypedef;
 import hex.view.viewhelper.ViewHelperManager;
@@ -249,12 +247,13 @@ class Module implements IModule
 		return this._injector;
 	}
 	
+	#if debug
 	/**
 	 * Getter for runtime dependencies that needs to be
 	 * checked before initialisation end
 	 * @return <code>IRuntimeDependencies</code> used by this module
 	 */
-	function _getRuntimeDependencies() : IRuntimeDependencies
+	function _getRuntimeDependencies() : hex.module.dependency.IRuntimeDependencies
 	{
 		throw new VirtualMethodException();
 	}
@@ -263,10 +262,11 @@ class Module implements IModule
 	 * Check collection of injected dependencies
 	 * @param	dependencies
 	 */
-	function _checkRuntimeDependencies( dependencies : IRuntimeDependencies ) : Void
+	function _checkRuntimeDependencies( dependencies : hex.module.dependency.IRuntimeDependencies ) : Void
 	{
-		RuntimeDependencyChecker.check( this, this._injector, dependencies );
+		hex.module.dependency.RuntimeDependencyChecker.check( this, this._injector, dependencies );
 	}
+	#end
 	
 	/**
 	 * Add collection of module configuration classes that 
