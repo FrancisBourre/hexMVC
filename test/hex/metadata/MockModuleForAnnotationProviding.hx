@@ -26,10 +26,12 @@ class MockModuleForAnnotationProviding extends Module
 		return cast this._annotationProvider;
 	}
 	
+	#if debug
 	override function _getRuntimeDependencies() : IRuntimeDependencies 
 	{
 		return return new RuntimeDependencies();
 	}
+	#end
 	
 	override function _onInitialisation() : Void 
 	{
