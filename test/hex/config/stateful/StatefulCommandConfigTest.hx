@@ -105,7 +105,7 @@ private class MockInjectorWithFrontController implements IDependencyInjector
 		return cast this._frontcontroller;
 	}
 	
-	public function getInstanceWithClassName<T>( className : String, name : String = '', targetType : Class<Dynamic> = null ) : T
+	public function getInstanceWithClassName<T>( className : String, name : String = '', targetType : Class<Dynamic> = null, shouldThrowAnError : Bool = true ) : T
 	{
 		return null;
 	}
