@@ -38,6 +38,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -49,7 +50,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -81,6 +83,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -98,6 +101,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -115,6 +119,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], acmd.pArray );
 		Assert.equals( vos[ 7 ], acmd.pStringMap );
 		Assert.equals( vos[ 8 ], acmd.pDate );
+		Assert.equals( vos[ 9 ], acmd.pEnum );
 	}
 	
 	@Test( "test MacroCommand failure" )
@@ -138,6 +143,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -149,7 +155,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -181,6 +188,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandFailing.command;
@@ -198,6 +206,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -226,6 +235,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -237,7 +247,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -269,6 +280,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandCancel.command;
@@ -286,6 +298,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -314,6 +327,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -325,7 +339,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -357,6 +372,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandFailing.command;
@@ -374,6 +390,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		//
@@ -415,6 +432,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -426,7 +444,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -458,6 +477,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandCancel.command;
@@ -475,6 +495,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -515,6 +536,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -526,7 +548,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -557,6 +580,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -574,6 +598,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -614,6 +639,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -625,7 +651,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -656,6 +683,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandFailing.command;
@@ -673,6 +701,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -713,6 +742,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -724,7 +754,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -756,6 +787,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandCancel.command;
@@ -773,6 +805,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -813,6 +846,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -824,7 +858,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -856,6 +891,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandFailing.command;
@@ -873,6 +909,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 
 		//
 		var acmd = AnotherMockCommand.command;
@@ -913,6 +950,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -924,7 +962,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -956,6 +995,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandCancel.command;
@@ -973,6 +1013,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1013,6 +1054,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1024,7 +1066,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1056,6 +1099,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -1084,6 +1128,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1095,7 +1140,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1127,6 +1173,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -1144,6 +1191,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1184,6 +1232,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1195,7 +1244,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1227,6 +1277,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -1273,6 +1324,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1284,7 +1336,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1316,6 +1369,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -1333,6 +1387,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1373,6 +1428,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1384,7 +1440,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1416,6 +1473,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -1433,6 +1491,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1477,6 +1536,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1488,7 +1548,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1520,6 +1581,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandCancel.command;
@@ -1537,6 +1599,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1569,6 +1632,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1580,7 +1644,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1612,6 +1677,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandFailing.command;
@@ -1629,6 +1695,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1661,6 +1728,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1672,7 +1740,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1704,6 +1773,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -1721,6 +1791,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1765,6 +1836,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1776,7 +1848,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1808,6 +1881,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandCancel.command;
@@ -1825,6 +1899,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1869,6 +1944,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1880,7 +1956,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
@@ -1912,6 +1989,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommandFailing.command;
@@ -1929,6 +2007,7 @@ class MacroCommandTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -1973,6 +2052,7 @@ class MacroCommandTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var payloads =
 		[
@@ -1984,7 +2064,8 @@ class MacroCommandTest
 			new ExecutionPayload( vos[ 5 ] ).withClassName( 'Bool' ),
 			new ExecutionPayload( vos[ 6 ] ).withClassName( 'Array<String>' ),
 			new ExecutionPayload( vos[ 7 ] ).withClassName( 'Map<String, String>' ),
-			new ExecutionPayload( vos[ 8 ], Date )
+			new ExecutionPayload( vos[ 8 ], Date ),
+			new ExecutionPayload( vos[ 9 ] ).withClassName( 'hex.control.MockEnum' )
 		];
 
 		//
