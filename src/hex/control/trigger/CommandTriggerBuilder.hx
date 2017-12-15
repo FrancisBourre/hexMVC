@@ -34,16 +34,16 @@ class CommandTriggerBuilder
 	
 	macro static public function build() : Array<Field> 
 	{
-		var fields 					= Context.getBuildFields();
+		var fields = Context.getBuildFields();
 		
 		if ( Context.getLocalClass().get().isInterface )
 		{
 			return fields;
 		}
 		
-		var CommandClassType 		= MacroUtil.getClassType( Type.getClassName( Command ) );
-		var MacroCommandClassType 	= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
-		var IContextModuleClassType 	= MacroUtil.getClassType( Type.getClassName( IContextModule ) );
+		var CommandClassType 				= MacroUtil.getClassType( Type.getClassName( Command ) );
+		var MacroCommandClassType 			= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
+		var IContextModuleClassType 		= MacroUtil.getClassType( Type.getClassName( IContextModule ) );
 		var IDependencyInjectorClassType 	= MacroUtil.getClassType( Type.getClassName( IDependencyInjector ) );
 		
 		for ( f in fields )
@@ -107,7 +107,6 @@ class CommandTriggerBuilder
 								"' annotation) to '" + f.name + "' method in '" + className + "' class", command.pos );
 						}
 						
-
 						var typePath = MacroUtil.getTypePath( command.name, command.pos );
 
 						if ( !MacroUtil.isSubClassOf( MacroUtil.getClassType( command.name ), CommandClassType ) )
@@ -115,7 +114,6 @@ class CommandTriggerBuilder
 							Context.error( "'" + className + "' is mapped as a command class (with '@" + CommandTriggerBuilder.MapAnnotation + 
 								"' annotation), but it doesn't extend '" + CommandClassType.module + "' class", command.pos );
 						}
-
 
 						var arguments :Array<Expr> = [];
 						for ( arg in func.args )
@@ -139,7 +137,6 @@ class CommandTriggerBuilder
 								];
 								arguments.push( { expr: EObjectDecl( fields ), pos: Context.currentPos() } );
 							}
-							
 						}
 
 						var className = MacroUtil.getPack( command.name );
@@ -158,7 +155,7 @@ class CommandTriggerBuilder
 								this.injector.mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', payloads );
 								
 								hex.control.payload.PayloadUtil.mapPayload( payloads, this.injector );
-								var command = this.injector.getOrCreateNewInstance( $p { className } );
+								var command = this.injector.instantiateUnmapped( $p { className } );
 								hex.control.payload.PayloadUtil.unmapPayload( payloads, this.injector );
 								
 								command.setOwner( this.module );
@@ -173,7 +170,7 @@ class CommandTriggerBuilder
 						{
 							func.expr = macro 
 							{
-								var injections : Array<{value:Dynamic, className:String, mapName:String}> = $a { arguments };
+								var injections : Array<{value: Dynamic, className: String, mapName: String}> = $a { arguments };
 								var payloads = [];
 								for ( injected in injections )
 								{
@@ -181,14 +178,12 @@ class CommandTriggerBuilder
 								}
 								
 								hex.control.payload.PayloadUtil.mapPayload( payloads, this.injector );
-								var command = this.injector.getOrCreateNewInstance( $p { className } );
+								var command = this.injector.instantiateUnmapped( $p { className } );
 								hex.control.payload.PayloadUtil.unmapPayload( payloads, this.injector );
 								
 								command.setOwner( this.module );
 								command.execute();
-								
-								
-								
+
 								return command;
 							};
 						}
@@ -220,7 +215,7 @@ class CommandTriggerBuilder
 				pos: Context.currentPos()
 			});
 	
-		return fields;
+		return hex.di.annotation.AnnotationTransformer.reflect( macro hex.di.IInjectorContainer, fields );
 	}
 	
 	static function _searchForInjection( expr : Expr ) : Void

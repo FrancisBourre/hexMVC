@@ -118,10 +118,11 @@ class CommandTriggerTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var result = '';
-		controller.doSomething( vos[ 0 ], vos[ 1 ], vos[ 2 ], vos[ 3 ], vos[ 4 ], vos[ 5 ], vos[ 6 ], vos[ 7 ], [3, 4], vos[ 8 ] )
-			.onComplete( function(r) result = r );
+		controller.doSomething( vos[ 0 ], vos[ 1 ], vos[ 2 ], vos[ 3 ], vos[ 4 ], vos[ 5 ], vos[ 6 ], vos[ 7 ], [3, 4], vos[ 8 ], vos[ 9 ] )
+			.onComplete( function(r) { result = r; } );
 		
 		Assert.equals( 'string2', result );
 		
@@ -135,6 +136,7 @@ class CommandTriggerTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -147,6 +149,7 @@ class CommandTriggerTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -159,5 +162,6 @@ class CommandTriggerTest
 		Assert.equals( vos[ 6 ], acmd.pArray );
 		Assert.equals( vos[ 7 ], acmd.pStringMap );
 		Assert.equals( vos[ 8 ], acmd.pDate );
+		Assert.equals( vos[ 9 ], acmd.pEnum );
 	}
 }
