@@ -3,15 +3,16 @@ package hex.control.trigger;
 import hex.collection.Locator;
 import hex.control.trigger.MockCommandClassWithParameters;
 import hex.control.trigger.MockCommandClassWithoutParameters;
-import hex.control.trigger.mock.MockController;
 import hex.control.trigger.mock.AnotherMockCommand;
 import hex.control.trigger.mock.MockCommand;
+import hex.control.trigger.mock.MockController;
 import hex.control.trigger.mock.MockMacroCommand;
 import hex.control.trigger.mock.MockMacroController;
 import hex.control.trigger.mock.MockModule;
 import hex.di.IDependencyInjector;
 import hex.di.Injector;
-import hex.log.ILogger;
+import hex.di.error.MissingMappingException;
+import hex.module.IContextModule;
 import hex.module.IModule;
 import hex.unittest.assertion.Assert;
 import hex.unittest.runner.MethodRunner;
@@ -118,10 +119,11 @@ class CommandTriggerTest
 		vos[ 6 ] = [ 'hello', 'world' ];
 		vos[ 7 ] = [ 'hello' => 'world' ];
 		vos[ 8 ] = Date.now();
+		vos[ 9 ] = MockEnum.TEST;
 		
 		var result = '';
-		controller.doSomething( vos[ 0 ], vos[ 1 ], vos[ 2 ], vos[ 3 ], vos[ 4 ], vos[ 5 ], vos[ 6 ], vos[ 7 ], [3, 4], vos[ 8 ] )
-			.onComplete( function(r) result = r );
+		controller.doSomething( vos[ 0 ], vos[ 1 ], vos[ 2 ], vos[ 3 ], vos[ 4 ], vos[ 5 ], vos[ 6 ], vos[ 7 ], [3, 4], vos[ 8 ], vos[ 9 ] )
+			.onComplete( function(r) { result = r; } );
 		
 		Assert.equals( 'string2', result );
 		
@@ -135,6 +137,7 @@ class CommandTriggerTest
 		Assert.equals( vos[ 6 ], mo.pArray );
 		Assert.equals( vos[ 7 ], mo.pStringMap );
 		Assert.equals( vos[ 8 ], mo.pDate );
+		Assert.equals( vos[ 9 ], mo.pEnum );
 		
 		//
 		var cmd = MockCommand.command;
@@ -147,6 +150,7 @@ class CommandTriggerTest
 		Assert.equals( vos[ 6 ], cmd.pArray );
 		Assert.equals( vos[ 7 ], cmd.pStringMap );
 		Assert.equals( vos[ 8 ], cmd.pDate );
+		Assert.equals( vos[ 9 ], cmd.pEnum );
 		
 		//
 		var acmd = AnotherMockCommand.command;
@@ -159,5 +163,122 @@ class CommandTriggerTest
 		Assert.equals( vos[ 6 ], acmd.pArray );
 		Assert.equals( vos[ 7 ], acmd.pStringMap );
 		Assert.equals( vos[ 8 ], acmd.pDate );
+		Assert.equals( vos[ 9 ], acmd.pEnum );
+	}
+	
+	@Test( "test local var injection" )
+	public function testLocalVarInjection() : Void
+	{
+		//Settings
+		var injector = new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapToValue( IContextModule, new MockModule() );
+		
+        this._controller = injector.instantiateUnmapped( MockController );
+		injector.mapToValue( String, 'test' );
+	
+		//testing
+		var result = this._controller.testLocalVarInjection();
+		Assert.equals( 'test', result );
+	}
+	
+	@Test( "test local var injection with name" )
+	public function testLocalVarInjectionWithName() : Void
+	{
+		//Settings
+		var injector = new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapToValue( IContextModule, new MockModule() );
+		
+        this._controller = injector.instantiateUnmapped( MockController );
+		injector.mapToValue( String, 'test', 'test' );
+	
+		//testing
+		var result = this._controller.testLocalVarInjectionWithName();
+		Assert.equals( 'test', result );
+	}
+	
+	@Test( "test local var with missing optional injection" )
+	public function testLocalVarWithMissingOptionalInjection() : Void
+	{
+		//Settings
+		var injector = new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapToValue( IContextModule, new MockModule() );
+		
+        this._controller = injector.instantiateUnmapped( MockController );
+
+		//testing
+		Assert.methodCallThrows( MissingMappingException, this._controller, this._controller.testLocalVarOptionalInjection, [] );
+		
+		injector.mapToValue( String, 'test3', 'test3' );
+		var result = this._controller.testLocalVarOptionalInjection();
+		Assert.deepEquals( [ null, null, 'test3' ], result );
+	}
+
+	@Test( "test local var optional injection" )
+	public function testLocalVarOptionalInjection() : Void
+	{
+		//Settings
+		var injector = new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapToValue( IContextModule, new MockModule() );
+		
+        this._controller = injector.instantiateUnmapped( MockController );
+		injector.mapToValue( String, 'test1', 'test1' );
+		injector.mapToValue( String, 'test2', 'test2' );
+
+		//testing
+		Assert.methodCallThrows( MissingMappingException, this._controller, this._controller.testLocalVarOptionalInjection, [] );
+		
+		injector.mapToValue( String, 'test3', 'test3' );
+		var result = this._controller.testLocalVarOptionalInjection();
+		Assert.deepEquals( [ 'test1', 'test2', 'test3' ], result );
+	}
+	
+	@Test( "test local var with parameterized optional injection" )
+	public function testLocalVarWithParameterizedOptionalInjection() : Void
+	{
+		//Settings
+		var injector = new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapToValue( IContextModule, new MockModule() );
+		
+        this._controller = injector.instantiateUnmapped( MockController );
+		injector.mapToValue( String, 'test1', 'test1' );
+		injector.mapToValue( String, 'test2', 'test2' );
+
+		//testing
+		Assert.methodCallThrows( MissingMappingException, this._controller, this._controller.testLocalVarParamOptionalInjection, [] );
+		
+		injector.mapToValue( String, 'test3', 'test3' );
+		Assert.methodCallThrows( MissingMappingException, this._controller, this._controller.testLocalVarParamOptionalInjection, [] );
+
+		injector.mapToValue( String, 'test4', 'test4' );
+		var result = this._controller.testLocalVarParamOptionalInjection();
+		Assert.deepEquals( [ 'test1', 'test2', 'test3', 'test4' ], result );
+	}
+	
+	@Test( "test local var with replaced parameterized optional injection" )
+	public function testLocalVarWithReplacedParameterizedOptionalInjection() : Void
+	{
+		//Settings
+		var injector = new Injector();
+		injector.mapToValue( IDependencyInjector, injector );
+		injector.mapToValue( IContextModule, new MockModule() );
+		
+        this._controller = injector.instantiateUnmapped( MockController );
+		injector.mapToValue( String, 'test1', 'test1' );
+		injector.mapToValue( String, 'test2', 'test2' );
+
+		//testing
+		Assert.methodCallThrows( MissingMappingException, this._controller, this._controller.testLocalVarReplacedParamOptionalInjection, [] );
+		
+		injector.mapToValue( String, 'test3', 'test3' );
+		Assert.methodCallThrows( MissingMappingException, this._controller, this._controller.testLocalVarReplacedParamOptionalInjection, [] );
+
+		injector.mapToValue( String, 'test4', 'test4' );
+		var result = this._controller.testLocalVarReplacedParamOptionalInjection();
+		Assert.deepEquals( [ 'test1', 'test2', 'test3', 'test4' ], result );
 	}
 }

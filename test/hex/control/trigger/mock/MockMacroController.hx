@@ -1,6 +1,7 @@
 package hex.control.trigger.mock;
 
 import hex.collection.ILocator;
+import hex.control.MockEnum;
 import hex.control.async.Expect;
 
 /**
@@ -11,8 +12,6 @@ class MockMacroController
 	implements ICommandTrigger
 {
 	public function new(){}
-	
-	
 	
 	@Map( hex.control.trigger.mock.MockMacroCommand )
 	public function doSomething
@@ -26,7 +25,8 @@ class MockMacroController
 										a 	: Array<String>,
 		@Type( 'Map<String, String>' )	m 	: Map<Dynamic, Dynamic>,
 		@Ignore							ai	: Array<Int>,
-										d 	: Date
+										d 	: Date,
+										me	: MockEnum
 	) : Expect<String>;
 	
 	public function sum( a : Int, b : Int ) : Int 

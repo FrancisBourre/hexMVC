@@ -10,7 +10,6 @@ import hex.annotation.AnnotationReplaceBuilder;
 import hex.control.payload.ExecutionPayload;
 import hex.control.trigger.Command;
 import hex.di.IDependencyInjector;
-import hex.error.PrivateConstructorException;
 import hex.module.IContextModule;
 import hex.util.MacroUtil;
 
@@ -26,24 +25,16 @@ class CommandTriggerBuilder
 {
 	public static inline var MapAnnotation = "Map";
 	
-	/** @private */
-    function new()
-    {
-        throw new PrivateConstructorException( "This class can't be instantiated." );
-    }
+	/** @private */ function new() throw new hex.error.PrivateConstructorException( "This class can't be instantiated." );
 	
 	macro static public function build() : Array<Field> 
 	{
-		var fields 					= Context.getBuildFields();
+		var fields = Context.getBuildFields();
+		if ( Context.getLocalClass().get().isInterface ) return fields;
 		
-		if ( Context.getLocalClass().get().isInterface )
-		{
-			return fields;
-		}
-		
-		var CommandClassType 		= MacroUtil.getClassType( Type.getClassName( Command ) );
-		var MacroCommandClassType 	= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
-		var IContextModuleClassType 	= MacroUtil.getClassType( Type.getClassName( IContextModule ) );
+		var CommandClassType 				= MacroUtil.getClassType( Type.getClassName( Command ) );
+		var MacroCommandClassType 			= MacroUtil.getClassType( Type.getClassName( MacroCommand ) );
+		var IContextModuleClassType 		= MacroUtil.getClassType( Type.getClassName( IContextModule ) );
 		var IDependencyInjectorClassType 	= MacroUtil.getClassType( Type.getClassName( IDependencyInjector ) );
 		
 		for ( f in fields )
@@ -58,7 +49,6 @@ class CommandTriggerBuilder
 					if ( isMapped )
 					{
 						var className = Context.getLocalModule();
-						
 						if ( m.length > 1 )
 						{
 							Context.error(  "'" + f.name + "' method defines more than one command mapping (with '@" + 
@@ -107,7 +97,6 @@ class CommandTriggerBuilder
 								"' annotation) to '" + f.name + "' method in '" + className + "' class", command.pos );
 						}
 						
-
 						var typePath = MacroUtil.getTypePath( command.name, command.pos );
 
 						if ( !MacroUtil.isSubClassOf( MacroUtil.getClassType( command.name ), CommandClassType ) )
@@ -115,7 +104,6 @@ class CommandTriggerBuilder
 							Context.error( "'" + className + "' is mapped as a command class (with '@" + CommandTriggerBuilder.MapAnnotation + 
 								"' annotation), but it doesn't extend '" + CommandClassType.module + "' class", command.pos );
 						}
-
 
 						var arguments :Array<Expr> = [];
 						for ( arg in func.args )
@@ -139,7 +127,6 @@ class CommandTriggerBuilder
 								];
 								arguments.push( { expr: EObjectDecl( fields ), pos: Context.currentPos() } );
 							}
-							
 						}
 
 						var className = MacroUtil.getPack( command.name );
@@ -158,7 +145,7 @@ class CommandTriggerBuilder
 								this.injector.mapClassNameToValue( 'Array<hex.control.payload.ExecutionPayload>', payloads );
 								
 								hex.control.payload.PayloadUtil.mapPayload( payloads, this.injector );
-								var command = this.injector.getOrCreateNewInstance( $p { className } );
+								var command = this.injector.instantiateUnmapped( $p { className } );
 								hex.control.payload.PayloadUtil.unmapPayload( payloads, this.injector );
 								
 								command.setOwner( this.module );
@@ -173,22 +160,15 @@ class CommandTriggerBuilder
 						{
 							func.expr = macro 
 							{
-								var injections : Array<{value:Dynamic, className:String, mapName:String}> = $a { arguments };
-								var payloads = [];
-								for ( injected in injections )
-								{
-									payloads.push( new hex.control.payload.ExecutionPayload( injected.value, null, injected.mapName ).withClassName( injected.className ) );
-								}
-								
+								var injections : Array<{value: Dynamic, className: String, mapName: String}> = $a { arguments };
+								var payloads = [ for ( injected in injections ) new hex.control.payload.ExecutionPayload( injected.value, null, injected.mapName ).withClassName( injected.className ) ];
 								hex.control.payload.PayloadUtil.mapPayload( payloads, this.injector );
-								var command = this.injector.getOrCreateNewInstance( $p { className } );
+								var command = this.injector.instantiateUnmapped( $p { className } );
 								hex.control.payload.PayloadUtil.unmapPayload( payloads, this.injector );
 								
 								command.setOwner( this.module );
 								command.execute();
-								
-								
-								
+
 								return command;
 							};
 						}
@@ -220,7 +200,7 @@ class CommandTriggerBuilder
 				pos: Context.currentPos()
 			});
 	
-		return fields;
+		return hex.di.annotation.AnnotationTransformer.reflect( macro hex.di.IInjectorContainer, fields );
 	}
 	
 	static function _searchForInjection( expr : Expr ) : Void
@@ -233,20 +213,14 @@ class CommandTriggerBuilder
 				{
 					switch( arg.expr )
 					{
+						case EMeta( meta1, _.expr => EMeta( meta2, _.expr => EVars( vars ) ) ) if ( meta1.name == "Inject" && meta2.name == "Optional" ):
+							_generateInjectionCode( meta1, arg, vars, _shouldThrowAnError( meta2 ) );
+								
+						case EMeta( meta1, _.expr => EMeta( meta2, _.expr => EVars( vars ) ) ) if ( meta1.name == "Optional" && meta2.name == "Inject" ):
+							_generateInjectionCode( meta2, arg, vars, _shouldThrowAnError( meta1 ) );
+							
 						case EMeta( s, _.expr => EVars( vars ) ) if ( s.name == "Inject" ):
-								var mapName = if ( s.params.length > 0 )
-								{
-									var transformed = AnnotationReplaceBuilder.processParam(s.params[ 0 ]);
-									switch(transformed.expr)
-									{
-										case EConst(CString(name)): name;
-										case _: "";
-									}
-								} else "";
-
-								var varName 	= vars[0].name;
-								var varType 	= vars[0].type;
-								arg.expr 		= (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v{ MacroUtil.getFQCNFromComplexType( varType ) }, $v{mapName} )).expr;
+							_generateInjectionCode( s, arg, vars );
 
 						case _:
 							CommandTriggerBuilder._searchForInjection( arg );
@@ -257,12 +231,42 @@ class CommandTriggerBuilder
 		}
 	}
 	
-	static function hasMetaValue( meta, metaName : String )
+	static function _shouldThrowAnError( s : MetadataEntry ) : Bool
 	{
-		var meta = Lambda.find( meta, function(m) return m.name == metaName );
-		return ( meta != null );
+		if ( s.params.length > 0 )
+		{
+			var transformed = AnnotationReplaceBuilder.processParam( s.params[ 0 ] );
+			return switch( transformed.expr )
+			{
+				case EConst(CIdent( "true" )): false;
+				case EConst(CIdent("false")): true;
+				case _: false;
+			}
+		}
+		
+		return false;
 	}
 	
+	static function _generateInjectionCode( s : MetadataEntry, arg : Expr, vars : Array<Var>, shouldThrowAnError = true )
+	{
+		var mapName = if ( s.params.length > 0 )
+		{
+			var transformed = AnnotationReplaceBuilder.processParam( s.params[ 0 ] );
+			switch( transformed.expr )
+			{
+				case EConst(CString(name)): name;
+				case _: "";
+			}
+		} else "";
+
+		var varName 	= vars[0].name;
+		var varType 	= vars[0].type;
+		arg.expr 		= (macro var $varName : $varType = this.injector.getInstanceWithClassName( $v{ MacroUtil.getFQCNFromComplexType( varType ) }, $v{mapName}, null, $v{shouldThrowAnError} )).expr;
+	}
+	
+	static function hasMetaValue( meta, metaName : String )
+		return Lambda.find( meta, function(m) return m.name == metaName ) != null;
+
 	static function getMetaValue( meta : Null<Metadata>, metaName : String )
 	{
 		var meta : MetadataEntry = Lambda.find( meta, function(m) return m.name == metaName );

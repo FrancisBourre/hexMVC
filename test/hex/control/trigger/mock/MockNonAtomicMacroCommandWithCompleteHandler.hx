@@ -43,6 +43,9 @@ class MockNonAtomicMacroCommandWithCompleteHandler extends MacroCommand<String>
 	@Inject
 	public var pDate : Date;
 	
+	@Inject
+	public var pEnum : MockEnum;
+	
 	public function new()
 	{
 		super();
