@@ -2112,7 +2112,7 @@ class MacroCommandTest
 		
 		var userOutcome : MockUserVO;
 		macroCommand.onComplete( function( result ) userOutcome = result );
-		macroCommand.onComplete( MethodRunner.asyncHandler( this._onUserCaseComplete ) );
+		macroCommand.onComplete( function( userVO ) MethodRunner.asyncHandler( this._onUserCaseComplete.bind( userVO ) ) );
 	}
 	
 	function _onUserCaseComplete( userVO : MockUserVO ) : Void

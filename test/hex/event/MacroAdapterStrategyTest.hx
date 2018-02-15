@@ -26,7 +26,7 @@ class MacroAdapterStrategyTest
 		var params : Array<Dynamic> = [ new MockRequest(), "test" ];
 		this._classAdapter.getCallbackAdapter()( params );
 		
-		Timer.delay( MethodRunner.asyncHandler( this._onTestEnd ), 100 );
+		Timer.delay( MethodRunner.asyncHandler.bind( this._onTestEnd.bind() ), 100 );
 	}
 	
 	function factoryForMacroClass( adapterClass : Class<IAdapterStrategy> ) : IAdapterStrategy

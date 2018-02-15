@@ -82,7 +82,7 @@ class MacroExecutorTest
 		this._macroExecutor.add( MockBasicAsyncCommand );
 		Assert.isFalse( this._macroExecutor.hasRunEveryCommand, "'hasRunEveryCommand' should return false" );
 		this._macroExecutor.executeNextCommand();
-		Timer.delay( MethodRunner.asyncHandler( this._onTestHasRunEveryCommand ), 100 );
+		Timer.delay( MethodRunner.asyncHandler.bind( this._onTestHasRunEveryCommand.bind() ), 100 );
 	}
 	
 	@Test( "Test executeNextCommand" )
