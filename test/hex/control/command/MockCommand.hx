@@ -8,7 +8,7 @@ import hex.control.payload.ExecutionPayload;
  */
 class MockCommand extends BasicCommand
 {
-	static public var executionCount : UInt;
+	static public var executionCount : UInt = 0;
 	
 	public function new()
 	{
