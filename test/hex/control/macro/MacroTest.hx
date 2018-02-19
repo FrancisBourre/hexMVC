@@ -226,7 +226,7 @@ class MacroTest
 		myMacro.add( MockCommand );
 		
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method shoud not been called" );
-		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onTestSequenceModeComplete, [ myMacro ] ) );
+		myMacro.addCompleteHandler( function(command) MethodRunner.asyncHandler( this._onTestSequenceModeComplete.bind( command, myMacro ) ) );
 		myMacro.execute();
 		Assert.equals( 0, MockCommand.executeCallCount, "'execute' method should not been called" );
 	} 
@@ -244,7 +244,7 @@ class MacroTest
 		macroExecutor.injector = new MockDependencyInjector();
 		myMacro.macroExecutor = macroExecutor;
 		
-		myMacro.addCompleteHandler( MethodRunner.asyncHandler( this._onMacroWithHandlerComplete, [ myMacro ] ) );
+		myMacro.addCompleteHandler( function(command) MethodRunner.asyncHandler( this._onMacroWithHandlerComplete.bind(command, myMacro) ) );
 		
 		myMacro.isInSequenceMode = true;
 		myMacro.preExecute();

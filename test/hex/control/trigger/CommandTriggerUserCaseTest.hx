@@ -45,8 +45,12 @@ class CommandTriggerUserCaseTest
 	{
 		var ageProvider = function() return 46;
 		
-		this._controller.getUserVO( ageProvider )
-			.onComplete( MethodRunner.asyncHandler( this._onGetUser ) );
+		this._controller.getUserVO( ageProvider ).onComplete( 
+			function( userVO ) 
+			{
+				MethodRunner.asyncHandler( this._onGetUser.bind( userVO ) );
+			} 
+		);
 	}
 	
 	function _onGetUser( userVO : MockUserVO ) : Void
@@ -64,8 +68,12 @@ class CommandTriggerUserCaseTest
 
 		this._injector.mapDependencyToValue( new Dependency<TemperatureService>(), service );
 		
-		this._controller.getTemperature( 'Luxembourg' )
-			.onComplete( MethodRunner.asyncHandler( this._onGetTemperature ) );
+		this._controller.getTemperature( 'Luxembourg' ).onComplete( 
+			function( temperature ) 
+			{
+				MethodRunner.asyncHandler( this._onGetTemperature.bind( temperature ) );
+			} 
+		);	
 	}
 	
 	function _onGetTemperature( temperature : Int ) : Void

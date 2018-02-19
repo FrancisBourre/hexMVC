@@ -71,7 +71,12 @@ class CommandTriggerTest
 			Assert.isNull( MockCommandClassWithParameters.ignored, 'Last parameter should be ignored' );
 		}
 		
-		this._controller.say( "hola mundo", this, "ignore that", new Locator<String, Bool>() ).onComplete( MethodRunner.asyncHandler( f ) );
+		this._controller.say( "hola mundo", this, "ignore that", new Locator<String, Bool>() ).onComplete( 
+			function( message : String ) 
+			{
+				MethodRunner.asyncHandler( f.bind( message ) );
+			} 
+		);
 	}
 	
 	@Test( "test controller call without mapping" )
@@ -106,7 +111,12 @@ class CommandTriggerTest
 			Assert.isNull( MockCommandClassWithParameters.ignored, 'Last parameter should be ignored' );
 		}
 		
-		controller.say( "hola mundo", this, new Locator<String, Bool>() ).onComplete( MethodRunner.asyncHandler( f ) );
+		controller.say( "hola mundo", this, new Locator<String, Bool>() ).onComplete( 
+			function( message : String ) 
+			{
+				MethodRunner.asyncHandler( f.bind( message ) );
+			} 
+		);
 		
 		//doSomething
 		var vos : Array<Dynamic> = [];
